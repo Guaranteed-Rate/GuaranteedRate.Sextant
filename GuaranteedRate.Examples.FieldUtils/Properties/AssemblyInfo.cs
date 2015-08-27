@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GuaranteedRate.Sextant")]
-[assembly: AssemblyDescription("Tools to navigate Encompass")]
+[assembly: AssemblyTitle("GuaranteedRate.Examples.FieldUtils")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Guaranteed Rate")]
-[assembly: AssemblyProduct("GuaranteedRate.Sextant")]
-[assembly: AssemblyCopyright("Copyright © Guaranteed Rate 2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("GuaranteedRate.Examples.FieldUtils")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f279cfe6-0aa0-412f-8d7a-c933911ecdc3")]
+[assembly: Guid("7df8a7e4-99f8-4722-a421-6a1de8548672")]
 
 // Version information for an assembly consists of the following four values:
 //
