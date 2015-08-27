@@ -71,7 +71,7 @@ Download ILmerge: http://www.microsoft.com/en-us/download/details.aspx?id=17630
 
 Create a post-build step like this:
 <p  align="center">
-  <img  src="doc/img/trident.jpg"  width="300" height="200" border="0" />
+  <img  src="doc/img/ilMerge-postBuild.png" border="0" />
 </p>
 
 ```C#

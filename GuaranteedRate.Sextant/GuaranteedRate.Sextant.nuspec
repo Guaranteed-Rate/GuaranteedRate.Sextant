@@ -8,7 +8,7 @@
     <owners>$author$</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/Guaranteed-Rate/GuaranteedRate.Sextant</projectUrl>
-    <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+    <iconUrl>https://www.guaranteedrate.com/images/images/gr-logo-arrow.svg</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial Release.</releaseNotes>
