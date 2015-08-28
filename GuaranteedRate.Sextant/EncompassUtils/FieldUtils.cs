@@ -36,6 +36,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
 
+        private static IList<FieldDescriptors> FIELD_COLLECTIONS;
+
+        public static void AddFieldCollection(FieldDescriptors fieldDescriptors) 
+        {
+            if (FIELD_COLLECTIONS == null)
+            {
+                FIELD_COLLECTIONS = new List<FieldDescriptors>();
+            }
+            FIELD_COLLECTIONS.Add(fieldDescriptors);
+        }
+
 
         private FieldUtils()
         {
@@ -83,7 +94,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private void GetAllFieldIds()
         {
-            IList<FieldDescriptors> fieldDescriptorsList = GetAllFieldDescriptors();
+            IList<FieldDescriptors> fieldDescriptorsList = FieldUtils.FIELD_COLLECTIONS;
+            if (fieldDescriptorsList == null)
+            {
+                fieldDescriptorsList = GetAllFieldDescriptors();
+            }
             foreach (FieldDescriptors fieldDescriptors in fieldDescriptorsList)
             {
                 GetFieldIdsFromFieldDescriptors(fieldDescriptors);

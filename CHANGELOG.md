@@ -1,3 +1,8 @@
+## v1.0.1 / 2015 Aug 28
+
+> Update to FieldUtils to make it possible to collect a subset of fields instead of always getting all fields.
+> Revised the readme to be more descriptive
+
 ## v1.0.0 / 2015 Aug 27
 
 > Initial release.

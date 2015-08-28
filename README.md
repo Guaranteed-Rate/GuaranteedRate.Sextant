@@ -1,23 +1,18 @@
 # GuaranteedRate.Sextant
 
-This library works with **BOTH** Encompass Plugins and standalone SDK Apps.
-While this code is general purpose and will work for everyone, the adapters for Datadog (http://datadog.com) and Loggly (http://loggly.com) will only be useful if your organization uses these tools.  Both companies offer a free tier which are sufficient for small organizations or for demo purposes.
+Sextant is a collection of utilities for working with Ellie Mae's Encompass.
+Most importantly, this library works with **BOTH** Encompass Plugins and standalone SDK Apps.
+
+This allows developers to bake configuration, logging and performance into plugins, which will reduce development time, decrease bugs, make deployments easier and improve user experience.
+
+While this code is general purpose and should work for everyone, the adapters for Datadog (http://datadog.com) and Loggly (http://loggly.com) will only be useful if your organization uses these tools.  Both companies offer a free tier which are sufficient for small organizations or for demo purposes.
 
 The primary goal is to extend plugin functionality in a few key areas:
 * A common and consistant configuration system using CommonDataObjects
-* Tools and Utilities for working with Encompass Sessions and Loans
-** FieldUtils - This class dynamically loads and classifies all fieldIds on the Encompass server.
-** LoanDataUtils - This class has methods for extracting all Loan Fields into a Dictionary.
+* EncompassUtils.FieldUtils - This class dynamically loads and classifies all fieldIds on the Encompass server.
+* EncompassUtils.LoanDataUtils - This class has methods for extracting all Loan Fields into a Dictionary.
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
-
-### EncompassUtils
-
-**FieldUtils**
-
-**LoanDataUtils**
-
-**SessionUtils**
 
 ### AsyncEventReporter
 
