@@ -80,7 +80,7 @@ This line will combine the project DLL with any DLLs that you specify and copy i
 You have to explicitly state the DLLs you want to merge because the Encompass DLLs will also be in the directory and those should not be included.
 In this example we are merging Newtonsoft.Json and ReportingUtils
 #>
-"%iLMergePath%\ILMerge.exe" /out:%outPath%$(TargetName).dll $(TargetFileName) Newtonsoft.Json.dll ReportingUtils.dll /wildcards  /targetplatform:v4
+"%iLMergePath%\ILMerge.exe" /out:%outPath%$(TargetName).dll $(TargetFileName) Newtonsoft.Json.dll GuaranteedRate.Sextant.dll /wildcards  /targetplatform:v4
  
  
 <# This part is unnecessary, it will deploy your plugin to your LOCAL Encompass plugin dir so that your local-deploy will auto-deploy locally #>
