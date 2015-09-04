@@ -1,4 +1,5 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
+using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using GuaranteedRate.Sextant.Loggers;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,12 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     {
         public const int MULTI_MAX = 10;
 
-        public static void AddLogsToDictionary(EllieMae.Encompass.BusinessObjects.Loans.Logging.LoanLog loanLog, IDictionary<string, string> dataDictionary)
-        {
-            //foreach(Conversation convo in loanLog.Conversations)
-            //{
-            //    convo.
-            //}
-        }
-
+        /**
+         * Still a work in progress - ideally this function will iterate 
+         * through a loan's fields and return a Dictonary representation.
+         * 
+         * Works fine with SimpleFields, but not most types of multi-field values
+         */
         public static IDictionary<string, object> ExtractLoanFields(Loan currentLoan)
         {
             IDictionary<string, object> fieldValues = new Dictionary<string, object>();
@@ -40,6 +39,39 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             ExtractEndIndexFields(currentLoan, FieldUtils.DocumentMulti(), fieldValues);
 
             return fieldValues;
+        }
+
+        public static IDictionary<string, object> ExtractEverything(Loan loan)
+        {
+            IDictionary<string, object> loanData = new Dictionary<string, object>();
+            loanData.Add("lastmodified", loan.LastModified.ToString());
+            loanData.Add("fields", GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractLoanFields(loan));
+            loanData.Add("milestones", GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractMilestones(loan));
+            return loanData;
+        }
+
+        public static IList<IDictionary<string, string>> ExtractMilestones(Loan loan)
+        {
+            IList<IDictionary<string, string>> milestones = new List<IDictionary<string, string>>();
+            DateTime lastModified = loan.LastModified;
+            foreach (MilestoneEvent milestone in loan.Log.MilestoneEvents)
+            {
+                IDictionary<string, string> localMilestone = new Dictionary<string, string>();
+                localMilestone.Add("milestoneName", ParseField(milestone.MilestoneName));
+                localMilestone.Add("completed", milestone.Completed.ToString());
+                localMilestone.Add("completedDate", ParseField(milestone.Date.ToString()));
+                string comments = ParseField(milestone.Comments);
+                if (!String.IsNullOrWhiteSpace(comments))
+                {
+                    localMilestone.Add("comments", comments);
+                }
+                if ((milestone.LoanAssociate != null) && (milestone.LoanAssociate.User != null))
+                {
+                    localMilestone.Add("userId", ParseField(milestone.LoanAssociate.User.ID));
+                }
+                milestones.Add(localMilestone);
+            }
+            return milestones;
         }
 
         public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
