@@ -1,6 +1,8 @@
 ## v1.1.0 / 2015 Sept 4
 
 > Added `LoanDataUtils.ExtractMilestones` which returns a list of milestone data.
+> Added `LoanDataUtils.ExtractEverything` which runs all the extraction methods and returns a dictonary of the collections.
+
 
 ## v1.0.1 / 2015 Aug 28
 
