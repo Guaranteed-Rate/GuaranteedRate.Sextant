@@ -1,3 +1,11 @@
+## v1.2.0 / 2015 Sept 17
+
+> Improved loan data extraction.  Especially regarding borrower pairs
+
+* **Added** `LoanDataUtils.ExtractBorrowerPairs` which returns useful borrower pair information
+* **Added** `LoanDataUtils.ExtractProperties` which returns useful loan property information
+* **Updated** `LoanDataUtils.ExtractLoanFields` to call the 2 new functions
+
 ## v1.1.0 / 2015 Sept 4
 
 > Added `LoanDataUtils.ExtractMilestones` which returns a list of milestone data.

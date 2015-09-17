@@ -38,6 +38,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private static IList<FieldDescriptors> FIELD_COLLECTIONS;
 
+        public static readonly IList<string> BORROWER_PAIR_FIELDS = 
+            new List<string> { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "65", "66", "97", 
+                                "1240", "FE0116", "FR0104", "FR0106", "FR0107", "FR0108" };
+
+
         public static void AddFieldCollection(FieldDescriptors fieldDescriptors) 
         {
             if (FIELD_COLLECTIONS == null)
@@ -46,7 +51,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             FIELD_COLLECTIONS.Add(fieldDescriptors);
         }
-
 
         private FieldUtils()
         {

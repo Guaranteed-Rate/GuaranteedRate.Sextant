@@ -15,7 +15,7 @@ namespace GuaranteedRate.Examples.LoanDataUtils
     {
         static int Main(string[] args)
         {
-            if (args.Length == 4)
+            if (args!=null && args.Length == 4)
             {
                 LoanExtractor loanExtractor = new LoanExtractor();
                 Session session = SessionUtils.GetEncompassSession(args[1], args[2], args[3]);
@@ -48,8 +48,10 @@ namespace GuaranteedRate.Examples.LoanDataUtils
             {
                 //Timeout or other error
                 Debug.WriteLine("Exception closing loan: " + e);
+                Console.WriteLine("Exception closing loan: " + e);
             }
             Debug.WriteLine(json);
+            Console.WriteLine(json);
         }
     }
 }
