@@ -38,28 +38,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private static IList<FieldDescriptors> FIELD_COLLECTIONS;
 
-        /*
-         *   [{
-                :4003 \"Borrower Suffix\"
-                :4000 \"Borrower First Name\"
-                :4001 \"Borrower Middle Name\"
-                :4002 \"Borrower Last Name\"
-                :65 \"Borrower SSN\"
-                :FE0116 \"Borrower Business Phone Number\"
-                :66 \"Borrower Home Phone Number\"
-                :1240 \"Borrower Email\"
-                :FR0104 \"Borrower Addresses\"
-                :FR0106 \"Borrower City\"
-                :FR0107 \"Borrower State\"
-                :FR0108 \"Borrower Zipcode\"
-                :4007 \"Co-Borrower Suffix\"
-                :4004 \"Co-Borrower First Name\"
-                :4005 \"Co-Borrower Middle Name\"
-                :4006 \"Co-Borrower Last Name\"
-                :97 \"Co-Borrower SSN\"
-              } ... ]"
-                     */
-
         public static readonly IList<string> BORROWER_PAIR_FIELDS = 
             new List<string> { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "65", "66", "97", 
                                 "1240", "FE0116", "FR0104", "FR0106", "FR0107", "FR0108" };
