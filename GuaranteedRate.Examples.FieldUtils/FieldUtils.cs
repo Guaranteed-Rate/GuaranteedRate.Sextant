@@ -14,7 +14,7 @@ namespace GuaranteedRate.Examples.FieldUtils
 
         static int Main(string[] args)
         {
-            if (args.Length == 4)
+            if (args!=null && args.Length == 4)
             {
                 FieldDescriptions fieldDescriptions = new FieldDescriptions(args[0]);
                 Session session = SessionUtils.GetEncompassSession(args[1], args[2], args[3]);
