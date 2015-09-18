@@ -1,3 +1,9 @@
+## v1.2.1 / 2015 Sept 18
+
+> Fixed bug in IniConfig.  C# is not Java
+
+* **Fixed** `IniConfig.GetValue` Corrected logic for accessing dictionaries (Java Maps return null). 
+
 ## v1.2.0 / 2015 Sept 17
 
 > Improved loan data extraction.  Especially regarding borrower pairs

@@ -71,13 +71,22 @@ namespace GuaranteedRate.Sextant.Config
             {
                 return defaultVal;
             }
-
-            string val = _config[key.ToLower().Trim()];
-            if (val != null)
+            try
             {
-                return val;
+                string retVal = null;
+                if (_config.TryGetValue(key, out retVal))
+                {
+                    return retVal;
+                } 
+                else 
+                {
+                    return defaultVal;
+                }
             }
-            return defaultVal;
+            catch
+            {
+                return defaultVal;
+            }
         }
 
         public ICollection<string> GetKeys()
