@@ -74,19 +74,27 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IList<IDictionary<string, object>> ExtractBorrowerPairs(Loan loan, IList<string> fields)
         {
             IList<IDictionary<string, object>> borrowerPairs = new List<IDictionary<string, object>>();
-            string primarySsn = FormatSSN(ParseField(loan.Fields["65"].Value));
-            foreach (BorrowerPair pair in loan.BorrowerPairs)
+            try
             {
-                IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
-                borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
-                if (FormatSSN(fieldDictionary["65"].ToString()) == primarySsn)
+                string primarySsn = FormatSSN(ParseField(loan.Fields["65"].Value));
+                foreach (BorrowerPair pair in loan.BorrowerPairs)
                 {
-                    fieldDictionary.Add("PrimaryPair", true);
+                    IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
+                    borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
+                    if (FormatSSN(fieldDictionary["65"].ToString()) == primarySsn)
+                    {
+                        fieldDictionary.Add("PrimaryPair", true);
+                    }
+                    else
+                    {
+                        fieldDictionary.Add("PrimaryPair", false);
+                    }
                 }
-                else
-                {
-                    fieldDictionary.Add("PrimaryPair", false);
-                }
+            }
+            catch
+            {
+                //No-op - if there are no SSN this will throw an exception.
+                //But this is a no-op because SSN is not required
             }
             return borrowerPairs;
         }

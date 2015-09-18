@@ -1,3 +1,11 @@
+## v1.3.1 / 2015 Sept 18
+
+> Bug fix - if the primary borrower does not have an SSN, do not attempt
+> to extract borrower pairs
+
+* **Fix** `LoanDataUtils.ExtractBorrowerPairs` fix exception when the primary borrower does not have
+a SSN
+
 ## v1.3.0 / 2015 Sept 18
 
 > Created `Reporting` class to run common reports
