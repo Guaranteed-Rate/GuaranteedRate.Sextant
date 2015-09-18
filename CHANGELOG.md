@@ -1,3 +1,9 @@
+## v1.2.2 / 2015 Sept 18
+
+> Fixed bug in IniConfig.  Kyes are converted to lowercase
+
+* **Fixed** `IniConfig.GetValue` call `ToLower()` on the requested config key
+
 ## v1.2.1 / 2015 Sept 18
 
 > Fixed bug in IniConfig.  C# is not Java

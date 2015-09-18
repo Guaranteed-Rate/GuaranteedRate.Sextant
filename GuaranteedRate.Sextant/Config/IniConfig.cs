@@ -67,14 +67,14 @@ namespace GuaranteedRate.Sextant.Config
 
         public string GetValue(string key, string defaultVal = null)
         {
-            if (_config == null)
+            if (_config == null || String.IsNullOrWhiteSpace(key))
             {
                 return defaultVal;
             }
             try
             {
                 string retVal = null;
-                if (_config.TryGetValue(key, out retVal))
+                if (_config.TryGetValue(key.ToLower(), out retVal))
                 {
                     return retVal;
                 } 
