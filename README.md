@@ -11,6 +11,7 @@ The primary goal is to extend plugin functionality in a few key areas:
 * A common and consistant configuration system using CommonDataObjects
 * EncompassUtils.FieldUtils - This class dynamically loads and classifies all fieldIds on the Encompass server.
 * EncompassUtils.LoanDataUtils - This class has methods for extracting all Loan Fields into a Dictionary.
+* EncompassUtils.Reporting - This class has methods for common reports.
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
 
@@ -112,6 +113,11 @@ Useful for testing and debugging.
 
 Simple test/example program for using IEncompassConfig.
 Loads a config file from the Encompass Server and writes the key/value pairs to the console.
+
+## ReportingUtils
+
+Simple test/example program for using `Reporting.cs`.
+Queries Encompass for loans last modified between a start and end date (half open) and returns a list of GUIDs.
 
 ## ReportingUtils.Functional
 

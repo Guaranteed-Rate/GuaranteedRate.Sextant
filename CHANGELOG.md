@@ -1,3 +1,9 @@
+## v1.3.0 / 2015 Sept 18
+
+> Created `Reporting` class to run common reports
+
+* **Add** `Reporting.LoansLastModifiedBetween` which returns a list of loans last modified between 2 dates 
+
 ## v1.2.2 / 2015 Sept 18
 
 > Fixed bug in IniConfig.  Kyes are converted to lowercase
