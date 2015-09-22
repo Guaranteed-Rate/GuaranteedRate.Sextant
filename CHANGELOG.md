@@ -1,3 +1,7 @@
+## v1.3.4 / 2015 Sept 22
+
+> Defensive coding for everything in LoanDataUtils
+
 ## v1.3.3 / 2015 Sept 22
 
 > Bug fix - Not all loans have a last modified timestamp
