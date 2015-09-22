@@ -76,12 +76,13 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             IList<IDictionary<string, object>> borrowerPairs = new List<IDictionary<string, object>>();
             try
             {
-                string primarySsn = FormatSSN(ParseField(loan.Fields["65"].Value));
+                string primarySsn = FormatSSN(ExtractSimpleField(loan, "65"));
                 foreach (BorrowerPair pair in loan.BorrowerPairs)
                 {
                     IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
                     borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
-                    if (FormatSSN(fieldDictionary["65"].ToString()) == primarySsn)
+                    string ssn = FormatSSN(ExtractSimpleField(loan, "65"));
+                    if (ssn != null && ssn == primarySsn)
                     {
                         fieldDictionary.Add("PrimaryPair", true);
                     }
@@ -254,6 +255,26 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
             }
             return fieldDictionary;
+        }
+
+        public static string ExtractSimpleField(Loan currentLoan, string field)
+        {
+            try
+            {
+                object fieldObject;
+                fieldObject = currentLoan.Fields[field].Value;
+                string value = ParseField(fieldObject);
+                if (value != null)
+                {
+                    return field;
+                }
+            }
+            catch (Exception e)
+            {
+                //Debug.WriteLine("Failed to pull: " + fieldId + " Exception: " + e);
+                Loggly.Error("LoandataUtils", "Exception trying to access: " + field + " Exception: " + e);
+            }
+            return null;
         }
 
         public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)

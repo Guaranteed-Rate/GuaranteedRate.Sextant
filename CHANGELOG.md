@@ -1,3 +1,9 @@
+## v1.3.2 / 2015 Sept 18
+
+> Bug fix - continued problems with borrower pairs
+
+* **Fix** `LoanDataUtils.ExtractBorrowerPairs` to better encapsulate field extraction
+
 ## v1.3.1 / 2015 Sept 18
 
 > Bug fix - if the primary borrower does not have an SSN, do not attempt
