@@ -1,4 +1,4 @@
-## v1.3.2 / 2015 Sept 18
+## v1.3.2 / 2015 Sept 22
 
 > Bug fix - continued problems with borrower pairs
 

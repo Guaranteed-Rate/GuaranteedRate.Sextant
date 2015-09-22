@@ -263,11 +263,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 object fieldObject;
                 fieldObject = currentLoan.Fields[field].Value;
-                string value = ParseField(fieldObject);
-                if (value != null)
-                {
-                    return field;
-                }
+                return ParseField(fieldObject);
             }
             catch (Exception e)
             {
