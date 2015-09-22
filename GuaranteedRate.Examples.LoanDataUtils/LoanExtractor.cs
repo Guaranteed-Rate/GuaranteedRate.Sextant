@@ -42,7 +42,10 @@ namespace GuaranteedRate.Examples.LoanDataUtils
             string json = JsonConvert.SerializeObject(loanData);
             try
             {
-                loan.Close();
+                if (loan != null)
+                {
+                    loan.Close();
+                }
             }
             catch (Exception e)
             {

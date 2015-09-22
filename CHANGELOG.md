@@ -1,3 +1,9 @@
+## v1.3.3 / 2015 Sept 22
+
+> Bug fix - Not all loans have a last modified timestamp
+
+* **Fix** `LoanDataUtils.ExtractEverything` to better catch exceptions during field extraction
+
 ## v1.3.2 / 2015 Sept 22
 
 > Bug fix - continued problems with borrower pairs

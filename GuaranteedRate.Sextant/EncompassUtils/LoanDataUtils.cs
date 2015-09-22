@@ -50,9 +50,38 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, object> ExtractEverything(Loan loan)
         {
             IDictionary<string, object> loanData = new Dictionary<string, object>();
-            loanData.Add("lastmodified", loan.LastModified.ToString());
-            loanData.Add("fields", ExtractLoanFields(loan));
-            loanData.Add("milestones",ExtractMilestones(loan));
+            if (loan != null)
+            {
+                try
+                {
+                    var lastModified = loan.LastModified;
+                    if (lastModified != null)
+                    {
+                        loanData.Add("lastmodified", loan.LastModified.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting LastModified:" + ex);
+                }
+                try
+                {
+                    loanData.Add("fields", ExtractLoanFields(loan));
+
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting fields:" + ex);
+                }
+                try
+                {
+                    loanData.Add("milestones", ExtractMilestones(loan));
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting Milestones:" + ex);
+                }
+            }
             return loanData;
         }
 
