@@ -1,3 +1,33 @@
+## v1.3.4 / 2015 Sept 22
+
+> Defensive coding for everything in LoanDataUtils
+
+## v1.3.3 / 2015 Sept 22
+
+> Bug fix - Not all loans have a last modified timestamp
+
+* **Fix** `LoanDataUtils.ExtractEverything` to better catch exceptions during field extraction
+
+## v1.3.2 / 2015 Sept 22
+
+> Bug fix - continued problems with borrower pairs
+
+* **Fix** `LoanDataUtils.ExtractBorrowerPairs` to better encapsulate field extraction
+
+## v1.3.1 / 2015 Sept 18
+
+> Bug fix - if the primary borrower does not have an SSN, do not attempt
+> to extract borrower pairs
+
+* **Fix** `LoanDataUtils.ExtractBorrowerPairs` fix exception when the primary borrower does not have
+a SSN
+
+## v1.3.0 / 2015 Sept 18
+
+> Created `Reporting` class to run common reports
+
+* **Add** `Reporting.LoansLastModifiedBetween` which returns a list of loans last modified between 2 dates 
+
 ## v1.2.2 / 2015 Sept 18
 
 > Fixed bug in IniConfig.  Kyes are converted to lowercase
