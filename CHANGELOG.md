@@ -1,3 +1,10 @@
+## v1.4.0 / 2015 Oct 8
+
+> Improvements to Borrower-Pair collection
+
+* **Update** FieldUtils.BORROWER_PAIR_FIELDS - Add field "1268", Co-Borrower email
+* **JIRA** [POL-224](http://jira.guaranteedrate.com/browse/POL-224)
+
 ## v1.3.4 / 2015 Sept 22
 
 > Defensive coding for everything in LoanDataUtils
