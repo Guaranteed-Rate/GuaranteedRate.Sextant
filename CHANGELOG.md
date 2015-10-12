@@ -1,3 +1,19 @@
+## v1.5.1 / 2015 Oct 12
+
+> Update to FieldUtils to allow selection of individual fields, not
+> just field description collections
+
+* **Add** FieldUtils.AddFieldCollection to add a single field to the cached list
+* **Update** FieldUtils.GetAllFieldIds to support adding a single field to the 
+cached list
+* **Update** FieldUtils.GetAllFieldIds to support adding a single field to the 
+cached list
+* **ADD** FieldUtils.AddFieldDescriptors to support adding a single field to the 
+cached list
+* **Update** FieldUtils.GetAllFieldDescriptors to support adding a single field 
+to the cached list
+
+
 ## v1.5.0 / 2015 Oct 12
 
 > Major rewrite of collection of multi-indexed fields.

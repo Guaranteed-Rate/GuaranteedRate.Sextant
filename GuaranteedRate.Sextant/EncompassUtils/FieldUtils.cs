@@ -38,7 +38,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
 
-        private static IList<FieldDescriptors> FIELD_COLLECTIONS;
+        private static IList<FieldDescriptor> SELECTED_FIELDS;
 
         public static readonly IList<string> BORROWER_PAIR_FIELDS = 
             new List<string> { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "65", "66", "97", 
@@ -47,11 +47,20 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static void AddFieldCollection(FieldDescriptors fieldDescriptors) 
         {
-            if (FIELD_COLLECTIONS == null)
+            if (SELECTED_FIELDS == null)
             {
-                FIELD_COLLECTIONS = new List<FieldDescriptors>();
+                SELECTED_FIELDS = new List<FieldDescriptor>();
             }
-            FIELD_COLLECTIONS.Add(fieldDescriptors);
+            AddFieldDescriptors(fieldDescriptors, SELECTED_FIELDS);
+        }
+
+        public static void AddFieldCollection(FieldDescriptor fieldDescriptor)
+        {
+            if (SELECTED_FIELDS == null)
+            {
+                SELECTED_FIELDS = new List<FieldDescriptor>();
+            }
+            SELECTED_FIELDS.Add(fieldDescriptor);
         }
 
         private FieldUtils()
@@ -119,30 +128,32 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return keys;
         }
 
-
         private void GetAllFieldIds()
         {
-            IList<FieldDescriptors> fieldDescriptorsList = FieldUtils.FIELD_COLLECTIONS;
+            IList<FieldDescriptor> fieldDescriptorsList = FieldUtils.SELECTED_FIELDS;
             if (fieldDescriptorsList == null)
             {
                 fieldDescriptorsList = GetAllFieldDescriptors();
             }
-            foreach (FieldDescriptors fieldDescriptors in fieldDescriptorsList)
-            {
-                GetFieldIdsFromFieldDescriptors(fieldDescriptors);
-            }
+            GetFieldIdsFromFieldDescriptors(fieldDescriptorsList);
         }
 
-        private IList<FieldDescriptors> GetAllFieldDescriptors()
+        private static IList<FieldDescriptor> AddFieldDescriptors(FieldDescriptors fieldCollection, IList<FieldDescriptor> fieldList)
         {
-            IList<FieldDescriptors> fieldDescriptorsList = new List<FieldDescriptors>() 
+            foreach (FieldDescriptor field in fieldCollection)
             {
-                FieldUtils.session.Loans.FieldDescriptors.CustomFields,
-                FieldUtils.session.Loans.FieldDescriptors.StandardFields,
-                FieldUtils.session.Loans.FieldDescriptors.VirtualFields
-            };
+                fieldList.Add(field);
+            }
+            return fieldList;
+        }
 
-            return fieldDescriptorsList;
+        private IList<FieldDescriptor> GetAllFieldDescriptors()
+        {
+            IList<FieldDescriptor> fieldList = new List<FieldDescriptor>();
+            FieldUtils.AddFieldDescriptors(FieldUtils.session.Loans.FieldDescriptors.StandardFields, fieldList);
+            FieldUtils.AddFieldDescriptors(FieldUtils.session.Loans.FieldDescriptors.CustomFields, fieldList);
+            FieldUtils.AddFieldDescriptors(FieldUtils.session.Loans.FieldDescriptors.VirtualFields, fieldList);
+            return fieldList;
         }
 
         /***
@@ -155,7 +166,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
          * lists so that they can be handled on a loan-by-loan basis.
          */
-        private void GetFieldIdsFromFieldDescriptors(FieldDescriptors fieldDescriptors)
+        private void GetFieldIdsFromFieldDescriptors(IList<FieldDescriptor> fieldDescriptors)
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
             {
@@ -266,14 +277,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, string> GetFieldsAndDescriptions()
         {
             IDictionary<string, string> fieldsAndDescriptions = new Dictionary<string, string>();
-            IList<FieldDescriptors> fieldDescriptorsList = Instance.GetAllFieldDescriptors();
+            IList<FieldDescriptor> fieldDescriptorsList = Instance.GetAllFieldDescriptors();
 
-            foreach (FieldDescriptors fieldDescriptors in fieldDescriptorsList)
+            foreach (FieldDescriptor fieldDescriptor in fieldDescriptorsList)
             {
-                foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
-                {
-                    fieldsAndDescriptions.Add(fieldDescriptor.FieldID, fieldDescriptor.Description);
-                }
+                fieldsAndDescriptions.Add(fieldDescriptor.FieldID, fieldDescriptor.Description);
             }
             return fieldsAndDescriptions;
         }
