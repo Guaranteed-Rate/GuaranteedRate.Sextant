@@ -1,5 +1,7 @@
 ﻿using EllieMae.Encompass.Automation;
+using EllieMae.Encompass.BusinessEnums;
 using EllieMae.Encompass.BusinessObjects.Loans;
+using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
 using System;
 using System.Collections.Generic;
@@ -26,12 +28,12 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private readonly IList<string> MIDDLE_INDEXED;
         private readonly IList<string> END_INDEXED;
         private readonly IList<string> DOCUMENT_MULTI;
-        private readonly IList<string> MILESTONE_MULTI;
         private readonly IList<string> MILESTONE_TASK_MULTI;
         private readonly IList<string> NONE_MULTI;
-        private readonly IList<string> ROLE_MULTI;
         private readonly IList<string> POST_CLOSING_CONDITION_MULTI;
         private readonly IList<string> UNDERWRITING_MULTI;
+        private readonly IList<string> ROLE_MULTI_KEYS;
+        private readonly IList<string> MILESTONE_MULTI_KEYS;
 
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
@@ -58,12 +60,13 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             MIDDLE_INDEXED = new List<string>();
             END_INDEXED = new List<string>();
             DOCUMENT_MULTI = new List<string>();
-            MILESTONE_MULTI = new List<string>();
             MILESTONE_TASK_MULTI = new List<string>();
             NONE_MULTI = new List<string>();
-            ROLE_MULTI = new List<string>();
             POST_CLOSING_CONDITION_MULTI = new List<string>();
             UNDERWRITING_MULTI = new List<string>();
+
+            ROLE_MULTI_KEYS = GetRoleMultiKeys();
+            MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
 
             GetAllFieldIds();
         }
@@ -96,6 +99,27 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
         }
 
+        private IList<string> GetRoleMultiKeys()
+        {
+            IList<string> keys = new List<string>();
+            foreach (Role role in session.Loans.Roles)
+            {
+                keys.Add(role.Name);
+            }
+            return keys;
+        }
+
+        private IList<string> GetMilestoneMultiKeys()
+        {
+            IList<string> keys = new List<string>();
+            foreach (Milestone m in session.Loans.Milestones)
+            {
+                keys.Add(m.Name);
+            }
+            return keys;
+        }
+
+
         private void GetAllFieldIds()
         {
             IList<FieldDescriptors> fieldDescriptorsList = FieldUtils.FIELD_COLLECTIONS;
@@ -121,6 +145,16 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDescriptorsList;
         }
 
+        /***
+         * Depending on the field type it is sometimes possible to know the field ids at the session
+         * level, sometimes the specific fieldIds depend on the loan file itself.
+         * 
+         * Multi-value fieldIds whose indexes are defined at the session level will be unrolled into multiple
+         * simple value fields.
+         * 
+         * Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
+         * lists so that they can be handled on a loan-by-loan basis.
+         */
         private void GetFieldIdsFromFieldDescriptors(FieldDescriptors fieldDescriptors)
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
@@ -152,7 +186,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             DOCUMENT_MULTI.Add(fieldDescriptor.FieldID);
                             break;
                         case MultiInstanceSpecifierType.Milestone:
-                            MILESTONE_MULTI.Add(fieldDescriptor.FieldID);
+                            UnrollMultiFieldIds(fieldDescriptor.FieldID, MILESTONE_MULTI_KEYS);
                             break;
                         case MultiInstanceSpecifierType.MilestoneTask:
                             MILESTONE_TASK_MULTI.Add(fieldDescriptor.FieldID);
@@ -161,7 +195,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             POST_CLOSING_CONDITION_MULTI.Add(fieldDescriptor.FieldID);
                             break;
                         case MultiInstanceSpecifierType.Role:
-                            ROLE_MULTI.Add(fieldDescriptor.FieldID);
+                            UnrollMultiFieldIds(fieldDescriptor.FieldID, ROLE_MULTI_KEYS);
                             break;
                         case MultiInstanceSpecifierType.UnderwritingCondition:
                             UNDERWRITING_MULTI.Add(fieldDescriptor.FieldID);
@@ -170,6 +204,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             break;
                     }
                 }
+            }
+        }
+
+        private void UnrollMultiFieldIds(string fieldId, IList<string> keys)
+        {
+            foreach (string key in keys)
+            {
+                SIMPLE_FIELDS.Add(fieldId + "." + key);
             }
         }
 
@@ -196,11 +238,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return Instance.DOCUMENT_MULTI;
         }
 
-        public static IList<string> MilestoneMulti()
-        {
-            return Instance.MILESTONE_MULTI;
-        }
-
         public static IList<string> MilestoneTaskMulti()
         {
             return Instance.MILESTONE_TASK_MULTI;
@@ -211,9 +248,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return Instance.POST_CLOSING_CONDITION_MULTI;
         }
 
-        public static IList<string> RoleMulti()
+        public static IList<string> RoleMultiKeys()
         {
-            return Instance.ROLE_MULTI;
+            return Instance.ROLE_MULTI_KEYS;
         }
 
         public static IList<string> UnderwritingMulti()
@@ -230,6 +267,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             IDictionary<string, string> fieldsAndDescriptions = new Dictionary<string, string>();
             IList<FieldDescriptors> fieldDescriptorsList = Instance.GetAllFieldDescriptors();
+
             foreach (FieldDescriptors fieldDescriptors in fieldDescriptorsList)
             {
                 foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)

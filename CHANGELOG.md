@@ -1,3 +1,20 @@
+## v1.5.0 / 2015 Oct 12
+
+> Major rewrite of collection of multi-indexed fields.
+> Multi-indexed fields are now unrolled into multiple fields.
+> Where possible the field name unrolling occurs in FieldUtils, but when the 
+> keys are based on the loan, they are done in LoanDataUtils
+
+* **Update** FieldUtils now unrolls Milestone indexed mutlifield ids
+* **Update** FieldUtils now unrolls Role indexed mutlifield ids
+* **Update** LoanDataUtils now extracts Document indexed multifields
+* **Update** LoanDataUtils now extracts Post Closing indexed multifields
+* **Update** LoanDataUtils now extracts Underwriting indexed multifields
+* **Update** LoanDataUtils now extracts Milestone Task indexed multifields
+* **Update** LoanDataUtils now extracts Milestone indexed multifields
+* **Update** LoanDataUtils now extracts Role indexed multifields
+* **JIRA** [POL-228](http://jira.guaranteedrate.com/browse/POL-228)
+
 ## v1.4.0 / 2015 Oct 8
 
 > Improvements to Borrower-Pair collection
