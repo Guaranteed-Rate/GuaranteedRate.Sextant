@@ -37,32 +37,39 @@ namespace GuaranteedRate.Sextant.Config
 
         private bool DoLoad(Session session)
         {
-            IDictionary<string, string> config = new Dictionary<string, string>();
-            DataObject data = session.DataExchange.GetCustomDataObject(_fileName);
-            if (data == null)
+            try
             {
-                return false;
-            }
-            string allAsString = ASCIIEncoding.ASCII.GetString(data.Data);
-            if (allAsString == null || allAsString.Length <= 0)
-            {
-                return false;
-            }
-            string[] lines = allAsString.Split('\n');
-            foreach (string line in lines)
-            {
-                if (line != null && !String.IsNullOrWhiteSpace(line) && line.Substring(0, 1) != "#")
+                IDictionary<string, string> config = new Dictionary<string, string>();
+                DataObject data = session.DataExchange.GetCustomDataObject(_fileName);
+                if (data == null)
                 {
-                    string[] keyVal = line.Split('=');
-                    if (keyVal != null && keyVal.Length == 2)
+                    return false;
+                }
+                string allAsString = ASCIIEncoding.ASCII.GetString(data.Data);
+                if (allAsString == null || allAsString.Length <= 0)
+                {
+                    return false;
+                }
+                string[] lines = allAsString.Split('\n');
+                foreach (string line in lines)
+                {
+                    if (line != null && !String.IsNullOrWhiteSpace(line) && line.Substring(0, 1) != "#")
                     {
-                        config.Add(keyVal[0].ToLower().Trim(), keyVal[1].ToLower().Trim());
+                        string[] keyVal = line.Split('=');
+                        if (keyVal != null && keyVal.Length == 2)
+                        {
+                            config.Add(keyVal[0].ToLower().Trim(), keyVal[1].ToLower().Trim());
+                        }
                     }
                 }
-            }
 
-            _config = config;
-            return true;
+                _config = config;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public string GetValue(string key, string defaultVal = null)
