@@ -1,5 +1,6 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
+using EllieMae.Encompass.Client;
 using GuaranteedRate.Sextant.Loggers;
 using System;
 using System.Collections.Generic;
@@ -81,11 +82,20 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return loanData;
         }
 
+        /**
+         * This method is for common useful 'metadata' information that is not part of the loan data itself
+         * Such as the LoanFolder, UserId doing the extraction, etc
+         */
         public static IDictionary<string, object> ExtractProperties(Loan loan, IDictionary<string, object> fieldValues)
         {
             try
             {
                 fieldValues.Add("LoanFolder", loan.LoanFolder);
+                Session session = loan.Session;
+                if (session != null) 
+                {
+                    fieldValues.Add("SessionUserId", session.UserID);
+                }
             }
             catch (Exception ex)
             {

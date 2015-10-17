@@ -1,3 +1,12 @@
+## v1.6.0 / 2015 Oct 17
+
+> Add the userId of the session to the Properties associated with a loan in 
+> `LoanDataUtils`
+
+* **Update** `LoanDataUtils.ExtractProperties` to include the UserId associated
+with the current session
+* **JIRA** [POL-244](http://jira.guaranteedrate.com/browse/POL-244)
+
 ## v1.5.1 / 2015 Oct 12
 
 > Update to FieldUtils to allow selection of individual fields, not
