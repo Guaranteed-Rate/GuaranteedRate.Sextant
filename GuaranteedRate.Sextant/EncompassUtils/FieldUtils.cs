@@ -135,7 +135,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 fieldDescriptorsList = GetAllFieldDescriptors();
             }
-            GetFieldIdsFromFieldDescriptors(fieldDescriptorsList);
+            LoadFieldIdsFromFieldDescriptors(fieldDescriptorsList);
         }
 
         private static IList<FieldDescriptor> AddFieldDescriptors(FieldDescriptors fieldCollection, IList<FieldDescriptor> fieldList)
@@ -166,7 +166,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
          * lists so that they can be handled on a loan-by-loan basis.
          */
-        private void GetFieldIdsFromFieldDescriptors(IList<FieldDescriptor> fieldDescriptors)
+        private void LoadFieldIdsFromFieldDescriptors(IList<FieldDescriptor> fieldDescriptors)
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
             {
