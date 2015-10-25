@@ -133,9 +133,11 @@
     <Compile Include="Config\IEncompassConfig.cs" />
     <Compile Include="Config\IniConfig.cs" />
     <Compile Include="EncompassUtils\FieldUtils.cs" />
+    <Compile Include="EncompassUtils\LoanDataExtensions.cs" />
     <Compile Include="EncompassUtils\LoanDataUtils.cs" />
     <Compile Include="EncompassUtils\Reporting.cs" />
     <Compile Include="EncompassUtils\SessionUtils.cs" />
+    <Compile Include="Enumerations\Roles.cs" />
     <Compile Include="Loggers\Loggly.cs" />
     <Compile Include="Metrics\DatadogReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
