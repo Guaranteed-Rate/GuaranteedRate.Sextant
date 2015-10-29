@@ -57,6 +57,7 @@ namespace GuaranteedRate.Examples.LoanDataUtils
                 Debug.WriteLine("Exception closing loan: " + e);
                 Console.WriteLine("Exception closing loan: " + e);
             }
+
             Debug.WriteLine(json);
             Console.WriteLine(json);
         }

@@ -1,3 +1,7 @@
+## v1.7.0 / 2015 Oct 29
+
+> Find 
+
 ## v1.6.0 / 2015 Oct 17
 
 > Add the userId of the session to the Properties associated with a loan in 

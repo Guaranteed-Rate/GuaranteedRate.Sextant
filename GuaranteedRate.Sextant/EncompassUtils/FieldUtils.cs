@@ -35,6 +35,23 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private readonly IList<string> ROLE_MULTI_KEYS;
         private readonly IList<string> MILESTONE_MULTI_KEYS;
 
+        private readonly IList<string> BORROWER_EMPLOYERS_MULTI_KEYS;
+        private readonly IList<string> CO_BORROWER_EMPLOYERS_MULTI_KEYS;
+        private readonly IList<string> BORROWER_RESIDENCES_MULTI_KEYS;
+        private readonly IList<string> CO_BORROWER_RESIDENCES_MULTI_KEYS;
+        private readonly IList<string> LIABILITIES_MULTI_KEYS;
+        private readonly IList<string> MORTGAGES_MULTI_KEYS;
+
+        private const string BORROWER_EMPLOYERS_STARTS = "BE";
+        private const string CO_BORROWER_EMPLOYERS_STARTS = "CE";
+        private const string BORROWER_RESIDENCES_STARTS = "BR";
+        private const string CO_BORROWER_RESIDENCES_STARTS = "CR";
+        private const string FD_LIABILITIES_STARTS = "FD";
+        private const string FL_LIABILITIES_STARTS = "FL";
+        private const string MORTGAGES_STARTS = "FM";
+
+        private readonly IDictionary<string, IList<string>> INDEX_MULTI_SORTER;
+
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
 
@@ -73,6 +90,22 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             NONE_MULTI = new List<string>();
             POST_CLOSING_CONDITION_MULTI = new List<string>();
             UNDERWRITING_MULTI = new List<string>();
+
+            BORROWER_EMPLOYERS_MULTI_KEYS = new List<string>();
+            CO_BORROWER_EMPLOYERS_MULTI_KEYS = new List<string>();
+            BORROWER_RESIDENCES_MULTI_KEYS = new List<string>();
+            CO_BORROWER_RESIDENCES_MULTI_KEYS = new List<string>();
+            LIABILITIES_MULTI_KEYS = new List<string>();
+            MORTGAGES_MULTI_KEYS = new List<string>();
+
+            INDEX_MULTI_SORTER = new Dictionary<string, IList<string>>();
+            INDEX_MULTI_SORTER.Add(BORROWER_EMPLOYERS_STARTS, BORROWER_EMPLOYERS_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(CO_BORROWER_EMPLOYERS_STARTS, CO_BORROWER_EMPLOYERS_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(BORROWER_RESIDENCES_STARTS, BORROWER_RESIDENCES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(CO_BORROWER_RESIDENCES_STARTS, CO_BORROWER_RESIDENCES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(FD_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(FL_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(MORTGAGES_STARTS, MORTGAGES_MULTI_KEYS);
 
             ROLE_MULTI_KEYS = GetRoleMultiKeys();
             MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
@@ -179,6 +212,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     switch (fieldDescriptor.InstanceSpecifierType)
                     {
                         case MultiInstanceSpecifierType.Index:
+                            //TODO: Still working the new way
+                            string key = fieldDescriptor.FieldID.Substring(0, 2);
+                            if (INDEX_MULTI_SORTER.Keys.Contains(key))
+                            {
+                                INDEX_MULTI_SORTER[key].Add(fieldDescriptor.FieldID);
+                            }
+                            
+                            //TODO: The old way
                             if (fieldDescriptor.FieldID.Substring(2, 2) == "00")
                             {
                                 MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
