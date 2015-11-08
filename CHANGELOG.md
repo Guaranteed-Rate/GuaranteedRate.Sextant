@@ -1,6 +1,10 @@
 ## v1.7.0 / 2015 Oct 29
 
-> Find 
+> Add Pipeline and Report querying to `Reports.cs`
+
+* **Add** `LoansAndLastModifiedPipeline` to `Reports.cs`
+* **Add** `LoansAndLastModifiedReport` to `Reports.cs`
+* **Update** All reports to support just start time
 
 ## v1.6.0 / 2015 Oct 17
 
