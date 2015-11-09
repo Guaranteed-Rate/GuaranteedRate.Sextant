@@ -42,7 +42,7 @@ namespace GuaranteedRate.Examples.FieldUtils
             {
                 foreach (string fieldId in fieldsAndDescriptions.Keys)
                 {
-                    file.WriteLine(fieldId + "," + fieldsAndDescriptions[fieldId]);
+                    file.WriteLine("\"" + fieldId + "\",\"" + fieldsAndDescriptions[fieldId].Replace("\"","") + "\"");
                 }
             }
         }

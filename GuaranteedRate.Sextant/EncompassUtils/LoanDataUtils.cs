@@ -35,6 +35,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             ExtractStringIndexFields(currentLoan, FieldUtils.UnderwritingMulti(), GetUnderwritingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.MilestoneTaskMulti(), GetMilestoneTaskIndexes(currentLoan), fieldValues);
 
+            /* -- used as indexes for known multifield indexes, not ready for deployment
+            int borrowerEmployerCount = currentLoan.BorrowerEmployers.Count;
+            int coBorrowerEmployerCount = currentLoan.CoBorrowerEmployers.Count;
+
+            int liabilities = currentLoan.Liabilities.Count;
+            int mortgages = currentLoan.Mortgages.Count;
+            */
+
             //This is a subset of the borrower pair information, there does not seem to be an efficient method for
             //extracting all of this data programmatically.
             fieldValues.Add("borrower-pairs", ExtractBorrowerPairs(currentLoan));
