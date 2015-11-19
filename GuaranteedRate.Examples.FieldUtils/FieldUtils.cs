@@ -18,6 +18,7 @@ namespace GuaranteedRate.Examples.FieldUtils
             {
                 FieldDescriptions fieldDescriptions = new FieldDescriptions(args[0]);
                 Session session = SessionUtils.GetEncompassSession(args[1], args[2], args[3]);
+                //fieldDescriptions.WriteReportableVirtual(session);
                 fieldDescriptions.WriteFieldsAndDescriptionsToFile(session);
                 return 1;
             }
@@ -44,6 +45,17 @@ namespace GuaranteedRate.Examples.FieldUtils
                 {
                     file.WriteLine("\"" + fieldId + "\",\"" + fieldsAndDescriptions[fieldId].Replace("\"","") + "\"");
                 }
+            }
+        }
+
+        public void WriteReportableVirtual(Session session)
+        {
+            GuaranteedRate.Sextant.EncompassUtils.FieldUtils.session = session;
+            ISet<string> fields = GuaranteedRate.Sextant.EncompassUtils.FieldUtils.ReportableVirtualFields();
+            Console.WriteLine();
+            foreach (string fieldId in fields)
+            {
+                Console.Write(fieldId + ", ");
             }
         }
     }
