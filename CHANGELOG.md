@@ -7,6 +7,9 @@
 instead of using ParseField
 * **Update** - Greatly expanded the list of fields in `BORROWER_PAIR_FIELDS`
 * **Update** - Switched all the Lists for Sets in `FieldUtils` 
+* **Update** - Changed the timeout for POST operations from 20s to 45s in
+`AsyncEventReporter` to handle increased insertion time
+* **Update** - Added retries to `AsyncEventReporter` to increase relability
 
 ## v1.7.1 / 2015 Nov 19
 

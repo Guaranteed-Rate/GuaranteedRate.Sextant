@@ -61,6 +61,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private static IList<FieldDescriptor> SELECTED_FIELDS;
 
+        /**
+         * These *SEEM* to be the *Simple* fields that are affected by switching active borrower-pair.
+         * Have not found a good way to know which fields are affected by the active borrower-pair.
+         */
         public static readonly ISet<string> BORROWER_PAIR_FIELDS =
             new HashSet<string> { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", 
                                "36","37","38","39","52","53","54","60","65", "66", "67","68","69","70","71","97","98","100",
@@ -295,7 +299,18 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                 }
             }
-            //Console.WriteLine(UNKNOWN_KEYS);
+            /*
+            Console.WriteLine("UNKNOWN_KEYS\n------------");
+            foreach (string key in UNKNOWN_KEYS)
+            {
+                Console.WriteLine(key);
+            }
+            Console.WriteLine("BAD_KEYS\n------------");
+            foreach (string key in BAD_KEYS)
+            {
+                Console.WriteLine(key);
+            }
+            */
         }
 
         private void UnrollMultiFieldIds(string fieldId, ISet<string> keys)
