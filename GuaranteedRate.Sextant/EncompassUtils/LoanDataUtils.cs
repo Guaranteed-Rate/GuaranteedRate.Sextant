@@ -175,7 +175,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return ExtractBorrowerPairs(loan, FieldUtils.BORROWER_PAIR_FIELDS);
         }
 
-        public static IList<IDictionary<string, object>> ExtractBorrowerPairs(Loan loan, IList<string> fields)
+        public static IList<IDictionary<string, object>> ExtractBorrowerPairs(Loan loan, ISet<string> fields)
         {
             IList<IDictionary<string, object>> borrowerPairs = new List<IDictionary<string, object>>();
             try
@@ -194,7 +194,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         fieldDictionary.Add("PrimaryPair", false);
                     }
-                    /*
                     /////
                     loan.BorrowerPairs.Current = pair;
                     //--New stuff
@@ -204,7 +203,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     ExtractIntIndexFields(loan, FieldUtils.CoBorrowerResidences(), loan.CoBorrowerResidences.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.LiabilitiesMulti(), loan.Liabilities.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.MortgagesMulti(), loan.Mortgages.Count, fieldDictionary);
-                    */
                 }
             }
             catch
@@ -224,7 +222,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     IDictionary<string, string> localMilestone = new Dictionary<string, string>();
                     localMilestone.Add("milestoneName", ParseField(milestone.MilestoneName));
-                    localMilestone.Add("completed", milestone.Completed.ToString());
+                    localMilestone.Add("completed", ParseField(milestone.Completed));
                     localMilestone.Add("completedDate", ParseField(milestone.Date.ToString()));
                     string comments = ParseField(milestone.Comments);
                     if (!String.IsNullOrWhiteSpace(comments))
@@ -306,7 +304,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return keys;
         }
 
-        public static IDictionary<string, object> ExtractIntIndexFields(Loan currentLoan, IList<string> fieldIds, int max_index, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractIntIndexFields(Loan currentLoan, ISet<string> fieldIds, int max_index, IDictionary<string, object> fieldDictionary)
         {
             if (max_index < 1)
             {
@@ -340,7 +338,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDictionary;
         }
 
-        public static IDictionary<string, object> ExtractStringIndexFields(Loan currentLoan, IList<string> fieldIds, IList<string> keys, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractStringIndexFields(Loan currentLoan, ISet<string> fieldIds, IList<string> keys, IDictionary<string, object> fieldDictionary)
         {
             if (keys == null || keys.Count == 0)
             {
@@ -368,7 +366,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDictionary;
         }
 
-        public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {
@@ -414,7 +412,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
         }
 
-        public static IDictionary<string, object> ExtractMiddleIndexFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractMiddleIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {
@@ -453,7 +451,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDictionary;
         }
 
-        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {
@@ -499,7 +497,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return null;
         }
 
-        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {
