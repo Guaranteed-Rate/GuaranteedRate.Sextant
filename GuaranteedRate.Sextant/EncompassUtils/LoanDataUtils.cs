@@ -26,22 +26,29 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, object> ExtractLoanFields(Loan currentLoan)
         {
             IDictionary<string, object> fieldValues = new Dictionary<string, object>();
-
+            
             ExtractSimpleFields(currentLoan, FieldUtils.SimpleFieldNames(), fieldValues);
+            //////////
             ExtractMiddleIndexFields(currentLoan, FieldUtils.MiddleIndexMulti(), fieldValues);
             ExtractEndIndexFields(currentLoan, FieldUtils.EndIndexMulti(), fieldValues);
+
+            //////////////
             ExtractStringIndexFields(currentLoan, FieldUtils.DocumentMulti(), GetDocumentIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.PostClosingMulti(), GetPostClosingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.UnderwritingMulti(), GetUnderwritingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.MilestoneTaskMulti(), GetMilestoneTaskIndexes(currentLoan), fieldValues);
 
-            /* -- used as indexes for known multifield indexes, not ready for deployment
-            int borrowerEmployerCount = currentLoan.BorrowerEmployers.Count;
-            int coBorrowerEmployerCount = currentLoan.CoBorrowerEmployers.Count;
+            //--New stuff
+            ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerEmployers(), currentLoan.BorrowerEmployers.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.CoBorrowerEmployers(), currentLoan.CoBorrowerEmployers.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerResidences(), currentLoan.BorrowerResidences.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.CoBorrowerResidences(), currentLoan.CoBorrowerResidences.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.LiabilitiesMulti(), currentLoan.Liabilities.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.MortgagesMulti(), currentLoan.Mortgages.Count, fieldValues);
 
-            int liabilities = currentLoan.Liabilities.Count;
-            int mortgages = currentLoan.Mortgages.Count;
-            */
+            // -- used as indexes for known multifield indexes
+            int additionalVestingParties = currentLoan.AdditionalVestingParties.Count;
+            int deposits = currentLoan.Deposits.Count;
 
             //This is a subset of the borrower pair information, there does not seem to be an efficient method for
             //extracting all of this data programmatically.
@@ -99,6 +106,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             try
             {
                 fieldValues.Add("LoanFolder", loan.LoanFolder);
+                fieldValues.Add("LoanCloserID", loan.LoanCloserID);
+                fieldValues.Add("LoanName", loan.LoanName);
+                fieldValues.Add("LoanOfficerID", loan.LoanOfficerID);
+                fieldValues.Add("LoanProcessorID", loan.LoanProcessorID);
+
                 Session session = loan.Session;
                 if (session != null) 
                 {
@@ -182,6 +194,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         fieldDictionary.Add("PrimaryPair", false);
                     }
+                    /*
+                    /////
+                    loan.BorrowerPairs.Current = pair;
+                    //--New stuff
+                    ExtractIntIndexFields(loan, FieldUtils.BorrowerEmployers(), loan.BorrowerEmployers.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.CoBorrowerEmployers(), loan.CoBorrowerEmployers.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.BorrowerResidences(), loan.BorrowerResidences.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.CoBorrowerResidences(), loan.CoBorrowerResidences.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.LiabilitiesMulti(), loan.Liabilities.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.MortgagesMulti(), loan.Mortgages.Count, fieldDictionary);
+                    */
                 }
             }
             catch
@@ -281,6 +304,40 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 keys.Add(task.Name);
             }
             return keys;
+        }
+
+        public static IDictionary<string, object> ExtractIntIndexFields(Loan currentLoan, IList<string> fieldIds, int max_index, IDictionary<string, object> fieldDictionary)
+        {
+            if (max_index < 1)
+            {
+                return fieldDictionary;
+            }
+            try
+            {
+                foreach (string fieldId in fieldIds)
+                {
+                    int offset = fieldId.IndexOf("00");
+                    string pre = fieldId.Substring(0, offset);
+                    string post = fieldId.Substring(offset + 2);
+
+                    //1 offset not 0 because 00 is already in use
+                    for (int index = 1; index <= max_index; index++)
+                    {
+                        string indexPad = pre + IntPad(index) + post;
+                        object fieldObject = currentLoan.Fields[indexPad].Value;
+                        string value = ParseField(fieldObject);
+                        if (value != null)
+                        {
+                            fieldDictionary.Add(SafeFieldId(indexPad), value);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Loggly.Error("LoandataUtils", "Exception in ExtractIntIndexFields:" + ex);
+            }
+            return fieldDictionary;
         }
 
         public static IDictionary<string, object> ExtractStringIndexFields(Loan currentLoan, IList<string> fieldIds, IList<string> keys, IDictionary<string, object> fieldDictionary)

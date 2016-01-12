@@ -1,3 +1,10 @@
+## v1.8.0 / 2016 Jan 11
+
+> This release updates the `FieldUtils` and `LoanDetails` to itterate over the
+> correct index for index based multi-fields
+
+
+
 ## v1.7.1 / 2015 Nov 19
 
 > Add Function to get list of reportable virtual fields

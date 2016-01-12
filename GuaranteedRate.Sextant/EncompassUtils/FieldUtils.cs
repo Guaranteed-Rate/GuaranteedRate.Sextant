@@ -53,6 +53,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private const string MORTGAGES_STARTS = "FM";
 
         private readonly IDictionary<string, IList<string>> INDEX_MULTI_SORTER;
+        private readonly ISet<string> UNKNOWN_KEYS;
+        private readonly ISet<string> BAD_KEYS;
 
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
@@ -111,6 +113,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
             ROLE_MULTI_KEYS = GetRoleMultiKeys();
             MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
+
+            UNKNOWN_KEYS = new HashSet<string>();
+            BAD_KEYS = new HashSet<string>();
 
             GetAllFieldIds();
         }
@@ -214,22 +219,26 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     switch (fieldDescriptor.InstanceSpecifierType)
                     {
                         case MultiInstanceSpecifierType.Index:
-                            //TODO: Still working the new way
-                            string key = fieldDescriptor.FieldID.Substring(0, 2);
-                            if (INDEX_MULTI_SORTER.Keys.Contains(key))
-                            {
-                                INDEX_MULTI_SORTER[key].Add(fieldDescriptor.FieldID);
-                            }
                             
                             //TODO: The old way
                             if (fieldDescriptor.FieldID.Substring(2, 2) == "00")
                             {
-                                MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
+                                string key = fieldDescriptor.FieldID.Substring(0, 2);
+                                if (INDEX_MULTI_SORTER.Keys.Contains(key))
+                                {
+                                    INDEX_MULTI_SORTER[key].Add(fieldDescriptor.FieldID);
+                                }
+                                else
+                                {
+                                    UNKNOWN_KEYS.Add(key);
+                                    MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
+                                }
                             }
                             else if (fieldDescriptor.FieldID.Contains("00"))
                             {
                                 //FIXME: Not sure how to handle these fields
                                 // MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
+                                BAD_KEYS.Add(fieldDescriptor.FieldID);
                             }
                             else
                             {
@@ -259,6 +268,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                 }
             }
+            Console.WriteLine(UNKNOWN_KEYS);
         }
 
         private void UnrollMultiFieldIds(string fieldId, IList<string> keys)
@@ -310,6 +320,36 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IList<string> UnderwritingMulti()
         {
             return Instance.UNDERWRITING_MULTI;
+        }
+
+        public static IList<string> BorrowerEmployers()
+        {
+            return Instance.BORROWER_EMPLOYERS_MULTI_KEYS;
+        }
+
+        public static IList<string> CoBorrowerEmployers()
+        {
+            return Instance.CO_BORROWER_EMPLOYERS_MULTI_KEYS;
+        }
+
+        public static IList<string> BorrowerResidences()
+        {
+            return Instance.BORROWER_RESIDENCES_MULTI_KEYS;
+        }
+
+        public static IList<string> CoBorrowerResidences()
+        {
+            return Instance.CO_BORROWER_RESIDENCES_MULTI_KEYS;
+        }
+
+        public static IList<string> LiabilitiesMulti()
+        {
+            return Instance.LIABILITIES_MULTI_KEYS;
+        }
+
+        public static IList<string> MortgagesMulti()
+        {
+            return Instance.MORTGAGES_MULTI_KEYS;
         }
 
         /**
