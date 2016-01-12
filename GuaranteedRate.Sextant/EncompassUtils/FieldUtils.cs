@@ -3,6 +3,8 @@ using EllieMae.Encompass.BusinessEnums;
 using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
+using EllieMae.Encompass.Collections;
+using EllieMae.Encompass.Reporting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -310,7 +312,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return Instance.UNDERWRITING_MULTI;
         }
 
-
         /**
          * This method is not expected to be called in most cases, and if it is called, won't be called repeatedly.
          * So not caching results.
@@ -325,6 +326,30 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 fieldsAndDescriptions.Add(fieldDescriptor.FieldID, fieldDescriptor.Description);
             }
             return fieldsAndDescriptions;
+        }
+
+        public static ISet<string> ReportableVirtualFields()
+        {
+            ISet<string> rvf = new HashSet<string>();
+
+            ReportingFieldDescriptorList reportable = FieldUtils.session.Reports.GetReportingDatabaseFields();
+            FieldDescriptors virtualFields = FieldUtils.session.Loans.FieldDescriptors.VirtualFields;
+
+            ISet<string> rep = new HashSet<string>();
+            foreach (ReportingFieldDescriptor f in reportable)
+            {
+                rep.Add(f.FieldID);
+            }
+
+            foreach (IFieldDescriptor f in virtualFields)
+            {
+                if (rep.Contains(f.FieldID))
+                {
+                    rvf.Add(f.FieldID);
+                }
+            }
+
+            return rvf;
         }
     }
 }

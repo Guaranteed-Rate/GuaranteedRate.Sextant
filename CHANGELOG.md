@@ -1,3 +1,9 @@
+## v1.7.1 / 2015 Nov 19
+
+> Add Function to get list of reportable virtual fields
+
+* **Add** - `ReportableVirtualFields` to `FieldUtils.cs`
+
 ## v1.7.0 / 2015 Oct 29
 
 > Add Pipeline and Report querying to `Reports.cs`
