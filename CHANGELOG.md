@@ -3,7 +3,10 @@
 > This release updates the `FieldUtils` and `LoanDetails` to itterate over the
 > correct index for index based multi-fields
 
-
+* **Fix** - `LoanDataUtils.ExtractMilestones` had direct access to a field 
+instead of using ParseField
+* **Update** - Greatly expanded the list of fields in `BORROWER_PAIR_FIELDS`
+* **Update** - Switched all the Lists for Sets in `FieldUtils` 
 
 ## v1.7.1 / 2015 Nov 19
 

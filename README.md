@@ -123,3 +123,22 @@ Queries Encompass for loans last modified between a start and end date (half ope
 
 This is a simple test harness for the Datadog and Loggly posters.
 Because this test sends data to Datadog and Loggly it is not written as a unit test.
+
+# Developer Notes
+
+## Fields controlled by dropdowns - default is often null
+
+There are many fields in Encompass that are controlled by dropdowns.
+In many cases, if the value has never been changed from the default, the actual data value from the SDK will be null.
+
+For example Field "1393" (Trans Details Current Loan Status):
+<p  align="center">
+  <img  src="doc/img/Field1393.png" border="0" />
+</p>
+
+The dropdown has a default value of "Active Loan", but if the field has never been touched, then the value will be empty.
+
+ie you can see the drop down showing "Active Loan", but in the SDK will show:
+```C#
+loan.Fields["1393"].Value == "";
+```
