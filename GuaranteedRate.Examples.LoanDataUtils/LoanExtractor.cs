@@ -42,6 +42,7 @@ namespace GuaranteedRate.Examples.LoanDataUtils
             FieldUtils.AddFieldCollection(FieldUtils.session.Loans.FieldDescriptors.VirtualFields);
 
             Loan loan = SessionUtils.OpenLoan(session, guid);
+
             IDictionary<string, object> loanData = GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
             string json = JsonConvert.SerializeObject(loanData);
             try
