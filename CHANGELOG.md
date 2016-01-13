@@ -1,10 +1,12 @@
 ## v1.8.0 / 2016 Jan 11
 
 > This release updates the `FieldUtils` and `LoanDetails` to itterate over the
-> correct index for index based multi-fields
+> correct index for index based multi-fields.  It also updates the 
+> borrower-pair extraction to provide a more complete data set.
 
 * **Fix** - `LoanDataUtils.ExtractMilestones` had direct access to a field 
 instead of using ParseField
+* **Fix** - Bug with marking the primary pair
 * **Update** - Greatly expanded the list of fields in `BORROWER_PAIR_FIELDS`
 * **Update** - Switched all the Lists for Sets in `FieldUtils` 
 * **Update** - Changed the timeout for POST operations from 20s to 45s in

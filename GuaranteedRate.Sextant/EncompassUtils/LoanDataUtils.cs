@@ -185,6 +185,18 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
                     borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
+
+                    if (pair.Borrower != null)
+                    {
+                        fieldDictionary.Add("Borrower.ID", pair.Borrower.ID);
+                    }
+                    if (pair.CoBorrower != null)
+                    {
+                        fieldDictionary.Add("CoBorrower.ID", pair.CoBorrower.ID);
+                    }
+
+                    //change the current borrower pair
+                    loan.BorrowerPairs.Current = pair;
                     string ssn = FormatSSN(ExtractSimpleField(loan, "65"));
                     if (ssn != null && ssn == primarySsn)
                     {
@@ -194,8 +206,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         fieldDictionary.Add("PrimaryPair", false);
                     }
-                    /////
-                    loan.BorrowerPairs.Current = pair;
                     //--New stuff
                     ExtractIntIndexFields(loan, FieldUtils.BorrowerEmployers(), loan.BorrowerEmployers.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.CoBorrowerEmployers(), loan.CoBorrowerEmployers.Count, fieldDictionary);
