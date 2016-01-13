@@ -250,30 +250,41 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     switch (fieldDescriptor.InstanceSpecifierType)
                     {
                         case MultiInstanceSpecifierType.Index:
-                            
-                            //TODO: The old way
-                            if (fieldDescriptor.FieldID.Substring(2, 2) == "00")
+                            /*
+                            if (fieldDescriptor.MaxLength == 0)
                             {
-                                string key = fieldDescriptor.FieldID.Substring(0, 2);
-                                if (INDEX_MULTI_SORTER.Keys.Contains(key))
-                                {
-                                    INDEX_MULTI_SORTER[key].Add(fieldDescriptor.FieldID);
+                                Console.WriteLine("HMMM");
+                            }
+                            */
+                            //if (fieldDescriptor.FieldID.Substring(fieldDescriptor.FieldID.Length-4, 2) == "00")
+                            string starts2 = fieldDescriptor.FieldID.Substring(0, 2);
+                            string starts3 = fieldDescriptor.FieldID.Substring(0, 3);
+                            /**
+                             * These 3 groups do not follow any known rules for extraction
+                             * have no descriptions, and seem to consist of dupe data.
+                             * 
+                             * Ignore them
+                             */
+                            if (starts2 != "LP" && starts3 != "FBE" && starts3 != "FCE")
+                            {
+                                //the < 30 is to skip DISCLOSEDGFE.Snapshot.NEWHUD.X100...
+                                if (fieldDescriptor.FieldID.Contains("00") && fieldDescriptor.FieldID.Length < 30)
+                                 {
+                                    string key = fieldDescriptor.FieldID.Substring(0, 2);
+                                    if (INDEX_MULTI_SORTER.Keys.Contains(key))
+                                    {
+                                        INDEX_MULTI_SORTER[key].Add(fieldDescriptor.FieldID);
+                                    }
+                                    else
+                                    {
+                                        UNKNOWN_KEYS.Add(key);
+                                        MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
+                                    }
                                 }
                                 else
                                 {
-                                    UNKNOWN_KEYS.Add(key);
-                                    MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
+                                    END_INDEXED.Add(fieldDescriptor.FieldID);
                                 }
-                            }
-                            else if (fieldDescriptor.FieldID.Contains("00"))
-                            {
-                                //FIXME: Not sure how to handle these fields
-                                // MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
-                                BAD_KEYS.Add(fieldDescriptor.FieldID);
-                            }
-                            else
-                            {
-                                END_INDEXED.Add(fieldDescriptor.FieldID);
                             }
                             break;
                         case MultiInstanceSpecifierType.Document:
@@ -299,7 +310,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                 }
             }
-            /*
+
             Console.WriteLine("UNKNOWN_KEYS\n------------");
             foreach (string key in UNKNOWN_KEYS)
             {
@@ -310,7 +321,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 Console.WriteLine(key);
             }
-            */
         }
 
         private void UnrollMultiFieldIds(string fieldId, ISet<string> keys)
