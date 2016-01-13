@@ -42,15 +42,29 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private readonly ISet<string> BORROWER_RESIDENCES_MULTI_KEYS;
         private readonly ISet<string> CO_BORROWER_RESIDENCES_MULTI_KEYS;
         private readonly ISet<string> LIABILITIES_MULTI_KEYS;
+        private readonly ISet<string> DEPOSITS_MULTI_KEYS;
         private readonly ISet<string> MORTGAGES_MULTI_KEYS;
+        private readonly ISet<string> VESTING_MULTI_KEYS;
 
         private const string BORROWER_EMPLOYERS_STARTS = "BE";
         private const string CO_BORROWER_EMPLOYERS_STARTS = "CE";
         private const string BORROWER_RESIDENCES_STARTS = "BR";
         private const string CO_BORROWER_RESIDENCES_STARTS = "CR";
-        private const string FD_LIABILITIES_STARTS = "FD";
+        private const string FD_DEPOSITS_STARTS = "FD";
         private const string FL_LIABILITIES_STARTS = "FL";
         private const string MORTGAGES_STARTS = "FM";
+        private const string VESTING_PARITIES_STARTS = "TR";
+
+        /**
+         * Need to find indexes for:
+         *  AR00xx  - Tax info
+         *  AB00xx  - Affilitaed Businesses
+         *  DD00xx  - Depository info
+         *  HC00xx  - Home counsoling info
+         *  IR00xx  - More tax info
+         *  SP00xx  - Settlement provider
+         *  TA00xx  - Trust transaction info
+         */
 
         private readonly IDictionary<string, ISet<string>> INDEX_MULTI_SORTER;
         private readonly ISet<string> UNKNOWN_KEYS;
@@ -132,16 +146,19 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             BORROWER_RESIDENCES_MULTI_KEYS = new HashSet<string>();
             CO_BORROWER_RESIDENCES_MULTI_KEYS = new HashSet<string>();
             LIABILITIES_MULTI_KEYS = new HashSet<string>();
+            DEPOSITS_MULTI_KEYS = new HashSet<string>();
             MORTGAGES_MULTI_KEYS = new HashSet<string>();
+            VESTING_MULTI_KEYS = new HashSet<string>();
 
             INDEX_MULTI_SORTER = new Dictionary<string, ISet<string>>();
             INDEX_MULTI_SORTER.Add(BORROWER_EMPLOYERS_STARTS, BORROWER_EMPLOYERS_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(CO_BORROWER_EMPLOYERS_STARTS, CO_BORROWER_EMPLOYERS_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(BORROWER_RESIDENCES_STARTS, BORROWER_RESIDENCES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(CO_BORROWER_RESIDENCES_STARTS, CO_BORROWER_RESIDENCES_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(FD_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(FD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(FL_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(MORTGAGES_STARTS, MORTGAGES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(VESTING_PARITIES_STARTS, VESTING_MULTI_KEYS);
 
             ROLE_MULTI_KEYS = GetRoleMultiKeys();
             MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
@@ -400,9 +417,19 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return Instance.LIABILITIES_MULTI_KEYS;
         }
 
+        public static ISet<string> DepostisMulti()
+        {
+            return Instance.DEPOSITS_MULTI_KEYS;
+        }
+
         public static ISet<string> MortgagesMulti()
         {
             return Instance.MORTGAGES_MULTI_KEYS;
+        }
+
+        public static ISet<string> VestingPartiesMulti()
+        {
+            return Instance.VESTING_MULTI_KEYS;
         }
 
         /**

@@ -1,6 +1,7 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
+using EllieMae.Encompass.Collections;
 using GuaranteedRate.Sextant.Loggers;
 using System;
 using System.Collections.Generic;
@@ -44,11 +45,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerResidences(), currentLoan.BorrowerResidences.Count, fieldValues);
             ExtractIntIndexFields(currentLoan, FieldUtils.CoBorrowerResidences(), currentLoan.CoBorrowerResidences.Count, fieldValues);
             ExtractIntIndexFields(currentLoan, FieldUtils.LiabilitiesMulti(), currentLoan.Liabilities.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.DepostisMulti(), currentLoan.Deposits.Count, fieldValues);
             ExtractIntIndexFields(currentLoan, FieldUtils.MortgagesMulti(), currentLoan.Mortgages.Count, fieldValues);
-
-            // -- used as indexes for known multifield indexes
-            int additionalVestingParties = currentLoan.AdditionalVestingParties.Count;
-            int deposits = currentLoan.Deposits.Count;
+            ExtractIntIndexFields(currentLoan, FieldUtils.VestingPartiesMulti(), currentLoan.AdditionalVestingParties.Count, fieldValues);
 
             //This is a subset of the borrower pair information, there does not seem to be an efficient method for
             //extracting all of this data programmatically.
@@ -181,9 +180,15 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             try
             {
                 string primarySsn = FormatSSN(ExtractSimpleField(loan, "65"));
-                foreach (BorrowerPair pair in loan.BorrowerPairs)
+                int pairCount = loan.BorrowerPairs.Count;
+
+                //using for loop instead of foreach in order to track the index
+                //and ordering of the pairs
+                for (int pairIndex = 0; pairIndex < pairCount; pairIndex++)
                 {
+                    BorrowerPair pair = loan.BorrowerPairs[pairIndex];
                     IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
+                    fieldDictionary.Add("BorrowerPairId", pairIndex);
                     borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
 
                     if (pair.Borrower != null)
@@ -382,6 +387,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 foreach (string fieldId in fieldIds)
                 {
+                    Console.WriteLine(fieldId);
                     int index = 0;
                     try
                     {
