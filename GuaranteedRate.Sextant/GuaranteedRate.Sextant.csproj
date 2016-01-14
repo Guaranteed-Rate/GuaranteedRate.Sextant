@@ -136,6 +136,7 @@
     <Compile Include="EncompassUtils\LoanDataUtils.cs" />
     <Compile Include="EncompassUtils\Reporting.cs" />
     <Compile Include="EncompassUtils\SessionUtils.cs" />
+    <Compile Include="EncompassUtils\UserUtils.cs" />
     <Compile Include="Loggers\Loggly.cs" />
     <Compile Include="Metrics\DatadogReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
