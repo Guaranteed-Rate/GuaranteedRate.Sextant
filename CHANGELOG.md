@@ -12,6 +12,8 @@ instead of using ParseField
 * **Update** - Changed the timeout for POST operations from 20s to 45s in
 `AsyncEventReporter` to handle increased insertion time
 * **Update** - Added retries to `AsyncEventReporter` to increase relability
+* **Fix** -`Loggly` class would fill the message queue with errors if no url
+was configured.  Now logging disabled if no url configued.
 
 ## v1.7.1 / 2015 Nov 19
 

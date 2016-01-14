@@ -33,6 +33,8 @@ namespace GuaranteedRate.Sextant.Loggers
         private static int QUEUE_SIZE = DEFAULT_QUEUE_SIZE;
         private static string POST_URL;
 
+        private static bool active = false;
+
         /**
          * Tags must be added BEFORE anything is logged.
          * Once the first event is logged, the tags are locked
@@ -49,6 +51,7 @@ namespace GuaranteedRate.Sextant.Loggers
         public static void SetPostUrl(string url)
         {
             Loggly.POST_URL = url;
+            Loggly.active = !String.IsNullOrWhiteSpace(url);
         }
 
         /**
@@ -155,11 +158,14 @@ namespace GuaranteedRate.Sextant.Loggers
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
-            PopulateEvent(fields, loggerName, level);
-            //Having Indented formatting makes the data format better in the Loggly
-            //Search screen
-            string json = JsonConvert.SerializeObject(fields, Formatting.Indented);
-            Instance.ReportEvent(json);
+            if (active)
+            {
+                PopulateEvent(fields, loggerName, level);
+                //Having Indented formatting makes the data format better in the Loggly
+                //Search screen
+                string json = JsonConvert.SerializeObject(fields, Formatting.Indented);
+                Instance.ReportEvent(json);
+            }
         }
 
         private static void PopulateEvent(IDictionary<string, string> fields, string loggerName, string level)

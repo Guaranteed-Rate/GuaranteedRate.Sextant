@@ -387,7 +387,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 foreach (string fieldId in fieldIds)
                 {
-                    Console.WriteLine(fieldId);
                     int index = 0;
                     try
                     {
