@@ -1,3 +1,9 @@
+## v1.7.2 / 2016 Jan 15
+
+> Add extention class to extend the session object for simplified manipulation of the server's registered users
+
+* **Add** - `UserUtils.cs`
+
 ## v1.7.1 / 2015 Nov 19
 
 > Add Function to get list of reportable virtual fields
