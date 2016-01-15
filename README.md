@@ -124,3 +124,8 @@ Queries Encompass for loans last modified between a start and end date (half ope
 
 This is a simple test harness for the Datadog and Loggly posters.
 Because this test sends data to Datadog and Loggly it is not written as a unit test.
+
+## UserUtils
+
+Simple example program for usin 'UserUtils.cs'.
+Creates a session and prints all users, all "active" users (enabled and unlocked accounts), and all users associated within the standard "My Pipeline" working folder.
