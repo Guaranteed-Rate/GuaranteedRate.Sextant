@@ -19,14 +19,24 @@ namespace GuaranteedRate.Examples.UserUtils
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter encompass server url.");
-            myUrl = Console.ReadLine();
+            if (args != null && args.Length == 3)
+            {
+                myUrl = args[0];
+                myLogin = args[1];
+                myPassword = args[2];
+            }
 
-            Console.WriteLine("Enter login.");
-            myLogin = Console.ReadLine();
+            else
+            {
+                Console.WriteLine("Enter encompass server url.");
+                myUrl = Console.ReadLine();
 
-            Console.WriteLine("Enter password.");
-            myPassword = Console.ReadLine();
+                Console.WriteLine("Enter login.");
+                myLogin = Console.ReadLine();
+
+                Console.WriteLine("Enter password.");
+                myPassword = Console.ReadLine();
+            }
 
             Session mySession = SessionUtils.GetEncompassSession(myUrl, myLogin, myPassword);
 
@@ -35,55 +45,73 @@ namespace GuaranteedRate.Examples.UserUtils
                 Console.WriteLine("Session " + mySession.ID + " created on server " + mySession.ServerURI);
 
                 // Display all users on this session's server
-                List<User> allUsersOnThisServer = mySession.GetAllUsers();
-
-                Console.WriteLine("All Users: " + allUsersOnThisServer.Count);
-                Console.WriteLine("Press enter to print users.");
-                Console.ReadLine();
-
-                foreach (User user in allUsersOnThisServer)
-                {
-                    Console.WriteLine(user.FirstName + " " + user.LastName + ": " + user.ID);
-                }
-
-                Console.WriteLine();
-                Console.ReadLine();
+                PrintAllUsers(mySession);
 
                 // Display all active users on this session's server
-                List<User> allActiveUsersOnThisServer = mySession.GetAllActiveUsers();
-
-                Console.WriteLine("All Active Users: " + allActiveUsersOnThisServer.Count);
-                Console.WriteLine("Press enter to print users.");
-                Console.ReadLine();
-
-                foreach (User user in allActiveUsersOnThisServer)
-                {
-                    Console.WriteLine(user.FirstName + " " + user.LastName + ": " + user.ID);
-                }
-
-                Console.WriteLine();
-                Console.ReadLine();
+                PrintAllActiveUsers(mySession);
 
                 // Display all users in a specific work folder on this session's server
-                List<User> allUsersOnThisServerInSpecificWorkFolder = mySession.GetAllUsersInWorkFolder("My Pipeline");
+                PrintAllUsersInMyPipelineWorkingFolder(mySession);
 
-                Console.WriteLine("All Users in My Pipeline folder: " + allUsersOnThisServerInSpecificWorkFolder.Count);
-                Console.WriteLine("Press enter to print users.");
-                Console.ReadLine();
+                // Print all active users as json
+                PrintAllActiveUsersAsJson(mySession);
 
-                foreach (User user in allUsersOnThisServerInSpecificWorkFolder)
-                {
-                    Console.WriteLine(user.FirstName + " " + user.LastName + ": " + user.ID);
-                }
-
-                Console.WriteLine();
-                Console.ReadLine();
+                Console.WriteLine("press any key to continue");
+                Console.ReadKey();
             }
 
             finally
             {
                 mySession.End();
             }
+        }
+
+        private static void PrintAllActiveUsersAsJson(Session mySession)
+        {
+            ICollection<User> users = mySession.GetAllActiveUsers();
+            PrintUserList(users.ToJson(), "All active users as JSON", users.Count);
+        }
+
+        private static void PrintAllUsersInMyPipelineWorkingFolder(Session mySession)
+        {
+            PrintUserList(mySession.GetAllUsersInWorkFolder("My Pipeline"), "All users in \"My Pipeline\"");
+        }
+
+        private static void PrintAllActiveUsers(Session mySession)
+        {
+            PrintUserList(mySession.GetAllActiveUsers(), "All active users");
+        }
+
+        private static void PrintAllUsers(Session mySession)
+        {
+            PrintUserList(mySession.GetAllUsers(), "All users");
+        }
+
+        private static void PrintUserList(ICollection<User> users, string title)
+        {
+            Console.WriteLine(title + ": " + users.Count);
+            Console.WriteLine("Press enter to print users.");
+            Console.ReadLine();
+
+            foreach (User user in users)
+            {
+                Console.WriteLine(user.FirstName + " " + user.LastName + ": " + user.ID);
+            }
+
+            Console.WriteLine();
+            Console.ReadLine();
+        }
+
+        private static void PrintUserList(string usersJson, string title, int count)
+        {
+            Console.WriteLine(title + ": " + count + " as Json");
+            Console.WriteLine("Press enter to print users.");
+            Console.ReadLine();
+
+            Console.WriteLine(usersJson);
+
+            Console.WriteLine();
+            Console.ReadLine();
         }
     }
 }

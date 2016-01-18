@@ -1,5 +1,7 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Users;
 using EllieMae.Encompass.Client;
+using GuaranteedRate.Sextant.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 {
     public static class UserUtils
     {
-        public static List<User> GetAllUsers(this Session session)
+        public static ICollection<User> GetAllUsers(this Session session)
         {
-            List<User> users = new List<User>();
+            ICollection<User> users = new List<User>();
 
-            foreach( User user in session.Users.GetAllUsers())
+            foreach (User user in session.Users.GetAllUsers())
             {
                 users.Add(user);
             }
@@ -22,21 +24,21 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return users;
         }
 
-        public static List<User> GetAllActiveUsers(this Session session)
+        public static ICollection<User> GetAllActiveUsers(this Session session)
         {
             return GetAllUsers(session).Where(x => x.Enabled && !x.AccountLocked).ToList();
         }
 
-        public static List<User> GetAllUsersInWorkFolder(this Session session, string workFolder)
+        public static ICollection<User> GetAllUsersInWorkFolder(this Session session, string workFolder)
         {
-            return GetAllUsers(session).Where(x => x.WorkingFolder.ToUpper().Replace(" ","") == workFolder.ToUpper().Replace(" ","")).ToList();
+            return GetAllUsers(session).Where(x => x.WorkingFolder.ToUpper().Replace(" ", "") == workFolder.ToUpper().Replace(" ", "")).ToList();
         }
 
-        public static bool TryForceCompanyWidePasswordChange(this Session session, List<string> exceptionUserIds, out string exception)
+        public static bool TryForceCompanyWidePasswordChange(this Session session, ICollection<string> exceptionUserIds, out string exception)
         {
             try
             {
-                List<User> targetUsers = GetAllActiveUsers(session).Where(x => !exceptionUserIds.Contains(x.ID)).ToList();
+                ICollection<User> targetUsers = GetAllActiveUsers(session).Where(x => !exceptionUserIds.Contains(x.ID)).ToList();
                 foreach (User user in targetUsers)
                 {
                     user.RequirePasswordChange = true;
@@ -47,13 +49,29 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 return true;
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 exception = ex.ToString();
                 return false;
             }
         }
 
+        public static string ToJson(this ICollection<User> users)
+        {
+            ICollection<EncompassUser> myUsers = new List<EncompassUser>();
+            foreach(User u in users)
+            {
+                myUsers.Add(new EncompassUser(u));
+            }
 
+            string json = JsonConvert.SerializeObject(myUsers);
+            return json;
+        }
+
+        public static string ToJson(this User user)
+        {
+            string json = JsonConvert.SerializeObject(new EncompassUser(user));
+            return json;
+        }
     }
 }

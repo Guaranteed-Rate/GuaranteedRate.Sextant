@@ -1,4 +1,4 @@
-## v1.7.2 / 2016 Jan 15
+## v1.8.0 / 2016 Jan 15
 
 > Add extention class to extend the session object for simplified manipulation of the server's registered users
 
