@@ -65,17 +65,13 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * Need to find indexes for:
          *  AR00xx  - Tax info
          *  AB00xx  - Affilitaed Businesses
-         *  DD00xx  - Depository info
          *  HC00xx  - Home counsoling info
-         *  IR00xx  - More tax info
          *  SP00xx  - Settlement provider
          *  TA00xx  - Trust transaction info
          */
-
         private readonly IDictionary<string, ISet<string>> INDEX_MULTI_SORTER;
         private readonly IDictionary<string, ISet<string>> INDEX_MULTI_SORTER_END;
         private readonly ISet<string> UNKNOWN_KEYS;
-        private readonly ISet<string> BAD_KEYS;
 
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
@@ -87,29 +83,25 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * Have not found a good way to know which fields are affected by the active borrower-pair.
          */
         public static readonly ISet<string> BORROWER_PAIR_FIELDS =
-            new HashSet<string> { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", 
-                               "36","37","38","39","52","53","54","60","65", "66", "67","68","69","70","71","97","98","100",
-                               "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", 
-                               "115", "116", "117", "118", "119", "120", "121", "122", "123", "124", "125", "126", 
+            new HashSet<string> { 
+                               "36", "37", "38", "39", "52", "53", "54", "60", "65", "66", "67", "68", "69", "70", "71", "97", "98", 
+                               "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", 
+                               "114", "115", "116", "117", "118", "119", "120", "121", "122", "123", "124", "125", "126", 
                                "144", "145", "146", "147", "148", "149", "150", "151", "152", "153", "154", "155", "156", "157", 
                                "168", "169", "170", "171", "172", "173", "174", "175", "176", "177", "178", "179", "180", "181",
-                               "182", "183", "186", "188", "189", "191",
-                               "265", "266", "267", "268", "271", "272", "273",
+                               "182", "183", "186", "188", "189", "191", "265", "266", "267", "268", "271", "272", "273",
                                "403", "418", "461", "463", "464", "466", "467", "470", "471", "477", "478",
-                               "687", "900", "901", "902", "903", "904", "905", "906", "907", "908", "909", "910","911","912",
-                               "915","919",
-                               "920", "921", "922", "923", "924",
-                               "933", "934", "936", "938", "940", "941", "942", "943" , "981", "985", "1015", "1057", "1058",
-                               "1062", "1069", "1070", "1087", "1088", "1089", "1108",
-                               "1136", "1144", "1145", "1146","1156", "1158", "1159", "168", "1169", "1170", "1171", 
-                               "1178", "1179", "1188", "1197", "1240", "1241", "1268", "1300",
-                               "1402", "1403",
-                               "1306", "1307", "1308", "1309", "1310", "1311", "1312", "1313", "1314", "1315", "1316", "1317", "1318", 
-                               "1319", "1320", "1321", "1323", "1325", "1343", "1389", "1414", "1415", "1416", "1417", "1418", "1419", 
+                               "687", "900", "901", "902", "903", "904", "905", "906", "907", "908", "909", "910", "911", "912",
+                               "915", "919", "920", "921", "922", "923", "924", "933", "934", "936", "938", "940", "941", "942", 
+                               "943" , "981", "985", "1015", "1057", "1058", "1062", "1069", "1070", "1087", "1088", "1089", "1108",
+                               "1136", "1144", "1145", "1146", "1156", "1158", "1159", "168", "1169", "1170", "1171", 
+                               "1178", "1179", "1188", "1197", "1240", "1241", "1268", "1300", "1306", "1307", "1308", "1309", "1310",
+                               "1311", "1312", "1313", "1314", "1315", "1316", "1317", "1318", "1319", "1320", "1321", "1323", "1325",
+                               "1343", "1389", "1402", "1403", "1414", "1415", "1416", "1417", "1418", "1419", 
                                "1450", "1452", "1480", "1484", "1490", "1502", "1519", "1520", "1521", "1522", "1523", "1524", "1525", 
                                "1526", "1527", "1528", "1529", "1530", "1531", "1532", "1533", "1534", "1535", "1536", "1537", "1538", 
-                               "1758", "1759",
-                               "1815", "1816", "1817", "1818", "1819", "1820", "1868", "1873", "2849", "2850", 
+                               "1758", "1759", "1815", "1816", "1817", "1818", "1819", "1820", "1868", "1873", "2849", "2850", 
+                               "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", 
                                "FE0102", "FE0103", "FE0104", "FE0105", "FE0106", "FE0107", "FE0109", "FE0110", "FE0113", "FE0115", 
                                "FE0116", "FE0117", "FE0133", "FE0198", "FE0199", "FE0202", "FE0203", "FE0204", "FE0205", "FE0206", 
                                "FE0207", "FE0209", "FE0210", "FE0213", "FE0215", "FE0216", "FE0217", "FE0233", "FE0298", "FE0299",
@@ -117,6 +109,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                "FR0206", "FR0207", "FR0208", "FR0212", "FR0215", "FR0224", "FR0298", "FR0299", "FR0304", "FR0306", 
                                "FR0307", "FR0308", "FR0312", "FR0315", "FR0324", "FR0398", "FR0399", "FR0404", "FR0406", "FR0407", 
                                "FR0408", "FR0412", "FR0415", "FR0424", "FR0498", "FR0499" };
+
+
 
 
         public static void AddFieldCollection(FieldDescriptors fieldDescriptors) 
@@ -178,7 +172,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
 
             UNKNOWN_KEYS = new HashSet<string>();
-            BAD_KEYS = new HashSet<string>();
 
             GetAllFieldIds();
         }
@@ -282,7 +275,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     switch (fieldDescriptor.InstanceSpecifierType)
                     {
                         case MultiInstanceSpecifierType.Index:
-                            bool matched = false;
                             string starts2 = fieldDescriptor.FieldID.Substring(0, 2);
                             string starts3 = fieldDescriptor.FieldID.Substring(0, 3);
                             /**
@@ -306,10 +298,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                         UNKNOWN_KEYS.Add(key);
                                         MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
                                     }
-                                    matched = true;
                                 }
                                 else
                                 {
+                                    bool matched = false;
                                     foreach (string key in INDEX_MULTI_SORTER_END.Keys)
                                     {
                                         if (fieldDescriptor.FieldID.StartsWith(key))
@@ -350,16 +342,13 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
             }
 
+            /*
             Console.WriteLine("UNKNOWN_KEYS\n------------");
             foreach (string key in UNKNOWN_KEYS)
             {
                 Console.WriteLine(key);
             }
-            Console.WriteLine("BAD_KEYS\n------------");
-            foreach (string key in BAD_KEYS)
-            {
-                Console.WriteLine(key);
-            }
+            */
         }
 
         private void UnrollMultiFieldIds(string fieldId, ISet<string> keys)

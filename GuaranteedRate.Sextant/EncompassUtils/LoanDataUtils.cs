@@ -29,17 +29,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             IDictionary<string, object> fieldValues = new Dictionary<string, object>();
             
             ExtractSimpleFields(currentLoan, FieldUtils.SimpleFieldNames(), fieldValues);
-            //////////
             ExtractMiddleIndexFields(currentLoan, FieldUtils.MiddleIndexMulti(), fieldValues);
             ExtractEndIndexFields(currentLoan, FieldUtils.EndIndexMulti(), fieldValues);
-
-            //////////////
+            
             ExtractStringIndexFields(currentLoan, FieldUtils.DocumentMulti(), GetDocumentIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.PostClosingMulti(), GetPostClosingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.UnderwritingMulti(), GetUnderwritingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.MilestoneTaskMulti(), GetMilestoneTaskIndexes(currentLoan), fieldValues);
 
-            //--New stuff
             ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerEmployers(), currentLoan.BorrowerEmployers.Count, fieldValues);
             ExtractIntIndexFields(currentLoan, FieldUtils.CoBorrowerEmployers(), currentLoan.CoBorrowerEmployers.Count, fieldValues);
             ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerResidences(), currentLoan.BorrowerResidences.Count, fieldValues);
@@ -472,7 +469,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
+                        //System.Diagnostics.Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
                         Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
                     }
                 }
