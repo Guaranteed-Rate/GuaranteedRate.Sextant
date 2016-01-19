@@ -14,6 +14,8 @@ instead of using ParseField
 * **Update** - Added retries to `AsyncEventReporter` to increase relability
 * **Fix** -`Loggly` class would fill the message queue with errors if no url
 was configured.  Now logging disabled if no url configued.
+* **Add** `GuaranteedRate.Util.IndexFields` project to hammer out the last of 
+the index fields without boundaries.
 
 ## v1.8.0 / 2016 Jan 15
 

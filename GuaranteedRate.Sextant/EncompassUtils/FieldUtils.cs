@@ -51,6 +51,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private const string BORROWER_RESIDENCES_STARTS = "BR";
         private const string CO_BORROWER_RESIDENCES_STARTS = "CR";
         private const string FD_DEPOSITS_STARTS = "FD";
+        private const string DD_DEPOSITS_STARTS = "DD";
         private const string FL_LIABILITIES_STARTS = "FL";
         private const string MORTGAGES_STARTS = "FM";
         private const string VESTING_PARITIES_STARTS = "TR";
@@ -156,6 +157,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             INDEX_MULTI_SORTER.Add(BORROWER_RESIDENCES_STARTS, BORROWER_RESIDENCES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(CO_BORROWER_RESIDENCES_STARTS, CO_BORROWER_RESIDENCES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(FD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(DD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(FL_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(MORTGAGES_STARTS, MORTGAGES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(VESTING_PARITIES_STARTS, VESTING_MULTI_KEYS);

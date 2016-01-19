@@ -130,6 +130,13 @@ Because this test sends data to Datadog and Loggly it is not written as a unit t
 Simple example program for usin 'UserUtils.cs'.
 Creates a session and prints all users, all "active" users (enabled and unlocked accounts), and all users associated within the standard "My Pipeline" working folder.
 
+## Util.IndexFields
+
+This is a util project to help find the boundary index for MultiValue fields that use an index.
+Knowing the boundary index for multivalue fields allows faster and safer itteration.
+
+It will show you MultiValue Index fields without known boundaries, as well as the values of the known indexes.
+
 # Developer Notes
 
 ## Fields controlled by dropdowns - default is often null

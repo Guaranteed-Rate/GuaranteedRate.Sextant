@@ -59,6 +59,21 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldValues;
         }
 
+        public static IDictionary<string, int> IndexKeySizes(Loan loan)
+        {
+            IDictionary<string, int> indexKeySizes = new Dictionary<string, int>();
+            indexKeySizes.Add("BorrowerEmployers", loan.BorrowerEmployers.Count);
+            indexKeySizes.Add("CoBorrowerEmployers", loan.CoBorrowerEmployers.Count);
+            indexKeySizes.Add("BorrowerResidences", loan.BorrowerResidences.Count);
+            indexKeySizes.Add("CoBorrowerResidences", loan.CoBorrowerResidences.Count);
+            indexKeySizes.Add("Liabilities", loan.Liabilities.Count);
+            indexKeySizes.Add("Deposits", loan.Deposits.Count);
+            indexKeySizes.Add("Mortgages", loan.Mortgages.Count);
+            indexKeySizes.Add("AdditionalVestingParties", loan.AdditionalVestingParties.Count);
+
+            return indexKeySizes;
+        }
+
         public static IDictionary<string, object> ExtractEverything(Loan loan)
         {
             IDictionary<string, object> loanData = new Dictionary<string, object>();
@@ -454,7 +469,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        //Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
+                        System.Diagnostics.Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
                         Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
                     }
                 }
