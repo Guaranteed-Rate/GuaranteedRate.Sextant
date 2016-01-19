@@ -46,6 +46,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private readonly ISet<string> MORTGAGES_MULTI_KEYS;
         private readonly ISet<string> VESTING_MULTI_KEYS;
 
+        private readonly ISet<string> DISCLOSURES_MULTI_KEYS;
+
         private const string BORROWER_EMPLOYERS_STARTS = "BE";
         private const string CO_BORROWER_EMPLOYERS_STARTS = "CE";
         private const string BORROWER_RESIDENCES_STARTS = "BR";
@@ -53,8 +55,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private const string FD_DEPOSITS_STARTS = "FD";
         private const string DD_DEPOSITS_STARTS = "DD";
         private const string FL_LIABILITIES_STARTS = "FL";
+        private const string IRS_MORTGAGE_INFO_STARTS = "IR";
         private const string MORTGAGES_STARTS = "FM";
         private const string VESTING_PARITIES_STARTS = "TR";
+
+        private const string DISCLOSURES_STARTS = "DISCLOSED";
 
         /**
          * Need to find indexes for:
@@ -68,6 +73,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          */
 
         private readonly IDictionary<string, ISet<string>> INDEX_MULTI_SORTER;
+        private readonly IDictionary<string, ISet<string>> INDEX_MULTI_SORTER_END;
         private readonly ISet<string> UNKNOWN_KEYS;
         private readonly ISet<string> BAD_KEYS;
 
@@ -160,7 +166,13 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             INDEX_MULTI_SORTER.Add(DD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(FL_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(MORTGAGES_STARTS, MORTGAGES_MULTI_KEYS);
+            INDEX_MULTI_SORTER.Add(IRS_MORTGAGE_INFO_STARTS, MORTGAGES_MULTI_KEYS);
             INDEX_MULTI_SORTER.Add(VESTING_PARITIES_STARTS, VESTING_MULTI_KEYS);
+
+            DISCLOSURES_MULTI_KEYS = new HashSet<string>();
+
+            INDEX_MULTI_SORTER_END = new Dictionary<string, ISet<string>>();
+            INDEX_MULTI_SORTER_END.Add(DISCLOSURES_STARTS, DISCLOSURES_MULTI_KEYS);
 
             ROLE_MULTI_KEYS = GetRoleMultiKeys();
             MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
@@ -270,13 +282,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     switch (fieldDescriptor.InstanceSpecifierType)
                     {
                         case MultiInstanceSpecifierType.Index:
-                            /*
-                            if (fieldDescriptor.MaxLength == 0)
-                            {
-                                Console.WriteLine("HMMM");
-                            }
-                            */
-                            //if (fieldDescriptor.FieldID.Substring(fieldDescriptor.FieldID.Length-4, 2) == "00")
+                            bool matched = false;
                             string starts2 = fieldDescriptor.FieldID.Substring(0, 2);
                             string starts3 = fieldDescriptor.FieldID.Substring(0, 3);
                             /**
@@ -289,7 +295,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             {
                                 //the < 30 is to skip DISCLOSEDGFE.Snapshot.NEWHUD.X100...
                                 if (fieldDescriptor.FieldID.Contains("00") && fieldDescriptor.FieldID.Length < 30)
-                                 {
+                                {
                                     string key = fieldDescriptor.FieldID.Substring(0, 2);
                                     if (INDEX_MULTI_SORTER.Keys.Contains(key))
                                     {
@@ -300,10 +306,23 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                         UNKNOWN_KEYS.Add(key);
                                         MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
                                     }
+                                    matched = true;
                                 }
                                 else
                                 {
-                                    END_INDEXED.Add(fieldDescriptor.FieldID);
+                                    foreach (string key in INDEX_MULTI_SORTER_END.Keys)
+                                    {
+                                        if (fieldDescriptor.FieldID.StartsWith(key))
+                                        {
+                                            INDEX_MULTI_SORTER_END[key].Add(fieldDescriptor.FieldID);
+                                            matched = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!matched)
+                                    {
+                                        END_INDEXED.Add(fieldDescriptor.FieldID);
+                                    }
                                 }
                             }
                             break;
@@ -432,6 +451,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static ISet<string> VestingPartiesMulti()
         {
             return Instance.VESTING_MULTI_KEYS;
+        }
+
+        public static ISet<string> DisclosureMulti()
+        {
+            return Instance.DISCLOSURES_MULTI_KEYS;
         }
 
         /**

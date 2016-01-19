@@ -1,4 +1,5 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
+using EllieMae.Encompass.BusinessObjects.Loans.Servicing;
 using EllieMae.Encompass.Client;
 using GuaranteedRate.Sextant.EncompassUtils;
 using System;
@@ -48,6 +49,7 @@ namespace GuaranteedRate.Util.IndexFields
 
             Loan loan = SessionUtils.OpenLoan(session, guid);
 
+
             ISet<string> unknownMiddle = FieldUtils.MiddleIndexMulti();
             ISet<string> unknownEnd = FieldUtils.EndIndexMulti();
 
@@ -58,10 +60,50 @@ namespace GuaranteedRate.Util.IndexFields
                 Console.WriteLine(key + " == " + indexKeySizes[key]);
             }
 
+            //Things that maybe are index values
+            /*
+            Console.WriteLine("Disclosures2015 == " + loan.Log.Disclosures2015.Count);
+            Console.WriteLine("DocumentOrders == " + loan.Log.DocumentOrders.Count);
+            Console.WriteLine("EDMTransactions == " + loan.Log.EDMTransactions.Count);
+            Console.WriteLine("HtmlEmailMessages == " + loan.Log.HtmlEmailMessages.Count);
+            Console.WriteLine("InvestorRegistrations == " + loan.Log.InvestorRegistrations.Count);
+            Console.WriteLine("LockCancellationRequests == " + loan.Log.LockCancellationRequests.Count);
+            Console.WriteLine("LockCancellations == " + loan.Log.LockCancellations.Count);
+            Console.WriteLine("LockConfirmations == " + loan.Log.LockConfirmations.Count);
+            Console.WriteLine("LockDenials == " + loan.Log.LockDenials.Count);
+            Console.WriteLine("LockRequests == " + loan.Log.LockRequests.Count);
+            Console.WriteLine("MilestoneEvents == " + loan.Log.MilestoneEvents.Count);
+            Console.WriteLine("MilestoneTasks == " + loan.Log.MilestoneTasks.Count);
+            Console.WriteLine("PostClosingConditions == " + loan.Log.PostClosingConditions.Count);
+            Console.WriteLine("PreliminaryConditions == " + loan.Log.PreliminaryConditions.Count);
+            Console.WriteLine("PrintEvents == " + loan.Log.PrintEvents.Count);
+            Console.WriteLine("ReceivedDownloads == " + loan.Log.ReceivedDownloads.Count);
+            Console.WriteLine("StatusOnlineUpdates == " + loan.Log.StatusOnlineUpdates.Count);
+            Console.WriteLine("TrackedDocuments == " + loan.Log.TrackedDocuments.Count);
+            Console.WriteLine("UnderwritingConditions == " + loan.Log.UnderwritingConditions.Count);
+
+            Console.WriteLine("Servicing.IsStarted() == " + loan.Servicing.IsStarted());
+            PaymentSchedule schedule = loan.Servicing.GetPaymentSchedule();
+
+            foreach (ScheduledPayment payment in schedule.Payments)
+                Console.WriteLine(payment.DueDate + ": P = " + payment.Principal + ", I = " + payment.Interest);
+            */
+
+
+            //Console.WriteLine("Transactions.GetEnumerator().Current == " + loan.Servicing.Transactions.GetEnumerator().Current);
+            //Console.WriteLine("Servicing.IsStarted() == " + loan.Servicing.GetPaymentSchedule().Payments[0].);
+
             //For each element, itterate and print their values...
+            /*
             foreach (string field in unknownMiddle.OrderBy(x => x.ToString()))
             {
-                FindBoundaries(loan, field);
+                FindBoundariesMiddle(loan, field);
+            }
+            */
+
+            foreach (string field in unknownEnd.OrderBy(x => x.ToString()))
+            {
+                FindBoundariesEnd(loan, field);
             }
 
             if (loan != null)
@@ -70,7 +112,7 @@ namespace GuaranteedRate.Util.IndexFields
             }
         }
 
-        private void FindBoundaries(Loan loan, string field)
+        private void FindBoundariesMiddle(Loan loan, string field)
         {
             ISet<string> fieldIds = new HashSet<string>();
             fieldIds.Add(field);
@@ -84,5 +126,21 @@ namespace GuaranteedRate.Util.IndexFields
             }
             Console.WriteLine(field + " == [values = " + results.Count + " ][uniques = " + uniques.Count + "]");
         }
+
+        private void FindBoundariesEnd(Loan loan, string field)
+        {
+            ISet<string> fieldIds = new HashSet<string>();
+            fieldIds.Add(field);
+            IDictionary<string, object> results = new Dictionary<string, object>();
+
+            LoanDataUtils.ExtractEndIndexFields(loan, fieldIds, results);
+            ISet<string> uniques = new HashSet<string>();
+            foreach (string key in results.Keys)
+            {
+                uniques.Add((string)results[key]);
+            }
+            Console.WriteLine(field + " == [values = " + results.Count + " ][uniques = " + uniques.Count + "]");
+        }
+
     }
 }

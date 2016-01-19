@@ -54,6 +54,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             fieldValues.Add("borrower-pairs", ExtractBorrowerPairs(currentLoan));
             fieldValues.Add("Associates", ExtractAssociates(currentLoan));
 
+            ExtractEndIndexFields(currentLoan, FieldUtils.DisclosureMulti(), fieldValues, currentLoan.Log.Disclosures.Count);
+
             ExtractProperties(currentLoan, fieldValues);
 
             return fieldValues;
@@ -70,6 +72,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             indexKeySizes.Add("Deposits", loan.Deposits.Count);
             indexKeySizes.Add("Mortgages", loan.Mortgages.Count);
             indexKeySizes.Add("AdditionalVestingParties", loan.AdditionalVestingParties.Count);
+            indexKeySizes.Add("Disclosures", loan.Log.Disclosures.Count);
 
             return indexKeySizes;
         }
@@ -396,7 +399,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDictionary;
         }
 
-        public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary, int maxIndex = MULTI_MAX)
         {
             try
             {
@@ -405,7 +408,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     int index = 0;
                     try
                     {
-                        for (index = 1; index < MULTI_MAX; index++)
+                        for (index = 1; index < maxIndex; index++)
                         {
                             string fieldIdIndex = fieldId + "." + IntPad(index);
                             object fieldObject = currentLoan.Fields[fieldIdIndex].Value;
