@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant", "GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj", "{6388E4A7-456A-4363-9AC4-936F742CA63F}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Examples.LoanDataUtils", "GuaranteedRate.Examples.LoanDataUtils\GuaranteedRate.Examples.LoanDataUtils.csproj", "{08D22672-6FE5-44DE-B2B0-8928ACFF0091}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Examples.ReportingUtils", "GuaranteedRate.Examples.ReportingUtils\GuaranteedRate.Examples.ReportingUtils.csproj", "{9C5B655D-02A2-46BE-99C6-3BFEF6C6D4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Examples.UserUtils", "GuaranteedRate.Examples.UserUtils\GuaranteedRate.Examples.UserUtils.csproj", "{47DD2EC4-99F6-40CD-BDB7-15D15B72F124}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{9C5B655D-02A2-46BE-99C6-3BFEF6C6D4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C5B655D-02A2-46BE-99C6-3BFEF6C6D4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C5B655D-02A2-46BE-99C6-3BFEF6C6D4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47DD2EC4-99F6-40CD-BDB7-15D15B72F124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47DD2EC4-99F6-40CD-BDB7-15D15B72F124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47DD2EC4-99F6-40CD-BDB7-15D15B72F124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47DD2EC4-99F6-40CD-BDB7-15D15B72F124}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-## v1.8.0 / 2016 Jan 11
+## v1.9.0 / 2016 Jan 11
 
 > This release updates the `FieldUtils` and `LoanDetails` to itterate over the
 > correct index for index based multi-fields.  It also updates the 
@@ -14,6 +14,13 @@ instead of using ParseField
 * **Update** - Added retries to `AsyncEventReporter` to increase relability
 * **Fix** -`Loggly` class would fill the message queue with errors if no url
 was configured.  Now logging disabled if no url configued.
+
+## v1.8.0 / 2016 Jan 15
+
+> Add extention class to extend the session object for simplified manipulation of the server's registered users
+
+* **Add** - `UserUtils.cs`
+* **Add** - 'GuaranteedRate.Examples.UserUtils' for `UserUtils.cs`
 
 ## v1.7.1 / 2015 Nov 19
 

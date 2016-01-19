@@ -12,6 +12,7 @@ The primary goal is to extend plugin functionality in a few key areas:
 * EncompassUtils.FieldUtils - This class dynamically loads and classifies all fieldIds on the Encompass server.
 * EncompassUtils.LoanDataUtils - This class has methods for extracting all Loan Fields into a Dictionary.
 * EncompassUtils.Reporting - This class has methods for common reports.
+* EncompassUtils.User - This class extends the Encompass session object to easily read and write to user collections.
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
 
@@ -123,6 +124,11 @@ Queries Encompass for loans last modified between a start and end date (half ope
 
 This is a simple test harness for the Datadog and Loggly posters.
 Because this test sends data to Datadog and Loggly it is not written as a unit test.
+
+## UserUtils
+
+Simple example program for usin 'UserUtils.cs'.
+Creates a session and prints all users, all "active" users (enabled and unlocked accounts), and all users associated within the standard "My Pipeline" working folder.
 
 # Developer Notes
 
