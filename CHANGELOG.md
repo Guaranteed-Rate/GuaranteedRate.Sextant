@@ -1,3 +1,10 @@
+## v1.9.1 / 2016 Jan 11
+
+> Minor bugfix bump - missed logging if a POST from the `AsyncEventReporter` 
+> failed
+
+* **Fix** - Logging in `AsyncEventReporter`
+
 ## v1.9.0 / 2016 Jan 11
 
 > This release updates the `FieldUtils` and `LoanDetails` to itterate over the

@@ -76,6 +76,10 @@ namespace GuaranteedRate.Sextant.WebClients
                             }
                             tries++;
                         }
+                        if (!success)
+                        {
+                            Loggly.Error(this.GetType().Name.ToString(), "Post failed after " + tries + " tries");
+                        }
                     }
                 }
             });
