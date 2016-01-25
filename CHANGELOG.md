@@ -1,3 +1,15 @@
+## v1.10.0 / 2016 Jan 25
+
+> This release corrects the shutdown mechanics of `AsyncEventReporter` so that
+> callers are able to shutdown without losing data that is on the queue.
+
+* **Fix** `AsyncEventReporter.Shutdown()` to shutdown cleanly.  A side effect
+of this change is that this method now *BLOCKS* until the reporter has shutdown
+
+```c#
+[GuaranteedRate.Sextant "1.10.0"]
+```
+
 ## v1.9.1 / 2016 Jan 11
 
 > Minor bugfix bump - missed logging if a POST from the `AsyncEventReporter` 
