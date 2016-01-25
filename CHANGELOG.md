@@ -1,3 +1,29 @@
+## v1.9.1 / 2016 Jan 11
+
+> Minor bugfix bump - missed logging if a POST from the `AsyncEventReporter` 
+> failed
+
+* **Fix** - Logging in `AsyncEventReporter`
+
+## v1.9.0 / 2016 Jan 11
+
+> This release updates the `FieldUtils` and `LoanDetails` to itterate over the
+> correct index for index based multi-fields.  It also updates the 
+> borrower-pair extraction to provide a more complete data set.
+
+* **Fix** - `LoanDataUtils.ExtractMilestones` had direct access to a field 
+instead of using ParseField
+* **Fix** - Bug with marking the primary pair
+* **Update** - Greatly expanded the list of fields in `BORROWER_PAIR_FIELDS`
+* **Update** - Switched all the Lists for Sets in `FieldUtils` 
+* **Update** - Changed the timeout for POST operations from 20s to 45s in
+`AsyncEventReporter` to handle increased insertion time
+* **Update** - Added retries to `AsyncEventReporter` to increase relability
+* **Fix** -`Loggly` class would fill the message queue with errors if no url
+was configured.  Now logging disabled if no url configued.
+* **Add** `GuaranteedRate.Util.IndexFields` project to hammer out the last of 
+the index fields without boundaries.
+
 ## v1.8.0 / 2016 Jan 15
 
 > Add extention class to extend the session object for simplified manipulation of the server's registered users

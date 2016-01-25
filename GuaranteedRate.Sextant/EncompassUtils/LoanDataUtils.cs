@@ -1,6 +1,7 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
+using EllieMae.Encompass.Collections;
 using GuaranteedRate.Sextant.Loggers;
 using System;
 using System.Collections.Generic;
@@ -26,31 +27,51 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, object> ExtractLoanFields(Loan currentLoan)
         {
             IDictionary<string, object> fieldValues = new Dictionary<string, object>();
-
+            
             ExtractSimpleFields(currentLoan, FieldUtils.SimpleFieldNames(), fieldValues);
             ExtractMiddleIndexFields(currentLoan, FieldUtils.MiddleIndexMulti(), fieldValues);
             ExtractEndIndexFields(currentLoan, FieldUtils.EndIndexMulti(), fieldValues);
+            
             ExtractStringIndexFields(currentLoan, FieldUtils.DocumentMulti(), GetDocumentIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.PostClosingMulti(), GetPostClosingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.UnderwritingMulti(), GetUnderwritingIndexes(currentLoan), fieldValues);
             ExtractStringIndexFields(currentLoan, FieldUtils.MilestoneTaskMulti(), GetMilestoneTaskIndexes(currentLoan), fieldValues);
 
-            /* -- used as indexes for known multifield indexes, not ready for deployment
-            int borrowerEmployerCount = currentLoan.BorrowerEmployers.Count;
-            int coBorrowerEmployerCount = currentLoan.CoBorrowerEmployers.Count;
-
-            int liabilities = currentLoan.Liabilities.Count;
-            int mortgages = currentLoan.Mortgages.Count;
-            */
+            ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerEmployers(), currentLoan.BorrowerEmployers.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.CoBorrowerEmployers(), currentLoan.CoBorrowerEmployers.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.BorrowerResidences(), currentLoan.BorrowerResidences.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.CoBorrowerResidences(), currentLoan.CoBorrowerResidences.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.LiabilitiesMulti(), currentLoan.Liabilities.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.DepostisMulti(), currentLoan.Deposits.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.MortgagesMulti(), currentLoan.Mortgages.Count, fieldValues);
+            ExtractIntIndexFields(currentLoan, FieldUtils.VestingPartiesMulti(), currentLoan.AdditionalVestingParties.Count, fieldValues);
 
             //This is a subset of the borrower pair information, there does not seem to be an efficient method for
             //extracting all of this data programmatically.
             fieldValues.Add("borrower-pairs", ExtractBorrowerPairs(currentLoan));
             fieldValues.Add("Associates", ExtractAssociates(currentLoan));
 
+            ExtractEndIndexFields(currentLoan, FieldUtils.DisclosureMulti(), fieldValues, currentLoan.Log.Disclosures.Count);
+
             ExtractProperties(currentLoan, fieldValues);
 
             return fieldValues;
+        }
+
+        public static IDictionary<string, int> IndexKeySizes(Loan loan)
+        {
+            IDictionary<string, int> indexKeySizes = new Dictionary<string, int>();
+            indexKeySizes.Add("BorrowerEmployers", loan.BorrowerEmployers.Count);
+            indexKeySizes.Add("CoBorrowerEmployers", loan.CoBorrowerEmployers.Count);
+            indexKeySizes.Add("BorrowerResidences", loan.BorrowerResidences.Count);
+            indexKeySizes.Add("CoBorrowerResidences", loan.CoBorrowerResidences.Count);
+            indexKeySizes.Add("Liabilities", loan.Liabilities.Count);
+            indexKeySizes.Add("Deposits", loan.Deposits.Count);
+            indexKeySizes.Add("Mortgages", loan.Mortgages.Count);
+            indexKeySizes.Add("AdditionalVestingParties", loan.AdditionalVestingParties.Count);
+            indexKeySizes.Add("Disclosures", loan.Log.Disclosures.Count);
+
+            return indexKeySizes;
         }
 
         public static IDictionary<string, object> ExtractEverything(Loan loan)
@@ -99,6 +120,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             try
             {
                 fieldValues.Add("LoanFolder", loan.LoanFolder);
+                fieldValues.Add("LoanCloserID", loan.LoanCloserID);
+                fieldValues.Add("LoanName", loan.LoanName);
+                fieldValues.Add("LoanOfficerID", loan.LoanOfficerID);
+                fieldValues.Add("LoanProcessorID", loan.LoanProcessorID);
+
                 Session session = loan.Session;
                 if (session != null) 
                 {
@@ -163,16 +189,34 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return ExtractBorrowerPairs(loan, FieldUtils.BORROWER_PAIR_FIELDS);
         }
 
-        public static IList<IDictionary<string, object>> ExtractBorrowerPairs(Loan loan, IList<string> fields)
+        public static IList<IDictionary<string, object>> ExtractBorrowerPairs(Loan loan, ISet<string> fields)
         {
             IList<IDictionary<string, object>> borrowerPairs = new List<IDictionary<string, object>>();
             try
             {
                 string primarySsn = FormatSSN(ExtractSimpleField(loan, "65"));
-                foreach (BorrowerPair pair in loan.BorrowerPairs)
+                int pairCount = loan.BorrowerPairs.Count;
+
+                //using for loop instead of foreach in order to track the index
+                //and ordering of the pairs
+                for (int pairIndex = 0; pairIndex < pairCount; pairIndex++)
                 {
+                    BorrowerPair pair = loan.BorrowerPairs[pairIndex];
                     IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
+                    fieldDictionary.Add("BorrowerPairId", pairIndex);
                     borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
+
+                    if (pair.Borrower != null)
+                    {
+                        fieldDictionary.Add("Borrower.ID", pair.Borrower.ID);
+                    }
+                    if (pair.CoBorrower != null)
+                    {
+                        fieldDictionary.Add("CoBorrower.ID", pair.CoBorrower.ID);
+                    }
+
+                    //change the current borrower pair
+                    loan.BorrowerPairs.Current = pair;
                     string ssn = FormatSSN(ExtractSimpleField(loan, "65"));
                     if (ssn != null && ssn == primarySsn)
                     {
@@ -182,6 +226,13 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         fieldDictionary.Add("PrimaryPair", false);
                     }
+                    //--New stuff
+                    ExtractIntIndexFields(loan, FieldUtils.BorrowerEmployers(), loan.BorrowerEmployers.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.CoBorrowerEmployers(), loan.CoBorrowerEmployers.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.BorrowerResidences(), loan.BorrowerResidences.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.CoBorrowerResidences(), loan.CoBorrowerResidences.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.LiabilitiesMulti(), loan.Liabilities.Count, fieldDictionary);
+                    ExtractIntIndexFields(loan, FieldUtils.MortgagesMulti(), loan.Mortgages.Count, fieldDictionary);
                 }
             }
             catch
@@ -201,7 +252,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     IDictionary<string, string> localMilestone = new Dictionary<string, string>();
                     localMilestone.Add("milestoneName", ParseField(milestone.MilestoneName));
-                    localMilestone.Add("completed", milestone.Completed.ToString());
+                    localMilestone.Add("completed", ParseField(milestone.Completed));
                     localMilestone.Add("completedDate", ParseField(milestone.Date.ToString()));
                     string comments = ParseField(milestone.Comments);
                     if (!String.IsNullOrWhiteSpace(comments))
@@ -283,7 +334,41 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return keys;
         }
 
-        public static IDictionary<string, object> ExtractStringIndexFields(Loan currentLoan, IList<string> fieldIds, IList<string> keys, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractIntIndexFields(Loan currentLoan, ISet<string> fieldIds, int max_index, IDictionary<string, object> fieldDictionary)
+        {
+            if (max_index < 1)
+            {
+                return fieldDictionary;
+            }
+            try
+            {
+                foreach (string fieldId in fieldIds)
+                {
+                    int offset = fieldId.IndexOf("00");
+                    string pre = fieldId.Substring(0, offset);
+                    string post = fieldId.Substring(offset + 2);
+
+                    //1 offset not 0 because 00 is already in use
+                    for (int index = 1; index <= max_index; index++)
+                    {
+                        string indexPad = pre + IntPad(index) + post;
+                        object fieldObject = currentLoan.Fields[indexPad].Value;
+                        string value = ParseField(fieldObject);
+                        if (value != null)
+                        {
+                            fieldDictionary.Add(SafeFieldId(indexPad), value);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Loggly.Error("LoandataUtils", "Exception in ExtractIntIndexFields:" + ex);
+            }
+            return fieldDictionary;
+        }
+
+        public static IDictionary<string, object> ExtractStringIndexFields(Loan currentLoan, ISet<string> fieldIds, IList<string> keys, IDictionary<string, object> fieldDictionary)
         {
             if (keys == null || keys.Count == 0)
             {
@@ -311,7 +396,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDictionary;
         }
 
-        public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary, int maxIndex = MULTI_MAX)
         {
             try
             {
@@ -320,7 +405,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     int index = 0;
                     try
                     {
-                        for (index = 1; index < MULTI_MAX; index++)
+                        for (index = 1; index < maxIndex; index++)
                         {
                             string fieldIdIndex = fieldId + "." + IntPad(index);
                             object fieldObject = currentLoan.Fields[fieldIdIndex].Value;
@@ -357,7 +442,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
         }
 
-        public static IDictionary<string, object> ExtractMiddleIndexFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractMiddleIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {
@@ -384,7 +469,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        //Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
+                        //System.Diagnostics.Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
                         Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
                     }
                 }
@@ -396,7 +481,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldDictionary;
         }
 
-        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {
@@ -442,7 +527,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return null;
         }
 
-        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair, IList<string> fieldIds, IDictionary<string, object> fieldDictionary)
+        public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
             try
             {

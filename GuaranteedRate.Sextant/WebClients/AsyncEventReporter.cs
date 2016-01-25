@@ -19,16 +19,19 @@ namespace GuaranteedRate.Sextant.WebClients
     {
         private readonly string url;
         private readonly BlockingCollection<string> eventQueue;
+        private readonly int retries;
 
         protected const int DEFAULT_QUEUE_SIZE = 1000;
+        protected const int DEFAULT_RETRIES = 3;
 
         public string ContentType { get; set; }
 
-        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE)
+        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
             this.url = url;
             ContentType = "application/json";
             this.eventQueue = new BlockingCollection<string>(new ConcurrentQueue<string>(), queueSize);
+            this.retries = retries;
             init();
         }
 
@@ -55,11 +58,28 @@ namespace GuaranteedRate.Sextant.WebClients
                     {
                         nextEvent = eventQueue.Take();
                     }
-                    catch (InvalidOperationException) { }
+                    catch (InvalidOperationException e) 
+                    {
+                        Loggly.Warn(this.GetType().Name.ToString(), "InvalidOperationException reading from queue:" + e);
+                    }
 
                     if (nextEvent != null)
                     {
-                        PostEvent(nextEvent);
+                        bool success = false;
+                        int tries = 0;
+                        while (!success && tries < retries) 
+                        { 
+                            success = PostEvent(nextEvent);
+                            if (!success)
+                            {
+                                Loggly.Info(this.GetType().Name.ToString(), "Post failed, try number: " + tries);
+                            }
+                            tries++;
+                        }
+                        if (!success)
+                        {
+                            Loggly.Error(this.GetType().Name.ToString(), "Post failed after " + tries + " tries");
+                        }
                     }
                 }
             });
@@ -99,7 +119,7 @@ namespace GuaranteedRate.Sextant.WebClients
                 if (webRequest != null)
                 {
                     webRequest.Method = "POST";
-                    webRequest.Timeout = 20000;
+                    webRequest.Timeout = 45000;
                     webRequest.ContentType = ContentType;
 
                     using (Stream stream = webRequest.GetRequestStream())
@@ -119,13 +139,13 @@ namespace GuaranteedRate.Sextant.WebClients
                             {
                                 if (response.StatusCode != HttpStatusCode.OK)
                                 {
+                                    Loggly.Warn(this.GetType().Name.ToString(), "Webservice at " + url + " returned status code:" + response.StatusCode);
                                     return false;
                                 }
                             }
                         }
                     }
                 }
-
                 else
                 {
                     Loggly.Warn(this.GetType().Name.ToString(), "WebService url invalid. url=" + url);

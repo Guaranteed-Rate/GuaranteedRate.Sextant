@@ -129,3 +129,29 @@ Because this test sends data to Datadog and Loggly it is not written as a unit t
 
 Simple example program for usin 'UserUtils.cs'.
 Creates a session and prints all users, all "active" users (enabled and unlocked accounts), and all users associated within the standard "My Pipeline" working folder.
+
+## Util.IndexFields
+
+This is a util project to help find the boundary index for MultiValue fields that use an index.
+Knowing the boundary index for multivalue fields allows faster and safer itteration.
+
+It will show you MultiValue Index fields without known boundaries, as well as the values of the known indexes.
+
+# Developer Notes
+
+## Fields controlled by dropdowns - default is often null
+
+There are many fields in Encompass that are controlled by dropdowns.
+In many cases, if the value has never been changed from the default, the actual data value from the SDK will be null.
+
+For example Field "1393" (Trans Details Current Loan Status):
+<p  align="center">
+  <img  src="doc/img/Field1393.png" border="0" />
+</p>
+
+The dropdown has a default value of "Active Loan", but if the field has never been touched, then the value will be empty.
+
+ie you can see the drop down showing "Active Loan", but in the SDK will show:
+```C#
+loan.Fields["1393"].Value == "";
+```
