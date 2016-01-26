@@ -1,3 +1,16 @@
+## v1.10.1 / 2016 Jan 26
+
+> This release adds defensive code around getting the value of loan.LastModified.
+> The value returned is not always valid, so the defensive code will do 
+> polling and attempt to correct.
+
+* **Fix** New logic for getting last modified in 
+`LoanDataUtils.GetBestGuessLastModified(Loan loan)`
+
+```c#
+[GuaranteedRate.Sextant "1.10.1"]
+```
+
 ## v1.10.0 / 2016 Jan 25
 
 > This release corrects the shutdown mechanics of `AsyncEventReporter` so that
@@ -5,6 +18,7 @@
 
 * **Fix** `AsyncEventReporter.Shutdown()` to shutdown cleanly.  A side effect
 of this change is that this method now *BLOCKS* until the reporter has shutdown
+
 
 ```c#
 [GuaranteedRate.Sextant "1.10.0"]

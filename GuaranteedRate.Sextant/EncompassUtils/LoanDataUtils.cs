@@ -17,6 +17,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     public class LoanDataUtils
     {
         public const int MULTI_MAX = 10;
+        public const int LAST_MODIFIED_RETRIES = 10;
 
         /**
          * Still a work in progress - ideally this function will iterate 
@@ -81,18 +82,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 try
                 {
-                    var lastModified = loan.LastModified;
-                    if (lastModified != null)
-                    {
-                        loanData.Add("lastmodified", loan.LastModified.ToString());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting LastModified:" + ex);
-                }
-                try
-                {
                     loanData.Add("fields", ExtractLoanFields(loan));
                 }
                 catch (Exception ex)
@@ -107,8 +96,77 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting Milestones:" + ex);
                 }
+                try
+                {
+                    DateTime lastModified = GetBestGuessLastModified(loan);
+                    if (lastModified != null)
+                    {
+                        loanData.Add("lastmodified", lastModified.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting LastModified:" + ex);
+                }
             }
             return loanData;
+        }
+
+        /**
+         * The value returned by loan.LastModified is not always correct.
+         * It is often something like `01/10/0016 12:18:48 CST` when the real value
+         * should be `01/08/2016 12:28:12 CST`
+         * 
+         * You can get *CLOSE* to the correct value by:
+         * * adding 2000 years
+         * * subtracting 2 days
+         * * adding 9 minutes
+         * 
+         * The years and days correction seems to be constant, but the 
+         * minutes drifts from 6-11.  Mostly around 8:45.
+         * 
+         * So - this method will TRY and get the correct value by polling multiple times.
+         * 
+         * Then it will return a `best guess` corrected value.
+         * 
+         * Finally - it will fail back to DateTime.Now;
+         */
+        public static DateTime GetBestGuessLastModified(Loan loan)
+        {
+            try
+            {
+                int tries = 0;
+                DateTime lastModified = loan.LastModified;
+                while (tries < LAST_MODIFIED_RETRIES)
+                {
+                    if (lastModified != null && lastModified.Year / 1000 > 0)
+                    {
+                        return lastModified;
+                    }
+                    lastModified = loan.LastModified;
+                    tries++;
+                }
+
+                if (lastModified != null && lastModified.Year / 1000 > 0)
+                {
+                    return lastModified;
+                }
+
+                if (lastModified != null && lastModified.Year / 1000 <= 0)
+                {
+                    lastModified.AddYears(2000);
+                    lastModified.AddDays(-2);
+                    lastModified.AddMinutes(9);
+                    return lastModified;
+                }
+            }
+            catch (Exception ex)
+            {
+                Loggly.Error("LoandataUtils", "Exception in GetBestGuessLastModified while getting LastModified:" + ex);
+            }
+
+            //Give up - return now
+            return DateTime.Now;
         }
 
         /**
