@@ -18,7 +18,7 @@ namespace GuaranteedRate.Sextant.WebClients
      */
     public class AsyncEventReporter : IEventReporter
     {
-        public static const ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue };
+        public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue };
 
 
         private readonly string url;
