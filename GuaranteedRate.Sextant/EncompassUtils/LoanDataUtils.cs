@@ -18,7 +18,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     {
         public const int MULTI_MAX = 10;
         public const int LAST_MODIFIED_RETRIES = 10;
-
         public const string DATE_FORMAT = "M/d/yyyy hh:mm:ss tt";
 
         public static string _DateFormat = DATE_FORMAT;

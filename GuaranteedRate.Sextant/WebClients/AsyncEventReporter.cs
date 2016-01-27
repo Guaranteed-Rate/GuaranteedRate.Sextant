@@ -20,7 +20,6 @@ namespace GuaranteedRate.Sextant.WebClients
     {
         public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue };
 
-
         private readonly string url;
         private readonly BlockingCollection<string> eventQueue;
         private readonly int retries;
