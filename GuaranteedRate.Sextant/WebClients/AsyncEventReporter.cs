@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.WebClients
@@ -17,6 +18,8 @@ namespace GuaranteedRate.Sextant.WebClients
      */
     public class AsyncEventReporter : IEventReporter
     {
+        public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue };
+
         private readonly string url;
         private readonly BlockingCollection<string> eventQueue;
         private readonly int retries;
@@ -25,6 +28,8 @@ namespace GuaranteedRate.Sextant.WebClients
         protected const int DEFAULT_RETRIES = 3;
 
         public string ContentType { get; set; }
+
+        private volatile bool finished;
 
         public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
@@ -37,6 +42,8 @@ namespace GuaranteedRate.Sextant.WebClients
 
         private void init()
         {
+            finished = false;
+
             /**
              * Taken directly from
              * https://msdn.microsoft.com/en-us/library/dd997371(v=vs.110).aspx
@@ -82,19 +89,21 @@ namespace GuaranteedRate.Sextant.WebClients
                         }
                     }
                 }
+                finished = true;
             });
         }
 
         /**
          * This is the correct way to cleanly shutdown.
-         * Once called you can't add new events to the queue, but you can still process
-         * the existing events.
-         * 
-         * Unclear how much the Encompass Plugin lifecycle respects this
+         * Once called this method *WILL BLOCK* until the queue has been drained.
          */
         public void Shutdown()
         {
             eventQueue.CompleteAdding();
+            while (!finished)
+            {
+                Thread.Sleep(1000);
+            }
         }
 
         public bool ReportEvent(string formattedData)
@@ -137,7 +146,7 @@ namespace GuaranteedRate.Sextant.WebClients
                             HttpWebResponse response = webRequest.GetResponse() as HttpWebResponse;
                             if (response != null)
                             {
-                                if (response.StatusCode != HttpStatusCode.OK)
+                                if (!SUCCESS_CODES.Contains(response.StatusCode))
                                 {
                                     Loggly.Warn(this.GetType().Name.ToString(), "Webservice at " + url + " returned status code:" + response.StatusCode);
                                     return false;

@@ -17,6 +17,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     public class LoanDataUtils
     {
         public const int MULTI_MAX = 10;
+        public const int LAST_MODIFIED_RETRIES = 10;
+        public const string DATE_FORMAT = "M/d/yyyy hh:mm:ss tt";
+
+        public static string _DateFormat = DATE_FORMAT;
 
         /**
          * Still a work in progress - ideally this function will iterate 
@@ -81,18 +85,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 try
                 {
-                    var lastModified = loan.LastModified;
-                    if (lastModified != null)
-                    {
-                        loanData.Add("lastmodified", loan.LastModified.ToString());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting LastModified:" + ex);
-                }
-                try
-                {
                     loanData.Add("fields", ExtractLoanFields(loan));
                 }
                 catch (Exception ex)
@@ -106,6 +98,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 catch (Exception ex)
                 {
                     Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting Milestones:" + ex);
+                }
+                try
+                {
+                    loanData.Add("lastmodified", loan.LastModified.ToString(_DateFormat));
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting LastModified:" + ex);
                 }
             }
             return loanData;

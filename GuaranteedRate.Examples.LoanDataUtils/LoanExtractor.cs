@@ -43,8 +43,6 @@ namespace GuaranteedRate.Examples.LoanDataUtils
 
             Loan loan = SessionUtils.OpenLoan(session, guid);
 
-
-
             IDictionary<string, object> loanData = GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
             string json = JsonConvert.SerializeObject(loanData);
             try

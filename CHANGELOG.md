@@ -1,3 +1,55 @@
+## v1.10.6 / 2016 Jan 27
+
+> Cleanup from the date formatting madness.
+
+* **Update** `LoanDataUtils` now has a configurable datetime formatter
+
+## v1.10.5 / 2016 Jan 27
+
+> Trying date-time formatter again
+
+## v1.10.4 / 2016 Jan 27
+
+> Restoring Loan.LastModified code from master
+
+## v1.10.3 / 2016 Jan 27
+
+> Fix bug in `AysncEventReporter` where it would retry events that were 
+> `ACCEPTED` instead of `OK`
+
+* **FIX** `AysncEventReporter` now has a set of `success` http response codes:
+HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
+
+## v1.10.2 / 2016 Jan 27
+
+> Non-release debug version for tracking the LastModified problem
+
+## v1.10.1 / 2016 Jan 26
+
+> This release adds defensive code around getting the value of loan.LastModified.
+> The value returned is not always valid, so the defensive code will do 
+> polling and attempt to correct.
+
+* **Fix** New logic for getting last modified in 
+`LoanDataUtils.GetBestGuessLastModified(Loan loan)`
+
+```c#
+[GuaranteedRate.Sextant "1.10.1"]
+```
+
+## v1.10.0 / 2016 Jan 25
+
+> This release corrects the shutdown mechanics of `AsyncEventReporter` so that
+> callers are able to shutdown without losing data that is on the queue.
+
+* **Fix** `AsyncEventReporter.Shutdown()` to shutdown cleanly.  A side effect
+of this change is that this method now *BLOCKS* until the reporter has shutdown
+
+
+```c#
+[GuaranteedRate.Sextant "1.10.0"]
+```
+
 ## v1.9.1 / 2016 Jan 11
 
 > Minor bugfix bump - missed logging if a POST from the `AsyncEventReporter` 
