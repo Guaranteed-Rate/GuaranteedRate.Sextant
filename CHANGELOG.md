@@ -1,3 +1,17 @@
+## v1.10.6 / 2016 Jan 27
+
+> Cleanup from the date formatting madness.
+
+* **Update** `LoanDataUtils` now has a configurable datetime formatter
+
+## v1.10.5 / 2016 Jan 27
+
+> Trying date-time formatter again
+
+## v1.10.4 / 2016 Jan 27
+
+> Restoring Loan.LastModified code from master
+
 ## v1.10.3 / 2016 Jan 27
 
 > Fix bug in `AysncEventReporter` where it would retry events that were 
