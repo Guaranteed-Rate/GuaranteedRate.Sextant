@@ -18,6 +18,9 @@ namespace GuaranteedRate.Sextant.WebClients
      */
     public class AsyncEventReporter : IEventReporter
     {
+        public static const ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue };
+
+
         private readonly string url;
         private readonly BlockingCollection<string> eventQueue;
         private readonly int retries;
@@ -144,7 +147,7 @@ namespace GuaranteedRate.Sextant.WebClients
                             HttpWebResponse response = webRequest.GetResponse() as HttpWebResponse;
                             if (response != null)
                             {
-                                if (response.StatusCode != HttpStatusCode.OK)
+                                if (!SUCCESS_CODES.Contains(response.StatusCode))
                                 {
                                     Loggly.Warn(this.GetType().Name.ToString(), "Webservice at " + url + " returned status code:" + response.StatusCode);
                                     return false;

@@ -1,3 +1,15 @@
+## v1.10.3 / 2016 Jan 27
+
+> Fix bug in `AysncEventReporter` where it would retry events that were 
+> `ACCEPTED` instead of `OK`
+
+* **FIX** `AysncEventReporter` now has a set of `success` http response codes:
+HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
+
+## v1.10.2 / 2016 Jan 27
+
+> Non-release debug version for tracking the LastModified problem
+
 ## v1.10.1 / 2016 Jan 26
 
 > This release adds defensive code around getting the value of loan.LastModified.

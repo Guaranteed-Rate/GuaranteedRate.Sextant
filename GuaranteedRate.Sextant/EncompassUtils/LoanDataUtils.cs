@@ -101,7 +101,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     DateTime lastModified = GetBestGuessLastModified(loan);
                     if (lastModified != null)
                     {
-                        loanData.Add("lastmodified", lastModified.ToString());
+                        loanData.Add("lastmodified", lastModified.ToString("yyyy-MM-dd HH:mm:ss"));
                     }
                 }
                 catch (Exception ex)
@@ -141,8 +141,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     if (lastModified != null && lastModified.Year / 1000 > 0)
                     {
+                        Loggly.Info("LoandataUtils", "GetBestGuessLastModified Success! - " + lastModified.ToString());
                         return lastModified;
                     }
+                    Loggly.Info("LoandataUtils", "GetBestGuessLastModified Failed! - " + lastModified.ToString());
                     lastModified = loan.LastModified;
                     tries++;
                 }
