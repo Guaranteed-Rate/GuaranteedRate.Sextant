@@ -1,3 +1,18 @@
+## v1.11.1 / 2016 Feb 2
+
+> Updated logging in `LoanDataUtils` to include the `loanNumber` where the 
+> exception occured
+
+* **Update** `LoanDataUtils` logging to include the loan number
+
+## v1.11.0 / 2016 Feb 2
+
+> Added the ability to remove fields from `FieldUtils` so that specific fields
+> can be ignored without forcing the user to add all the others in the 
+> collection.
+
+* **Update** `FieldUtils` now supports removing specific fields
+
 ## v1.10.6 / 2016 Jan 27
 
 > Cleanup from the date formatting madness.

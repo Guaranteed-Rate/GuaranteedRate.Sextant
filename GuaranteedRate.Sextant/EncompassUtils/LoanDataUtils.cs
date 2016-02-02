@@ -226,7 +226,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         fieldDictionary.Add("PrimaryPair", false);
                     }
-                    //--New stuff
                     ExtractIntIndexFields(loan, FieldUtils.BorrowerEmployers(), loan.BorrowerEmployers.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.CoBorrowerEmployers(), loan.CoBorrowerEmployers.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.BorrowerResidences(), loan.BorrowerResidences.Count, fieldDictionary);
@@ -398,8 +397,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary, int maxIndex = MULTI_MAX)
         {
+            string loanNumber = null;
             try
             {
+                loanNumber = currentLoan.LoanNumber;
                 foreach (string fieldId in fieldIds)
                 {
                     int index = 0;
@@ -418,8 +419,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        //Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
-                        Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
+                        Loggly.Error("LoandataUtils", "Failed to pull loan=" + loanNumber + " field=" + fieldId + " index=" + index + " Exception: " + e);
                     }
                 }
             }
@@ -444,8 +444,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static IDictionary<string, object> ExtractMiddleIndexFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
+            string loanNumber = null;
             try
             {
+                loanNumber = currentLoan.LoanNumber;
                 foreach (string fieldId in fieldIds)
                 {
                     int index = 0;
@@ -469,8 +471,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        //System.Diagnostics.Debug.WriteLine("Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
-                        Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " index=" + index + " Exception: " + e);
+                        Loggly.Error("LoandataUtils", "Failed to pull loan=" + loanNumber + " field=" + fieldId + " index=" + index + " Exception: " + e);
                     }
                 }
             }
@@ -483,8 +484,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
+            string loanNumber = null;
             try
             {
+                loanNumber = currentLoan.LoanNumber;
                 foreach (string fieldId in fieldIds)
                 {
                     try
@@ -499,8 +502,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        //Debug.WriteLine("Failed to pull: " + fieldId + " Exception: " + e);
-                        Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " Exception: " + e);
+                        Loggly.Error("LoandataUtils", "Failed to pull loan=" + loanNumber + " field=" + fieldId + " Exception: " + e);
                     }
                 }
             }
@@ -513,24 +515,27 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static string ExtractSimpleField(Loan currentLoan, string field)
         {
+            string loanNumber = null;
             try
             {
+                loanNumber = currentLoan.LoanNumber;
                 object fieldObject;
                 fieldObject = currentLoan.Fields[field].Value;
                 return ParseField(fieldObject);
             }
             catch (Exception e)
             {
-                //Debug.WriteLine("Failed to pull: " + fieldId + " Exception: " + e);
-                Loggly.Error("LoandataUtils", "Exception trying to access: " + field + " Exception: " + e);
+                Loggly.Error("LoandataUtils", "Failed to pull loan=" + loanNumber + " field=" + field + " Exception: " + e);
             }
             return null;
         }
 
         public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair, ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
+            string loanNumber = null;
             try
             {
+                loanNumber = currentLoan.LoanNumber;
                 foreach (string fieldId in fieldIds)
                 {
                     try
@@ -545,8 +550,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        //Debug.WriteLine("Failed to pull: " + fieldId + " Exception: " + e);
-                        Loggly.Error("LoandataUtils", "Failed to pull: " + fieldId + " Exception: " + e);
+                        Loggly.Error("LoandataUtils", "Failed to pull loan=" + loanNumber + " borrowerPair=" + borrowerPair.ToString() + " field=" + fieldId + " Exception: " + e);
                     }
                 }
             }
