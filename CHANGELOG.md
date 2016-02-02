@@ -1,3 +1,10 @@
+## v1.11.1 / 2016 Feb 2
+
+> Updated logging in `LoanDataUtils` to include the `loanNumber` where the 
+> exception occured
+
+* **Update** `LoanDataUtils` logging to include the loan number
+
 ## v1.11.0 / 2016 Feb 2
 
 > Added the ability to remove fields from `FieldUtils` so that specific fields
