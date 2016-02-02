@@ -76,7 +76,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private static volatile FieldUtils encompassFields;
         private static object syncRoot = new Object();
 
-        private static IList<FieldDescriptor> SELECTED_FIELDS;
+        private static ISet<FieldDescriptor> SELECTED_FIELDS;
 
         /**
          * These *SEEM* to be the *Simple* fields that are affected by switching active borrower-pair.
@@ -110,14 +110,32 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                "FR0307", "FR0308", "FR0312", "FR0315", "FR0324", "FR0398", "FR0399", "FR0404", "FR0406", "FR0407", 
                                "FR0408", "FR0412", "FR0415", "FR0424", "FR0498", "FR0499" };
 
+        public static void RemoveFieldCollection(FieldDescriptor fieldDescriptor)
+        {
+            if (SELECTED_FIELDS == null)
+            {
+                return;
+            }
+            SELECTED_FIELDS.Remove(fieldDescriptor);
+        }
 
-
+        public static void RemoveFieldCollection(FieldDescriptors fieldDescriptors)
+        {
+            if (SELECTED_FIELDS == null)
+            {
+                return;
+            }
+            foreach (FieldDescriptor field in fieldDescriptors)
+            {
+                SELECTED_FIELDS.Remove(field);
+            }
+        }
 
         public static void AddFieldCollection(FieldDescriptors fieldDescriptors) 
         {
             if (SELECTED_FIELDS == null)
             {
-                SELECTED_FIELDS = new List<FieldDescriptor>();
+                SELECTED_FIELDS = new HashSet<FieldDescriptor>();
             }
             AddFieldDescriptors(fieldDescriptors, SELECTED_FIELDS);
         }
@@ -126,7 +144,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             if (SELECTED_FIELDS == null)
             {
-                SELECTED_FIELDS = new List<FieldDescriptor>();
+                SELECTED_FIELDS = new HashSet<FieldDescriptor>();
             }
             SELECTED_FIELDS.Add(fieldDescriptor);
         }
@@ -226,7 +244,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private void GetAllFieldIds()
         {
-            IList<FieldDescriptor> fieldDescriptorsList = FieldUtils.SELECTED_FIELDS;
+            ICollection<FieldDescriptor> fieldDescriptorsList = FieldUtils.SELECTED_FIELDS;
             if (fieldDescriptorsList == null)
             {
                 fieldDescriptorsList = GetAllFieldDescriptors();
@@ -234,7 +252,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             LoadFieldIdsFromFieldDescriptors(fieldDescriptorsList);
         }
 
-        private static IList<FieldDescriptor> AddFieldDescriptors(FieldDescriptors fieldCollection, IList<FieldDescriptor> fieldList)
+        private static ISet<FieldDescriptor> AddFieldDescriptors(FieldDescriptors fieldCollection, ISet<FieldDescriptor> fieldList)
         {
             foreach (FieldDescriptor field in fieldCollection)
             {
@@ -243,9 +261,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldList;
         }
 
-        private IList<FieldDescriptor> GetAllFieldDescriptors()
+        private ISet<FieldDescriptor> GetAllFieldDescriptors()
         {
-            IList<FieldDescriptor> fieldList = new List<FieldDescriptor>();
+            ISet<FieldDescriptor> fieldList = new HashSet<FieldDescriptor>();
             FieldUtils.AddFieldDescriptors(FieldUtils.session.Loans.FieldDescriptors.StandardFields, fieldList);
             FieldUtils.AddFieldDescriptors(FieldUtils.session.Loans.FieldDescriptors.CustomFields, fieldList);
             FieldUtils.AddFieldDescriptors(FieldUtils.session.Loans.FieldDescriptors.VirtualFields, fieldList);
@@ -262,7 +280,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
          * lists so that they can be handled on a loan-by-loan basis.
          */
-        private void LoadFieldIdsFromFieldDescriptors(IList<FieldDescriptor> fieldDescriptors)
+        private void LoadFieldIdsFromFieldDescriptors(ICollection<FieldDescriptor> fieldDescriptors)
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
             {
@@ -454,7 +472,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, string> GetFieldsAndDescriptions()
         {
             IDictionary<string, string> fieldsAndDescriptions = new Dictionary<string, string>();
-            IList<FieldDescriptor> fieldDescriptorsList = Instance.GetAllFieldDescriptors();
+            ISet<FieldDescriptor> fieldDescriptorsList = Instance.GetAllFieldDescriptors();
 
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptorsList)
             {
