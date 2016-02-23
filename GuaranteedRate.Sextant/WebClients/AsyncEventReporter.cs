@@ -112,6 +112,11 @@ namespace GuaranteedRate.Sextant.WebClients
             return true;
         }
 
+        /**
+         * This is an empty method that allows subclasses to add 
+         * additional functionality
+         * 
+         */
         protected void ExtraSetup(WebRequest webRequest)
         {
 
@@ -130,6 +135,7 @@ namespace GuaranteedRate.Sextant.WebClients
                     webRequest.Method = "POST";
                     webRequest.Timeout = 45000;
                     webRequest.ContentType = ContentType;
+                    ExtraSetup(webRequest);
 
                     using (Stream stream = webRequest.GetRequestStream())
                     {
