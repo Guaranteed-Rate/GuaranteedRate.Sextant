@@ -1,3 +1,17 @@
+## v1.11.3 / 2016 Feb 23
+
+> Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't marked
+> as override
+
+* **Fix** Java dev makes C# mistake...
+
+## v1.11.2 / 2016 Feb 23
+
+> Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't being
+> called.
+
+* **Fix** `AsyncEventReporter` now calls `ExtraSetup` when setting up an event
+
 ## v1.11.1 / 2016 Feb 2
 
 > Updated logging in `LoanDataUtils` to include the `loanNumber` where the 
