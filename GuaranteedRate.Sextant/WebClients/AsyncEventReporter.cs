@@ -117,7 +117,7 @@ namespace GuaranteedRate.Sextant.WebClients
          * additional functionality
          * 
          */
-        protected void ExtraSetup(WebRequest webRequest)
+        protected virtual void ExtraSetup(WebRequest webRequest)
         {
 
         }

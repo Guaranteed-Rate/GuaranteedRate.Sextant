@@ -1,3 +1,10 @@
+## v1.11.3 / 2016 Feb 23
+
+> Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't marked
+> as override
+
+* **Fix** Java dev makes C# mistake...
+
 ## v1.11.2 / 2016 Feb 23
 
 > Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't being
