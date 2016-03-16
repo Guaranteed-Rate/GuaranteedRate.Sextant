@@ -92,7 +92,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return loanData;
         }
 
-        private static IDictionary<string, object> AddLoanData(IDictionary<string, object> loanData, string key, object value)
+        private static void AddLoanData(IDictionary<string, object> loanData, string key, object value)
         {
             try
             {
@@ -102,8 +102,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting "+ key+":" + ex);
             }
-
-            return loanData;
         }
 
         /**
