@@ -3,6 +3,7 @@ using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
 using EllieMae.Encompass.Collections;
 using GuaranteedRate.Sextant.Loggers;
+using GuaranteedRate.Sextant.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,31 +84,25 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             IDictionary<string, object> loanData = new Dictionary<string, object>();
             if (loan != null)
             {
-                try
-                {
-                    loanData.Add("fields", ExtractLoanFields(loan));
-                }
-                catch (Exception ex)
-                {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting fields:" + ex);
-                }
-                try
-                {
-                    loanData.Add("milestones", ExtractMilestones(loan));
-                }
-                catch (Exception ex)
-                {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting Milestones:" + ex);
-                }
-                try
-                {
-                    loanData.Add("lastmodified", loan.LastModified.ToString(_DateFormat));
-                }
-                catch (Exception ex)
-                {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting LastModified:" + ex);
-                }
+                AddLoanData(loanData, "fields", ExtractLoanFields(loan));
+                AddLoanData(loanData, "milestones", ExtractMilestones(loan));
+                AddLoanData(loanData, "lastmodified", loan.LastModified.ToString(_DateFormat));
+                AddLoanData(loanData, "MachineUser", MachineUser.GetMachineUserIdentification());
             }
+            return loanData;
+        }
+
+        private static IDictionary<string, object> AddLoanData(IDictionary<string, object> loanData, string key, object value)
+        {
+            try
+            {
+                loanData.Add(key, value);
+            }
+            catch (Exception ex)
+            {
+                Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting "+ key+":" + ex);
+            }
+
             return loanData;
         }
 
