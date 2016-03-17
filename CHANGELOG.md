@@ -1,3 +1,8 @@
+## v1.12.0 / 2016 March 17
+
+> Adding the ability to collect active directory and machine information
+> Adding AD and machine information to ExtractEverything method data return
+
 ## v1.11.3 / 2016 Feb 23
 
 > Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't marked
