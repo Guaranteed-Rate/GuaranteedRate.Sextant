@@ -34,85 +34,85 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Client">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Client.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Client.dll</HintPath>
     </Reference>
     <Reference Include="ClientCommon">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\ClientCommon.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ClientCommon.dll</HintPath>
     </Reference>
     <Reference Include="ClientServer">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\ClientServer.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ClientServer.dll</HintPath>
     </Reference>
     <Reference Include="ClientSession">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\ClientSession.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ClientSession.dll</HintPath>
     </Reference>
     <Reference Include="DataAccess">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\DataAccess.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="DocumentConverter">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\DocumentConverter.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\DocumentConverter.dll</HintPath>
     </Reference>
     <Reference Include="EllieMae.Encompass.AsmResolver">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EllieMae.Encompass.AsmResolver.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EllieMae.Encompass.AsmResolver.dll</HintPath>
     </Reference>
     <Reference Include="EllieMae.Encompass.Runtime">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EllieMae.Encompass.Runtime.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EllieMae.Encompass.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="EMBAM15">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EMBAM15.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMBAM15.dll</HintPath>
     </Reference>
     <Reference Include="EMCommon">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EMCommon.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMCommon.dll</HintPath>
     </Reference>
     <Reference Include="EMExport">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EMExport.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMExport.dll</HintPath>
     </Reference>
     <Reference Include="EMLoanUtils15">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EMLoanUtils15.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMLoanUtils15.dll</HintPath>
     </Reference>
     <Reference Include="EncompassAutomation">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EncompassAutomation.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EncompassAutomation.dll</HintPath>
     </Reference>
     <Reference Include="EncompassObjects">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\EncompassObjects.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EncompassObjects.dll</HintPath>
     </Reference>
     <Reference Include="GenuineChannels">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\GenuineChannels.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\GenuineChannels.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Import">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Import.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Import.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics2.Shared.v7.1">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Infragistics2.Shared.v7.1.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Infragistics2.Shared.v7.1.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics2.Win.UltraWinSchedule.v7.1">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Infragistics2.Win.UltraWinSchedule.v7.1.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Infragistics2.Win.UltraWinSchedule.v7.1.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics2.Win.v7.1">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Infragistics2.Win.v7.1.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Infragistics2.Win.v7.1.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\itextsharp.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Jed">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Jed.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Jed.dll</HintPath>
     </Reference>
     <Reference Include="PostSharp">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\PostSharp.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\PostSharp.dll</HintPath>
     </Reference>
     <Reference Include="ReportingDbUtils">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\ReportingDbUtils.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ReportingDbUtils.dll</HintPath>
     </Reference>
     <Reference Include="SDKConfigImpl">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\SDKConfigImpl.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\SDKConfigImpl.dll</HintPath>
     </Reference>
     <Reference Include="Server">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Server.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Server.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\SharpZipLib.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -122,10 +122,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="VersionInterface15">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\VersionInterface15.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\VersionInterface15.dll</HintPath>
     </Reference>
     <Reference Include="Xml3WayMerge">
-      <HintPath>..\packages\EncompassSDK.Complete.15.1.4.0\lib\Xml3WayMerge.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Xml3WayMerge.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -133,13 +133,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj">
       <Project>{6388e4a7-456a-4363-9ac4-936f742ca63f}</Project>
       <Name>GuaranteedRate.Sextant</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
