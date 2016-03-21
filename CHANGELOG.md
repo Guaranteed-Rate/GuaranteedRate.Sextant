@@ -1,3 +1,7 @@
+## v1.12.1 / 2016 March 21
+
+> Updating to Encompass SDK 15.2.  No other changes.
+
 ## v1.12.0 / 2016 March 17
 
 > Adding the ability to collect active directory and machine information
