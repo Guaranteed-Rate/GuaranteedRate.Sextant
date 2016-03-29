@@ -1,3 +1,15 @@
+## v1.12.2 / 2016 March 29
+
+> Bugfix release to correct logic that identifies the primary borrower pair.
+> If the loan object passed in to LoanDataUtils.ExtractEverything did not 
+> have the primary pair as current pair, the current pair would be incorrectly
+> listed as the primary pair.
+> Additionally added a convience method to open a loan by loan number
+
+* **Fix** Identification of primary borrower pair on a loan
+* **Add** Convience method in SessionUtils to open a loan by LoanNumber instead
+of GUID
+
 ## v1.12.1 / 2016 March 21
 
 > Updating to Encompass SDK 15.2.  No other changes.

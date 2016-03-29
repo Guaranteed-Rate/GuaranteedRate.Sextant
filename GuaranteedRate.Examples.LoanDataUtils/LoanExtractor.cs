@@ -26,7 +26,7 @@ namespace GuaranteedRate.Examples.LoanDataUtils
             }
             else
             {
-                Console.WriteLine("Usage [Loan Guid] [Encompass url] [Encompass User] [Encompass Password]");
+                Console.WriteLine("Usage [Loan Guid or Loan Number] [Encompass url] [Encompass User] [Encompass Password]");
                 return 0;
             }
         }
@@ -35,13 +35,21 @@ namespace GuaranteedRate.Examples.LoanDataUtils
         {
         }
 
-        public void DoExtraction(Session session, string guid)
+        public void DoExtraction(Session session, string id)
         {
             FieldUtils.AddFieldCollection(FieldUtils.session.Loans.FieldDescriptors.CustomFields);
             FieldUtils.AddFieldCollection(FieldUtils.session.Loans.FieldDescriptors.StandardFields);
             FieldUtils.AddFieldCollection(FieldUtils.session.Loans.FieldDescriptors.VirtualFields);
 
-            Loan loan = SessionUtils.OpenLoan(session, guid);
+            Loan loan;
+            if (id.StartsWith("{"))
+            {
+                loan = SessionUtils.OpenLoan(session, id);
+            }
+            else
+            {
+                loan = SessionUtils.OpenLoanFromLoanNumber(session, id);
+            }
 
             IDictionary<string, object> loanData = GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
             string json = JsonConvert.SerializeObject(loanData);

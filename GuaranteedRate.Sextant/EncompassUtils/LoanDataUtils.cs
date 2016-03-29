@@ -23,12 +23,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static string _DateFormat = DATE_FORMAT;
 
-        /**
-         * Still a work in progress - ideally this function will iterate 
-         * through a loan's fields and return a Dictonary representation.
-         * 
-         * Works fine with SimpleFields, but not most types of multi-field values
-         */
+        /// <summary>
+        /// Walks through the various types of fields in a loan.
+        /// There are simple fields where it is a simple key = value map,
+        /// complex fields, where the key name represents a dictonary and must be mutated
+        /// as well as more traditional key = array and key = dictionary
+        /// </summary>
+        /// <param name="currentLoan"></param>
+        /// <returns>
+        ///     IDictionary<string, object> of the data, object will either be a string, 
+        ///     or further IDictionary<string, object> 
+        /// </returns>
         public static IDictionary<string, object> ExtractLoanFields(Loan currentLoan)
         {
             IDictionary<string, object> fieldValues = new Dictionary<string, object>();
@@ -84,10 +89,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             IDictionary<string, object> loanData = new Dictionary<string, object>();
             if (loan != null)
             {
+                //mark state
+                BorrowerPair originalPair = loan.BorrowerPairs.Current;
+                loan.BorrowerPairs.Current = loan.BorrowerPairs[0];
+
                 AddLoanData(loanData, "fields", ExtractLoanFields(loan));
                 AddLoanData(loanData, "milestones", ExtractMilestones(loan));
                 AddLoanData(loanData, "lastmodified", loan.LastModified.ToString(_DateFormat));
                 AddLoanData(loanData, "MachineUser", MachineUser.GetMachineUserIdentification());
+
+                //restore state
+                loan.BorrowerPairs.Current = originalPair;
             }
             return loanData;
         }
@@ -187,7 +199,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             IList<IDictionary<string, object>> borrowerPairs = new List<IDictionary<string, object>>();
             try
             {
-                string primarySsn = FormatSSN(ExtractSimpleField(loan, "65"));
                 int pairCount = loan.BorrowerPairs.Count;
 
                 //using for loop instead of foreach in order to track the index
@@ -208,10 +219,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         fieldDictionary.Add("CoBorrower.ID", pair.CoBorrower.ID);
                     }
 
-                    //change the current borrower pair
-                    loan.BorrowerPairs.Current = pair;
-                    string ssn = FormatSSN(ExtractSimpleField(loan, "65"));
-                    if (ssn != null && ssn == primarySsn)
+                    if (pairIndex == 0)
                     {
                         fieldDictionary.Add("PrimaryPair", true);
                     }
@@ -219,6 +227,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         fieldDictionary.Add("PrimaryPair", false);
                     }
+                    //change the current borrower pair
+                    loan.BorrowerPairs.Current = pair;
                     ExtractIntIndexFields(loan, FieldUtils.BorrowerEmployers(), loan.BorrowerEmployers.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.CoBorrowerEmployers(), loan.CoBorrowerEmployers.Count, fieldDictionary);
                     ExtractIntIndexFields(loan, FieldUtils.BorrowerResidences(), loan.BorrowerResidences.Count, fieldDictionary);
