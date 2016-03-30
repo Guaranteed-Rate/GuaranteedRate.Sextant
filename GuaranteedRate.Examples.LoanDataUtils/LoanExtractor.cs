@@ -35,6 +35,11 @@ namespace GuaranteedRate.Examples.LoanDataUtils
         {
         }
 
+        /// <summary>
+        /// Method for testing extraction.
+        /// </summary>
+        /// <param name="session">Active session</param>
+        /// <param name="id">Loan ID or Guid</param>
         public void DoExtraction(Session session, string id)
         {
             FieldUtils.AddFieldCollection(FieldUtils.session.Loans.FieldDescriptors.CustomFields);
