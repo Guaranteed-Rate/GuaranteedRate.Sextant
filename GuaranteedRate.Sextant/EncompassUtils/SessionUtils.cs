@@ -1,5 +1,7 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.Client;
+using EllieMae.Encompass.Collections;
+using EllieMae.Encompass.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +26,28 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             return session.Loans.Open(guid);
         }
+
+        public static Loan OpenLoanFromLoanNumber(Session session, string loan_number)
+        {
+            StringFieldCriterion sfc = new StringFieldCriterion("Loan.LoanNumber", loan_number, StringFieldMatchType.Exact, true);
+            LoanIdentityList loanList = session.Loans.Query(sfc);
+            string guid = null;
+
+            //Loan.LoanNumber SHOULD be unique, but there is a timing bug
+            //If multiple loans found, retun the last one
+            foreach (LoanIdentity id in loanList)
+            {
+                guid = id.Guid;
+            }
+            if (!String.IsNullOrWhiteSpace(guid))
+            {
+                return session.Loans.Open(guid);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }
