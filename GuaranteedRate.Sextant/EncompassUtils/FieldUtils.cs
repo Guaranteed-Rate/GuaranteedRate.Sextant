@@ -78,10 +78,12 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private static ISet<FieldDescriptor> SELECTED_FIELDS;
 
-        /**
-         * These *SEEM* to be the *Simple* fields that are affected by switching active borrower-pair.
-         * Have not found a good way to know which fields are affected by the active borrower-pair.
-         */
+       
+
+        /// <summary>
+        /// These* SEEM* to be the* Simple* fields that are affected by switching active borrower-pair.
+        /// Have not found a good way to know which fields are affected by the active borrower-pair.
+        /// </summary>
         public static readonly ISet<string> BORROWER_PAIR_FIELDS =
             new HashSet<string> { 
                                "36", "37", "38", "39", "52", "53", "54", "60", "65", "66", "67", "68", "69", "70", "71", "97", "98", 
@@ -196,10 +198,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static Session session = null;
 
-        /**
-         * Double-check locking to ensure the singleton is only created once.
-         * Note the reporter is also volatile which is requried to make the double-check correct.
-         */
+
+        /// <summary>
+        ///  Double-check locking to ensure the singleton is only created once.
+        ///  Note the reporter is also volatile which is requried to make the double-check correct.
+        /// </summary>
         private static FieldUtils Instance
         {
             get
@@ -270,16 +273,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldList;
         }
 
-        /***
-         * Depending on the field type it is sometimes possible to know the field ids at the session
-         * level, sometimes the specific fieldIds depend on the loan file itself.
-         * 
-         * Multi-value fieldIds whose indexes are defined at the session level will be unrolled into multiple
-         * simple value fields.
-         * 
-         * Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
-         * lists so that they can be handled on a loan-by-loan basis.
-         */
+       /// <summary>
+       /// Depending on the field type it is sometimes possible to know the field ids at the session
+       /// level, sometimes the specific fieldIds depend on the loan file itself.
+       ///
+       /// Multi-value fieldIds whose indexes are defined at the session level will be unrolled into multiple
+       /// simple value fields.
+       ///
+       /// Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
+       /// lists so that they can be handled on a loan-by-loan basis.
+       /// </summary>
+       /// <param name="fieldDescriptors"></param>
         private void LoadFieldIdsFromFieldDescriptors(ICollection<FieldDescriptor> fieldDescriptors)
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
