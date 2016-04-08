@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.WebClients
 {
-    class SecureAsyncEventReporter : AsyncEventReporter
+    public class SecureAsyncEventReporter : AsyncEventReporter
     {
         public string authorization { get; set; }
 
