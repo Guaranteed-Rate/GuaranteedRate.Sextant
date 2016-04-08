@@ -1,3 +1,12 @@
+## v1.13.0 / 2016 April 7
+
+> This release adds `SecureAsyncEventReporter` which allows posting data to an
+> endpoint that requires an `Authorization` token.
+
+* **Add** `SecureAsyncEventReporter` which will add an `Authorization` token
+to the header of the events being posted.
+
+
 ## v1.12.2 / 2016 March 29
 
 > Bugfix release to correct logic that identifies the primary borrower pair.
