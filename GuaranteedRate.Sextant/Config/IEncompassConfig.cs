@@ -16,6 +16,7 @@ namespace GuaranteedRate.Sextant.Config
          * Get value of key, return default if key does not exist
          */
         string GetValue(string key, string defaultVal = null);
+        bool GetValue(string value, bool defaultValue);
         ICollection<string> GetKeys();
     }
 }

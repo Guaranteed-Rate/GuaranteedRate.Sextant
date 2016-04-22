@@ -5,6 +5,9 @@
 
 * **Fix** - Switched from EncompassSDK.Complete to EncompassSDK.Standard.  
 Complete is unneccessary.
+* **Add** - Added optional init() method to Loggly logger that will auto 
+configure itself from config
+* **Add** - Added ability to turn logging levels on/off
 
 ```c#
 [GuaranteedRate.Sextant "1.13.0"]
