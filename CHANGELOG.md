@@ -1,3 +1,15 @@
+## v1.13.0 / 2016 April 22
+
+> Collection of improvements to handle Encompass Performance issues being 
+> experienced by GuaranteedRate.
+
+* **Fix** - Switched from EncompassSDK.Complete to EncompassSDK.Standard.  
+Complete is unneccessary.
+
+```c#
+[GuaranteedRate.Sextant "1.13.0"]
+```
+
 ## v1.12.2 / 2016 March 29
 
 > Bugfix release to correct logic that identifies the primary borrower pair.
@@ -6,39 +18,63 @@
 > listed as the primary pair.
 > Additionally added a convience method to open a loan by loan number
 
-* **Fix** Identification of primary borrower pair on a loan
-* **Add** Convience method in SessionUtils to open a loan by LoanNumber instead
+* **Fix** - Identification of primary borrower pair on a loan
+* **Add** - Convience method in SessionUtils to open a loan by LoanNumber instead
 of GUID
+
+```c#
+[GuaranteedRate.Sextant "1.12.2"]
+```
 
 ## v1.12.1 / 2016 March 21
 
 > Updating to Encompass SDK 15.2.  No other changes.
+
+```c#
+[GuaranteedRate.Sextant "1.12.1"]
+```
 
 ## v1.12.0 / 2016 March 17
 
 > Adding the ability to collect active directory and machine information
 > Adding AD and machine information to ExtractEverything method data return
 
+```c#
+[GuaranteedRate.Sextant "1.12.0"]
+```
+
 ## v1.11.3 / 2016 Feb 23
 
 > Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't marked
 > as override
 
-* **Fix** Java dev makes C# mistake...
+* **Fix** - Java dev makes C# mistake...
+
+```c#
+[GuaranteedRate.Sextant "1.11.3"]
+```
 
 ## v1.11.2 / 2016 Feb 23
 
 > Fixing bug in `AsyncEventReporter` - the function `ExtraSetup` wasn't being
 > called.
 
-* **Fix** `AsyncEventReporter` now calls `ExtraSetup` when setting up an event
+* **Fix** - `AsyncEventReporter` now calls `ExtraSetup` when setting up an event
+
+```c#
+[GuaranteedRate.Sextant "1.11.2"]
+```
 
 ## v1.11.1 / 2016 Feb 2
 
 > Updated logging in `LoanDataUtils` to include the `loanNumber` where the 
 > exception occured
 
-* **Update** `LoanDataUtils` logging to include the loan number
+* **Update** - `LoanDataUtils` logging to include the loan number
+
+```c#
+[GuaranteedRate.Sextant "1.11.1"]
+```
 
 ## v1.11.0 / 2016 Feb 2
 
@@ -46,33 +82,57 @@ of GUID
 > can be ignored without forcing the user to add all the others in the 
 > collection.
 
-* **Update** `FieldUtils` now supports removing specific fields
+* **Update** - `FieldUtils` now supports removing specific fields
+
+```c#
+[GuaranteedRate.Sextant "1.11.0"]
+```
 
 ## v1.10.6 / 2016 Jan 27
 
 > Cleanup from the date formatting madness.
 
-* **Update** `LoanDataUtils` now has a configurable datetime formatter
+* **Update** - `LoanDataUtils` now has a configurable datetime formatter
+
+```c#
+[GuaranteedRate.Sextant "1.10.6"]
+```
 
 ## v1.10.5 / 2016 Jan 27
 
 > Trying date-time formatter again
 
+```c#
+[GuaranteedRate.Sextant "1.10.5"]
+```
+
 ## v1.10.4 / 2016 Jan 27
 
 > Restoring Loan.LastModified code from master
+
+```c#
+[GuaranteedRate.Sextant "1.10.4"]
+```
 
 ## v1.10.3 / 2016 Jan 27
 
 > Fix bug in `AysncEventReporter` where it would retry events that were 
 > `ACCEPTED` instead of `OK`
 
-* **FIX** `AysncEventReporter` now has a set of `success` http response codes:
+* **FIX** - `AysncEventReporter` now has a set of `success` http response codes:
 HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
+
+```c#
+[GuaranteedRate.Sextant "1.10.3"]
+```
 
 ## v1.10.2 / 2016 Jan 27
 
 > Non-release debug version for tracking the LastModified problem
+
+```c#
+[GuaranteedRate.Sextant "1.10.2"]
+```
 
 ## v1.10.1 / 2016 Jan 26
 
@@ -80,7 +140,7 @@ HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
 > The value returned is not always valid, so the defensive code will do 
 > polling and attempt to correct.
 
-* **Fix** New logic for getting last modified in 
+* **Fix** - New logic for getting last modified in 
 `LoanDataUtils.GetBestGuessLastModified(Loan loan)`
 
 ```c#
@@ -92,9 +152,8 @@ HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
 > This release corrects the shutdown mechanics of `AsyncEventReporter` so that
 > callers are able to shutdown without losing data that is on the queue.
 
-* **Fix** `AsyncEventReporter.Shutdown()` to shutdown cleanly.  A side effect
+* **Fix** - `AsyncEventReporter.Shutdown()` to shutdown cleanly.  A side effect
 of this change is that this method now *BLOCKS* until the reporter has shutdown
-
 
 ```c#
 [GuaranteedRate.Sextant "1.10.0"]
