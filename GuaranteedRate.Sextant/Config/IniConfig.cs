@@ -104,5 +104,18 @@ namespace GuaranteedRate.Sextant.Config
             }
             return _config.Keys;
         }
+
+        public bool GetValue(string value, bool defaultValue)
+        {
+            try
+            {
+                return Boolean.Parse(value);
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
     }
 }
