@@ -1,3 +1,15 @@
+## v1.13.1 / 2016 May 2
+
+> Switched back to `EncompassSDK.Complete`, `EncompassSDK.Standard` is
+> insufficient for SDK apps.
+
+* **Fix** - Switched back from EncompassSDK.Standard to EncompassSDK.Complete.  
+Standard isn't sufficient for standalone apps.
+
+```c#
+[GuaranteedRate.Sextant "1.13.1"]
+```
+
 ## v1.13.0 / 2016 April 22
 
 > Collection of improvements to handle Encompass Performance issues being 
