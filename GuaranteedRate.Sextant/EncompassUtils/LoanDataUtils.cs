@@ -319,7 +319,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             IList<string> keys = new List<string>();
             
-            foreach (UnderwritingCondition cond in currentLoan.Log.PostClosingConditions)
+            foreach (PostClosingCondition cond in currentLoan.Log.PostClosingConditions)
             {
                 keys.Add(cond.Title);
             }
