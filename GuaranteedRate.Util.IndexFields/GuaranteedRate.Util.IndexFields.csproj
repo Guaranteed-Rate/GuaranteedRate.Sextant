@@ -32,21 +32,113 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Client, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClientCommon, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ClientCommon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClientServer, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ClientServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClientSession, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ClientSession.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DataAccess, Version=6.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentConverter, Version=7.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\DocumentConverter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EllieMae.Encompass.AsmResolver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EncompassSDK.Standard.15.2.0\lib\EllieMae.Encompass.AsmResolver.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EllieMae.Encompass.AsmResolver.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EllieMae.Encompass.Runtime, Version=3.5.1.5, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EncompassSDK.Standard.15.2.0\lib\EllieMae.Encompass.Runtime.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EllieMae.Encompass.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EMBAM15, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMBAM15.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EMCommon, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMCommon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EMExport, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMExport.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EMLoanUtils15, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EMLoanUtils15.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EncompassAutomation, Version=15.2.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EncompassSDK.Standard.15.2.0\lib\EncompassAutomation.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EncompassAutomation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EncompassObjects, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EncompassSDK.Standard.15.2.0\lib\EncompassObjects.dll</HintPath>
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\EncompassObjects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GenuineChannels, Version=2.4.3.54, Culture=neutral, PublicKeyToken=65fda4a3fde44959, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\GenuineChannels.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Import, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Import.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics2.Shared.v7.1, Version=7.1.20071.40, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Infragistics2.Shared.v7.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinSchedule.v7.1, Version=7.1.20071.40, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Infragistics2.Win.UltraWinSchedule.v7.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v7.1, Version=7.1.20071.40, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Infragistics2.Win.v7.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Jed, Version=1.0.1234.56789, Culture=neutral, PublicKeyToken=d11ef57bba4acf91">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Jed.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PostSharp, Version=3.1.41.9, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\PostSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ReportingDbUtils, Version=6.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\ReportingDbUtils.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SDKConfigImpl, Version=15.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\SDKConfigImpl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Server, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Server.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpZipLib, Version=0.4.0.0, Culture=neutral, PublicKeyToken=fbebc9694da332b7">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\SharpZipLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,6 +147,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VersionInterface15, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\VersionInterface15.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xml3WayMerge, Version=6.2.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSdk.Complete.15.2.0\lib\Xml3WayMerge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiIndexFinder.cs" />
