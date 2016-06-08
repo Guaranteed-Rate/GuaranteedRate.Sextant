@@ -9,8 +9,7 @@ namespace GuaranteedRate.Sextant.Metrics
     interface IDataDogReporter
     {
         void AddCounter(string metric, long value);
-
-        void AddGuage(string metric, long value);
-
+         
+        void AddGauge(string metric, long value);
     }
 }

@@ -100,9 +100,25 @@ namespace GuaranteedRate.Sextant.Metrics
             AddMetric(metric, value, "counter");
         }
 
-        public void AddGuage(string metric, long value)
+
+        /// <summary>
+        /// Send a metric to DataDog
+        /// </summary>
+        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
+        /// <param name="value">value to send to DataDog  e.g. 67</param>
+        public void AddGauge(string metric, long value)
         {
             AddMetric(metric, value, "guage");
+        }
+
+        /// <summary>
+        /// deprecataed because misspelled.  Use AddGauge instead.
+        /// </summary>
+        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
+        /// <param name="value">value to send to DataDog  e.g. 67</param>
+        public void AddGuage(string metric, long value)
+        {
+            AddGauge(metric, value);
         }
 
         private void AddMetric(string metric, long value, string type)
