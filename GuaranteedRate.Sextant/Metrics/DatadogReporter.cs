@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Metrics
 {
-    public class DatadogReporter
+    public class DatadogReporter : IDataDogReporter
     {
 
         private readonly IEventReporter datadogPoster;
