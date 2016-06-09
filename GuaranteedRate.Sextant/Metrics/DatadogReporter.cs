@@ -146,6 +146,11 @@ namespace GuaranteedRate.Sextant.Metrics
             datadogPoster.ReportEvent(json);
         }
 
+        public void AddMeter(string metric, long value)
+        {
+            AddMetric(metric, value, "meter");  
+        }
+
         private class Event
         {
             //Using lowercase to help with json
