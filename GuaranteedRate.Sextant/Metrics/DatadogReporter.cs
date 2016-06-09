@@ -123,6 +123,16 @@ namespace GuaranteedRate.Sextant.Metrics
             AddGauge(metric, value);
         }
 
+        /// <summary>
+        /// Send a meter to DataDog
+        /// </summary>
+        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
+        /// <param name="value">value to send to DataDog  e.g. 67</param>
+        public void AddMeter(string metric, long value)
+        {
+            AddMetric(metric, value, "meter");
+        }
+
         private void AddMetric(string metric, long value, string type)
         {
             Event e = new Event();
@@ -145,11 +155,7 @@ namespace GuaranteedRate.Sextant.Metrics
             string json = JsonConvert.SerializeObject(s); 
             datadogPoster.ReportEvent(json);
         }
-
-        public void AddMeter(string metric, long value)
-        {
-            AddMetric(metric, value, "meter");  
-        }
+      
 
         private class Event
         {
