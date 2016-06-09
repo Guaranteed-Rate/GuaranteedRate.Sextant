@@ -108,7 +108,7 @@ namespace GuaranteedRate.Sextant.Metrics
         /// <param name="value">value to send to DataDog  e.g. 67</param>
         public void AddGauge(string metric, long value)
         {
-            AddMetric(metric, value, "guage");
+            AddMetric(metric, value, "gauge");
         }
 
         /// <summary>
@@ -116,6 +116,8 @@ namespace GuaranteedRate.Sextant.Metrics
         /// </summary>
         /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
         /// <param name="value">value to send to DataDog  e.g. 67</param>
+
+        [Obsolete("Use AddGauge instead.")]
         public void AddGuage(string metric, long value)
         {
             AddGauge(metric, value);

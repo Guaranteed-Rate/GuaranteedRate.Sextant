@@ -1,3 +1,14 @@
+## v1.13.3 / 2016 Jun 09
+
+> Added new interface to support IoC containers, minor bugfix, added AddMeter functionality.
+
+* **Add** Added AddMeter to datadog reporter
+* **Fix** - Correct spelling in datadog reporter.  `guage` should be `gauge`.  Add additional method to support old spelling.  Mark old spelling "obsolete."
+
+
+```c#
+[GuaranteedRate.Sextant "1.13.3"]
+
 ## v1.13.2 / 2016 May 17
 
 > Bug in `LoanDataUtils` - `PostClosingConditions` were being cast as `UnderwritingConditions`
