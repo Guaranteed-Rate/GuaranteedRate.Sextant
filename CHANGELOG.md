@@ -61,7 +61,6 @@ configure itself from config
 [GuaranteedRate.Sextant "1.13.0"]
 ```
 
->>>>>>> master
 ## v1.12.2 / 2016 March 29
 
 > Bugfix release to correct logic that identifies the primary borrower pair.
