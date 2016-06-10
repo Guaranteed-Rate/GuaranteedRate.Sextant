@@ -1,13 +1,28 @@
+## v1.14.0 / 2016 June 10
+
+> Merge screwup - lots of code in thsi release that was never merged to Master.
+> This release adds `SecureAsyncEventReporter` which allows posting data to an
+> endpoint that requires an `Authorization` token.
+
+* **Add** - `SecureAsyncEventReporter` which will add an `Authorization` token
+to the header of the events being posted.
+* **Add** - Methods for extracting user/licensing info in `UserUtils`
+
+```c#
+[GuaranteedRate.Sextant "1.14.0"]
+```
+
 ## v1.13.3 / 2016 Jun 09
 
 > Added new interface to support IoC containers, minor bugfix, added AddMeter functionality.
 
-* **Add** Added AddMeter to datadog reporter
+* **Add** - Added AddMeter to datadog reporter
 * **Fix** - Correct spelling in datadog reporter.  `guage` should be `gauge`.  Add additional method to support old spelling.  Mark old spelling "obsolete."
 
 
 ```c#
 [GuaranteedRate.Sextant "1.13.3"]
+```
 
 ## v1.13.2 / 2016 May 17
 

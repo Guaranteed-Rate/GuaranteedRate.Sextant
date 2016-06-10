@@ -73,5 +73,92 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             string json = JsonConvert.SerializeObject(new EncompassUser(user));
             return json;
         }
+
+        /// <summary>
+        /// Builds a dictionary of state licensing info for the user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="full"> is a flag that will add a bunch of mostly meaningless fields to the dictionary</param>
+        /// <returns></returns>
+        public static IList<IDictionary<string, string>> GetStateLicensing(User user, bool full)
+        {
+            IList<IDictionary<string, string>> licenses = new List<IDictionary<string, string>>();
+            foreach (StateLicense l in user.StateLicenses)
+            {
+                IDictionary<string, string> license = new Dictionary<string, string>();
+                license.Add("State", l.State);
+                license.Add("LicenseNumber", l.LicenseNumber);
+                license.Add("Enabled", l.Enabled + "");
+                license.Add("Selected", l.Selected + "");
+                license.Add("Exempt", l.Exempt + "");
+                license.Add("LicenseStatus", l.LicenseStatus + "");
+                license.Add("ExpirationDate", l.ExpirationDate + "");
+
+                //These are usually blank or MAX DATE
+                if (full)
+                {
+                    license.Add("IssueDate", l.IssueDate + "");
+                    license.Add("StartDate", l.StartDate + "");
+                    license.Add("StatusDate", l.StatusDate + "");
+                    license.Add("LastChecked", l.LastChecked + "");
+                }
+                licenses.Add(license);
+            }
+
+            return licenses;
+        }
+
+        /// <summary>
+        /// Similar to the json user extraction, but this function gives a little more control
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object> GetEncompassInfo(User user)
+        {
+            IDictionary<string, object> encompassInfo = new Dictionary<string, object>();
+            encompassInfo.Add("CellPhone", user.CellPhone);
+            encompassInfo.Add("CHUMID", user.CHUMID);
+            encompassInfo.Add("EmployeeID", user.EmployeeID);
+            encompassInfo.Add("Enabled", user.Enabled + "");
+            encompassInfo.Add("EncompassId", user.ID);
+            encompassInfo.Add("Fax", user.Fax);
+            encompassInfo.Add("FirstName", user.FirstName);
+            encompassInfo.Add("FullName", user.FullName);
+            encompassInfo.Add("IsNew", user.IsNew);
+            encompassInfo.Add("LastName", user.LastName);
+            encompassInfo.Add("NMLSExpirationDate", user.NMLSExpirationDate);
+            encompassInfo.Add("NMLSOriginatorID", user.NMLSOriginatorID);
+            encompassInfo.Add("OrganizationID", user.OrganizationID);
+            encompassInfo.Add("Phone", user.Phone);
+            encompassInfo.Add("PeerLoanAccessRight", user.PeerLoanAccessRight);
+            encompassInfo.Add("RequirePasswordChange", user.RequirePasswordChange);
+            encompassInfo.Add("SubordinateLoanAccessRight", user.SubordinateLoanAccessRight);
+            encompassInfo.Add("WorkingFolder", user.WorkingFolder);
+            encompassInfo.Add("EncompassEmail", user.Email);
+            encompassInfo.Add("StateLicenses", GetStateLicensing(user, true));
+
+            IList<string> personas = new List<string>();
+            foreach (Persona p in user.Personas)
+            {
+                personas.Add(p.Name);
+            }
+            encompassInfo.Add("Personas", personas);
+
+            return encompassInfo;
+        }
+
+        /// <summary>
+        /// Get both state and national licensing info
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object> GetLicensingInfo(User user)
+        {
+            IDictionary<string, object> licensingInfo = new Dictionary<string, object>();
+            licensingInfo.Add("NMLSOriginatorID", user.NMLSOriginatorID);
+            licensingInfo.Add("StateLicenses", GetStateLicensing(user, false));
+            return licensingInfo;
+        }
+
     }
 }
