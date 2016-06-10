@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Metrics
 {
-    public class DatadogReporter
+    public class DatadogReporter : IDataDogReporter
     {
 
         private readonly IEventReporter datadogPoster;
@@ -100,9 +100,37 @@ namespace GuaranteedRate.Sextant.Metrics
             AddMetric(metric, value, "counter");
         }
 
+
+        /// <summary>
+        /// Send a metric to DataDog
+        /// </summary>
+        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
+        /// <param name="value">value to send to DataDog  e.g. 67</param>
+        public void AddGauge(string metric, long value)
+        {
+            AddMetric(metric, value, "gauge");
+        }
+
+        /// <summary>
+        /// deprecataed because misspelled.  Use AddGauge instead.
+        /// </summary>
+        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
+        /// <param name="value">value to send to DataDog  e.g. 67</param>
+
+        [Obsolete("Use AddGauge instead.")]
         public void AddGuage(string metric, long value)
         {
-            AddMetric(metric, value, "guage");
+            AddGauge(metric, value);
+        }
+
+        /// <summary>
+        /// Send a meter to DataDog
+        /// </summary>
+        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
+        /// <param name="value">value to send to DataDog  e.g. 67</param>
+        public void AddMeter(string metric, long value)
+        {
+            AddMetric(metric, value, "meter");
         }
 
         private void AddMetric(string metric, long value, string type)
@@ -127,6 +155,7 @@ namespace GuaranteedRate.Sextant.Metrics
             string json = JsonConvert.SerializeObject(s); 
             datadogPoster.ReportEvent(json);
         }
+      
 
         private class Event
         {

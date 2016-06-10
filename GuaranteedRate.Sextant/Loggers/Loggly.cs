@@ -1,4 +1,6 @@
-﻿using GuaranteedRate.Sextant.WebClients;
+﻿using EllieMae.Encompass.Client;
+using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.WebClients;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Loggers
 {
-    /**
-     * This is a minimal class to aysnchronously push data to loggly.
-     * It has a basic set of log4net style methods.
-     * We can expand if find them to be useful
-     * 
-     * NOTE: Because of how Loggly does tagging, you must set the url and tags BEFORE you start logging events
-     */ 
+    /// <summary>
+    /// This is a minimal class to aysnchronously push data to loggly.
+    /// It has a basic set of log4net style methods.
+    /// We can expand if find them to be useful
+    /// 
+    /// NOTE: Because of how Loggly does tagging, you must set the url and tags BEFORE you start logging events
+    /// </summary>
     public class Loggly : AsyncEventReporter
     {
         private static volatile Loggly reporter;
@@ -35,10 +37,23 @@ namespace GuaranteedRate.Sextant.Loggers
 
         private static bool active = false;
 
-        /**
-         * Tags must be added BEFORE anything is logged.
-         * Once the first event is logged, the tags are locked
-         */
+        public bool ErrorEnabled { get; set; }
+        public bool WarnEnabled { get; set; }
+        public bool InfoEnabled { get; set; }
+        public bool DebugEnabled { get; set; }
+
+        public static string LOGGLY_URL = "Loggly.Url";
+        public static string LOGGLY_ALL = "Loggly.All.Enabled";
+        public static string LOGGLY_ERROR = "Loggly.Error.Enabled";
+        public static string LOGGLY_WARN = "Loggly.Warn.Enabled";
+        public static string LOGGLY_INFO = "Loggly.Info.Enabled";
+        public static string LOGGLY_DEBUG = "Loggly.Debug.Enabled";
+
+        /// <summary>
+        /// Tags must be added BEFORE anything is logged.
+        /// Once the first event is logged, the tags are locked
+        /// </summary>
+        /// <param name="tag"></param>
         public static void AddTag(string tag) {
             tags.Add(tag);
         }
@@ -52,6 +67,32 @@ namespace GuaranteedRate.Sextant.Loggers
         {
             Loggly.POST_URL = url;
             Loggly.active = !String.IsNullOrWhiteSpace(url);
+        }
+
+        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags=null)
+        {
+            if (tags != null)
+            {
+                foreach (string tag in tags)
+                {
+                    AddTag(tag);
+                }
+            }
+            config.Init(session);
+            string configLogglyUrl = config.GetValue(LOGGLY_URL);
+            if (configLogglyUrl != null)
+            {
+                SetPostUrl(configLogglyUrl);
+            }
+            bool allEnabled = config.GetValue(LOGGLY_ALL, false);
+            bool errorEnabled = config.GetValue(LOGGLY_ERROR, false);
+            bool warnEnabled = config.GetValue(LOGGLY_WARN, false);
+            bool infoEnabled = config.GetValue(LOGGLY_INFO, false);
+            bool debugEnabled = config.GetValue(LOGGLY_DEBUG, false);
+            Instance.ErrorEnabled = allEnabled || errorEnabled;
+            Instance.WarnEnabled = allEnabled || warnEnabled;
+            Instance.InfoEnabled = allEnabled || infoEnabled;
+            Instance.DebugEnabled = allEnabled || debugEnabled;
         }
 
         /**
@@ -92,7 +133,6 @@ namespace GuaranteedRate.Sextant.Loggers
             return builder.ToString();
         }
 
-
         private Loggly(string url, int queueSize = DEFAULT_QUEUE_SIZE) : base (url, queueSize)
         {
             ContentType = "text/plain";
@@ -106,54 +146,102 @@ namespace GuaranteedRate.Sextant.Loggers
                 Hostname = "UNKNOWN";
                 ProcessName = "UNKNOWN";
             }
+            ErrorEnabled = true;
+            WarnEnabled = true;
+            InfoEnabled = true;
+            DebugEnabled = true;
+        }
+
+        private static bool LogError()
+        {
+            return (active && Instance.ErrorEnabled);
+        }
+
+        private static bool LogWarn()
+        {
+            return (active && Instance.WarnEnabled);
+        }
+
+        private static bool LogInfo()
+        {
+            return (active && Instance.InfoEnabled);
+        }
+
+        private static bool LogDebug()
+        {
+            return (active && Instance.DebugEnabled);
         }
 
         public static void Error(string loggerName, string message) 
         {
-            IDictionary<string, string> fields = new Dictionary<string, string>();
-            fields.Add("message", message);
-            Log(fields, loggerName, ERROR);
+            if (LogError())
+            {
+                IDictionary<string, string> fields = new Dictionary<string, string>();
+                fields.Add("message", message);
+                Log(fields, loggerName, ERROR);
+            }
         }
 
         public static void Error(string loggerName, IDictionary<string, string> fields)
         {
-            Log(fields, loggerName, ERROR);
+            if (LogError())
+            {
+                Log(fields, loggerName, ERROR);
+            }
         }
 
         public static void Warn(string loggerName, string message)
         {
-            IDictionary<string, string> fields = new Dictionary<string, string>();
-            fields.Add("message", message);
-            Log(fields, loggerName, WARN);
+            if (LogWarn())
+            {
+                IDictionary<string, string> fields = new Dictionary<string, string>();
+                fields.Add("message", message);
+                Log(fields, loggerName, WARN);
+            }
         }
 
         public static void Warn(string loggerName, IDictionary<string, string> fields)
         {
-            Log(fields, loggerName, WARN);
+            if (LogWarn())
+            {
+                Log(fields, loggerName, WARN);
+            }
         }
 
         public static void Info(string loggerName, string message)
         {
-            IDictionary<string, string> fields = new Dictionary<string, string>();
-            fields.Add("message", message);
-            Log(fields, loggerName, INFO);
+            if (LogInfo())
+            {
+                IDictionary<string, string> fields = new Dictionary<string, string>();
+                fields.Add("message", message);
+                Log(fields, loggerName, INFO);
+            }
         }
 
         public static void Info(string loggerName, IDictionary<string, string> fields)
         {
-            Log(fields, loggerName, INFO);
+            if (LogInfo())
+            {
+                Log(fields, loggerName, INFO);
+            }
         }
 
         public static void Debug(string loggerName, string message)
         {
-            IDictionary<string, string> fields = new Dictionary<string, string>();
-            fields.Add("message", message);
-            Log(fields, loggerName, DEBUG);
+            if (LogDebug())
+            {
+                IDictionary<string, string> fields = new Dictionary<string, string>();
+                fields.Add("message", message);
+                Log(fields, loggerName, DEBUG);
+            }
         }
 
         public static void Debug(string loggerName, IDictionary<string, string> fields)
         {
-            Log(fields, loggerName, DEBUG);
+            if (LogDebug())
+            {
+                Log(fields, loggerName, DEBUG);
+            }
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
