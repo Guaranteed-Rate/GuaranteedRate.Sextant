@@ -1,3 +1,18 @@
+## v16.2.0.0 / 2016 July 7
+
+> Changing the versioning scheme to match Ellie Mae.
+> Now the project's first 2 partitions will match the `EncompassSDK` version 
+> used by the project.  Because the SDK versions are incompatable this makes
+> sense as a major version indicator.  The 3rd and 4th numbers will be used to
+> indicate major updates and bugfixes respectively.
+
+* **Update** - Updated to EncompassSDK 16.2
+* **Update** - Changed project versioning scheme
+
+```c#
+[GuaranteedRate.Sextant "16.2.0.0"]
+```
+
 ## v1.14.0 / 2016 June 10
 
 > Merge screwup - lots of code in thsi release that was never merged to Master.
