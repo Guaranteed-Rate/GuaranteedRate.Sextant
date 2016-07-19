@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Metrics
 {
-    interface IDataDogReporter
+    public interface IDataDogReporter
     {
         void AddCounter(string metric, long value);
          
