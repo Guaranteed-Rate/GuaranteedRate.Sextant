@@ -1,15 +1,10 @@
-﻿using EllieMae.Encompass.Automation;
-using EllieMae.Encompass.BusinessEnums;
+﻿using EllieMae.Encompass.BusinessEnums;
 using EllieMae.Encompass.BusinessObjects.Loans;
-using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
 using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Reporting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -215,7 +210,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         {
                             if (session == null)
                             {
-                                session = EncompassApplication.Session;
+                                throw new Exception("Please assign session object to FieldUtils.session.");
                             }
                             encompassFields = new FieldUtils();
                         }
