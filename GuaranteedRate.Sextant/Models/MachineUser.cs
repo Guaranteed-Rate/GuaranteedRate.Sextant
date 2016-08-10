@@ -1,12 +1,8 @@
-﻿using EllieMae.Encompass.Automation;
-using GuaranteedRate.Sextant.Loggers;
+﻿using GuaranteedRate.Sextant.Loggers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Models
 {
