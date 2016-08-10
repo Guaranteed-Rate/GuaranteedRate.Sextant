@@ -1,3 +1,17 @@
+## v16.2.1.0 / 2016 Aug 9
+
+> This version removes the dependency on the EncompassSDK.
+> We did this because the SDK must be installed on the target machine in all 
+> cases, and having a nuget dependency only intruduces potential dependency 
+> conflicts
+
+* **Update** - Removed the EncompassSDK nuget package, and added hardcoded
+references to the installed EncompassSDK
+
+```c#
+[GuaranteedRate.Sextant "16.2.1.0"]
+```
+
 ## v16.2.0.0 / 2016 July 7
 
 > Changing the versioning scheme to match Ellie Mae.
