@@ -16,6 +16,39 @@ The primary goal is to extend plugin functionality in a few key areas:
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
 
+#### Update 16.2.1.0
+In this updated we removed dependency to EncompassSDK nuget package which we had to create for every new release of Encompass.
+Instead we are referencing 3 Encompass assemblies that are required for Sextant or any other Encompass SDK app to work. 
+These assemblies are enough to resolve any encompass assemblies necessary to run your application. Quote from Ecnompass SDK documentation
+> To use the EncompassObjects API, you must add a reference to three separate assemblies that are shipped with the SDK: EllieMae.Encompass.AsmResolver.dll, EllieMae.Encompass.Runtime.dll and EncompassObjects.dll. All three are found in the folder in which you installed the SDK.
+> The first two of these assemblies provide the interface and implementation of the API Runtime Services, a feature that allows programs that use the EncompassObjects API to dynamically locate and load the core API DLLs at runtime.
+> After adding the three assemblies as references to your project, be sure to set the Copy Local property of the EncompassObjects assembly to False.
+
+Steps below are recommended by EllieMae, but we found them not required for the application to work
+* Enable legacy security policy
+* * For ConsoleApplication/WindowsService Add this to app.config:
+```
+<configuration>
+<runtime>
+<NetFx40_LegacySecurityPolicy enabled="true"/>
+</runtime>
+</configuration>
+```
+* * For Web Application add this to web.config:
+```
+<configuration>
+<system.web>
+<trust level="Full" legacyCasModel="true"/>
+</system.web>
+</configuration>
+```
+* Initialize encompass SDK by calling:
+``` new EllieMae.Encompass.Runtime.RuntimeServices().Initialize(); ```
+at the begining of the your application execution.
+
+
+
+
 ### AsyncEventReporter
 
 This is a simple (copied from msdn) mutli-threaded queue that will send POSTs to a service asynchronously.
