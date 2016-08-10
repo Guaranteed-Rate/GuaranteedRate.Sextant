@@ -135,7 +135,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     string serverUri = session.ServerURI;
                     fieldValues.Add("SessionServerURI", serverUri); //https://smartClientId.ea.elliemae.net$smartClientId
-                    fieldValues.Add("SessionSmartClientId", serverUri.Substring(serverUri.IndexOf("$")));   //just the smartClientId
+                    fieldValues.Add("SessionSmartClientId", serverUri.Substring(serverUri.IndexOf("$") + 1));   //just the smartClientId
                     fieldValues.Add("SessionUserId", session.UserID);
                 }
             }
