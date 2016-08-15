@@ -1,3 +1,18 @@
+## v16.2.2.0 / 2016 Aug 10
+
+> Added the server URI and smart client to the list of fields collected by
+> `LoanDataUtils`, which is useful for users supporting mutliple Encompass 
+> Environments
+
+* **Add** - `Session.ServerURI` as `SessionServerURI` to the Loan Dictonary 
+created by LoanDataUtils.
+* **Add** - `smart client id` as `SessionSmartClientId` to the Loan Dictonary 
+created by LoanDataUtils.  This value is derived from the ServerURI.
+
+```c#
+[GuaranteedRate.Sextant "16.2.2.0"]
+```
+
 ## v16.2.1.0 / 2016 Aug 9
 
 > This version removes the dependency on the EncompassSDK.
