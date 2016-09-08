@@ -2,29 +2,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using EllieMae.Encompass.Client;
 using Newtonsoft.Json.Linq;
 
 namespace GuaranteedRate.Sextant.Config
 {
-    public class JsonEncompassConfig:IEncompassConfig
+    /// <summary>
+    /// provides a simple config fild parser for JSON files.  Defaults to ASCII encoding
+    /// </summary>
+    public class JsonEncompassConfig : IEncompassConfig
     {
         private JObject _jsonObject = null;
+        private Encoding _encoding = Encoding.ASCII;
 
+        /// <summary>
+        /// Returns all keys in the json config.  
+        /// </summary>
+        /// <returns>String collection of keys</returns>
         public ICollection<string> GetKeys()
         {
-          return   _jsonObject.Properties().Select(a => a.Name).ToList();
+            return _jsonObject.Descendants().Select(aa => aa.Path).Distinct().ToList();
         }
 
-        public bool GetValue(string key, bool defaultValue)
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public JsonEncompassConfig()
         {
-            return Boolean.Parse(GetValue(key,defaultValue.ToString()));
         }
 
+        /// <summary>
+        /// Initializes the config from a fixed string.  Useful for testing.
+        /// </summary>
+        /// <param name="configText">The json text.</param>
+        /// <returns>true for success, throws exception otherwise</returns>
+        public JsonEncompassConfig(string configText)
+        {
+            _jsonObject = JObject.Parse(configText);
+        }
+
+        /// <summary>
+        /// Returns the value of the given key
+        /// </summary>
+        /// <param name="key">Full path to the key(e.g. "MyKey" or "Keys[0].MySubKey")</param>
+        /// <param name="defaultVal">Default value if the key is null</param>
+        /// <returns></returns>
+        public bool GetValue(string key, bool defaultVal)
+        {
+            return Boolean.Parse(GetValue(key, defaultVal.ToString()));
+        }
+
+        /// <summary>
+        /// Returns the value of the given key
+        /// </summary>
+        /// <param name="key">Full path to the key(e.g. "MyKey" or "Keys[0].MySubKey")</param>
+        /// <param name="defaultVal">Default value if the key is null</param>
+        /// <returns></returns>
         public string GetValue(string key, string defaultVal = null)
-           {
-            var val =  _jsonObject.Properties().FirstOrDefault(aa => aa.Name == key);
+        {
+            var val = _jsonObject.SelectToken(key);
 
             if (val == null)
             {
@@ -33,36 +69,70 @@ namespace GuaranteedRate.Sextant.Config
             return val.ToString();
         }
 
+
+        /// <summary>
+        /// Initializes the config from a default "sextant.json" file.
+        /// </summary>
+        /// <param name="session">Current Encompass session</param>
+        /// <returns>true for success, throws exception otherwise</returns>
         public bool Init(Session session)
         {
-            return Init(session,"Sextant.json");
+            return Init(session, "Sextant.json");
         }
 
+
+        /// <summary>
+        /// Reloads the config from a default "sextant.json" file.
+        /// </summary>
+        /// <param name="session">Current Encompass session</param>
+        /// <returns>true for success, throws exception otherwise</returns>
         public bool Reload(Session session)
         {
             return Reload(session, "Sextant.json");
         }
 
+
+        /// <summary>
+        /// Initializes the config from this file.
+        /// </summary>
+        /// <param name="session">Current Encompass session</param>
+        /// <param name="configPath">Name of the config file (e.g. "myconfig.json")</param>
         public bool Init(Session session, string configPath)
+        {
+            return Init(session, configPath, Encoding.ASCII);
+        }
+
+        /// <summary>
+        /// Initializes the config from this file.
+        /// </summary>
+        /// <param name="session">Current Encompass session</param>
+        /// <param name="configPath">Name of the config file (e.g. "myconfig.json")</param>
+        /// <param name="encoding">Encoding of the file.</param>
+        /// <returns>true for success, throws exception otherwise</returns>
+        public bool Init(Session session, string configPath, Encoding encoding)
         {
             try
             {
+                _encoding = encoding;
                 var configText = session.DataExchange.GetCustomDataObject(configPath);
-                _jsonObject= new JObject(configText);
+                _jsonObject = JObject.Parse(configText.ToString(_encoding));
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                    
-                throw new Exception($"Could not load config file {configPath}");
+                throw new Exception($"Could not load config file {configPath}", ex);
             }
-
         }
 
+        /// <summary>
+        /// Reloads the config file
+        /// </summary>
+        /// <param name="session">Current Encompass session</param>
+        /// <param name="configPath">Name of the config file e.g. "foo.json"</param>
+        /// <returns>true for success, throws exception otherwise</returns>
         public bool Reload(Session session, string configPath)
         {
             return Init(session, configPath);
-
         }
     }
 }

@@ -54,7 +54,8 @@ namespace GuaranteedRate.Sextant.Loggers
         /// Once the first event is logged, the tags are locked
         /// </summary>
         /// <param name="tag"></param>
-        public static void AddTag(string tag) {
+        public static void AddTag(string tag)
+        {
             tags.Add(tag);
         }
 
@@ -69,7 +70,7 @@ namespace GuaranteedRate.Sextant.Loggers
             Loggly.active = !String.IsNullOrWhiteSpace(url);
         }
 
-        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags=null)
+        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
         {
             if (tags != null)
             {
@@ -99,6 +100,7 @@ namespace GuaranteedRate.Sextant.Loggers
          * Double-check locking to ensure the singleton is only created once.
          * Note the reporter is also volatile which is requried to make the double-check correct.
          */
+
         public static Loggly Instance
         {
             get
@@ -133,7 +135,7 @@ namespace GuaranteedRate.Sextant.Loggers
             return builder.ToString();
         }
 
-        private Loggly(string url, int queueSize = DEFAULT_QUEUE_SIZE) : base (url, queueSize)
+        private Loggly(string url, int queueSize = DEFAULT_QUEUE_SIZE) : base(url, queueSize)
         {
             ContentType = "text/plain";
             try
@@ -172,7 +174,7 @@ namespace GuaranteedRate.Sextant.Loggers
             return (active && Instance.DebugEnabled);
         }
 
-        public static void Error(string loggerName, string message) 
+        public static void Error(string loggerName, string message)
         {
             if (LogError())
             {

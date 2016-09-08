@@ -6,7 +6,7 @@
         /// Init encompass SDK. Must be run before using any of Encompass APIs
         /// </summary>
         public static void InitEncompass()
-        {   
+        {
             new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
         }
 

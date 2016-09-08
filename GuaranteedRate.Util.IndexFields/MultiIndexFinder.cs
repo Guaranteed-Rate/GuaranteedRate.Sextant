@@ -17,6 +17,7 @@ namespace GuaranteedRate.Util.IndexFields
      * 2 - Some fields will throw exceptions when invalid indexes are requested.
      * Which is both slow and noisy
      */
+
     public class MultiIndexFinder
     {
         static int Main(string[] args)
@@ -122,7 +123,7 @@ namespace GuaranteedRate.Util.IndexFields
             ISet<string> uniques = new HashSet<string>();
             foreach (string key in results.Keys)
             {
-                uniques.Add((string)results[key]);
+                uniques.Add((string) results[key]);
             }
             Console.WriteLine(field + " == [values = " + results.Count + " ][uniques = " + uniques.Count + "]");
         }
@@ -137,10 +138,9 @@ namespace GuaranteedRate.Util.IndexFields
             ISet<string> uniques = new HashSet<string>();
             foreach (string key in results.Keys)
             {
-                uniques.Add((string)results[key]);
+                uniques.Add((string) results[key]);
             }
             Console.WriteLine(field + " == [values = " + results.Count + " ][uniques = " + uniques.Count + "]");
         }
-
     }
 }

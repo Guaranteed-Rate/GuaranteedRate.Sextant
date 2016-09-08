@@ -16,9 +16,15 @@ namespace GuaranteedRate.Sextant.WebClients
      * creates a worker task to process messages from the queue in a separate thead.
      * 
      */
+
     public class AsyncEventReporter : IEventReporter
     {
-        public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue };
+        public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode>
+        {
+            HttpStatusCode.OK,
+            HttpStatusCode.Accepted,
+            HttpStatusCode.Continue
+        };
 
         private readonly string url;
         private readonly BlockingCollection<string> eventQueue;
@@ -53,7 +59,6 @@ namespace GuaranteedRate.Sextant.WebClients
             {
                 while (!eventQueue.IsCompleted)
                 {
-
                     string nextEvent = null;
                     // Blocks if number.Count == 0 
                     // IOE means that Take() was called on a completed collection. 
@@ -65,7 +70,7 @@ namespace GuaranteedRate.Sextant.WebClients
                     {
                         nextEvent = eventQueue.Take();
                     }
-                    catch (InvalidOperationException e) 
+                    catch (InvalidOperationException e)
                     {
                         Loggly.Warn(this.GetType().Name.ToString(), "InvalidOperationException reading from queue:" + e);
                     }
@@ -74,8 +79,8 @@ namespace GuaranteedRate.Sextant.WebClients
                     {
                         bool success = false;
                         int tries = 0;
-                        while (!success && tries < retries) 
-                        { 
+                        while (!success && tries < retries)
+                        {
                             success = PostEvent(nextEvent);
                             if (!success)
                             {
@@ -97,6 +102,7 @@ namespace GuaranteedRate.Sextant.WebClients
          * This is the correct way to cleanly shutdown.
          * Once called this method *WILL BLOCK* until the queue has been drained.
          */
+
         public void Shutdown()
         {
             eventQueue.CompleteAdding();
@@ -117,9 +123,9 @@ namespace GuaranteedRate.Sextant.WebClients
          * additional functionality
          * 
          */
+
         protected virtual void ExtraSetup(WebRequest webRequest)
         {
-
         }
 
         private bool PostEvent(string formattedData)
@@ -154,7 +160,8 @@ namespace GuaranteedRate.Sextant.WebClients
                             {
                                 if (!SUCCESS_CODES.Contains(response.StatusCode))
                                 {
-                                    Loggly.Warn(this.GetType().Name.ToString(), "Webservice at " + url + " returned status code:" + response.StatusCode);
+                                    Loggly.Warn(this.GetType().Name.ToString(),
+                                        "Webservice at " + url + " returned status code:" + response.StatusCode);
                                     return false;
                                 }
                             }

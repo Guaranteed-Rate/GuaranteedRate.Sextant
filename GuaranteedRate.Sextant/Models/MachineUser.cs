@@ -12,11 +12,13 @@ namespace GuaranteedRate.Sextant.Models
     This allows differentiation between Encompass user accounts and machine. (You can now validate if a person logs into an Encompass account with a non-typical or suspicion machine)
     This allows differentiation between Windows Login and Machine Name (Logging into a machine with non-typical or suspicion Windows credentials)
     */
+
     public class MachineUser
     {
         /**
         Captures the Login name from the users active directory
         */
+
         public static string WindowsLoginName
         {
             get
@@ -32,9 +34,11 @@ namespace GuaranteedRate.Sextant.Models
                 }
             }
         }
+
         /**
         Captures the RunAs name from the process. Example: RunAs Admin
         */
+
         public static string ProgramRunAsName
         {
             get
@@ -54,6 +58,7 @@ namespace GuaranteedRate.Sextant.Models
         /**
         Captures the machine's local IP
         */
+
         public static string MachineIP
         {
             get
@@ -84,6 +89,7 @@ namespace GuaranteedRate.Sextant.Models
         /**
         Captures the machine's name
         */
+
         public static string ComputerName
         {
             get

@@ -31,14 +31,19 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static ICollection<User> GetAllUsersInWorkFolder(this Session session, string workFolder)
         {
-            return GetAllUsers(session).Where(x => x.WorkingFolder.ToUpper().Replace(" ", "") == workFolder.ToUpper().Replace(" ", "")).ToList();
+            return
+                GetAllUsers(session)
+                    .Where(x => x.WorkingFolder.ToUpper().Replace(" ", "") == workFolder.ToUpper().Replace(" ", ""))
+                    .ToList();
         }
 
-        public static bool TryForceCompanyWidePasswordChange(this Session session, ICollection<string> exceptionUserIds, out string exception)
+        public static bool TryForceCompanyWidePasswordChange(this Session session, ICollection<string> exceptionUserIds,
+            out string exception)
         {
             try
             {
-                ICollection<User> targetUsers = GetAllActiveUsers(session).Where(x => !exceptionUserIds.Contains(x.ID)).ToList();
+                ICollection<User> targetUsers =
+                    GetAllActiveUsers(session).Where(x => !exceptionUserIds.Contains(x.ID)).ToList();
                 foreach (User user in targetUsers)
                 {
                     user.RequirePasswordChange = true;
@@ -59,7 +64,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static string ToJson(this ICollection<User> users)
         {
             ICollection<EncompassUser> myUsers = new List<EncompassUser>();
-            foreach(User u in users)
+            foreach (User u in users)
             {
                 myUsers.Add(new EncompassUser(u));
             }
@@ -159,6 +164,5 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             licensingInfo.Add("StateLicenses", GetStateLicensing(user, false));
             return licensingInfo;
         }
-
     }
 }

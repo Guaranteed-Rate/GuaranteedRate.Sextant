@@ -15,6 +15,7 @@ namespace GuaranteedRate.Sextant.Config
      * Lines starting with # will be treated as comments
      * Empty lines will be ignored.
      */
+
     public class IniConfig : IEncompassConfig
     {
         private volatile IDictionary<string, string> _config;
@@ -84,8 +85,8 @@ namespace GuaranteedRate.Sextant.Config
                 if (_config.TryGetValue(key.ToLower(), out retVal))
                 {
                     return retVal;
-                } 
-                else 
+                }
+                else
                 {
                     return defaultVal;
                 }
@@ -116,6 +117,5 @@ namespace GuaranteedRate.Sextant.Config
                 return defaultValue;
             }
         }
-
     }
 }
