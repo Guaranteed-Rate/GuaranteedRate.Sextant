@@ -15,7 +15,7 @@ namespace GuaranteedRate.Examples.LoanDataUtils
     {
         static int Main(string[] args)
         {
-            if (args!=null && args.Length == 4)
+            if (args != null && args.Length == 4)
             {
                 LoanExtractor loanExtractor = new LoanExtractor();
                 Session session = SessionUtils.GetEncompassSession(args[1], args[2], args[3]);
@@ -26,7 +26,8 @@ namespace GuaranteedRate.Examples.LoanDataUtils
             }
             else
             {
-                Console.WriteLine("Usage [Loan Guid or Loan Number] [Encompass url] [Encompass User] [Encompass Password]");
+                Console.WriteLine(
+                    "Usage [Loan Guid or Loan Number] [Encompass url] [Encompass User] [Encompass Password]");
                 return 0;
             }
         }
@@ -56,7 +57,8 @@ namespace GuaranteedRate.Examples.LoanDataUtils
                 loan = SessionUtils.OpenLoanFromLoanNumber(session, id);
             }
 
-            IDictionary<string, object> loanData = GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
+            IDictionary<string, object> loanData =
+                GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
             string json = JsonConvert.SerializeObject(loanData);
             try
             {

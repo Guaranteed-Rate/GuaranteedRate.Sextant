@@ -10,7 +10,6 @@ namespace GuaranteedRate.Sextant.Metrics
 {
     public class DatadogReporter : IDatadogReporter
     {
-
         private readonly IEventReporter datadogPoster;
         public string host { get; set; }
 
@@ -43,6 +42,7 @@ namespace GuaranteedRate.Sextant.Metrics
          * Double-check locking to ensure the singleton is only created once.
          * Note the dogReporter is also volatile which is requried to make the double-check correct.
          */
+
         public static DatadogReporter Instance
         {
             get
@@ -74,13 +74,13 @@ namespace GuaranteedRate.Sextant.Metrics
             host = Environment.MachineName;
             jsonTags = new List<string>();
 
-            if (queueSize > 0) {
+            if (queueSize > 0)
+            {
                 datadogPoster = new AsyncEventReporter(url, queueSize);
             }
             else
             {
                 datadogPoster = new AsyncEventReporter(url);
-
             }
         }
 
@@ -116,7 +116,6 @@ namespace GuaranteedRate.Sextant.Metrics
         /// </summary>
         /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
         /// <param name="value">value to send to DataDog  e.g. 67</param>
-
         [Obsolete("Use AddGauge instead.")]
         public void AddGuage(string metric, long value)
         {
@@ -152,10 +151,10 @@ namespace GuaranteedRate.Sextant.Metrics
             s.series = new List<Event>();
             s.series.Add(e);
 
-            string json = JsonConvert.SerializeObject(s); 
+            string json = JsonConvert.SerializeObject(s);
             datadogPoster.ReportEvent(json);
         }
-      
+
 
         private class Event
         {

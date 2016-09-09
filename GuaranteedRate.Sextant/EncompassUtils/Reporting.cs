@@ -20,6 +20,7 @@ using System.Threading.Tasks;
  * for THESE queries, reporting is 3-4x pipeline
  * 
  */
+
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
     public class Reporting
@@ -30,6 +31,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * Returns an IList of loan guids last modified between the start and end date
          * NOTE: There is NO sorting implied in the list
          */
+
         public static IList<string> LoansLastModifiedBetween(Session session, DateTime start)
         {
             DateFieldCriterion startDate = new DateFieldCriterion();
@@ -89,7 +91,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return LoansAndLastModifiedPipeline(session, startDate);
         }
 
-        public static IDictionary<string, DateTime> LoansAndLastModifiedPipeline(Session session, DateTime start, DateTime end)
+        public static IDictionary<string, DateTime> LoansAndLastModifiedPipeline(Session session, DateTime start,
+            DateTime end)
         {
             DateFieldCriterion startDate = new DateFieldCriterion();
             startDate.FieldName = LAST_MODIFIED_FIELD;
@@ -107,7 +110,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return LoansAndLastModifiedPipeline(session, joinCriterion);
         }
 
-        public static IDictionary<string, DateTime> LoansAndLastModifiedPipeline(Session session, QueryCriterion criterion)
+        public static IDictionary<string, DateTime> LoansAndLastModifiedPipeline(Session session,
+            QueryCriterion criterion)
         {
             IDictionary<string, DateTime> loans = new Dictionary<string, DateTime>();
             try
@@ -115,7 +119,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 PipelineCursor cursor = session.Loans.QueryPipeline(criterion, PipelineSortOrder.None);
                 foreach (PipelineData p in cursor)
                 {
-                    loans.Add(p.LoanIdentity.Guid, (DateTime)p["LastModified"]);
+                    loans.Add(p.LoanIdentity.Guid, (DateTime) p["LastModified"]);
                 }
                 cursor.Close();
             }
@@ -137,7 +141,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return LoansAndLastModifiedReport(session, startDate);
         }
 
-        public static IDictionary<string, DateTime> LoansAndLastModifiedReport(Session session, DateTime start, DateTime end)
+        public static IDictionary<string, DateTime> LoansAndLastModifiedReport(Session session, DateTime start,
+            DateTime end)
         {
             DateFieldCriterion startDate = new DateFieldCriterion();
             startDate.FieldName = LAST_MODIFIED_FIELD;
@@ -167,7 +172,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 LoanReportCursor results = session.Reports.OpenReportCursor(fields, criterion);
                 foreach (LoanReportData d in results)
                 {
-                    loans.Add(d.Guid, (DateTime)d["Loan.LastModified"]);
+                    loans.Add(d.Guid, (DateTime) d["Loan.LastModified"]);
                 }
                 results.Close();
             }

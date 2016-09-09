@@ -93,6 +93,9 @@ IEncompassConfig is an interface for using an Encompass CustomDataObject as a co
 ```
 (Blank lines are ignored)
 
+
+**JsonEncompassConfig** is a simple implementation that uses a json config file.  
+
 ### ILMerge
 
 To use this library in an Encompass plugin, you will need to use a free Microsoft util called ILMerge to recompile the plugin into your dll.

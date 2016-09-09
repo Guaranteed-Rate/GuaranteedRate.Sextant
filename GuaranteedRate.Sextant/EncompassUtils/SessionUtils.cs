@@ -13,6 +13,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     /**
      * Convenience functions
      */
+
     public class SessionUtils
     {
         public static Session GetEncompassSession(string encompassUrl, string login, string pw)
@@ -29,7 +30,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static Loan OpenLoanFromLoanNumber(Session session, string loan_number)
         {
-            StringFieldCriterion sfc = new StringFieldCriterion("Loan.LoanNumber", loan_number, StringFieldMatchType.Exact, true);
+            StringFieldCriterion sfc = new StringFieldCriterion("Loan.LoanNumber", loan_number,
+                StringFieldMatchType.Exact, true);
             LoanIdentityList loanList = session.Loans.Query(sfc);
             string guid = null;
 
@@ -48,6 +50,5 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 return null;
             }
         }
-
     }
 }

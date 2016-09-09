@@ -13,7 +13,7 @@ namespace GuaranteedRate.Examples.ReportingUtils
     {
         static int Main(string[] args)
         {
-            if (args!=null && args.Length == 5)
+            if (args != null && args.Length == 5)
             {
                 ReportingExample loanExtractor = new ReportingExample();
                 Session session = SessionUtils.GetEncompassSession(args[0], args[1], args[2]);
@@ -61,8 +61,9 @@ namespace GuaranteedRate.Examples.ReportingUtils
             Console.WriteLine("Finding Loans last modified between " + startDate + " and " + endDate);
             IList<string> loanGuids = Reporting.LoansLastModifiedBetween(session, startDate, endDate);
             Console.WriteLine("Found: " + loanGuids.Count);
-            
-            foreach(string guid in loanGuids) {
+
+            foreach (string guid in loanGuids)
+            {
                 Console.Write(guid + ", ");
             }
             Console.WriteLine();
@@ -92,5 +93,4 @@ namespace GuaranteedRate.Examples.ReportingUtils
             }
         }
     }
-
 }

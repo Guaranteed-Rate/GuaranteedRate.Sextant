@@ -19,6 +19,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
      * Fields are broken apart into collections by type, each type seems to have slightly
      * different parsing rules.
      */
+
     public class FieldUtils
     {
         private readonly ISet<string> SIMPLE_FIELDS;
@@ -73,39 +74,313 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private static ISet<FieldDescriptor> SELECTED_FIELDS;
 
-       
 
         /// <summary>
         /// These* SEEM* to be the* Simple* fields that are affected by switching active borrower-pair.
         /// Have not found a good way to know which fields are affected by the active borrower-pair.
         /// </summary>
         public static readonly ISet<string> BORROWER_PAIR_FIELDS =
-            new HashSet<string> { 
-                               "36", "37", "38", "39", "52", "53", "54", "60", "65", "66", "67", "68", "69", "70", "71", "97", "98", 
-                               "100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", 
-                               "114", "115", "116", "117", "118", "119", "120", "121", "122", "123", "124", "125", "126", 
-                               "144", "145", "146", "147", "148", "149", "150", "151", "152", "153", "154", "155", "156", "157", 
-                               "168", "169", "170", "171", "172", "173", "174", "175", "176", "177", "178", "179", "180", "181",
-                               "182", "183", "186", "188", "189", "191", "265", "266", "267", "268", "271", "272", "273",
-                               "403", "418", "461", "463", "464", "466", "467", "470", "471", "477", "478",
-                               "687", "900", "901", "902", "903", "904", "905", "906", "907", "908", "909", "910", "911", "912",
-                               "915", "919", "920", "921", "922", "923", "924", "933", "934", "936", "938", "940", "941", "942", 
-                               "943" , "981", "985", "1015", "1057", "1058", "1062", "1069", "1070", "1087", "1088", "1089", "1108",
-                               "1136", "1144", "1145", "1146", "1156", "1158", "1159", "168", "1169", "1170", "1171", 
-                               "1178", "1179", "1188", "1197", "1240", "1241", "1268", "1300", "1306", "1307", "1308", "1309", "1310",
-                               "1311", "1312", "1313", "1314", "1315", "1316", "1317", "1318", "1319", "1320", "1321", "1323", "1325",
-                               "1343", "1389", "1402", "1403", "1414", "1415", "1416", "1417", "1418", "1419", 
-                               "1450", "1452", "1480", "1484", "1490", "1502", "1519", "1520", "1521", "1522", "1523", "1524", "1525", 
-                               "1526", "1527", "1528", "1529", "1530", "1531", "1532", "1533", "1534", "1535", "1536", "1537", "1538", 
-                               "1758", "1759", "1815", "1816", "1817", "1818", "1819", "1820", "1868", "1873", "2849", "2850", 
-                               "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", 
-                               "FE0102", "FE0103", "FE0104", "FE0105", "FE0106", "FE0107", "FE0109", "FE0110", "FE0113", "FE0115", 
-                               "FE0116", "FE0117", "FE0133", "FE0198", "FE0199", "FE0202", "FE0203", "FE0204", "FE0205", "FE0206", 
-                               "FE0207", "FE0209", "FE0210", "FE0213", "FE0215", "FE0216", "FE0217", "FE0233", "FE0298", "FE0299",
-                               "FR0104", "FR0106", "FR0107", "FR0108", "FR0112", "FR0115", "FR0124", "FR0198", "FR0199", "FR0204", 
-                               "FR0206", "FR0207", "FR0208", "FR0212", "FR0215", "FR0224", "FR0298", "FR0299", "FR0304", "FR0306", 
-                               "FR0307", "FR0308", "FR0312", "FR0315", "FR0324", "FR0398", "FR0399", "FR0404", "FR0406", "FR0407", 
-                               "FR0408", "FR0412", "FR0415", "FR0424", "FR0498", "FR0499" };
+            new HashSet<string>
+            {
+                "36",
+                "37",
+                "38",
+                "39",
+                "52",
+                "53",
+                "54",
+                "60",
+                "65",
+                "66",
+                "67",
+                "68",
+                "69",
+                "70",
+                "71",
+                "97",
+                "98",
+                "100",
+                "101",
+                "102",
+                "103",
+                "104",
+                "105",
+                "106",
+                "107",
+                "108",
+                "109",
+                "110",
+                "111",
+                "112",
+                "113",
+                "114",
+                "115",
+                "116",
+                "117",
+                "118",
+                "119",
+                "120",
+                "121",
+                "122",
+                "123",
+                "124",
+                "125",
+                "126",
+                "144",
+                "145",
+                "146",
+                "147",
+                "148",
+                "149",
+                "150",
+                "151",
+                "152",
+                "153",
+                "154",
+                "155",
+                "156",
+                "157",
+                "168",
+                "169",
+                "170",
+                "171",
+                "172",
+                "173",
+                "174",
+                "175",
+                "176",
+                "177",
+                "178",
+                "179",
+                "180",
+                "181",
+                "182",
+                "183",
+                "186",
+                "188",
+                "189",
+                "191",
+                "265",
+                "266",
+                "267",
+                "268",
+                "271",
+                "272",
+                "273",
+                "403",
+                "418",
+                "461",
+                "463",
+                "464",
+                "466",
+                "467",
+                "470",
+                "471",
+                "477",
+                "478",
+                "687",
+                "900",
+                "901",
+                "902",
+                "903",
+                "904",
+                "905",
+                "906",
+                "907",
+                "908",
+                "909",
+                "910",
+                "911",
+                "912",
+                "915",
+                "919",
+                "920",
+                "921",
+                "922",
+                "923",
+                "924",
+                "933",
+                "934",
+                "936",
+                "938",
+                "940",
+                "941",
+                "942",
+                "943",
+                "981",
+                "985",
+                "1015",
+                "1057",
+                "1058",
+                "1062",
+                "1069",
+                "1070",
+                "1087",
+                "1088",
+                "1089",
+                "1108",
+                "1136",
+                "1144",
+                "1145",
+                "1146",
+                "1156",
+                "1158",
+                "1159",
+                "168",
+                "1169",
+                "1170",
+                "1171",
+                "1178",
+                "1179",
+                "1188",
+                "1197",
+                "1240",
+                "1241",
+                "1268",
+                "1300",
+                "1306",
+                "1307",
+                "1308",
+                "1309",
+                "1310",
+                "1311",
+                "1312",
+                "1313",
+                "1314",
+                "1315",
+                "1316",
+                "1317",
+                "1318",
+                "1319",
+                "1320",
+                "1321",
+                "1323",
+                "1325",
+                "1343",
+                "1389",
+                "1402",
+                "1403",
+                "1414",
+                "1415",
+                "1416",
+                "1417",
+                "1418",
+                "1419",
+                "1450",
+                "1452",
+                "1480",
+                "1484",
+                "1490",
+                "1502",
+                "1519",
+                "1520",
+                "1521",
+                "1522",
+                "1523",
+                "1524",
+                "1525",
+                "1526",
+                "1527",
+                "1528",
+                "1529",
+                "1530",
+                "1531",
+                "1532",
+                "1533",
+                "1534",
+                "1535",
+                "1536",
+                "1537",
+                "1538",
+                "1758",
+                "1759",
+                "1815",
+                "1816",
+                "1817",
+                "1818",
+                "1819",
+                "1820",
+                "1868",
+                "1873",
+                "2849",
+                "2850",
+                "4000",
+                "4001",
+                "4002",
+                "4003",
+                "4004",
+                "4005",
+                "4006",
+                "4007",
+                "4008",
+                "4009",
+                "FE0102",
+                "FE0103",
+                "FE0104",
+                "FE0105",
+                "FE0106",
+                "FE0107",
+                "FE0109",
+                "FE0110",
+                "FE0113",
+                "FE0115",
+                "FE0116",
+                "FE0117",
+                "FE0133",
+                "FE0198",
+                "FE0199",
+                "FE0202",
+                "FE0203",
+                "FE0204",
+                "FE0205",
+                "FE0206",
+                "FE0207",
+                "FE0209",
+                "FE0210",
+                "FE0213",
+                "FE0215",
+                "FE0216",
+                "FE0217",
+                "FE0233",
+                "FE0298",
+                "FE0299",
+                "FR0104",
+                "FR0106",
+                "FR0107",
+                "FR0108",
+                "FR0112",
+                "FR0115",
+                "FR0124",
+                "FR0198",
+                "FR0199",
+                "FR0204",
+                "FR0206",
+                "FR0207",
+                "FR0208",
+                "FR0212",
+                "FR0215",
+                "FR0224",
+                "FR0298",
+                "FR0299",
+                "FR0304",
+                "FR0306",
+                "FR0307",
+                "FR0308",
+                "FR0312",
+                "FR0315",
+                "FR0324",
+                "FR0398",
+                "FR0399",
+                "FR0404",
+                "FR0406",
+                "FR0407",
+                "FR0408",
+                "FR0412",
+                "FR0415",
+                "FR0424",
+                "FR0498",
+                "FR0499"
+            };
 
         public static void RemoveFieldCollection(FieldDescriptor fieldDescriptor)
         {
@@ -128,7 +403,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
         }
 
-        public static void AddFieldCollection(FieldDescriptors fieldDescriptors) 
+        public static void AddFieldCollection(FieldDescriptors fieldDescriptors)
         {
             if (SELECTED_FIELDS == null)
             {
@@ -250,7 +525,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             LoadFieldIdsFromFieldDescriptors(fieldDescriptorsList);
         }
 
-        private static ISet<FieldDescriptor> AddFieldDescriptors(FieldDescriptors fieldCollection, ISet<FieldDescriptor> fieldList)
+        private static ISet<FieldDescriptor> AddFieldDescriptors(FieldDescriptors fieldCollection,
+            ISet<FieldDescriptor> fieldList)
         {
             foreach (FieldDescriptor field in fieldCollection)
             {
@@ -268,17 +544,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             return fieldList;
         }
 
-       /// <summary>
-       /// Depending on the field type it is sometimes possible to know the field ids at the session
-       /// level, sometimes the specific fieldIds depend on the loan file itself.
-       ///
-       /// Multi-value fieldIds whose indexes are defined at the session level will be unrolled into multiple
-       /// simple value fields.
-       ///
-       /// Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
-       /// lists so that they can be handled on a loan-by-loan basis.
-       /// </summary>
-       /// <param name="fieldDescriptors"></param>
+        /// <summary>
+        /// Depending on the field type it is sometimes possible to know the field ids at the session
+        /// level, sometimes the specific fieldIds depend on the loan file itself.
+        ///
+        /// Multi-value fieldIds whose indexes are defined at the session level will be unrolled into multiple
+        /// simple value fields.
+        ///
+        /// Multi-value fieldIds whose indexes are defined at the loan level will be seperated into specific
+        /// lists so that they can be handled on a loan-by-loan basis.
+        /// </summary>
+        /// <param name="fieldDescriptors"></param>
         private void LoadFieldIdsFromFieldDescriptors(ICollection<FieldDescriptor> fieldDescriptors)
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
@@ -379,6 +655,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         /**
          * These method are expected to be called repeatedly, so the results are cached.
          */
+
         public static ISet<string> SimpleFieldNames()
         {
             return Instance.SIMPLE_FIELDS;
@@ -468,6 +745,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * This method is not expected to be called in most cases, and if it is called, won't be called repeatedly.
          * So not caching results.
          */
+
         public static IDictionary<string, string> GetFieldsAndDescriptions()
         {
             IDictionary<string, string> fieldsAndDescriptions = new Dictionary<string, string>();

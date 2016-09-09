@@ -14,7 +14,7 @@ namespace GuaranteedRate.Examples.FieldUtils
 
         static int Main(string[] args)
         {
-            if (args!=null && args.Length == 4)
+            if (args != null && args.Length == 4)
             {
                 FieldDescriptions fieldDescriptions = new FieldDescriptions(args[0]);
                 Session session = SessionUtils.GetEncompassSession(args[1], args[2], args[3]);
@@ -37,13 +37,14 @@ namespace GuaranteedRate.Examples.FieldUtils
         public void WriteFieldsAndDescriptionsToFile(Session session)
         {
             GuaranteedRate.Sextant.EncompassUtils.FieldUtils.session = session;
-            IDictionary<string, string> fieldsAndDescriptions = GuaranteedRate.Sextant.EncompassUtils.FieldUtils.GetFieldsAndDescriptions();
+            IDictionary<string, string> fieldsAndDescriptions =
+                GuaranteedRate.Sextant.EncompassUtils.FieldUtils.GetFieldsAndDescriptions();
             using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(outputFileName, true))
+                new System.IO.StreamWriter(outputFileName, true))
             {
                 foreach (string fieldId in fieldsAndDescriptions.Keys)
                 {
-                    file.WriteLine("\"" + fieldId + "\",\"" + fieldsAndDescriptions[fieldId].Replace("\"","") + "\"");
+                    file.WriteLine("\"" + fieldId + "\",\"" + fieldsAndDescriptions[fieldId].Replace("\"", "") + "\"");
                 }
             }
         }

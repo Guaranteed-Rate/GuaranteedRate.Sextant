@@ -30,6 +30,7 @@ namespace GuaranteedRate.Sextant.Loggers
         private const string WARN = "WARN";
         private const string INFO = "INFO";
         private const string DEBUG = "DEBUG";
+        private const string FATAL = "FATAL";
 
         private static ISet<string> tags = new HashSet<string>();
         private static int QUEUE_SIZE = DEFAULT_QUEUE_SIZE;
@@ -41,6 +42,7 @@ namespace GuaranteedRate.Sextant.Loggers
         public bool WarnEnabled { get; set; }
         public bool InfoEnabled { get; set; }
         public bool DebugEnabled { get; set; }
+        public bool FatalEnabled { get; set; }
 
         public static string LOGGLY_URL = "Loggly.Url";
         public static string LOGGLY_ALL = "Loggly.All.Enabled";
@@ -48,13 +50,14 @@ namespace GuaranteedRate.Sextant.Loggers
         public static string LOGGLY_WARN = "Loggly.Warn.Enabled";
         public static string LOGGLY_INFO = "Loggly.Info.Enabled";
         public static string LOGGLY_DEBUG = "Loggly.Debug.Enabled";
-
+        public static string LOGGLY_FATAL = "Loggly.Fatal.Enabled";
         /// <summary>
         /// Tags must be added BEFORE anything is logged.
         /// Once the first event is logged, the tags are locked
         /// </summary>
         /// <param name="tag"></param>
-        public static void AddTag(string tag) {
+        public static void AddTag(string tag)
+        {
             tags.Add(tag);
         }
 
@@ -69,7 +72,7 @@ namespace GuaranteedRate.Sextant.Loggers
             Loggly.active = !String.IsNullOrWhiteSpace(url);
         }
 
-        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags=null)
+        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
         {
             if (tags != null)
             {
@@ -89,16 +92,20 @@ namespace GuaranteedRate.Sextant.Loggers
             bool warnEnabled = config.GetValue(LOGGLY_WARN, false);
             bool infoEnabled = config.GetValue(LOGGLY_INFO, false);
             bool debugEnabled = config.GetValue(LOGGLY_DEBUG, false);
+            bool fatalEnabled = config.GetValue(LOGGLY_FATAL, false);
+
             Instance.ErrorEnabled = allEnabled || errorEnabled;
             Instance.WarnEnabled = allEnabled || warnEnabled;
             Instance.InfoEnabled = allEnabled || infoEnabled;
             Instance.DebugEnabled = allEnabled || debugEnabled;
+            Instance.FatalEnabled = allEnabled || fatalEnabled;
         }
 
         /**
          * Double-check locking to ensure the singleton is only created once.
          * Note the reporter is also volatile which is requried to make the double-check correct.
          */
+
         public static Loggly Instance
         {
             get
@@ -133,7 +140,7 @@ namespace GuaranteedRate.Sextant.Loggers
             return builder.ToString();
         }
 
-        private Loggly(string url, int queueSize = DEFAULT_QUEUE_SIZE) : base (url, queueSize)
+        private Loggly(string url, int queueSize = DEFAULT_QUEUE_SIZE) : base(url, queueSize)
         {
             ContentType = "text/plain";
             try
@@ -150,6 +157,7 @@ namespace GuaranteedRate.Sextant.Loggers
             WarnEnabled = true;
             InfoEnabled = true;
             DebugEnabled = true;
+            FatalEnabled = true;
         }
 
         private static bool LogError()
@@ -171,8 +179,31 @@ namespace GuaranteedRate.Sextant.Loggers
         {
             return (active && Instance.DebugEnabled);
         }
+        private static bool LogFatal()
+        {
+            return (active && Instance.FatalEnabled);
+        }
 
-        public static void Error(string loggerName, string message) 
+        public static void Fatal(string loggerName, string message)
+        {
+            if (LogError())
+            {
+                IDictionary<string, string> fields = new Dictionary<string, string>();
+                fields.Add("message", message);
+                Log(fields, loggerName, FATAL);
+            }
+        }
+
+
+        public static void ErrFatalor(string loggerName, IDictionary<string, string> fields)
+        {
+            if (LogError())
+            {
+                Log(fields, loggerName, FATAL);
+            }
+        }
+ 
+        public static void Error(string loggerName, string message)
         {
             if (LogError())
             {

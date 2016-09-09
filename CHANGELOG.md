@@ -1,3 +1,15 @@
+## v16.2.3.0 / 2016 Sep 9
+> Added the JsonEncompassConfig to support using JSON for configuration files
+> and added support for Loggly.Fatal errors for when things go really wrong.
+
+* **Add**  - JsonEncompassConfig
+* **Add**  - Loggly.Fatal
+
+```c#
+[GuaranteedRate.Sextant "16.2.3.0"]
+```
+
+
 ## v16.2.2.0 / 2016 Aug 10
 
 > Added the server URI and smart client to the list of fields collected by
