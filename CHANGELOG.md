@@ -6,7 +6,7 @@
 * **Add**  - Loggly.Fatal
 
 ```c#
-[GuaranteedRate.Sextant "16.2.2.1"]
+[GuaranteedRate.Sextant "16.2.3.0"]
 ```
 
 
