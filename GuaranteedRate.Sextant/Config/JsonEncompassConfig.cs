@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using EllieMae.Encompass.Client;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace GuaranteedRate.Sextant.Config
@@ -133,6 +135,24 @@ namespace GuaranteedRate.Sextant.Config
         public bool Reload(Session session, string configPath)
         {
             return Init(session, configPath);
+        }
+
+
+        /// <summary>
+        /// Returns a sub-section of the config.
+        /// </summary>
+        /// <param name="key">Json key of the section you want.</param>
+        /// <returns>A JsonEncompassConfig created from the subsection.</returns>
+        public IEncompassConfig GetConfigGroup(string key)
+        {
+            var val = _jsonObject.SelectToken(key);
+
+            if (val == null)
+            {
+                return null;
+            }
+
+            return new JsonEncompassConfig(val.ToString());
         }
     }
 }

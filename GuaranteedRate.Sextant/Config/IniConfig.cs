@@ -8,14 +8,18 @@ using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Config
 {
-    /**
-     * IniConfig is a simple config class that expects data in the old .INI format:
-     * [key]=[value]\n
-     * 
-     * Lines starting with # will be treated as comments
-     * Empty lines will be ignored.
-     */
 
+
+
+
+    /// <summary>
+    ///      IniConfig is a simple config class that expects data in the old .INI format:
+     /// [key]=[value]\n
+     /// 
+     /// Lines starting with # will be treated as comments
+     /// Empty lines will be ignored.
+    ///
+    /// </summary>
     public class IniConfig : IEncompassConfig
     {
         private volatile IDictionary<string, string> _config;
@@ -116,6 +120,17 @@ namespace GuaranteedRate.Sextant.Config
             {
                 return defaultValue;
             }
+        }
+
+
+        /// <summary>
+        /// Do not use.  Always returns null in the iniConfig impllementation
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>null.  Always.</returns>
+        public IEncompassConfig GetConfigGroup(string key)
+        {
+            return null;
         }
     }
 }

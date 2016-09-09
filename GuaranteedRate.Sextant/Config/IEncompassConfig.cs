@@ -12,11 +12,15 @@ namespace GuaranteedRate.Sextant.Config
         bool Init(Session session);
         bool Reload(Session session);
 
-        /**
-         * Get value of key, return default if key does not exist
-         */
+        /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <param name="key">The key</param>
+        /// <param name="defaultVal">The default if the key does not exist</param>
+        /// <returns>The value of the key or the default.</returns>
         string GetValue(string key, string defaultVal = null);
         bool GetValue(string key, bool defaultValue);
         ICollection<string> GetKeys();
+        IEncompassConfig GetConfigGroup(string key);
     }
 }
