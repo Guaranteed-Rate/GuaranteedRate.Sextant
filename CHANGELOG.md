@@ -1,4 +1,4 @@
-## v16.2.2.1 / 2016 Sep 9
+## v16.2.3.0 / 2016 Sep 9
 > Added the JsonEncompassConfig to support using JSON for configuration files
 > and added support for Loggly.Fatal errors for when things go really wrong.
 
