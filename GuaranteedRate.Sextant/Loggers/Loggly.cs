@@ -51,6 +51,7 @@ namespace GuaranteedRate.Sextant.Loggers
         public static string LOGGLY_INFO = "Loggly.Info.Enabled";
         public static string LOGGLY_DEBUG = "Loggly.Debug.Enabled";
         public static string LOGGLY_FATAL = "Loggly.Fatal.Enabled";
+        public static string LOGGLY_ENV = "Loggly.Environment";
         /// <summary>
         /// Tags must be added BEFORE anything is logged.
         /// Once the first event is logged, the tags are locked
@@ -74,13 +75,6 @@ namespace GuaranteedRate.Sextant.Loggers
 
         public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
         {
-            if (tags != null)
-            {
-                foreach (string tag in tags)
-                {
-                    AddTag(tag);
-                }
-            }
             config.Init(session);
             string configLogglyUrl = config.GetValue(LOGGLY_URL);
             if (configLogglyUrl != null)
@@ -93,6 +87,18 @@ namespace GuaranteedRate.Sextant.Loggers
             bool infoEnabled = config.GetValue(LOGGLY_INFO, false);
             bool debugEnabled = config.GetValue(LOGGLY_DEBUG, false);
             bool fatalEnabled = config.GetValue(LOGGLY_FATAL, false);
+
+            var environment = config.GetValue(LOGGLY_ENV, "undefined");
+
+            AddTag(environment);
+
+            if (tags != null)
+            {
+                foreach (string tag in tags)
+                {
+                    AddTag(tag);
+                }
+            }
 
             Instance.ErrorEnabled = allEnabled || errorEnabled;
             Instance.WarnEnabled = allEnabled || warnEnabled;
