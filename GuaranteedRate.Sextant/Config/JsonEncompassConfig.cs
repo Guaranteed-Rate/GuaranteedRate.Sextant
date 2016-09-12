@@ -122,7 +122,7 @@ namespace GuaranteedRate.Sextant.Config
             }
             catch (Exception ex)
             {
-                throw new Exception($"Could not load config file {configPath}", ex);
+                throw new Exception(string.Format("Could not load config file {0}", configPath), ex);
             }
         }
 
