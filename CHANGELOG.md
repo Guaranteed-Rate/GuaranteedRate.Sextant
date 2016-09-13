@@ -1,3 +1,12 @@
+## v16.2.3.1 / 2016 Sep 13
+> AdFixed issue with Loggly reinitialzing the configuration file from a default 
+> file name.
+
+* **Update**  - Loggly.cs overloaded init method that doesn't do a force reload
+
+```c#
+[GuaranteedRate.Sextant "16.2.3.0"]
+```
 ## v16.2.3.0 / 2016 Sep 9
 > Added the JsonEncompassConfig to support using JSON for configuration files
 > and added support for Loggly.Fatal errors for when things go really wrong.
