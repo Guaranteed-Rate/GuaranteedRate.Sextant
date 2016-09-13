@@ -5,9 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Loggers
 {
@@ -60,7 +58,10 @@ namespace GuaranteedRate.Sextant.Loggers
         /// <param name="tag"></param>
         public static void AddTag(string tag)
         {
-            tags.Add(tag.Trim());
+            if (!tags.Contains(tag.Trim()))
+            {
+                tags.Add(tag.Trim());
+            }
         }
 
         public static void SetSize(int queueSize)
@@ -91,12 +92,10 @@ namespace GuaranteedRate.Sextant.Loggers
                     AddTag(tag);
                 }
             }
-            else
-            {
-                foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
+            
+           foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            { 
                     AddTag(tag);
-                }
             }
 
             string configLogglyUrl = config.GetValue(LOGGLY_URL);
