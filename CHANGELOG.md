@@ -1,4 +1,5 @@
 ## v16.2.4.0 / 2016 Sep 13
+
 >Fixed an issue with the json config where it was not safe to call Init() 
 >multiple times
 >Added the ability to have Loggly load tags from config rather than be explicitly 
