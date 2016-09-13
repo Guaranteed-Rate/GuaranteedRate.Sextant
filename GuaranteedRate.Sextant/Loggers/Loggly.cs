@@ -5,9 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Loggers
 {
@@ -51,6 +49,8 @@ namespace GuaranteedRate.Sextant.Loggers
         public static string LOGGLY_INFO = "Loggly.Info.Enabled";
         public static string LOGGLY_DEBUG = "Loggly.Debug.Enabled";
         public static string LOGGLY_FATAL = "Loggly.Fatal.Enabled";
+        public static string LOGGLY_TAGS = "Loggly.Tags";
+
         /// <summary>
         /// Tags must be added BEFORE anything is logged.
         /// Once the first event is logged, the tags are locked
@@ -58,7 +58,10 @@ namespace GuaranteedRate.Sextant.Loggers
         /// <param name="tag"></param>
         public static void AddTag(string tag)
         {
-            tags.Add(tag);
+            if (!tags.Contains(tag.Trim()))
+            {
+                tags.Add(tag.Trim());
+            }
         }
 
         public static void SetSize(int queueSize)
@@ -72,8 +75,16 @@ namespace GuaranteedRate.Sextant.Loggers
             Loggly.active = !String.IsNullOrWhiteSpace(url);
         }
 
+         
+        /// <summary>
+        /// Initializes the loggly logger
+        /// </summary>
+        /// <param name="session">Current encompass session, used to load the config file</param>
+        /// <param name="config">Config file to load.  Will re-initialize when this is used.</param>
+        /// <param name="tags">Collection of loggly tags.  If null, we will load the Loggly.Tags element from the config.</param>
         public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
         {
+            config.Init(session);
             if (tags != null)
             {
                 foreach (string tag in tags)
@@ -81,8 +92,14 @@ namespace GuaranteedRate.Sextant.Loggers
                     AddTag(tag);
                 }
             }
-            config.Init(session);
+            
+           foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            { 
+                    AddTag(tag);
+            }
+
             string configLogglyUrl = config.GetValue(LOGGLY_URL);
+
             if (configLogglyUrl != null)
             {
                 SetPostUrl(configLogglyUrl);

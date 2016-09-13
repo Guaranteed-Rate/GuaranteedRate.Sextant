@@ -1,3 +1,15 @@
+## v16.2.4.0 / 2016 Sep 13
+
+>Fixed an issue with the json config where it was not safe to call Init() 
+>multiple times
+>Added the ability to have Loggly load tags from config rather than be explicitly 
+>passed in.
+
+* **Update**  - Loggly.cs overloaded init method that doesn't do a force reload
+
+```c#
+[GuaranteedRate.Sextant "16.2.4.0"]
+```
 ## v16.2.3.0 / 2016 Sep 9
 > Added the JsonEncompassConfig to support using JSON for configuration files
 > and added support for Loggly.Fatal errors for when things go really wrong.

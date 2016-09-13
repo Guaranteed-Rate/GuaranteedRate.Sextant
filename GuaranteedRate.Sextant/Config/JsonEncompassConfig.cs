@@ -16,6 +16,7 @@ namespace GuaranteedRate.Sextant.Config
     {
         private JObject _jsonObject = null;
         private Encoding _encoding = Encoding.ASCII;
+        private string _configPath = "Sextant.json";
 
         /// <summary>
         /// Returns all keys in the json config.  
@@ -79,7 +80,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <returns>true for success, throws exception otherwise</returns>
         public bool Init(Session session)
         {
-            return Init(session, "Sextant.json");
+            return Init(session, _configPath);
         }
 
 
@@ -90,7 +91,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <returns>true for success, throws exception otherwise</returns>
         public bool Reload(Session session)
         {
-            return Reload(session, "Sextant.json");
+            return Reload(session, _configPath);
         }
 
 
@@ -116,7 +117,8 @@ namespace GuaranteedRate.Sextant.Config
             try
             {
                 _encoding = encoding;
-                var configText = session.DataExchange.GetCustomDataObject(configPath);
+                _configPath = configPath;
+                var configText = session.DataExchange.GetCustomDataObject(_configPath);
                 _jsonObject = JObject.Parse(configText.ToString(_encoding));
                 return false;
             }
