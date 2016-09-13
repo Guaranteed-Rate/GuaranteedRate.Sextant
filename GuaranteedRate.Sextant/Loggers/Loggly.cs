@@ -51,6 +51,8 @@ namespace GuaranteedRate.Sextant.Loggers
         public static string LOGGLY_INFO = "Loggly.Info.Enabled";
         public static string LOGGLY_DEBUG = "Loggly.Debug.Enabled";
         public static string LOGGLY_FATAL = "Loggly.Fatal.Enabled";
+        public static string LOGGLY_TAGS = "Loggly.Tags";
+
         /// <summary>
         /// Tags must be added BEFORE anything is logged.
         /// Once the first event is logged, the tags are locked
@@ -72,7 +74,12 @@ namespace GuaranteedRate.Sextant.Loggers
             Loggly.active = !String.IsNullOrWhiteSpace(url);
         }
 
-        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
+        /// <summary>
+        /// Initializes the loggly config
+        /// </summary>
+        /// <param name="config">Config file.  Must be initialized prior to calling this method.</param>
+        /// <param name="tags">Collection of loggly tags. If null, we will load the Loggly.Tags element from the config.</param>
+        public static void Init( IEncompassConfig config, ICollection<string> tags = null)
         {
             if (tags != null)
             {
@@ -81,8 +88,16 @@ namespace GuaranteedRate.Sextant.Loggers
                     AddTag(tag);
                 }
             }
-            config.Init(session);
+            else
+            {
+                foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    AddTag(tag.Trim());
+                }
+            }
+
             string configLogglyUrl = config.GetValue(LOGGLY_URL);
+
             if (configLogglyUrl != null)
             {
                 SetPostUrl(configLogglyUrl);
@@ -99,6 +114,18 @@ namespace GuaranteedRate.Sextant.Loggers
             Instance.InfoEnabled = allEnabled || infoEnabled;
             Instance.DebugEnabled = allEnabled || debugEnabled;
             Instance.FatalEnabled = allEnabled || fatalEnabled;
+        }
+
+        /// <summary>
+        /// Initializes the loggly logger
+        /// </summary>
+        /// <param name="session">Current encompass session, used to load the config file</param>
+        /// <param name="config">Config file to load.  Will re-initialize when this is used.</param>
+        /// <param name="tags">Collection of loggly tags.  If null, we will load the Loggly.Tags element from the config.</param>
+        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
+        {
+            config.Init(session);
+            Init(config,tags);
         }
 
         /**
