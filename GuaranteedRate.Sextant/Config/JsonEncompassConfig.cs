@@ -120,7 +120,7 @@ namespace GuaranteedRate.Sextant.Config
                 _configPath = configPath;
                 var configText = session.DataExchange.GetCustomDataObject(_configPath);
                 _jsonObject = JObject.Parse(configText.ToString(_encoding));
-                return false;
+                return true;
             }
             catch (Exception ex)
             {
