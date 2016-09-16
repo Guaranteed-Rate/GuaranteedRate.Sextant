@@ -408,9 +408,16 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         string fullKey = fieldId + "." + key;
                         string val = ExtractSimpleField(currentLoan, fullKey);
-                        if (val != null)
+                        try
                         {
-                            fieldDictionary.Add(SafeFieldId(fullKey), val);
+                            if (val != null)
+                            {
+                                fieldDictionary.Add(SafeFieldId(fullKey), val);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception($"Error extracting field {fullKey}", ex);
                         }
                     }
                 }
