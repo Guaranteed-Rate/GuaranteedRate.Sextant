@@ -417,14 +417,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception($"Error extracting field {fullKey}", ex);
+                            Loggly.Error("LoandataUtils", $"Error extracting field {fullKey}" +  ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractDocumentIndexFields:" + ex);
+                Loggly.Error("LoandataUtils", "Exception in ExtractStringIndexFields:" + ex);
             }
             return fieldDictionary;
         }
