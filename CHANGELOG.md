@@ -1,3 +1,10 @@
+## v16.2.4.1 / 2016 Sep 15
+
+>Fixed an issue with a flipped boolean in json config init.
+
+* **Update**  - JsonEncompassConfig.cs was returning false on success fix to true. 
+
+
 ## v16.2.4.0 / 2016 Sep 13
 
 >Fixed an issue with the json config where it was not safe to call Init() 
