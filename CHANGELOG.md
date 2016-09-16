@@ -1,3 +1,11 @@
+## v16.2.4.2 / 2016 Sep 15
+
+>Increased error granularity in field extraction.
+
+* **Update**  - LoanDataUtils.cs will return clearer error messages. 
+
+
+
 ## v16.2.4.1 / 2016 Sep 15
 
 >Fixed an issue with a flipped boolean in json config init.
