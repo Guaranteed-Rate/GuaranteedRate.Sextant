@@ -148,8 +148,8 @@ namespace GuaranteedRate.Sextant.Config
             }
             catch (Exception)
             {
-                    
-                throw;
+
+                return false;
             }
 
         }
