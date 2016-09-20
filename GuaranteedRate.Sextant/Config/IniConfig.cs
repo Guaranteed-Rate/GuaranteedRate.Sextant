@@ -14,10 +14,10 @@ namespace GuaranteedRate.Sextant.Config
 
     /// <summary>
     ///      IniConfig is a simple config class that expects data in the old .INI format:
-     /// [key]=[value]\n
-     /// 
-     /// Lines starting with # will be treated as comments
-     /// Empty lines will be ignored.
+    /// [key]=[value]\n
+    /// 
+    /// Lines starting with # will be treated as comments
+    /// Empty lines will be ignored.
     ///
     /// </summary>
     public class IniConfig : IEncompassConfig
@@ -44,37 +44,20 @@ namespace GuaranteedRate.Sextant.Config
         {
             try
             {
-                IDictionary<string, string> config = new Dictionary<string, string>();
                 DataObject data = session.DataExchange.GetCustomDataObject(_fileName);
                 if (data == null)
                 {
                     return false;
                 }
                 string allAsString = ASCIIEncoding.ASCII.GetString(data.Data);
-                if (allAsString == null || allAsString.Length <= 0)
-                {
-                    return false;
-                }
-                string[] lines = allAsString.Split('\n');
-                foreach (string line in lines)
-                {
-                    if (line != null && !String.IsNullOrWhiteSpace(line) && line.Substring(0, 1) != "#")
-                    {
-                        string[] keyVal = line.Split('=');
-                        if (keyVal != null && keyVal.Length == 2)
-                        {
-                            config.Add(keyVal[0].ToLower().Trim(), keyVal[1].ToLower().Trim());
-                        }
-                    }
-                }
-
-                _config = config;
-                return true;
+                return Init(allAsString);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw new Exception($"Cannot parse config: {ex.ToString()}");
+
             }
+
         }
 
         public string GetValue(string key, string defaultVal = null)
@@ -131,6 +114,45 @@ namespace GuaranteedRate.Sextant.Config
         public IEncompassConfig GetConfigGroup(string key)
         {
             return null;
+        }
+
+
+        /// <summary>
+        /// Loads the config from teh given string
+        /// </summary>
+        /// <param name="configAsString">The ASCII-encoded string</param>
+        /// <returns></returns>
+        public bool Init(string configAsString)
+        {
+            try
+            {
+                IDictionary<string, string> config = new Dictionary<string, string>();
+
+                if (configAsString == null || configAsString.Length <= 0)
+                {
+                    return false;
+                }
+                string[] lines = configAsString.Split('\n');
+                foreach (string line in lines)
+                {
+                    if (line != null && !String.IsNullOrWhiteSpace(line) && line.Substring(0, 1) != "#")
+                    {
+                        string[] keyVal = line.Split('=');
+                        if (keyVal != null && keyVal.Length == 2)
+                        {
+                            config.Add(keyVal[0].ToLower().Trim(), keyVal[1].ToLower().Trim());
+                        }
+                    }
+                }
+
+                _config = config;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Cannot parse config: {ex.ToString()}");
+            }
+            
         }
     }
 }

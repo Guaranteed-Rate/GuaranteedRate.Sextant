@@ -10,6 +10,8 @@ namespace GuaranteedRate.Sextant.Config
     public interface IEncompassConfig
     {
         bool Init(Session session);
+
+        bool Init(string configAsString);
         bool Reload(Session session);
 
         /// <summary>
@@ -22,6 +24,9 @@ namespace GuaranteedRate.Sextant.Config
         bool GetValue(string key, bool defaultValue);
         ICollection<string> GetKeys();
         IEncompassConfig GetConfigGroup(string key);
-        
+
+       
+
+
     }
 }
