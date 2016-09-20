@@ -1,7 +1,7 @@
 ```
 ## v16.2.5.0 / 2016 Sep 20
-> Added Init(string) to the config loading configs from known strings.  
-> Useful for tests.
+> Added Init(string) to the config.
+> Supports loading from known strings.  Useful for tests.
 
 * **Update**  - JsonEncompassConfig
 * **Update**  - IniConfig
