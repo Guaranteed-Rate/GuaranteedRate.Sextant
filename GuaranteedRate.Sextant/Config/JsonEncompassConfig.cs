@@ -39,9 +39,10 @@ namespace GuaranteedRate.Sextant.Config
         /// </summary>
         /// <param name="configText">The json text.</param>
         /// <returns>true for success, throws exception otherwise</returns>
+        [Obsolete("Use LoadFromString instead.")]
         public JsonEncompassConfig(string configText)
         {
-            _jsonObject = JObject.Parse(configText);
+            LoadFromString(configText);
         }
 
         /// <summary>
@@ -155,6 +156,25 @@ namespace GuaranteedRate.Sextant.Config
             }
 
             return new JsonEncompassConfig(val.ToString());
+        }
+
+        /// <summary>
+        /// Loads the config from the give string.  Useful for testing.
+        /// </summary>
+        /// <param name="configAsString">The json string</param>
+        /// <returns></returns>
+        public bool LoadFromString(string configAsString)
+        {
+            try
+            {
+                _jsonObject = JObject.Parse(configAsString);
+                return true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

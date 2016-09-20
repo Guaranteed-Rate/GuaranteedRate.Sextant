@@ -22,6 +22,10 @@ namespace GuaranteedRate.Sextant.Config
         bool GetValue(string key, bool defaultValue);
         ICollection<string> GetKeys();
         IEncompassConfig GetConfigGroup(string key);
-        
+
+        bool LoadFromString(string configAsString);
+
+
+
     }
 }
