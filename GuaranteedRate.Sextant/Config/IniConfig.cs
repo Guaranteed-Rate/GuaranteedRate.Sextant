@@ -14,10 +14,10 @@ namespace GuaranteedRate.Sextant.Config
 
     /// <summary>
     ///      IniConfig is a simple config class that expects data in the old .INI format:
-     /// [key]=[value]\n
-     /// 
-     /// Lines starting with # will be treated as comments
-     /// Empty lines will be ignored.
+    /// [key]=[value]\n
+    /// 
+    /// Lines starting with # will be treated as comments
+    /// Empty lines will be ignored.
     ///
     /// </summary>
     public class IniConfig : IEncompassConfig
@@ -44,18 +44,20 @@ namespace GuaranteedRate.Sextant.Config
         {
             try
             {
-                 DataObject data = session.DataExchange.GetCustomDataObject(_fileName);
+                DataObject data = session.DataExchange.GetCustomDataObject(_fileName);
                 if (data == null)
                 {
                     return false;
                 }
                 string allAsString = ASCIIEncoding.ASCII.GetString(data.Data);
-                return LoadFromString(allAsString);
+                return Init(allAsString);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw new Exception($"Cannot parse config: {ex.ToString()}");
+
             }
+
         }
 
         public string GetValue(string key, string defaultVal = null)
@@ -120,7 +122,7 @@ namespace GuaranteedRate.Sextant.Config
         /// </summary>
         /// <param name="configAsString">The ASCII-encoded string</param>
         /// <returns></returns>
-        public bool LoadFromString(string configAsString)
+        public bool Init(string configAsString)
         {
             try
             {
@@ -146,12 +148,11 @@ namespace GuaranteedRate.Sextant.Config
                 _config = config;
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return false;
+                throw new Exception($"Cannot parse config: {ex.ToString()}");
             }
-
+            
         }
     }
 }

@@ -1,3 +1,15 @@
+```
+## v16.2.5.0 / 2016 Sep 20
+> Added Init(string) to the config loading configs from known strings.  
+> Useful for tests.
+
+* **Update**  - JsonEncompassConfig
+* **Update**  - IniConfig
+* **Update**  - IEncompassConfig
+
+```c#
+[GuaranteedRate.Sextant "16.2.5.0"]
+```
 ## v16.2.4.2 / 2016 Sep 15
 
 >Increased error granularity in field extraction.

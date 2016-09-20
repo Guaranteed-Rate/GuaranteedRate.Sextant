@@ -39,10 +39,10 @@ namespace GuaranteedRate.Sextant.Config
         /// </summary>
         /// <param name="configText">The json text.</param>
         /// <returns>true for success, throws exception otherwise</returns>
-        [Obsolete("Use LoadFromString instead.")]
+        [Obsolete("Use Init instead.")]
         public JsonEncompassConfig(string configText)
         {
-            LoadFromString(configText);
+            Init(configText);
         }
 
         /// <summary>
@@ -83,6 +83,7 @@ namespace GuaranteedRate.Sextant.Config
         {
             return Init(session, _configPath);
         }
+
 
 
         /// <summary>
@@ -159,11 +160,11 @@ namespace GuaranteedRate.Sextant.Config
         }
 
         /// <summary>
-        /// Loads the config from the give string.  Useful for testing.
+        /// Loads the config from the given string.  Useful for testing.
         /// </summary>
         /// <param name="configAsString">The json string</param>
         /// <returns></returns>
-        public bool LoadFromString(string configAsString)
+        public bool Init(string configAsString)
         {
             try
             {
@@ -171,9 +172,9 @@ namespace GuaranteedRate.Sextant.Config
                 return true;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw new Exception($"Cannot parse config: {ex.ToString()}");
             }
         }
     }
