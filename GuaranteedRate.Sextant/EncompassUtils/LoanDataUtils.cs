@@ -417,7 +417,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         }
                         catch (Exception ex)
                         {
-                            Loggly.Error("LoandataUtils", $"Error extracting field {fullKey} from loan #:{currentLoan.LoanNumber} loan guid:{currentLoan.Guid}" +  ex);
+                            Loggly.Warn("LoandataUtils", $"Error extracting field {fullKey} from loan #:{currentLoan.LoanNumber} loan guid:{currentLoan.Guid}" +  ex);
                         }
                     }
                 }
