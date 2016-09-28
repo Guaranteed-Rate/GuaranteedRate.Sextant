@@ -42,14 +42,14 @@ namespace GuaranteedRate.Sextant.Loggers
         public bool DebugEnabled { get; set; }
         public bool FatalEnabled { get; set; }
 
-        public static string LOGGLY_URL = "Loggly.Url";
-        public static string LOGGLY_ALL = "Loggly.All.Enabled";
+        public static string LOGGLY_URL   = "Loggly.Url";
+        public static string LOGGLY_ALL   = "Loggly.All.Enabled";
         public static string LOGGLY_ERROR = "Loggly.Error.Enabled";
-        public static string LOGGLY_WARN = "Loggly.Warn.Enabled";
-        public static string LOGGLY_INFO = "Loggly.Info.Enabled";
+        public static string LOGGLY_WARN  = "Loggly.Warn.Enabled";
+        public static string LOGGLY_INFO  = "Loggly.Info.Enabled";
         public static string LOGGLY_DEBUG = "Loggly.Debug.Enabled";
         public static string LOGGLY_FATAL = "Loggly.Fatal.Enabled";
-        public static string LOGGLY_TAGS = "Loggly.Tags";
+        public static string LOGGLY_TAGS  = "Loggly.Tags";
 
         /// <summary>
         /// Tags must be added BEFORE anything is logged.
@@ -104,25 +104,22 @@ namespace GuaranteedRate.Sextant.Loggers
             {
                 SetPostUrl(configLogglyUrl);
             }
-            bool allEnabled = config.GetValue(LOGGLY_ALL, false);
+            bool allEnabled   = config.GetValue(LOGGLY_ALL, false);
             bool errorEnabled = config.GetValue(LOGGLY_ERROR, false);
-            bool warnEnabled = config.GetValue(LOGGLY_WARN, false);
-            bool infoEnabled = config.GetValue(LOGGLY_INFO, false);
+            bool warnEnabled  = config.GetValue(LOGGLY_WARN, false);
+            bool infoEnabled  = config.GetValue(LOGGLY_INFO, false);
             bool debugEnabled = config.GetValue(LOGGLY_DEBUG, false);
             bool fatalEnabled = config.GetValue(LOGGLY_FATAL, false);
 
             Instance.ErrorEnabled = allEnabled || errorEnabled;
-            Instance.WarnEnabled = allEnabled || warnEnabled;
-            Instance.InfoEnabled = allEnabled || infoEnabled;
+            Instance.WarnEnabled  = allEnabled || warnEnabled;
+            Instance.InfoEnabled  = allEnabled || infoEnabled;
             Instance.DebugEnabled = allEnabled || debugEnabled;
             Instance.FatalEnabled = allEnabled || fatalEnabled;
         }
 
-        /**
-         * Double-check locking to ensure the singleton is only created once.
-         * Note the reporter is also volatile which is requried to make the double-check correct.
-         */
-
+        /// Double-check locking to ensure the singleton is only created once.
+        /// Note the reporter is also volatile which is requried to make the double-check correct.
         public static Loggly Instance
         {
             get
@@ -171,8 +168,8 @@ namespace GuaranteedRate.Sextant.Loggers
                 ProcessName = "UNKNOWN";
             }
             ErrorEnabled = true;
-            WarnEnabled = true;
-            InfoEnabled = true;
+            WarnEnabled  = true;
+            InfoEnabled  = true;
             DebugEnabled = true;
             FatalEnabled = true;
         }
@@ -211,8 +208,7 @@ namespace GuaranteedRate.Sextant.Loggers
             }
         }
 
-
-        public static void ErrFatalor(string loggerName, IDictionary<string, string> fields)
+        public static void Fatal(string loggerName, IDictionary<string, string> fields)
         {
             if (LogError())
             {
