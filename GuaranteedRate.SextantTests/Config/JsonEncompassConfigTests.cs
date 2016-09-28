@@ -11,7 +11,8 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test()]
         public void ForValidConfigReturnGoodValues()
         {
-            var config = new JsonEncompassConfig(_json);
+            var config = new JsonEncompassConfig();
+                config.Init(_json);
             Assert.That(config.GetKeys().Count == 22, String.Format("Expected 22, got {0}", config.GetKeys().Count));
             Assert.That(config.GetValue("widget.debug", false).Equals(true),
                 String.Format("Expected 'true' , got '{0}'", config.GetValue("widget.debug", false)));

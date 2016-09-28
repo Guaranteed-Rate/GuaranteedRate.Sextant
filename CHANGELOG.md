@@ -1,4 +1,13 @@
 ```
+## v16.2.5.1 / 2016 Sep 27
+> Add loanId and loanGuid to the exception.
+
+* **Update**  - LoanDataUtils 
+
+```c#
+[GuaranteedRate.Sextant "16.2.5.1"]
+
+```
 ## v16.2.5.0 / 2016 Sep 20
 > Added Init(string) to the config.
 > Supports loading from known strings.  Useful for tests.
