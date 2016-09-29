@@ -212,7 +212,7 @@ namespace GuaranteedRate.Sextant.Loggers
         }
 
 
-        public static void ErrFatalor(string loggerName, IDictionary<string, string> fields)
+        public static void Fatal(string loggerName, IDictionary<string, string> fields)
         {
             if (LogError())
             {

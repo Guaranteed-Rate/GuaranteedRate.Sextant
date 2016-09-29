@@ -1,4 +1,13 @@
 ```
+## v16.2.5.2 / 2016 Sep 27
+> Fix typo in Loggly.cs
+
+* **Update**  - Loggly.cs  
+
+```c#
+[GuaranteedRate.Sextant "16.2.5.2"]
+
+```
 ## v16.2.5.1 / 2016 Sep 27
 > Add loanId and loanGuid to the exception.
 
