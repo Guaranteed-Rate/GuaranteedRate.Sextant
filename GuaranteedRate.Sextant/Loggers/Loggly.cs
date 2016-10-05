@@ -75,14 +75,18 @@ namespace GuaranteedRate.Sextant.Loggers
             Loggly.active = !String.IsNullOrWhiteSpace(url);
         }
 
-         
+        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
+        {
+            Instance.InitLogger(session, config, tags);
+        }
+
         /// <summary>
         /// Initializes the loggly logger
         /// </summary>
         /// <param name="session">Current encompass session, used to load the config file</param>
         /// <param name="config">Config file to load.  Will re-initialize when this is used.</param>
         /// <param name="tags">Collection of loggly tags.  If null, we will load the Loggly.Tags element from the config.</param>
-        public static void Init(Session session, IEncompassConfig config, ICollection<string> tags = null)
+        public void InitLogger(Session session, IEncompassConfig config, ICollection<string> tags = null)
         {
             config.Init(session);
             if (tags != null)
@@ -111,11 +115,11 @@ namespace GuaranteedRate.Sextant.Loggers
             bool debugEnabled = config.GetValue(LOGGLY_DEBUG, false);
             bool fatalEnabled = config.GetValue(LOGGLY_FATAL, false);
 
-            Instance.ErrorEnabled = allEnabled || errorEnabled;
-            Instance.WarnEnabled  = allEnabled || warnEnabled;
-            Instance.InfoEnabled  = allEnabled || infoEnabled;
-            Instance.DebugEnabled = allEnabled || debugEnabled;
-            Instance.FatalEnabled = allEnabled || fatalEnabled;
+            ErrorEnabled = allEnabled || errorEnabled;
+            WarnEnabled  = allEnabled || warnEnabled;
+            InfoEnabled  = allEnabled || infoEnabled;
+            DebugEnabled = allEnabled || debugEnabled;
+            FatalEnabled = allEnabled || fatalEnabled;
         }
 
         /// Double-check locking to ensure the singleton is only created once.
@@ -140,18 +144,46 @@ namespace GuaranteedRate.Sextant.Loggers
             }
         }
 
-        private static string MakeTagCsv()
+        public static string MakeTagCsv(IEnumerable<string> tags)
         {
             StringBuilder builder = new StringBuilder();
-            foreach (string tag in tags)
+            if (tags != null)
             {
-                if (!string.IsNullOrWhiteSpace(tag))
+                foreach (string tag in tags)
                 {
-                    builder.Append(tag).Append(",");
+                    if (!string.IsNullOrWhiteSpace(tag))
+                    {
+                        builder.Append(tag).Append(",");
+                    }
                 }
+                builder.Remove(builder.Length - 1, 1);
             }
-            builder.Remove(builder.Length - 1, 1);
             return builder.ToString();
+        }
+
+        private static string MakeTagCsv()
+        {
+            return MakeTagCsv(tags);
+        }
+
+        public Loggly(string baseUrl, IEnumerable<string> tags, int queueSize = DEFAULT_QUEUE_SIZE) : this (baseUrl + MakeTagCsv(tags) + "/", queueSize)
+        {
+            ContentType = "text/plain";
+            try
+            {
+                Hostname = Environment.MachineName;
+                ProcessName = Process.GetCurrentProcess().ProcessName;
+            }
+            catch
+            {
+                Hostname = "UNKNOWN";
+                ProcessName = "UNKNOWN";
+            }
+            ErrorEnabled = true;
+            WarnEnabled  = true;
+            InfoEnabled  = true;
+            DebugEnabled = true;
+            FatalEnabled = true;
         }
 
         private Loggly(string url, int queueSize = DEFAULT_QUEUE_SIZE) : base(url, queueSize)
@@ -174,45 +206,55 @@ namespace GuaranteedRate.Sextant.Loggers
             FatalEnabled = true;
         }
 
-        private static bool LogError()
+        private bool LogError()
         {
-            return (active && Instance.ErrorEnabled);
+            return (active && ErrorEnabled);
         }
 
-        private static bool LogWarn()
+        private bool LogWarn()
         {
-            return (active && Instance.WarnEnabled);
+            return (active && WarnEnabled);
         }
 
-        private static bool LogInfo()
+        private bool LogInfo()
         {
-            return (active && Instance.InfoEnabled);
+            return (active && InfoEnabled);
         }
 
-        private static bool LogDebug()
+        private bool LogDebug()
         {
-            return (active && Instance.DebugEnabled);
+            return (active && DebugEnabled);
         }
-        private static bool LogFatal()
+        private bool LogFatal()
         {
-            return (active && Instance.FatalEnabled);
+            return (active && FatalEnabled);
         }
 
         public static void Fatal(string loggerName, string message)
         {
-            if (LogError())
+            Instance.LogFatal(loggerName, message);
+        }
+
+        public void LogFatal(string loggerName, string message)
+        {
+            if (LogFatal())
             {
                 IDictionary<string, string> fields = new Dictionary<string, string>();
                 fields.Add("message", message);
-                Log(fields, loggerName, FATAL);
+                LogEvent(fields, loggerName, FATAL);
             }
         }
 
         public static void Fatal(string loggerName, IDictionary<string, string> fields)
         {
-            if (LogError())
+            Instance.LogFatal(loggerName, fields);
+        }
+
+        public void LogFatal(string loggerName, IDictionary<string, string> fields)
+        {
+            if (LogFatal())
             {
-                Log(fields, loggerName, FATAL);
+                LogEvent(fields, loggerName, FATAL);
             }
         }
  
@@ -290,22 +332,27 @@ namespace GuaranteedRate.Sextant.Loggers
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
+            Instance.LogEvent(fields, loggerName, level);
+        }
+
+        public void LogEvent(IDictionary<string, string> fields, string loggerName, string level)
+        {
             if (active)
             {
                 PopulateEvent(fields, loggerName, level);
                 //Having Indented formatting makes the data format better in the Loggly
                 //Search screen
                 string json = JsonConvert.SerializeObject(fields, Formatting.Indented);
-                Instance.ReportEvent(json);
+                ReportEvent(json);
             }
         }
 
-        private static void PopulateEvent(IDictionary<string, string> fields, string loggerName, string level)
+        private void PopulateEvent(IDictionary<string, string> fields, string loggerName, string level)
         {
             fields.Add("level", level);
             fields.Add("timestamp", DateTime.Now.ToString("MM/dd/yyyyTHH:mm:ss.fffzzz"));
-            fields.Add("hostname", Instance.Hostname);
-            fields.Add("process", Instance.ProcessName);
+            fields.Add("hostname", Hostname);
+            fields.Add("process", ProcessName);
             fields.Add("loggerName", loggerName);
         }
     }
