@@ -1,5 +1,22 @@
+## v16.2.5.3 / 2016 
+
+> This bugfix release changes the way items are added to a dictionary in 
+> `LoanDataUtils`.  The code has been changed from dictionary.Add(key, value)
+> to dictionary[key] = value.  We are seeing errors in production where 
+> duplicate keys are being added to the dictionary, which causes an exception.
+>
+> Since the keys coming from `FieldUtils` are contained in Sets, it appears
+> that keys are being defined in multiple field types.
+
+* **Update**  - Changed the dictionary insertions in `LoanDataUtils` to be safe
+in case of duplicates.
+
+```c#
+[GuaranteedRate.Sextant "16.2.5.3"]
+
 ```
-## v16.2.5.2 / 2016 Sep 27
+
+## v16.2.5.2 / 2016 
 > Fix typo in Loggly.cs
 
 * **Update**  - Loggly.cs  
@@ -8,6 +25,7 @@
 [GuaranteedRate.Sextant "16.2.5.2"]
 
 ```
+
 ## v16.2.5.1 / 2016 Sep 27
 > Add loanId and loanGuid to the exception.
 
@@ -28,6 +46,7 @@
 ```c#
 [GuaranteedRate.Sextant "16.2.5.0"]
 ```
+
 ## v16.2.4.2 / 2016 Sep 15
 
 >Increased error granularity in field extraction.

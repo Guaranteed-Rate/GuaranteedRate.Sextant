@@ -68,8 +68,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
             //This is a subset of the borrower pair information, there does not seem to be an efficient method for
             //extracting all of this data programmatically.
-            fieldValues.Add("borrower-pairs", ExtractBorrowerPairs(currentLoan));
-            fieldValues.Add("Associates", ExtractAssociates(currentLoan));
+            fieldValues["borrower-pairs"] = ExtractBorrowerPairs(currentLoan);
+            fieldValues["Associates"] = ExtractAssociates(currentLoan);
 
             ExtractEndIndexFields(currentLoan, FieldUtils.DisclosureMulti(), fieldValues,
                 currentLoan.Log.Disclosures.Count);
@@ -82,15 +82,15 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, int> IndexKeySizes(Loan loan)
         {
             IDictionary<string, int> indexKeySizes = new Dictionary<string, int>();
-            indexKeySizes.Add("BorrowerEmployers", loan.BorrowerEmployers.Count);
-            indexKeySizes.Add("CoBorrowerEmployers", loan.CoBorrowerEmployers.Count);
-            indexKeySizes.Add("BorrowerResidences", loan.BorrowerResidences.Count);
-            indexKeySizes.Add("CoBorrowerResidences", loan.CoBorrowerResidences.Count);
-            indexKeySizes.Add("Liabilities", loan.Liabilities.Count);
-            indexKeySizes.Add("Deposits", loan.Deposits.Count);
-            indexKeySizes.Add("Mortgages", loan.Mortgages.Count);
-            indexKeySizes.Add("AdditionalVestingParties", loan.AdditionalVestingParties.Count);
-            indexKeySizes.Add("Disclosures", loan.Log.Disclosures.Count);
+            indexKeySizes["BorrowerEmployers"] = loan.BorrowerEmployers.Count;
+            indexKeySizes["CoBorrowerEmployers"] = loan.CoBorrowerEmployers.Count;
+            indexKeySizes["BorrowerResidences"] = loan.BorrowerResidences.Count;
+            indexKeySizes["CoBorrowerResidences"] = loan.CoBorrowerResidences.Count;
+            indexKeySizes["Liabilities"] = loan.Liabilities.Count;
+            indexKeySizes["Deposits"] = loan.Deposits.Count;
+            indexKeySizes["Mortgages"] = loan.Mortgages.Count;
+            indexKeySizes["AdditionalVestingParties"] = loan.AdditionalVestingParties.Count;
+            indexKeySizes["Disclosures"] = loan.Log.Disclosures.Count;
 
             return indexKeySizes;
         }
@@ -136,21 +136,21 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             try
             {
-                fieldValues.Add("LoanFolder", loan.LoanFolder);
-                fieldValues.Add("LoanCloserID", loan.LoanCloserID);
-                fieldValues.Add("LoanName", loan.LoanName);
-                fieldValues.Add("LoanOfficerID", loan.LoanOfficerID);
-                fieldValues.Add("LoanProcessorID", loan.LoanProcessorID);
+                fieldValues["LoanFolder"]  = loan.LoanFolder;
+                fieldValues["LoanCloserID"] = loan.LoanCloserID;
+                fieldValues["LoanName"] = loan.LoanName;
+                fieldValues["LoanOfficerID"] = loan.LoanOfficerID;
+                fieldValues["LoanProcessorID"] = loan.LoanProcessorID;
 
                 Session session = loan.Session;
                 if (session != null)
                 {
                     string serverUri = session.ServerURI;
-                    fieldValues.Add("SessionServerURI", serverUri);
+                    fieldValues["SessionServerURI"] = serverUri;
                         //https://smartClientId.ea.elliemae.net$smartClientId
-                    fieldValues.Add("SessionSmartClientId", serverUri.Substring(serverUri.IndexOf("$") + 1));
+                    fieldValues["SessionSmartClientId"] = serverUri.Substring(serverUri.IndexOf("$") + 1);
                         //just the smartClientId
-                    fieldValues.Add("SessionUserId", session.UserID);
+                    fieldValues["SessionUserId"] = session.UserID;
                 }
             }
             catch (Exception ex)
@@ -171,28 +171,28 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     IDictionary<string, string> extract = new Dictionary<string, string>();
                     if (associate.User != null)
                     {
-                        extract.Add("FullName", associate.User.FullName);
+                        extract["FullName"] = associate.User.FullName;
                     }
                     if (associate.WorkflowRole != null)
                     {
-                        extract.Add("WorkflowRole", associate.WorkflowRole.Name);
+                        extract["WorkflowRole"] = associate.WorkflowRole.Name;
                     }
                     if (associate.MilestoneEvent != null)
                     {
-                        extract.Add("MilestoneEvent", associate.MilestoneEvent.MilestoneName);
+                        extract["MilestoneEvent"] = associate.MilestoneEvent.MilestoneName;
                     }
                     if (associate.UserGroup != null)
                     {
-                        extract.Add("UserGroup", associate.UserGroup.Name);
+                        extract["UserGroup"] = associate.UserGroup.Name;
                     }
-                    extract.Add("Assigned", associate.Assigned + "");
-                    extract.Add("AllowWriteAccess", associate.AllowWriteAccess + "");
-                    extract.Add("AssociateType", associate.AssociateType + "");
-                    extract.Add("ContactCellPhone", associate.ContactCellPhone);
-                    extract.Add("ContactEmail", associate.ContactEmail);
-                    extract.Add("ContactFax", associate.ContactFax);
-                    extract.Add("ContactName", associate.ContactName);
-                    extract.Add("ContactPhone", associate.ContactPhone);
+                    extract["Assigned"] = associate.Assigned + "";
+                    extract["AllowWriteAccess"] = associate.AllowWriteAccess + "";
+                    extract["AssociateType"] = associate.AssociateType + "";
+                    extract["ContactCellPhone"] = associate.ContactCellPhone;
+                    extract["ContactEmail"] = associate.ContactEmail;
+                    extract["ContactFax"] = associate.ContactFax;
+                    extract["ContactName"] = associate.ContactName;
+                    extract["ContactPhone"] = associate.ContactPhone;
                 }
             }
             catch (Exception ex)
@@ -225,25 +225,25 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     BorrowerPair pair = loan.BorrowerPairs[pairIndex];
                     IDictionary<string, object> fieldDictionary = new Dictionary<string, object>();
-                    fieldDictionary.Add("BorrowerPairId", pairIndex);
+                    fieldDictionary["BorrowerPairId"] = pairIndex;
                     borrowerPairs.Add(ExtractSimpleFields(loan, pair, fields, fieldDictionary));
 
                     if (pair.Borrower != null)
                     {
-                        fieldDictionary.Add("Borrower.ID", pair.Borrower.ID);
+                        fieldDictionary["Borrower.ID"] = pair.Borrower.ID;
                     }
                     if (pair.CoBorrower != null)
                     {
-                        fieldDictionary.Add("CoBorrower.ID", pair.CoBorrower.ID);
+                        fieldDictionary["CoBorrower.ID"] = pair.CoBorrower.ID;
                     }
 
                     if (pairIndex == 0)
                     {
-                        fieldDictionary.Add("PrimaryPair", true);
+                        fieldDictionary["PrimaryPair"] = true;
                     }
                     else
                     {
-                        fieldDictionary.Add("PrimaryPair", false);
+                        fieldDictionary["PrimaryPair"] = false;
                     }
                     //change the current borrower pair
                     loan.BorrowerPairs.Current = pair;
@@ -275,17 +275,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 foreach (MilestoneEvent milestone in loan.Log.MilestoneEvents)
                 {
                     IDictionary<string, string> localMilestone = new Dictionary<string, string>();
-                    localMilestone.Add("milestoneName", ParseField(milestone.MilestoneName));
-                    localMilestone.Add("completed", ParseField(milestone.Completed));
-                    localMilestone.Add("completedDate", ParseField(milestone.Date.ToString()));
+                    localMilestone["milestoneName"] = ParseField(milestone.MilestoneName);
+                    localMilestone["completed"] = ParseField(milestone.Completed);
+                    localMilestone["completedDate"] = ParseField(milestone.Date.ToString());
                     string comments = ParseField(milestone.Comments);
                     if (!String.IsNullOrWhiteSpace(comments))
                     {
-                        localMilestone.Add("comments", comments);
+                        localMilestone["comments"] = comments;
                     }
                     if ((milestone.LoanAssociate != null) && (milestone.LoanAssociate.User != null))
                     {
-                        localMilestone.Add("userId", ParseField(milestone.LoanAssociate.User.ID));
+                        localMilestone["userId"] = ParseField(milestone.LoanAssociate.User.ID);
                     }
                     milestones.Add(localMilestone);
                 }
