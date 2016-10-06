@@ -16,7 +16,7 @@ in case of duplicates.
 
 ```
 
-## v16.2.5.2 / 2016 
+## v16.2.5.2 / 2016 Sep 27
 > Fix typo in Loggly.cs
 
 * **Update**  - Loggly.cs  
