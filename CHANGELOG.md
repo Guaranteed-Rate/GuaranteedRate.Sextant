@@ -8,7 +8,6 @@
 
 ```c#
 [GuaranteedRate.Sextant "16.2.6.0"]
-
 ```
 
 ## v16.2.5.3 / 2016 
