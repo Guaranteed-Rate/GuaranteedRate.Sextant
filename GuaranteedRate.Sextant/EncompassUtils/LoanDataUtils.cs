@@ -73,6 +73,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
             ExtractEndIndexFields(currentLoan, FieldUtils.DisclosureMulti(), fieldValues,
                 currentLoan.Log.Disclosures.Count);
+            ExtractFundingFees(currentLoan, fieldValues);
 
             ExtractProperties(currentLoan, fieldValues);
 
@@ -127,11 +128,86 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
         }
 
+        /// <summary>
+        /// This extracts the read only fee objects from a loan.
+        /// This data is duplicated in field 2971, which uses some kind of tab delimited format.
+        /// The data is also duplicated in various NEWHUD.XNNN fields
+        /// </summary>
+        /// <param name="loan"></param>
+        /// <param name="fieldValues"></param>
+        /// <returns></returns>
+        public static IDictionary<string, object> ExtractFundingFees(Loan loan, IDictionary<string, object> fieldValues)
+        {
+            if (loan != null)
+            {
+                try
+                {
+                    FundingFeeList feeList = loan.GetFundingFees(true);
+                    if (feeList != null && feeList.Count > 0)
+                    {
+                        foreach (FundingFee fee in feeList)
+                        {
+                            string prefix;
+                            if (!String.IsNullOrWhiteSpace(fee.CDLineID))
+                            {
+                                prefix = "FundingFee.CDLineID." + fee.CDLineID + ".";
+                                fieldValues[prefix + "FeeDescription2015"] = fee.FeeDescription2015;
+                                fieldValues[prefix + "PACBroker2015"] = fee.PACBroker2015;
+                                fieldValues[prefix + "PACLender2015"] = fee.PACLender2015;
+                                fieldValues[prefix + "PACOther2015"] = fee.PACOther2015;
+                                fieldValues[prefix + "POCBorrower2015"] = fee.POCBorrower2015;
+                                fieldValues[prefix + "POCBroker2015"] = fee.POCBroker2015;
+                                fieldValues[prefix + "POCLender2015"] = fee.POCLender2015;
+                                fieldValues[prefix + "POCOther2015"] = fee.POCOther2015;
+                                fieldValues[prefix + "POCSeller2015"] = fee.POCSeller2015;
+                            }
+                            else
+                            {
+                                prefix = "FundingFee.LineID." + fee.LineID + ".";
+                                fieldValues[prefix + "FeeDescription"] = fee.FeeDescription;
+                                fieldValues[prefix + "POCAmount"] = fee.POCAmount;
+                                fieldValues[prefix + "POCPaidBy"] = fee.POCPaidBy;
+                                fieldValues[prefix + "PTCAmount"] = fee.PTCAmount;
+                                fieldValues[prefix + "PTCPaidBy"] = fee.PTCPaidBy;
+                            }
+                            fieldValues[prefix + "Amount"] = fee.Amount;
+                            fieldValues[prefix + "BalanceChecked"] = fee.BalanceChecked;
+                            fieldValues[prefix + "PaidBy"] = fee.PaidBy;
+                            fieldValues[prefix + "PaidTo"] = fee.PaidTo;
+                            fieldValues[prefix + "Payee"] = fee.Payee;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractFundingFees in FundingFeeList:" + ex);
+                }
+
+                try
+                {
+                    string ucdLoanEstimate = loan.GetUCDForLoanEstimate(false);
+                    string ucdClosingDisclosure = loan.GetUCDForClosingDisclosure(false);
+                    if (!String.IsNullOrWhiteSpace(ucdLoanEstimate))
+                    {
+                        fieldValues["UcdLoanEstimate"] = ucdLoanEstimate;
+                    }
+                    if (!String.IsNullOrWhiteSpace(ucdClosingDisclosure))
+                    {
+                        fieldValues["UcdClosingDisclosure"] = ucdClosingDisclosure;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Loggly.Error("LoandataUtils", "Exception in ExtractFundingFees ucd section:" + ex);
+                }
+            }
+            return fieldValues;
+        }
+
         /**
          * This method is for common useful 'metadata' information that is not part of the loan data itself
          * Such as the LoanFolder, UserId doing the extraction, etc
          */
-
         public static IDictionary<string, object> ExtractProperties(Loan loan, IDictionary<string, object> fieldValues)
         {
             try
@@ -206,7 +282,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
          * There's no specific list of fields affected by borrower pairs.
          * We've defined a set that's useful to us, but you can override with your own
          */
-
         public static IList<IDictionary<string, object>> ExtractBorrowerPairs(Loan loan)
         {
             return ExtractBorrowerPairs(loan, FieldUtils.BORROWER_PAIR_FIELDS);

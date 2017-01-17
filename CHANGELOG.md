@@ -1,3 +1,15 @@
+## v16.2.6.0 / 2017 Jan 17
+
+> This release adds various pieces of Funding and CD Fees to the set of data
+> extracted by `LoanDataUtils`.  It appears that some or all of the data is 
+> duplicated elsewhere, but this addition makes the data more accessable
+
+* **Add** - LoanFee data to the set of data extracted in `LoanDataUtils`
+
+```c#
+[GuaranteedRate.Sextant "16.2.6.0"]
+```
+
 ## v16.2.5.3 / 2016 
 
 > This bugfix release changes the way items are added to a dictionary in 
