@@ -1,3 +1,12 @@
+## v16.2.7.0 / 2017 Jan 20
+
+> This release adds functionality to lookup a loan guid by loan number.
+
+* **Add** - Expose a function to return the loan guid for a given loan number.
+
+```c#
+[GuaranteedRate.Sextant "16.2.6.0"]
+
 ## v16.2.6.0 / 2017 Jan 17
 
 > This release adds various pieces of Funding and CD Fees to the set of data
