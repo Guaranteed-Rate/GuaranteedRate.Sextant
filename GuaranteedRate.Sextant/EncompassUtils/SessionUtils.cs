@@ -48,6 +48,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 guid = id.Guid;
             }
 
+
             return guid;
 
         }
