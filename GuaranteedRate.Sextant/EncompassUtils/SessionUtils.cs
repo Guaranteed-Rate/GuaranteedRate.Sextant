@@ -47,10 +47,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 guid = id.Guid;
             }
-
-
             return guid;
-
         }
 
         public static Loan OpenLoanFromLoanNumber(Session session, string loan_number)
