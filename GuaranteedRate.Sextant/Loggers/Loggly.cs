@@ -93,9 +93,9 @@ namespace GuaranteedRate.Sextant.Loggers
                 }
             }
             
-           foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             { 
-                    AddTag(tag);
+                AddTag(tag);
             }
 
             string configLogglyUrl = config.GetValue(LOGGLY_URL);
@@ -122,7 +122,6 @@ namespace GuaranteedRate.Sextant.Loggers
          * Double-check locking to ensure the singleton is only created once.
          * Note the reporter is also volatile which is requried to make the double-check correct.
          */
-
         public static Loggly Instance
         {
             get

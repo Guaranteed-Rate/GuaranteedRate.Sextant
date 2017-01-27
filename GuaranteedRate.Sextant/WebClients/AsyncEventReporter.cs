@@ -16,14 +16,21 @@ namespace GuaranteedRate.Sextant.WebClients
      * creates a worker task to process messages from the queue in a separate thead.
      * 
      */
-
     public class AsyncEventReporter : IEventReporter
     {
+        /// <summary>
+        /// This is the set of http status codes that are condsidered successful
+        /// responses.  The list does not include all 2xx codes because the class
+        /// does not have any ability to relay information back to the original
+        /// class that wanted the data sent.
+        /// </summary>
         public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode>
         {
-            HttpStatusCode.OK,
             HttpStatusCode.Accepted,
-            HttpStatusCode.Continue
+            HttpStatusCode.Continue,
+            HttpStatusCode.Created,
+            HttpStatusCode.NoContent,
+            HttpStatusCode.OK
         };
 
         private readonly string url;

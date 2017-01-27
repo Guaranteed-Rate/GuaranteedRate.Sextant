@@ -1,3 +1,14 @@
+## v16.2.7.1 / 2017 Jan 27
+
+> This bugfix release fixes `AsyncEventReporter`, it considered some http 
+> status codes as failures, which resulted in extra retries
+
+* **Fix** - `AsyncEventReporter` now considers 201 & 204 successful responses
+
+```c#
+[GuaranteedRate.Sextant "16.2.7.1"]
+```
+
 ## v16.2.7.0 / 2017 Jan 20
 
 > This release adds functionality to lookup a loan guid by loan number.
@@ -5,7 +16,8 @@
 * **Add** - Expose a function to return the loan guid for a given loan number.
 
 ```c#
-[GuaranteedRate.Sextant "16.2.6.0"]
+[GuaranteedRate.Sextant "16.2.7.0"]
+```
 
 ## v16.2.6.0 / 2017 Jan 17
 
