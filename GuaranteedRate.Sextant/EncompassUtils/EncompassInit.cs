@@ -7,7 +7,7 @@
         /// </summary>
         public static void InitEncompass()
         {
-            new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
+              new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
         }
 
         /// <summary>
