@@ -25,6 +25,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Util.IndexFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.SextantTests", "GuaranteedRate.SextantTests\GuaranteedRate.SextantTests.csproj", "{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYourOwnEncompassNuget", "BuildYourOwnEncompassNuget", "{DCEA544E-C56A-45BF-9626-DA9922D2B27C}"
+	ProjectSection(SolutionItems) = preProject
+		EncompassSDK.Complete.nuspec = EncompassSDK.Complete.nuspec
+		Instructions.md = Instructions.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncompassFilesGoHere", "EncompassFilesGoHere", "{AFA7929B-100C-422D-8239-1C706E0A7F24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,5 +70,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AFA7929B-100C-422D-8239-1C706E0A7F24} = {DCEA544E-C56A-45BF-9626-DA9922D2B27C}
 	EndGlobalSection
 EndGlobal

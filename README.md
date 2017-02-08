@@ -16,8 +16,11 @@ The primary goal is to extend plugin functionality in a few key areas:
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
 
+#### Update 17.1.0.0
+This updates the Encompass SDK to 17.1.  We returned to using the Encompass nuget package.  Instructions for how to build your own package may be found in the BuildYourOwnEncompassNuget folder.   
+
 #### Update 16.2.1.0
-In this updated we removed dependency to EncompassSDK nuget package which we had to create for every new release of Encompass.
+In this update we removed dependency to EncompassSDK nuget package which we had to create for every new release of Encompass.
 Instead we are referencing 3 Encompass assemblies that are required for Sextant or any other Encompass SDK app to work. 
 These assemblies are enough to resolve any encompass assemblies necessary to run your application. Quote from Ecnompass SDK documentation
 > To use the EncompassObjects API, you must add a reference to three separate assemblies that are shipped with the SDK: EllieMae.Encompass.AsmResolver.dll, EllieMae.Encompass.Runtime.dll and EncompassObjects.dll. All three are found in the folder in which you installed the SDK.
