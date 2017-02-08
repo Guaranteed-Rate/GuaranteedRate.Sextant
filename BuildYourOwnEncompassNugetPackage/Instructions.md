@@ -2,7 +2,7 @@
 
 ###Step 1: Obtain the Encompass dlls from a legitimate source.  
 We asked Ellie Mae for a zip file of everything we needed.
-###Step 2: Copy them into a the folder EncompassFilesGoHere.
+###Step 2: Copy them into the folder EncompassFilesGoHere.
 
 ###Step 3: Run nuget
     nuget pack EncompassSDK.Complete.nuspec
