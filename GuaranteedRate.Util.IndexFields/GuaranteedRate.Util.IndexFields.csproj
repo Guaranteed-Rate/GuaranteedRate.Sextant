@@ -72,6 +72,10 @@
       <HintPath>..\packages\EncompassSDK.Complete.17.1.0.0\lib\net45\EllieMae.Encompass.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EMBAM15, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.17.1.0.0\lib\net45\EMBAM15.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EMCommon, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
       <HintPath>..\packages\EncompassSDK.Complete.17.1.0.0\lib\net45\EMCommon.dll</HintPath>
       <Private>True</Private>

@@ -1,7 +1,9 @@
 ## v17.1.0.0 / 2017 Feb 08
-> This release updates the Encompass SDK to version 17.1.
+> This release updates the Encompass SDK to version 17.1 and includes instructions 
+> for building your own NuGet package.
+
 * **Update** - Encompass SDK to 17.1.
-* **Add** - Encompass Nuget package.
+* **Add** - Encompass Nuget package nuspec and instructions.
 
 ```c#
 [GuaranteedRate.Sextant "17.1.0.0"]
