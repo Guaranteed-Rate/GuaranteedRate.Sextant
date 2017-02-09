@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>EncompassSDK.Complete</id>
+    <version>17.1.0.0</version>
+    <authors>Alan Smithee</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>All Encompass dlls.</description>
+  </metadata>
+  <files>
+    <file src="EncompassFilesGoHere/Client.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/ClientCommon.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/ClientServer.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/ClientSession.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/DataAccess.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/DocumentConverter.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Elli.ElliEnum.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Elli.Interface.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EllieMae.Encompass.AsmResolver.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EllieMae.Encompass.Runtime.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EMCommon.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EMBAM15.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EMExport.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EMLoanUtils15.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EncompassAutomation.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/EncompassObjects.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/GenuineChannels.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/ICSharpCode.SharpZipLib.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Infragistics2.Shared.v7.1.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Infragistics2.Win.UltraWinSchedule.v7.1.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Infragistics2.Win.v7.1.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/itextsharp.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Jed.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/PostSharp.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/ReportingDbUtils.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Server.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/VersionInterface15.dll" target="lib/net45"/>
+    <file src="EncompassFilesGoHere/Xml3WayMerge.dll" target="lib/net45"/>
+
+  </files>
+</package>

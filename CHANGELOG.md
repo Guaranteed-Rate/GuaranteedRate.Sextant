@@ -1,3 +1,14 @@
+## v17.1.0.0 / 2017 Feb 08
+> This release updates the Encompass SDK to version 17.1 and includes instructions 
+> for building your own NuGet package.
+
+* **Update** - Encompass SDK to 17.1.
+* **Add** - Encompass Nuget package nuspec and instructions.
+
+```c#
+[GuaranteedRate.Sextant "17.1.0.0"]
+```
+
 ## v16.2.7.1 / 2017 Jan 27
 
 > This bugfix release fixes `AsyncEventReporter`, it considered some http 

@@ -3,6 +3,7 @@
 *.pdb
 *.user
 *.nupkg
+sdk
 **/obj
 **/bin
 # Ignore NuGet Packages
