@@ -765,7 +765,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
                 else
                 {
-                    Loggly.Error("FieldUtils", $"Duplicate field Ids ({fieldDescriptor.FieldID}) found in GetAllFieldDescriptors");
+                    Loggly.Error("FieldUtils", $"Duplicate field Ids ({fieldDescriptor.FieldID}) found in GetAllFieldDescriptors. "+ 
+                        $"Existing value: {fieldsAndDescriptions[fieldDescriptor.FieldID]}, New value: {fieldDescriptor.Description}");
                 }
             }
 
