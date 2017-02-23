@@ -485,12 +485,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         string val = ExtractSimpleField(currentLoan, fullKey);
                         try
                         {
-                            if (val != null)
-                            {
-                                var insertKey = SafeFieldId(fullKey);
-
-                                fieldDictionary[insertKey] = val;
-                            }
+                            var insertKey = SafeFieldId(fullKey);
+                            fieldDictionary[insertKey] = val;
                         }
                         catch (Exception ex)
                         {
