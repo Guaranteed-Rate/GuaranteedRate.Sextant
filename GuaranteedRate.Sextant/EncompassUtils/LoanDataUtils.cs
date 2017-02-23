@@ -5,7 +5,6 @@ using GuaranteedRate.Sextant.Loggers;
 using GuaranteedRate.Sextant.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -491,8 +490,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         catch (Exception ex)
                         {
                             Loggly.Warn("LoandataUtils",
-                                $"Error extracting field {fullKey} from loan #:{loanNumber} loan guid:{currentLoan.Guid}" +
-                                ex);
+                                $"Error extracting field {fullKey} from loan #:{loanNumber} loan guid:{currentLoan.Guid} Exception:{ex}");
                         }
                     }
                 }
@@ -527,15 +525,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             if (value != null)
                             {
                                 var key = SafeFieldId(fieldIdIndex);
-
-                                if (fieldDictionary.ContainsKey(key))
-                                {
-                                    fieldDictionary[key] = value;
-                                }
-                                else
-                                {
-                                    fieldDictionary.Add(key, value);
-                                }
+                                fieldDictionary[key] = value;
                             }
                         }
                     }
@@ -592,15 +582,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             if (value != null)
                             {
                                 var key = SafeFieldId(indexPad);
-
-                                if (fieldDictionary.ContainsKey(key))
-                                {
-                                    fieldDictionary[key] = value;
-                                }
-                                else
-                                {
-                                    fieldDictionary.Add(key, value);
-                                }
+                                fieldDictionary[key] = value;
                             }
                         }
                     }
@@ -640,15 +622,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             if (value != null)
                             {
                                 var key = SafeFieldId(fieldId);
-
-                                if (fieldDictionary.ContainsKey(key))
-                                {
-                                    fieldDictionary[key] = value;
-                                }
-                                else
-                                {
-                                    fieldDictionary.Add(key, value);
-                                }
+                                fieldDictionary[key] = value;
                             }
                         }
                     }
@@ -706,15 +680,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             if (value != null)
                             {
                                 var key = SafeFieldId(fieldId);
-
-                                if (fieldDictionary.ContainsKey(key))
-                                {
-                                    fieldDictionary[key] = value;
-                                }
-                                else
-                                {
-                                    fieldDictionary.Add(key, value);
-                                }
+                                fieldDictionary[key] = value;
                             }
                         }
                     }
