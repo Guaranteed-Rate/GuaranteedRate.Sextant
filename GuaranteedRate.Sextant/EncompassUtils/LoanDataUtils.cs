@@ -1,14 +1,11 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
-using EllieMae.Encompass.Collections;
 using GuaranteedRate.Sextant.Loggers;
 using GuaranteedRate.Sextant.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -142,7 +139,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 try
                 {
-                    FundingFeeList feeList = loan.GetFundingFees(true);
+                    var feeList = loan.GetFundingFees(true);
                     if (feeList != null && feeList.Count > 0)
                     {
                         foreach (FundingFee fee in feeList)
@@ -358,7 +355,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         localMilestone["comments"] = comments;
                     }
-                    if ((milestone.LoanAssociate != null) && (milestone.LoanAssociate.User != null))
+                    if (milestone.LoanAssociate != null && milestone.LoanAssociate.User != null)
                     {
                         localMilestone["userId"] = ParseField(milestone.LoanAssociate.User.ID);
                     }
@@ -436,7 +433,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, object> ExtractIntIndexFields(Loan currentLoan, ISet<string> fieldIds,
             int max_index, IDictionary<string, object> fieldDictionary)
         {
-            if (max_index < 1)
+            if (max_index < 1 || fieldIds == null || fieldIds.Count == 0)
             {
                 return fieldDictionary;
             }
@@ -465,6 +462,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 Loggly.Error("LoandataUtils", "Exception in ExtractIntIndexFields:" + ex);
             }
+
             return fieldDictionary;
         }
 
@@ -475,70 +473,80 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 return fieldDictionary;
             }
-            try
+
+            foreach (string fieldId in fieldIds)
             {
-                foreach (string fieldId in fieldIds)
+                foreach (string key in keys)
                 {
-                    foreach (string key in keys)
+                    string fullKey = fieldId + "." + key;
+                    string val = ExtractSimpleField(currentLoan, fullKey);
+                    try
                     {
-                        string fullKey = fieldId + "." + key;
-                        string val = ExtractSimpleField(currentLoan, fullKey);
-                        try
+                        if (val != null)
                         {
-                            if (val != null)
+                            var insertKey = SafeFieldId(fullKey);
+
+                            if (fieldDictionary.ContainsKey(insertKey))
                             {
-                                fieldDictionary.Add(SafeFieldId(fullKey), val);
+                                fieldDictionary[insertKey] = val;
+                            }
+                            else
+                            {
+                                fieldDictionary.Add(insertKey, val);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Loggly.Warn("LoandataUtils", $"Error extracting field {fullKey} from loan #:{currentLoan.LoanNumber} loan guid:{currentLoan.Guid}" +  ex);
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggly.Warn("LoandataUtils",
+                            $"Error extracting field {fullKey} from loan #:{currentLoan.LoanNumber} loan guid:{currentLoan.Guid}" +
+                            ex);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Loggly.Error("LoandataUtils", "Exception in ExtractStringIndexFields:" + ex);
-            }
+
             return fieldDictionary;
         }
 
         public static IDictionary<string, object> ExtractEndIndexFields(Loan currentLoan, ISet<string> fieldIds,
             IDictionary<string, object> fieldDictionary, int maxIndex = MULTI_MAX)
         {
-            string loanNumber = null;
-            try
+            if (fieldIds == null || fieldIds.Count == 0) return fieldDictionary;
+
+            foreach (string fieldId in fieldIds)
             {
-                loanNumber = currentLoan.LoanNumber;
-                foreach (string fieldId in fieldIds)
+                int index = 0;
+                try
                 {
-                    int index = 0;
-                    try
+                    for (index = 1; index < maxIndex; index++)
                     {
-                        for (index = 1; index < maxIndex; index++)
+                        string fieldIdIndex = fieldId + "." + IntPad(index);
+                        object fieldObject = currentLoan.Fields[fieldIdIndex].Value;
+                        string value = ParseField(fieldObject);
+
+                        if (value != null)
                         {
-                            string fieldIdIndex = fieldId + "." + IntPad(index);
-                            object fieldObject = currentLoan.Fields[fieldIdIndex].Value;
-                            string value = ParseField(fieldObject);
-                            if (value != null)
+                            var key = SafeFieldId(fieldIdIndex);
+
+                            if (fieldDictionary.ContainsKey(key))
                             {
-                                fieldDictionary.Add(SafeFieldId(fieldIdIndex), value);
+                                fieldDictionary[key] = value;
+                            }
+                            else
+                            {
+                                fieldDictionary.Add(key, value);
                             }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Loggly.Error("LoandataUtils",
-                            "Failed to pull loan=" + loanNumber + " field=" + fieldId + " index=" + index +
-                            " Exception: " + e);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Loggly.Error("LoandataUtils",
+                        "Failed to pull loan=" + currentLoan.LoanNumber + " field=" + fieldId + " index=" + index +
+                        " Exception: " + e);
                 }
             }
-            catch (Exception ex)
-            {
-                Loggly.Error("LoandataUtils", "Exception in ExtractEndIndexFields:" + ex);
-            }
+
             return fieldDictionary;
         }
 
@@ -548,85 +556,93 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 return "0" + x;
             }
-            else
-            {
-                return x + "";
-            }
+
+            return x + "";
         }
 
         public static IDictionary<string, object> ExtractMiddleIndexFields(Loan currentLoan, ISet<string> fieldIds,
             IDictionary<string, object> fieldDictionary)
         {
-            string loanNumber = null;
-            try
-            {
-                loanNumber = currentLoan.LoanNumber;
-                foreach (string fieldId in fieldIds)
-                {
-                    int index = 0;
-                    try
-                    {
-                        int offset = fieldId.IndexOf("00");
-                        string pre = fieldId.Substring(0, offset);
-                        string post = fieldId.Substring(offset + 2);
+            if (fieldIds == null || fieldIds.Count == 0) return fieldDictionary;
 
-                        //Requesting 00 SHOULD always return null.  
-                        for (index = 0; index < MULTI_MAX; index++)
+            foreach (string fieldId in fieldIds)
+            {
+                int index = 0;
+                try
+                {
+                    int offset = fieldId.IndexOf("00");
+                    string pre = fieldId.Substring(0, offset);
+                    string post = fieldId.Substring(offset + 2);
+
+                    //Requesting 00 SHOULD always return null.  
+                    for (index = 0; index < MULTI_MAX; index++)
+                    {
+                        string indexPad = pre + IntPad(index) + post;
+                        object fieldObject = currentLoan.Fields[indexPad].Value;
+                        string value = ParseField(fieldObject);
+
+                        if (value != null)
                         {
-                            string indexPad = pre + IntPad(index) + post;
-                            object fieldObject = currentLoan.Fields[indexPad].Value;
-                            string value = ParseField(fieldObject);
-                            if (value != null)
+                            var key = SafeFieldId(indexPad);
+
+                            if (fieldDictionary.ContainsKey(key))
                             {
-                                fieldDictionary.Add(SafeFieldId(indexPad), value);
+                                fieldDictionary[key] = value;
+                            }
+                            else
+                            {
+                                fieldDictionary.Add(key, value);
                             }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Loggly.Error("LoandataUtils",
-                            "Failed to pull loan=" + loanNumber + " field=" + fieldId + " index=" + index +
-                            " Exception: " + e);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Loggly.Error("LoandataUtils",
+                        "Failed to pull loan=" + currentLoan.LoanNumber + " field=" + fieldId + " index=" + index +
+                        " Exception: " + e);
                 }
             }
-            catch (Exception ex)
-            {
-                Loggly.Error("LoandataUtils", "Exception in ExtractMiddleIndexFields:" + ex);
-            }
+
             return fieldDictionary;
         }
 
         public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, ISet<string> fieldIds,
             IDictionary<string, object> fieldDictionary)
         {
-            string loanNumber = null;
-            try
+            if (fieldIds == null || fieldIds.Count == 0) return fieldDictionary;
+
+            foreach (var fieldId in fieldIds.Where(f => !string.IsNullOrEmpty(f)).Select(f => f.Trim()))
             {
-                loanNumber = currentLoan.LoanNumber;
-                foreach (string fieldId in fieldIds)
+                try
                 {
-                    try
+                    if (!currentLoan.Fields[fieldId].IsEmpty())
                     {
-                        object fieldObject;
-                        fieldObject = currentLoan.Fields[fieldId].Value;
+                        var fieldObject = currentLoan.Fields[fieldId].Value;
                         string value = ParseField(fieldObject);
+
                         if (value != null)
                         {
-                            fieldDictionary.Add(SafeFieldId(fieldId), value);
+                            var key = SafeFieldId(fieldId);
+
+                            if (fieldDictionary.ContainsKey(key))
+                            {
+                                fieldDictionary[key] = value;
+                            }
+                            else
+                            {
+                                fieldDictionary.Add(key, value);
+                            }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Loggly.Error("LoandataUtils",
-                            "Failed to pull loan=" + loanNumber + " field=" + fieldId + " Exception: " + e);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Loggly.Error("LoandataUtils",
+                        "Failed to pull loan=" + currentLoan.LoanNumber + " field=" + fieldId + " Exception: " + e);
                 }
             }
-            catch (Exception ex)
-            {
-                Loggly.Error("LoandataUtils", "Exception in ExtractSimpleFields:" + ex);
-            }
+
             return fieldDictionary;
         }
 
@@ -636,8 +652,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             try
             {
                 loanNumber = currentLoan.LoanNumber;
-                object fieldObject;
-                fieldObject = currentLoan.Fields[field].Value;
+                var fieldObject = currentLoan.Fields[field].Value;
+
                 return ParseField(fieldObject);
             }
             catch (Exception e)
@@ -651,34 +667,41 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         public static IDictionary<string, object> ExtractSimpleFields(Loan currentLoan, BorrowerPair borrowerPair,
             ISet<string> fieldIds, IDictionary<string, object> fieldDictionary)
         {
-            string loanNumber = null;
-            try
+            if (fieldIds == null || fieldIds.Count == 0) return fieldDictionary;
+
+            foreach (var fieldId in fieldIds.Where(f => !string.IsNullOrEmpty(f)).Select(f => f.Trim()))
             {
-                loanNumber = currentLoan.LoanNumber;
-                foreach (string fieldId in fieldIds)
+                try
                 {
-                    try
+                    if (!currentLoan.Fields[fieldId].IsEmpty())
                     {
-                        object fieldObject;
-                        fieldObject = currentLoan.Fields[fieldId].GetValueForBorrowerPair(borrowerPair);
+                        var fieldObject = currentLoan.Fields[fieldId].GetValueForBorrowerPair(borrowerPair);
                         string value = ParseField(fieldObject);
+
                         if (value != null)
                         {
-                            fieldDictionary.Add(SafeFieldId(fieldId), value);
+                            var key = SafeFieldId(fieldId);
+
+                            if (fieldDictionary.ContainsKey(key))
+                            {
+                                fieldDictionary[key] = value;
+                            }
+                            else
+                            {
+                                fieldDictionary.Add(key, value);
+                            }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Loggly.Error("LoandataUtils",
-                            "Failed to pull loan=" + loanNumber + " borrowerPair=" + borrowerPair.ToString() + " field=" +
-                            fieldId + " Exception: " + e);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Loggly.Error("LoandataUtils",
+                        "Failed to pull loan=" + currentLoan.LoanNumber + " borrowerPair=" + borrowerPair.ToString() +
+                        " field=" +
+                        fieldId + " Exception: " + e);
                 }
             }
-            catch (Exception ex)
-            {
-                Loggly.Error("LoandataUtils", "Exception in ExtractSimpleFields with BorrowerPairs:" + ex);
-            }
+
             return fieldDictionary;
         }
 
@@ -686,8 +709,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             if (fieldObject != null)
             {
-                string fieldValue = fieldObject.ToString();
-                if (!String.IsNullOrWhiteSpace(fieldValue))
+                var fieldValue = fieldObject.ToString();
+                if (!string.IsNullOrWhiteSpace(fieldValue))
                 {
                     return fieldValue;
                 }
@@ -704,7 +727,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static string SafeFieldId(string fieldId)
         {
-            if (String.IsNullOrEmpty(fieldId))
+            if (string.IsNullOrEmpty(fieldId))
             {
                 return fieldId;
             }
