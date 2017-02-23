@@ -5,6 +5,7 @@ using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Reporting;
 using System;
 using System.Collections.Generic;
+using GuaranteedRate.Sextant.Loggers;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -441,22 +442,23 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             MORTGAGES_MULTI_KEYS = new HashSet<string>();
             VESTING_MULTI_KEYS = new HashSet<string>();
 
-            INDEX_MULTI_SORTER = new Dictionary<string, ISet<string>>();
-            INDEX_MULTI_SORTER.Add(BORROWER_EMPLOYERS_STARTS, BORROWER_EMPLOYERS_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(CO_BORROWER_EMPLOYERS_STARTS, CO_BORROWER_EMPLOYERS_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(BORROWER_RESIDENCES_STARTS, BORROWER_RESIDENCES_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(CO_BORROWER_RESIDENCES_STARTS, CO_BORROWER_RESIDENCES_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(FD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(DD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(FL_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(MORTGAGES_STARTS, MORTGAGES_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(IRS_MORTGAGE_INFO_STARTS, MORTGAGES_MULTI_KEYS);
-            INDEX_MULTI_SORTER.Add(VESTING_PARITIES_STARTS, VESTING_MULTI_KEYS);
+            INDEX_MULTI_SORTER = new Dictionary<string, ISet<string>>
+            {
+                {BORROWER_EMPLOYERS_STARTS, BORROWER_EMPLOYERS_MULTI_KEYS},
+                {CO_BORROWER_EMPLOYERS_STARTS, CO_BORROWER_EMPLOYERS_MULTI_KEYS},
+                {BORROWER_RESIDENCES_STARTS, BORROWER_RESIDENCES_MULTI_KEYS},
+                {CO_BORROWER_RESIDENCES_STARTS, CO_BORROWER_RESIDENCES_MULTI_KEYS},
+                {FD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS},
+                {DD_DEPOSITS_STARTS, DEPOSITS_MULTI_KEYS},
+                {FL_LIABILITIES_STARTS, LIABILITIES_MULTI_KEYS},
+                {MORTGAGES_STARTS, MORTGAGES_MULTI_KEYS},
+                {IRS_MORTGAGE_INFO_STARTS, MORTGAGES_MULTI_KEYS},
+                {VESTING_PARITIES_STARTS, VESTING_MULTI_KEYS}
+            };
 
             DISCLOSURES_MULTI_KEYS = new HashSet<string>();
 
-            INDEX_MULTI_SORTER_END = new Dictionary<string, ISet<string>>();
-            INDEX_MULTI_SORTER_END.Add(DISCLOSURES_STARTS, DISCLOSURES_MULTI_KEYS);
+            INDEX_MULTI_SORTER_END = new Dictionary<string, ISet<string>> {{DISCLOSURES_STARTS, DISCLOSURES_MULTI_KEYS}};
 
             ROLE_MULTI_KEYS = GetRoleMultiKeys();
             MILESTONE_MULTI_KEYS = GetMilestoneMultiKeys();
@@ -559,17 +561,21 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             foreach (FieldDescriptor fieldDescriptor in fieldDescriptors)
             {
+                if (string.IsNullOrEmpty(fieldDescriptor.FieldID)) continue;
+
+                var baseKey = fieldDescriptor.FieldID.Trim();
+
                 if (!fieldDescriptor.MultiInstance)
                 {
-                    SIMPLE_FIELDS.Add(fieldDescriptor.FieldID);
+                    SIMPLE_FIELDS.Add(baseKey);
                 }
                 else
                 {
                     switch (fieldDescriptor.InstanceSpecifierType)
                     {
                         case MultiInstanceSpecifierType.Index:
-                            string starts2 = fieldDescriptor.FieldID.Substring(0, 2);
-                            string starts3 = fieldDescriptor.FieldID.Substring(0, 3);
+                            string starts2 = baseKey.Substring(0, 2);
+                            string starts3 = baseKey.Substring(0, 3);
                             /**
                              * These 3 groups do not follow any known rules for extraction
                              * have no descriptions, and seem to consist of dupe data.
@@ -579,17 +585,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             if (starts2 != "LP" && starts3 != "FBE" && starts3 != "FCE")
                             {
                                 //the < 30 is to skip DISCLOSEDGFE.Snapshot.NEWHUD.X100...
-                                if (fieldDescriptor.FieldID.Contains("00") && fieldDescriptor.FieldID.Length < 30)
+                                if (baseKey.Contains("00") && baseKey.Length < 30)
                                 {
-                                    string key = fieldDescriptor.FieldID.Substring(0, 2);
+                                    string key = baseKey.Substring(0, 2);
                                     if (INDEX_MULTI_SORTER.Keys.Contains(key))
                                     {
-                                        INDEX_MULTI_SORTER[key].Add(fieldDescriptor.FieldID);
+                                        INDEX_MULTI_SORTER[key].Add(baseKey);
                                     }
                                     else
                                     {
                                         UNKNOWN_KEYS.Add(key);
-                                        MIDDLE_INDEXED.Add(fieldDescriptor.FieldID);
+                                        MIDDLE_INDEXED.Add(baseKey);
                                     }
                                 }
                                 else
@@ -597,37 +603,37 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                     bool matched = false;
                                     foreach (string key in INDEX_MULTI_SORTER_END.Keys)
                                     {
-                                        if (fieldDescriptor.FieldID.StartsWith(key))
+                                        if (baseKey.StartsWith(key))
                                         {
-                                            INDEX_MULTI_SORTER_END[key].Add(fieldDescriptor.FieldID);
+                                            INDEX_MULTI_SORTER_END[key].Add(baseKey);
                                             matched = true;
                                             break;
                                         }
                                     }
                                     if (!matched)
                                     {
-                                        END_INDEXED.Add(fieldDescriptor.FieldID);
+                                        END_INDEXED.Add(baseKey);
                                     }
                                 }
                             }
                             break;
                         case MultiInstanceSpecifierType.Document:
-                            DOCUMENT_MULTI.Add(fieldDescriptor.FieldID);
+                            DOCUMENT_MULTI.Add(baseKey);
                             break;
                         case MultiInstanceSpecifierType.Milestone:
-                            UnrollMultiFieldIds(fieldDescriptor.FieldID, MILESTONE_MULTI_KEYS);
+                            UnrollMultiFieldIds(baseKey, MILESTONE_MULTI_KEYS);
                             break;
                         case MultiInstanceSpecifierType.MilestoneTask:
-                            MILESTONE_TASK_MULTI.Add(fieldDescriptor.FieldID);
+                            MILESTONE_TASK_MULTI.Add(baseKey);
                             break;
                         case MultiInstanceSpecifierType.PostClosingCondition:
-                            POST_CLOSING_CONDITION_MULTI.Add(fieldDescriptor.FieldID);
+                            POST_CLOSING_CONDITION_MULTI.Add(baseKey);
                             break;
                         case MultiInstanceSpecifierType.Role:
-                            UnrollMultiFieldIds(fieldDescriptor.FieldID, ROLE_MULTI_KEYS);
+                            UnrollMultiFieldIds(baseKey, ROLE_MULTI_KEYS);
                             break;
                         case MultiInstanceSpecifierType.UnderwritingCondition:
-                            UNDERWRITING_MULTI.Add(fieldDescriptor.FieldID);
+                            UNDERWRITING_MULTI.Add(baseKey);
                             break;
                         default:
                             break;
@@ -751,10 +757,19 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             IDictionary<string, string> fieldsAndDescriptions = new Dictionary<string, string>();
             ISet<FieldDescriptor> fieldDescriptorsList = Instance.GetAllFieldDescriptors();
 
-            foreach (FieldDescriptor fieldDescriptor in fieldDescriptorsList)
+            foreach (var fieldDescriptor in fieldDescriptorsList)
             {
-                fieldsAndDescriptions.Add(fieldDescriptor.FieldID, fieldDescriptor.Description);
+                if (!fieldsAndDescriptions.ContainsKey(fieldDescriptor.FieldID))
+                {
+                    fieldsAndDescriptions.Add(fieldDescriptor.FieldID, fieldDescriptor.Description);
+                }
+                else
+                {
+                    Loggly.Error("FieldUtils", $"Duplicate field Ids ({fieldDescriptor.FieldID}) found in GetAllFieldDescriptors. "+ 
+                        $"Existing value: {fieldsAndDescriptions[fieldDescriptor.FieldID]}, New value: {fieldDescriptor.Description}");
+                }
             }
+
             return fieldsAndDescriptions;
         }
 
