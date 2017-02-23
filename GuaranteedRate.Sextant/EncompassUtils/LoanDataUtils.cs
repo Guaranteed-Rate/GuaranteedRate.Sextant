@@ -511,7 +511,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             var loanNumber = currentLoan.LoanNumber;
             try
             {
-                foreach (string fieldId in fieldIds)
+                foreach (var fieldId in fieldIds)
                 {
                     int index = 0;
                     try
@@ -614,17 +614,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 {
                     try
                     {
-                        if (!currentLoan.Fields[fieldId].IsEmpty())
-                        {
-                            var fieldObject = currentLoan.Fields[fieldId].Value;
-                            string value = ParseField(fieldObject);
-
-                            if (value != null)
-                            {
-                                var key = SafeFieldId(fieldId);
-                                fieldDictionary[key] = value;
-                            }
-                        }
+                        var fieldObject = currentLoan.Fields[fieldId].Value;
+                        string value = ParseField(fieldObject);
+                        var key = SafeFieldId(fieldId);
+                        fieldDictionary[key] = value;
                     }
                     catch (Exception e)
                     {
@@ -654,7 +647,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             catch (Exception e)
             {
                 Loggly.Error("LoandataUtils",
-                    "Failed to pull loan=" + loanNumber + " field=" + field + " Exception: " + e);
+                    $"Failed to pull loan={loanNumber} field={field} Exception: {e}");
             }
             return null;
         }
@@ -664,10 +657,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             if (fieldIds == null || fieldIds.Count == 0) return fieldDictionary;
 
-            string loanNumber = null;
             try
             {
-                loanNumber = currentLoan.LoanNumber;
+                var loanNumber = currentLoan.LoanNumber;
                 foreach (var fieldId in fieldIds)
                 {
                     try
