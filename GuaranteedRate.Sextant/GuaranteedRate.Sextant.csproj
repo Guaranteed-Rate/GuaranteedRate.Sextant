@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\IEncompassConfig.cs" />
+    <Compile Include="Config\IJsonEncompassConfig.cs" />
     <Compile Include="Config\IniConfig.cs" />
     <Compile Include="Config\JsonEncompassConfig.cs" />
     <Compile Include="EncompassUtils\EncompassInit.cs" />

@@ -12,7 +12,7 @@ namespace GuaranteedRate.Sextant.Config
     /// <summary>
     /// provides a simple config fild parser for JSON files.  Defaults to ASCII encoding
     /// </summary>
-    public class JsonEncompassConfig : IEncompassConfig
+    public class JsonEncompassConfig : IJsonEncompassConfig
     {
         private JObject _jsonObject = null;
         private Encoding _encoding = Encoding.ASCII;
