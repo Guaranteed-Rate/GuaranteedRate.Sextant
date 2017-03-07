@@ -4,15 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using iTextSharp.text.pdf.parser;
 
 namespace GuaranteedRate.Sextant.Config
 {
-
-
-
-
     /// <summary>
     ///      IniConfig is a simple config class that expects data in the old .INI format:
     /// [key]=[value]\n
