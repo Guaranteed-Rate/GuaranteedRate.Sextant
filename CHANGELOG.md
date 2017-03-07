@@ -1,5 +1,8 @@
-## v17.1.0.1 / 2017 Mar 07
+## v17.1.0.2 / 2017 Mar 07
 > This release updates the IniConfig to be able to accept values that contain an equal sign
+
+## v17.1.0.1 / 2017 Feb 23
+> This release forces trimming on field ids to prevent Encompass "Field ID not found" errors 
 
 ## v17.1.0.0 / 2017 Feb 08
 > This release updates the Encompass SDK to version 17.1 and includes instructions 
