@@ -1,3 +1,6 @@
+## v17.1.0.1 / 2017 Mar 07
+> This release updates the IniConfig to be able to accept values that contain an equal sign
+
 ## v17.1.0.0 / 2017 Feb 08
 > This release updates the Encompass SDK to version 17.1 and includes instructions 
 > for building your own NuGet package.
