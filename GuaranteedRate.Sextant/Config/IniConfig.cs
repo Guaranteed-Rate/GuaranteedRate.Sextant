@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iTextSharp.text.pdf.parser;
 
 namespace GuaranteedRate.Sextant.Config
 {
@@ -137,7 +138,7 @@ namespace GuaranteedRate.Sextant.Config
                 {
                     if (line != null && !String.IsNullOrWhiteSpace(line) && line.Substring(0, 1) != "#")
                     {
-                        string[] keyVal = line.Split('=');
+                        var keyVal = line.Split(new[] { '=' }, 2);
                         if (keyVal != null && keyVal.Length == 2)
                         {
                             config.Add(keyVal[0].ToLower().Trim(), keyVal[1].ToLower().Trim());
