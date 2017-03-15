@@ -162,6 +162,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Config\IniConfigTests.cs" />
     <Compile Include="Config\JsonEncompassConfigTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

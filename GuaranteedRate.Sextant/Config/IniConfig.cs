@@ -4,14 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Config
 {
-
-
-
-
     /// <summary>
     ///      IniConfig is a simple config class that expects data in the old .INI format:
     /// [key]=[value]\n
@@ -137,7 +132,7 @@ namespace GuaranteedRate.Sextant.Config
                 {
                     if (line != null && !String.IsNullOrWhiteSpace(line) && line.Substring(0, 1) != "#")
                     {
-                        string[] keyVal = line.Split('=');
+                        var keyVal = line.Split(new[] { '=' }, 2);
                         if (keyVal != null && keyVal.Length == 2)
                         {
                             config.Add(keyVal[0].ToLower().Trim(), keyVal[1].ToLower().Trim());

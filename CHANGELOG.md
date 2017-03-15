@@ -1,6 +1,9 @@
 +## v17.1.0.3 / 2017 Mar 07
 > Extending JsonEncompassConfig to implement an IJsonEncompassConfig
 
+## v17.1.0.2 / 2017 Mar 07
+> This release updates the IniConfig to be able to accept values that contain an equal sign
+
 ## v17.1.0.1 / 2017 Feb 23
 > This release forces trimming on field ids to prevent Encompass "Field ID not found" errors 
 
