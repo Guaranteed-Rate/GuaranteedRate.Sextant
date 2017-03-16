@@ -73,6 +73,22 @@ namespace GuaranteedRate.Sextant.Config
             return val.ToString();
         }
 
+        public T GetValue<T>(string key, T defaultValue = default(T))
+        {
+            var token = _jsonObject.SelectToken(key);
+
+            if (token == null)
+            {
+                if (!EqualityComparer<T>.Default.Equals(defaultValue, default(T)))
+                {
+                    return defaultValue;
+                }
+
+                return default(T);
+            }
+
+            return token.ToObject<T>();
+        }
 
         /// <summary>
         /// Initializes the config from a default "sextant.json" file.
