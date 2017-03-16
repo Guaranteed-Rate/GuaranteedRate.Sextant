@@ -1,4 +1,4 @@
-+## v17.1.0.3 / 2017 Mar 07
+## v17.1.0.3 / 2017 Mar 07
 > Extending JsonEncompassConfig to implement an IJsonEncompassConfig
 
 ## v17.1.0.2 / 2017 Mar 07
