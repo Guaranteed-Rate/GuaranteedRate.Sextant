@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GuaranteedRate.SextantTests.Config;
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 28, $"Expected 28, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 30, $"Expected 30, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
             Assert.That(_sut.GetValue("widget.window.title").Equals("Sample Konfabulator Widget"));
 
@@ -59,6 +60,57 @@ namespace GuaranteedRate.Sextant.Config.Tests
             var model = _sut.GetValue<WindowModel[]>("badPath.window");
 
             Assert.IsNull(model);
+        }
+
+        [Test]
+        public void GivenEmptyArray_WhenGetValueTArray_ThenReturnsEmptyArray()
+        {
+            var actual = _sut.GetValue<WindowModel[]>("widget.emptyWindowList");
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(0, actual.Length);
+        }
+
+        [Test]
+        public void GivenEmptyArray_WhenGetValueTList_ThenReturnsEmptyList()
+        {
+            var actual = _sut.GetValue<List<WindowModel>>("widget.emptyWindowList");
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(0, actual.Count);
+        }
+
+        [Test]
+        public void GivenEmptyArray_WhenGetValueTIList_ThenReturnsEmptyIList()
+        {
+            var actual = _sut.GetValue<IList<WindowModel>>("widget.emptyWindowList");
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(0, actual.Count);
+        }
+
+        [Test]
+        public void GivenNullArray_WhenGetValueTArray_ThenReturnsNull()
+        {
+            var actual = _sut.GetValue<WindowModel[]>("widget.nullWindowList");
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GivenNullArray_WhenGetValueTList_ThenReturnsNull()
+        {
+            var actual = _sut.GetValue<List<WindowModel>>("widget.nullWindowList");
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GivenNullArray_WhenGetValueTIList_ThenReturnsNull()
+        {
+            var actual = _sut.GetValue<IList<WindowModel>>("widget.nullWindowList");
+
+            Assert.IsNull(actual);
         }
 
         [Test]
