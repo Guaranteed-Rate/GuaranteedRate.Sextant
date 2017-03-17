@@ -73,18 +73,24 @@ namespace GuaranteedRate.Sextant.Config
             return val.ToString();
         }
 
+        /// <summary>
+        /// This takes a type of T, a key and an optional default value.
+        /// If the json value assigned to the key is an empty string it 
+        /// will return a null object or an empty string depending on the 
+        /// type of T
+        /// </summary>
+        /// <typeparam name="T">Object type to be returned</typeparam>
+        /// <param name="key">Full path to the key(e.g. "Shape.Square.Color")</param>
+        /// <param name="defaultValue">The value to be returned if the requested value is not found</param>
+        /// <returns>A value of the requested type</returns>
         public T GetValue<T>(string key, T defaultValue = default(T))
         {
             var token = _jsonObject.SelectToken(key);
 
-            if (token == null)
+            if (token == null ||
+                (token.Type == JTokenType.String && !token.HasValues))
             {
-                if (!EqualityComparer<T>.Default.Equals(defaultValue, default(T)))
-                {
-                    return defaultValue;
-                }
-
-                return default(T);
+                return defaultValue;
             }
 
             return token.ToObject<T>();

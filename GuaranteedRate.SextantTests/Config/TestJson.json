@@ -2,7 +2,8 @@
   "widget": {
     "debug": "true",
     "emptyWindowList": [ ],
-    "nullWindowList":  null,
+    "nullWindowList": null,
+    "emptyStringWindowList": "",
     "image": {
       "alignment": "center",
       "hOffset": 250,

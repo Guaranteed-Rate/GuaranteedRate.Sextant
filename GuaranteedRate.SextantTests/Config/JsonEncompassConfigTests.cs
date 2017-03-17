@@ -22,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 30, $"Expected 30, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 31, $"Expected 31, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
             Assert.That(_sut.GetValue("widget.window.title").Equals("Sample Konfabulator Widget"));
 
@@ -87,6 +87,30 @@ namespace GuaranteedRate.Sextant.Config.Tests
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(0, actual.Count);
+        }
+
+        [Test]
+        public void GivenEmptyStringArray_WhenGetValueTArray_ThenReturnsEmptyArray()
+        {
+            var actual = _sut.GetValue<WindowModel[]>("widget.emptyStringWindowList");
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GivenEmptyStringArray_WhenGetValueTList_ThenReturnsEmptyList()
+        {
+            var actual = _sut.GetValue<List<WindowModel>>("widget.emptyStringWindowList");
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GivenEmptyStringArray_WhenGetValueTIList_ThenReturnsEmptyIList()
+        {
+            var actual = _sut.GetValue<IList<WindowModel>>("widget.emptyStringWindowList");
+
+            Assert.IsNull(actual);
         }
 
         [Test]
