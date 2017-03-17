@@ -21,7 +21,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 22, $"Expected 22, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 28, $"Expected 28, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
             Assert.That(_sut.GetValue("widget.window.title").Equals("Sample Konfabulator Widget"));
 
