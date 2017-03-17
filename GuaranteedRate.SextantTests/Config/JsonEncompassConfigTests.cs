@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using GuaranteedRate.SextantTests.Config;
 using NUnit.Framework;
@@ -39,9 +40,43 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void GivenInvalidPath_WhenGetValueT_ThenReturnDefault()
         {
-            var model = _sut.GetValue<WindowModel>("widgets.window");
+            var model = _sut.GetValue<WindowModel>("badPath.window");
 
             Assert.IsNull(model);
+        }
+
+        [Test]
+        public void GivenInvalidPath_WhenGetValueTList_ThenReturnDefault()
+        {
+            var model = _sut.GetValue<List<WindowModel>>("badPath.window");
+
+            Assert.IsNull(model);
+        }
+
+        [Test]
+        public void GivenInvalidPath_WhenGetValueTArray_ThenReturnDefault()
+        {
+            var model = _sut.GetValue<WindowModel[]>("badPath.window");
+
+            Assert.IsNull(model);
+        }
+
+        [Test]
+        public void WhenGetValueTList_ThenReturnList()
+        {
+            var model = _sut.GetValue<List<WindowModel>>("widget.windowList");
+
+            Assert.IsNotNull(model);
+            Assert.AreEqual(1, model.Count);
+        }
+
+        [Test]
+        public void WhenGetValueTArray_ThenReturnArray()
+        {
+            var model = _sut.GetValue<WindowModel[]>("widget.windowList");
+
+            Assert.IsNotNull(model);
+            Assert.AreEqual(1, model.Length);
         }
 
         [Test]

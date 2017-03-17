@@ -23,6 +23,14 @@
       "name": "main_window",
       "title": "Sample Konfabulator Widget",
       "width": 500
-    }
+    },
+    "windowList": [
+      {
+        "height": 500,
+        "name": "main_window",
+        "title": "Sample Konfabulator Widget",
+        "width": 500
+      }
+    ]
   }
 }
