@@ -79,6 +79,24 @@ namespace GuaranteedRate.Sextant.Config.Tests
             Assert.AreEqual(1, model.Length);
         }
 
+
+        [Test]
+        public void WhenGetValueTIList_ThenReturnTIList()
+        {
+            var model = _sut.GetValue<IList<WindowModel>>("widget.windowList");
+
+            Assert.IsNotNull(model);
+            Assert.AreEqual(1, model.Count);
+        }
+
+        [Test]
+        public void GivenInvalidPath_WhenGetValueTIList_ThenReturnDefault()
+        {
+            var model = _sut.GetValue<IList<WindowModel>>("badPath.windowList");
+
+            Assert.IsNull(model);
+        }
+
         [Test]
         public void GivenInvalidPathWithDefaultReturnVal_WhenGetValueT_ThenReturnDefaultReturnVal()
         {
