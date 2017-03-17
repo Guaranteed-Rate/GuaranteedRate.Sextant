@@ -1,3 +1,10 @@
+## v17.1.0.4 / 2017 Mar 16
+> This release extends IJsonEncompassConfig to support T GetValue<T>(string key, T defaultValue = default(T))
+
+```c#
+[GuaranteedRate.Sextant "17.1.0.4"]
+```
+
 ## v17.1.0.3 / 2017 Mar 07
 > Extending JsonEncompassConfig to implement an IJsonEncompassConfig
 
