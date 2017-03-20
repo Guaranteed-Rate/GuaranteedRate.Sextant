@@ -1,3 +1,10 @@
+## v17.1.0.5 / 2017 Mar 20
+> This release corrects a regression in LoanDataUtils that allowed null values to be set to properties instead of leaving unset properties as empty strings.
+
+```c#
+[GuaranteedRate.Sextant "17.1.0.5"]
+```
+
 ## v17.1.0.4 / 2017 Mar 16
 > This release extends IJsonEncompassConfig to support T GetValue<T>(string key, T defaultValue = default(T))
 

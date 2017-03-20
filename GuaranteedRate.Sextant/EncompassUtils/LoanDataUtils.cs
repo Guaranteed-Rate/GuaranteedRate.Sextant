@@ -484,8 +484,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         string val = ExtractSimpleField(currentLoan, fullKey);
                         try
                         {
-                            var insertKey = SafeFieldId(fullKey);
-                            fieldDictionary[insertKey] = val;
+                            if (val != null)
+                            {
+                                var insertKey = SafeFieldId(fullKey);
+                                fieldDictionary[insertKey] = val;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -508,9 +511,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         {
             if (fieldIds == null || fieldIds.Count == 0) return fieldDictionary;
 
-            var loanNumber = currentLoan.LoanNumber;
             try
             {
+                var loanNumber = currentLoan.LoanNumber;
                 foreach (var fieldId in fieldIds)
                 {
                     int index = 0;
@@ -616,8 +619,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     {
                         var fieldObject = currentLoan.Fields[fieldId].Value;
                         string value = ParseField(fieldObject);
-                        var key = SafeFieldId(fieldId);
-                        fieldDictionary[key] = value;
+                        if (value != null)
+                        {
+                            var key = SafeFieldId(fieldId);
+                            fieldDictionary[key] = value;
+                        }
                     }
                     catch (Exception e)
                     {
