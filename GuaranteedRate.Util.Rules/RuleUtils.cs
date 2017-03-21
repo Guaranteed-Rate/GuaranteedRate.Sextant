@@ -23,6 +23,10 @@ namespace GuaranteedRate.Util.Rules
                 //Console.WriteLine(rp.SimpleExport());
                 Console.WriteLine($"Name={rule.RuleName} |ModifiedBy={rule.LastModifiedByFullName} |RuleID= {rule.RuleID}");
                 Console.WriteLine($"LastModTime={rule.LastModTime} |MilestoneID={rule.MilestoneID}\n\n");
+
+                var rp = new RuleProxy<BizRuleInfo>(rule, "milestonecompletions");
+                Console.WriteLine(rp.Export());
+                Console.WriteLine("");
                 //Console.WriteLine($"{rule.AdvancedCodeXML}");
                 //Console.WriteLine(rp.SimpleExport());
             }
