@@ -3,22 +3,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using EllieMae.EMLite.ClientServer;
 using EllieMae.EMLite.RemotingServices;
-using EllieMae.EMLite.Serialization;
 
 namespace GuaranteedRate.Util.Rules
 {
-    public class RuleProxy<TRuleInfo> where TRuleInfo : BizRuleInfo
+    public class RuleProxy
     {
-        private TRuleInfo _bizRuleInfo;
+        private BizRuleInfo _bizRuleInfo;
         private string _resourceName;
 
-        public RuleProxy(TRuleInfo ruleInfo, string resourceName)
+        public RuleProxy(BizRuleInfo ruleInfo, string resourceName)
         {
             _resourceName = resourceName;
             _bizRuleInfo = ruleInfo;
         }
 
-        public TRuleInfo RuleInfo { get { return _bizRuleInfo; } }
+        public BizRuleInfo RuleInfo { get { return _bizRuleInfo; } }
 
         /// <summary>
         /// Loads the rule content from Encompass webservice.
@@ -26,7 +25,6 @@ namespace GuaranteedRate.Util.Rules
         public string Export()
         {
             var client = CreateHttpClient();
-
             var exportURL = $"/{_resourceName}/{_bizRuleInfo.RuleID}?format=xml";
 
             //console application doesn't support async/await so blocking here.

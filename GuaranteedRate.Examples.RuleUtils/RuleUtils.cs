@@ -1,8 +1,6 @@
 ﻿using System;
 using EllieMae.EMLite.ClientServer;
 using EllieMae.EMLite.RemotingServices;
-using EllieMae.EMLite.Server;
-using Session = EllieMae.EMLite.RemotingServices.Session;
 
 namespace GuaranteedRate.Examples.RuleUtils
 {
@@ -13,8 +11,10 @@ namespace GuaranteedRate.Examples.RuleUtils
             if (args != null && args.Length == 3)
             {
                 //This is not the same session obj as the SDK
-                GuaranteedRate.Util.Rules.RuleUtils.ExtractRule(args[0], args[1], args[2]);
-
+                foreach (BpmCategory category in GuaranteedRate.Util.Rules.RuleUtils.CategoryResourceName.Keys)
+                {
+                    GuaranteedRate.Util.Rules.RuleUtils.ExtractRule(args[0], args[1], args[2], category);
+                }
                 return 1;
             }
             else
