@@ -16,8 +16,8 @@ namespace GuaranteedRate.Util.Rules
             {BpmCategory.FieldRules,                "fieldrules"},
             {BpmCategory.InputForms,                "inputformlist"},
             {BpmCategory.LoanAccess,                "milestonecompletions"},
-            {BpmCategory.LoanActionAccess,          "personaaccesstoloans"},//TODO: Check
-            {BpmCategory.LoanActionCompletionRules, "milestonecompletions"},//TODO: Check
+            {BpmCategory.LoanActionAccess,          "personaaccesstoloans"},//empty
+            {BpmCategory.LoanActionCompletionRules, "milestonecompletions"},//empty
             //{BpmCategory.LoanFolder,                "inputformlist"},//Additional information: Unable to cast object of type 'EllieMae.EMLite.RemotingServices.LoanFolderRuleManager' to type 'EllieMae.EMLite.RemotingServices.BpmManager'.
             //{BpmCategory.Milestones,                "milestonecompletions"},//Additional information: Unexpected server error: Object reference not set to an instance of an object.
             {BpmCategory.MilestoneRules,            "milestonecompletions"},
@@ -27,10 +27,12 @@ namespace GuaranteedRate.Util.Rules
             //{BpmCategory.Workflow,                  "milestonecompletions"}//Additional information: Unable to cast object of type 'EllieMae.EMLite.RemotingServices.WorkflowManager' to type 'EllieMae.EMLite.RemotingServices.BpmManager'.
         };
 
-        public static void ExtractRule(string url, string user, string pw, BpmCategory category)
+        public static IList<RuleDetails> ExtractRule(string url, string user, string pw, BpmCategory category)
         {
             //This is not the same session obj as the SDK
             Session.Start(url, user, pw, string.Empty);
+
+            var details = new List<RuleDetails>();
 
             /*
             var workflow = (WorkflowManager) Session.DefaultInstance.BPM.GetBpmManager(BpmCategory.Workflow);
@@ -45,18 +47,35 @@ namespace GuaranteedRate.Util.Rules
             BizRuleInfo[] rules = rulesManager.GetAllRules();
             foreach (var rule in rules)
             {
-                Console.WriteLine($"Name={rule.RuleName} |ModifiedBy={rule.LastModifiedByFullName} |RuleID= {rule.RuleID}");
-                Console.WriteLine($"LastModTime={rule.LastModTime} |MilestoneID={rule.MilestoneID}\n\n");
+                var ruleDetail = new RuleDetails();
+                details.Add(ruleDetail);
+                ruleDetail.Category = category.ToString();
+                ruleDetail.Name = rule.RuleName;
+                ruleDetail.LastModified = rule.LastModTime;
+                ruleDetail.ModifiedBy = rule.LastModifiedByUserId;
+                ruleDetail.id = rule.RuleID;
+                ruleDetail.Status = rule.Status.ToString();
 
                 var rp = new RuleProxy(rule, CategoryResourceName[category]);
+                ruleDetail.RuleXml = rp.Export();
+
+                /*
+                Console.WriteLine($"Category={category} | Name={rule.RuleName} |ModifiedBy={rule.LastModifiedByFullName} |RuleID= {rule.RuleID}");
+                Console.WriteLine($"LastModTime={rule.LastModTime} |MilestoneID={rule.MilestoneID}\n\n");
+                Console.WriteLine($"RuleType={rule.RuleType} |Inactive={rule.Inactive}\n\n");
+                Console.WriteLine($"Status={rule.Status} |Condition={rule.Condition}\n\n");
+                Console.WriteLine($"IsGeneralRule={rule.IsGeneralRule} |ConditionState={rule.ConditionState}\n\n");
+
+                /*
                 Console.WriteLine(rp.Export());
                 Console.WriteLine("");
                 //Console.WriteLine($"{rule.AdvancedCodeXML}");
                 //Console.WriteLine(rp.SimpleExport());
+                */
             }
 
             Session.End();
-
+            return details;
         }
     }
 }

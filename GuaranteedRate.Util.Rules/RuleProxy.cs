@@ -8,8 +8,8 @@ namespace GuaranteedRate.Util.Rules
 {
     public class RuleProxy
     {
-        private BizRuleInfo _bizRuleInfo;
-        private string _resourceName;
+        private readonly BizRuleInfo _bizRuleInfo;
+        private readonly string _resourceName;
 
         public RuleProxy(BizRuleInfo ruleInfo, string resourceName)
         {

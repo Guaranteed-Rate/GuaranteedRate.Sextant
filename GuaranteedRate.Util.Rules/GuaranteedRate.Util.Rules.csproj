@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuleDetails.cs" />
     <Compile Include="RuleProxy.cs" />
     <Compile Include="RuleUtils.cs" />
   </ItemGroup>
