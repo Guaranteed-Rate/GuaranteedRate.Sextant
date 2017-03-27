@@ -1,4 +1,7 @@
 ﻿{
+  "HtmlTester": {
+    "Url": "http://www.google.com"
+  },
   "widget": {
     "debug": "true",
     "emptyWindowList": [ ],

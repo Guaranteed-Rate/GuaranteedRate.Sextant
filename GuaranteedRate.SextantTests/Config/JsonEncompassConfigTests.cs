@@ -22,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 31, $"Expected 31, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 33, $"Expected 33, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
             Assert.That(_sut.GetValue("widget.window.title").Equals("Sample Konfabulator Widget"));
 
@@ -178,6 +178,16 @@ namespace GuaranteedRate.Sextant.Config.Tests
         {
             var expected = new WindowModel {Height = 1, Name = "test", Title = "test title", Width = 1};
             var actual = _sut.GetValue<WindowModel>("widgets.window", expected);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GivenKeyWithHtmlVal_WhenGetValue_ThenHtmlValueReturned()
+        {
+            const string expected = "http://www.google.com";
+
+            var actual = _sut.GetValue("HtmlTester.Url");
 
             Assert.AreEqual(expected, actual);
         }
