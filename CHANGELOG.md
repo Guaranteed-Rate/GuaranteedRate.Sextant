@@ -1,3 +1,10 @@
+## v17.2.0.0 / 2017 Apr 17
+> This release allows for support of Encompass 17.2.0.0
+
+```c#
+[GuaranteedRate.Sextant "17.2.0.0"]
+```
+
 ## v17.1.0.5 / 2017 Mar 20
 > This release corrects a regression in LoanDataUtils that allowed null values to be set to properties instead of leaving unset properties as empty strings.
 
