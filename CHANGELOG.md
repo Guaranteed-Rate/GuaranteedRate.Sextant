@@ -1,3 +1,6 @@
+## v17.2.0.3 / 2017 Apr 17
+> This release upgrades Newtonsoft to 10.0.2 which is needed by Encompass 17.2.0.2
+
 ## v17.2.0.2 / 2017 Apr 17
 > This release allows for support of Encompass 17.2.0.2
 
