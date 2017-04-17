@@ -1,8 +1,8 @@
-## v17.2.0.0 / 2017 Apr 17
-> This release allows for support of Encompass 17.2.0.0
+## v17.2.0.2 / 2017 Apr 17
+> This release allows for support of Encompass 17.2.0.2
 
 ```c#
-[GuaranteedRate.Sextant "17.2.0.0"]
+[GuaranteedRate.Sextant "17.2.0.2"]
 ```
 
 ## v17.1.0.5 / 2017 Mar 20
