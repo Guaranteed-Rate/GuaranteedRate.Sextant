@@ -3,10 +3,6 @@ using EllieMae.Encompass.Client;
 using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Query;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -36,6 +32,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
 
             return session.Loans.Open(guid);
+        }
+
+        public static Loan OpenLoan(Session session, Guid guid)
+        {
+            return OpenLoan(session, guid);
         }
 
         /// <summary>
