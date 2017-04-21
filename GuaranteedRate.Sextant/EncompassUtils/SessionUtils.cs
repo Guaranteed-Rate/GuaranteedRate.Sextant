@@ -25,6 +25,16 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         public static Loan OpenLoan(Session session, string guid)
         {
+            if (!guid.StartsWith("{"))
+            {
+                guid = "{" + guid;
+            }
+
+            if (!guid.EndsWith("}"))
+            {
+                guid = guid + "}";
+            }
+
             return session.Loans.Open(guid);
         }
 

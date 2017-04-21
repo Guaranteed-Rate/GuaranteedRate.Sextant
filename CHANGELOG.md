@@ -1,3 +1,6 @@
+## v17.2.0.4 / 2017 Apr 21
+> Encompass expects string interpretations of Guids to be wrapped in braces.  Safe checking for this as Guid.ToString() will emit a guid that does not follow this standard.
+
 ## v17.2.0.3 / 2017 Apr 17
 > This release upgrades Newtonsoft to 10.0.2 which is needed by Encompass 17.2.0.2
 
