@@ -1,3 +1,6 @@
+## v17.2.0.5 / 2017 Apr 21
+> Have SessionUtils support Loan OpenLoan(Session session, Guid guid)
+
 ## v17.2.0.4 / 2017 Apr 21
 > Encompass expects string interpretations of Guids to be wrapped in braces.  Safe checking for this as Guid.ToString() will emit a guid that does not follow this standard.
 
