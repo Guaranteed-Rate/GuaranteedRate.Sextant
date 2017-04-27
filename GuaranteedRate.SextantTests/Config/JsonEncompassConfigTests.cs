@@ -22,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 33, $"Expected 33, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 37, $"Expected 37, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
@@ -192,6 +192,38 @@ namespace GuaranteedRate.Sextant.Config.Tests
             var actual = _sut.GetValue("HtmlTester.Url");
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GivenBoolTrue_WhenGetValueBool_ThenReturnTrue()
+        {
+            var actual = _sut.GetValue<bool>("trueProp");
+
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void GivenStringTrue_WhenGetValueBool_ThenReturnTrue()
+        {
+            var actual = _sut.GetValue<bool>("trueStringProp");
+
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void GivenBoolFalse_WhenGetValueBool_ThenReturnFalse()
+        {
+            var actual = _sut.GetValue<bool>("falseProp");
+
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void GivenStringFalse_WhenGetValueBool_ThenReturnFalse()
+        {
+            var actual = _sut.GetValue<bool>("falseStringProp");
+
+            Assert.IsFalse(actual);
         }
     }
 }
