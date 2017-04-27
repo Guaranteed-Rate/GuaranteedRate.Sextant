@@ -1,3 +1,6 @@
+## v17.2.0.5 / 2017 Apr 27
+> Bugfix for Json configs of <T>
+
 ## v17.2.0.5 / 2017 Apr 21
 > Have SessionUtils support Loan OpenLoan(Session session, Guid guid)
 

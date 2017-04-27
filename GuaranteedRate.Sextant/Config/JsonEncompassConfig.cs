@@ -86,14 +86,14 @@ namespace GuaranteedRate.Sextant.Config
         public T GetValue<T>(string key, T defaultValue = default(T))
         {
             var token = _jsonObject.SelectToken(key);
-
-            if (token == null ||
-                (token.Type == JTokenType.String && !token.HasValues))
+            try
             {
-                return defaultValue;
+                return token.ToObject<T>();
             }
-
-            return token.ToObject<T>();
+            catch (Exception)
+            {
+                return defaultValue;                    
+            }
         }
 
         /// <summary>
