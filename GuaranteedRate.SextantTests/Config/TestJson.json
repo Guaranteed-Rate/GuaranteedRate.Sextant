@@ -5,7 +5,9 @@
   "trueProp": true,
   "trueStringProp": "true",
   "falseProp": false,
-  "falseStringProp":  "false",
+  "falseStringProp": "false",
+  "intProp": 1,
+  "intStringProp":  "1",
   "widget": {
     "debug": "true",
     "emptyWindowList": [ ],

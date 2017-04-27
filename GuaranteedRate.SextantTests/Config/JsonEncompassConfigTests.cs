@@ -225,5 +225,21 @@ namespace GuaranteedRate.Sextant.Config.Tests
 
             Assert.IsFalse(actual);
         }
+
+        [Test]
+        public void GivenInt_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<int>("intProp");
+
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<int>("intStringProp");
+
+            Assert.AreEqual(1, actual);
+        }
     }
 }
