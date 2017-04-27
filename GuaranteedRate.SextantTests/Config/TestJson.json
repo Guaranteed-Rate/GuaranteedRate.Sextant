@@ -2,6 +2,14 @@
   "HtmlTester": {
     "Url": "http://www.google.com"
   },
+  "trueProp": true,
+  "trueStringProp": "true",
+  "falseProp": false,
+  "falseStringProp": "false",
+  "intProp": 1,
+  "intStringProp": "1",
+  "doubleProp": 1.25,
+  "doubleStringProp":  "1.25",
   "widget": {
     "debug": "true",
     "emptyWindowList": [ ],

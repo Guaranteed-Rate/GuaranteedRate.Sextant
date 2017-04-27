@@ -22,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 33, $"Expected 33, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 41, $"Expected 41, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
@@ -192,6 +192,70 @@ namespace GuaranteedRate.Sextant.Config.Tests
             var actual = _sut.GetValue("HtmlTester.Url");
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GivenBoolTrue_WhenGetValueBool_ThenReturnTrue()
+        {
+            var actual = _sut.GetValue<bool>("trueProp");
+
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void GivenStringTrue_WhenGetValueBool_ThenReturnTrue()
+        {
+            var actual = _sut.GetValue<bool>("trueStringProp");
+
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void GivenBoolFalse_WhenGetValueBool_ThenReturnFalse()
+        {
+            var actual = _sut.GetValue<bool>("falseProp");
+
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void GivenStringFalse_WhenGetValueBool_ThenReturnFalse()
+        {
+            var actual = _sut.GetValue<bool>("falseStringProp");
+
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void GivenInt_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<int>("intProp");
+
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<int>("intStringProp");
+
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenDouble_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<double>("doubleProp");
+
+            Assert.AreEqual(1.25, actual);
+        }
+
+        [Test]
+        public void GivenStringDouble_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<double>("doubleStringProp");
+
+            Assert.AreEqual(1.25, actual);
         }
     }
 }
