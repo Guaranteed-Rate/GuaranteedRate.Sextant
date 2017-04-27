@@ -22,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 37, $"Expected 37, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 41, $"Expected 41, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
@@ -240,6 +240,22 @@ namespace GuaranteedRate.Sextant.Config.Tests
             var actual = _sut.GetValue<int>("intStringProp");
 
             Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenDouble_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<double>("doubleProp");
+
+            Assert.AreEqual(1.25, actual);
+        }
+
+        [Test]
+        public void GivenStringDouble_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<double>("doubleStringProp");
+
+            Assert.AreEqual(1.25, actual);
         }
     }
 }
