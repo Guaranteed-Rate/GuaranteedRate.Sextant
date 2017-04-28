@@ -22,7 +22,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 41, $"Expected 41, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 43, $"Expected 43, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
@@ -243,6 +243,22 @@ namespace GuaranteedRate.Sextant.Config.Tests
         }
 
         [Test]
+        public void GivenNullInt_WhenGetValueInt_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<int>("intNullProp");
+
+            Assert.AreEqual(0, actual);
+        }
+
+        [Test]
+        public void GivenNullInt_WhenGetValueNullableInt_ThenReturnNullInt()
+        {
+            var actual = _sut.GetValue<int?>("intNullProp");
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
         public void GivenDouble_WhenGetValueInt_ThenReturnInt()
         {
             var actual = _sut.GetValue<double>("doubleProp");
@@ -256,6 +272,14 @@ namespace GuaranteedRate.Sextant.Config.Tests
             var actual = _sut.GetValue<double>("doubleStringProp");
 
             Assert.AreEqual(1.25, actual);
+        }
+
+        [Test]
+        public void GivenNullWindow_WhenGetValueWindow_ThenReturnNull()
+        {
+            var actual = _sut.GetValue<WindowModel>("nullWindow");
+
+            Assert.IsNull(actual);
         }
     }
 }
