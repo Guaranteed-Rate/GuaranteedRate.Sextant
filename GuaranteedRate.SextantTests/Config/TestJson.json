@@ -8,8 +8,10 @@
   "falseStringProp": "false",
   "intProp": 1,
   "intStringProp": "1",
+  "intNullProp":  null,
   "doubleProp": 1.25,
-  "doubleStringProp":  "1.25",
+  "doubleStringProp": "1.25",
+  "nullWindow":  null,
   "widget": {
     "debug": "true",
     "emptyWindowList": [ ],
