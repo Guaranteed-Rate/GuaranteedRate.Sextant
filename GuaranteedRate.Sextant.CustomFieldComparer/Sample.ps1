@@ -1,5 +1,5 @@
 ﻿
-$environments = ("dev", "stage", "prod", "grarate")
+$environments = ("dev", "stage", "prod")
  
 git checkout master
 
