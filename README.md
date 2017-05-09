@@ -15,8 +15,9 @@ The primary goal is to extend plugin functionality in a few key areas:
 * EncompassUtils.User - This class extends the Encompass session object to easily read and write to user collections.
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
+
 ### Tools
-Field
+* GuaranteedRate.Sextant.CustomFieldComparer - This tool queries an Encompass environment and serializes field definitions to text files.  This utility can be called by providing login credentials directly on the command line or by passing the path of a json config file.   This tool is useful for dumping say, a dev environment to one folder and a production environment to a second and using a merge compare tool to compare the two environments.
 
 
 #### Update 17.2.0.0
