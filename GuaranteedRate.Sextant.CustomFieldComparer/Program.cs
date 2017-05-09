@@ -11,20 +11,47 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
 {
     class Program
     {
+
+        private static bool WriteContentIfNeeded(string filePath, string content)
+        {
+            if (System.IO.File.Exists(filePath))
+            {
+                if (System.IO.File.ReadAllText(filePath) == content)
+                {
+                    return false;
+                }
+                System.IO.File.Delete(filePath);
+            }
+            using (var sw = System.IO.File.CreateText(filePath))
+            {
+                sw.Write(content);
+                sw.Flush();
+            }
+            return true;
+        }
+
         static void Main(string[] args)
         {
             var ops = new OptionsConfig();
             var res = Parser.Default.ParseArguments(args, ops);
+
+            if (!String.IsNullOrEmpty(ops.JsonConfig))
+            {
+                ops = JsonConvert.DeserializeObject<OptionsConfig>(System.IO.File.ReadAllText(ops.JsonConfig));
+
+            }
+
             Console.WriteLine("SEXTANT FIELD CONFIG DUMP TOOL");
             Console.WriteLine("What does it do?");
             Console.WriteLine("Creates a series of text files containing field data.  These are ideal for checking into source control and monitoring environments for drift.");
-         
+
+           
             if (String.IsNullOrEmpty(ops.EncompassPassword))
             {
                 ops.EncompassPassword = GetPassword();
             }
-
-            Console.WriteLine("Connecting....");
+            
+            Console.WriteLine($"Connecting to {ops.EncompassPrimaryUrl}...");
 
             var primarySession = EncompassUtils.SessionUtils.GetEncompassSession(ops.EncompassPrimaryUrl, ops.EncompassUserName,
                 ops.EncompassPassword);
@@ -45,19 +72,12 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
                 }
 
                 var filePath = ops.OutputPath + fd.FieldID + ".json";
-                if (System.IO.File.Exists(filePath))
-                {
-                    System.IO.File.Delete(filePath);
-                }
-                if (!ops.CustomOnly || fd.IsCustomField)
-                {
-                    using (var sw = System.IO.File.AppendText(filePath))
-                    {
-                        sw.Write(JsonConvert.SerializeObject(fd, Formatting.Indented));
-                        sw.Flush();
-                    }
-                }
+                 if (!ops.CustomOnly || fd.IsCustomField)
+                 {
+                     WriteContentIfNeeded(filePath, JsonConvert.SerializeObject(fd, Formatting.Indented));
+                 }
             }
+            Console.WriteLine("Done!");
         }
 
 
@@ -93,6 +113,9 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
 
         public bool CustomOnly { get; set; }
 
+        [Option('j', "JsonConfig", HelpText = "Path to the Json config to use instead of arguments.")]
+
+        public string JsonConfig { get; set; }
          
     }
 }

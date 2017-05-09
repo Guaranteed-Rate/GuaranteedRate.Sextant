@@ -173,6 +173,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Sample.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj">
