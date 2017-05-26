@@ -159,31 +159,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\IEncompassConfig.cs" />
-    <Compile Include="Config\IJsonEncompassConfig.cs" />
-    <Compile Include="Config\IniConfig.cs" />
-    <Compile Include="Config\JsonEncompassConfig.cs" />
     <Compile Include="EncompassUtils\EncompassInit.cs" />
     <Compile Include="EncompassUtils\FieldUtils.cs" />
     <Compile Include="EncompassUtils\LoanDataUtils.cs" />
     <Compile Include="EncompassUtils\Reporting.cs" />
     <Compile Include="EncompassUtils\SessionUtils.cs" />
     <Compile Include="EncompassUtils\UserUtils.cs" />
-    <Compile Include="Loggers\Loggly.cs" />
     <Compile Include="Metrics\DatadogReporter.cs" />
     <Compile Include="Metrics\IDataDogReporter.cs" />
     <Compile Include="Models\EncompassUser.cs" />
     <Compile Include="Models\MachineUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebClients\AsyncEventReporter.cs" />
-    <Compile Include="WebClients\IEventReporter.cs" />
-    <Compile Include="WebClients\SecureAsyncEventReporter.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="GuaranteedRate.Sextant.nuspec" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Config\GuaranteedRate.Sextant.Config.csproj">
+      <Project>{7095d364-2fb0-4502-b212-789c196b3db9}</Project>
+      <Name>GuaranteedRate.Sextant.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj">
+      <Project>{aeaf650b-5e6f-4475-b424-504f2d17fe3f}</Project>
+      <Name>GuaranteedRate.Sextant.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj">
+      <Project>{07752aac-1bf5-4eba-a5d5-1b847d8e6a8e}</Project>
+      <Name>GuaranteedRate.Sextant.WebClients</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

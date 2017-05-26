@@ -5,7 +5,7 @@ Most importantly, this library works with **BOTH** Encompass Plugins and standal
 
 This allows developers to bake configuration, logging and performance into plugins, which will reduce development time, decrease bugs, make deployments easier and improve user experience.
 
-While this code is general purpose and should work for everyone, the adapters for Datadog (http://datadog.com) and Loggly (http://loggly.com) will only be useful if your organization uses these tools.  Both companies offer a free tier which are sufficient for small organizations or for demo purposes.
+While this code is general purpose and should work for everyone, the adapters for Datadog (http://datadog.com) and Loggly (http://Logger.com) will only be useful if your organization uses these tools.  Both companies offer a free tier which are sufficient for small organizations or for demo purposes.
 
 The primary goal is to extend plugin functionality in a few key areas:
 * A common and consistant configuration system using CommonDataObjects
@@ -78,11 +78,11 @@ The client provides some common approximations of standard logging methods.  We 
 Example:
 
 ```C#
-Loggly.Error(this.GetType().Name.ToString(), "This is my error");
+Logger.Error(this.GetType().Name.ToString(), "This is my error");
 IDictionary<string, string> fields = new Dictionary<string, string>();
 fields.Add("foo", "bar");
 fields.Add("foo2", "bar2");
-Loggly.Info(this.GetType().Name.ToString(), fields);
+Logger.Info(this.GetType().Name.ToString(), fields);
 ```
 
 ### Config

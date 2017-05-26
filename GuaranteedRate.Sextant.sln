@@ -33,6 +33,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYourOwnEncompassNuget"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncompassFilesGoHere", "EncompassFilesGoHere", "{AFA7929B-100C-422D-8239-1C706E0A7F24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Elasticsearch", "GuaranteedRate.Sextant.Logging.Elasticsearch\GuaranteedRate.Sextant.Logging.Elasticsearch.csproj", "{1324701B-E763-4E87-8D14-BA188048350D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging", "GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj", "{AEAF650B-5E6F-4475-B424-504F2D17FE3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Config", "GuaranteedRate.Sextant.Config\GuaranteedRate.Sextant.Config.csproj", "{7095D364-2FB0-4502-B212-789C196B3DB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Loggly", "GuaranteedRate.Sextant.Logging.Loggly\GuaranteedRate.Sextant.Logging.Loggly.csproj", "{041D750B-EFE2-4737-A178-D3E30776CA49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.WebClients", "GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj", "{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +77,26 @@ Global
 		{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1324701B-E763-4E87-8D14-BA188048350D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1324701B-E763-4E87-8D14-BA188048350D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1324701B-E763-4E87-8D14-BA188048350D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1324701B-E763-4E87-8D14-BA188048350D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7095D364-2FB0-4502-B212-789C196B3DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7095D364-2FB0-4502-B212-789C196B3DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7095D364-2FB0-4502-B212-789C196B3DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7095D364-2FB0-4502-B212-789C196B3DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041D750B-EFE2-4737-A178-D3E30776CA49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041D750B-EFE2-4737-A178-D3E30776CA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041D750B-EFE2-4737-A178-D3E30776CA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041D750B-EFE2-4737-A178-D3E30776CA49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

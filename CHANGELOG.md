@@ -103,9 +103,9 @@ in case of duplicates.
 ```
 
 ## v16.2.5.2 / 2016 Sep 27
-> Fix typo in Loggly.cs
+> Fix typo in Logger.cs
 
-* **Update**  - Loggly.cs  
+* **Update**  - Logger.cs  
 
 ```c#
 [GuaranteedRate.Sextant "16.2.5.2"]
@@ -155,17 +155,17 @@ in case of duplicates.
 >Added the ability to have Loggly load tags from config rather than be explicitly 
 >passed in.
 
-* **Update**  - Loggly.cs overloaded init method that doesn't do a force reload
+* **Update**  - Logger.cs overloaded init method that doesn't do a force reload
 
 ```c#
 [GuaranteedRate.Sextant "16.2.4.0"]
 ```
 ## v16.2.3.0 / 2016 Sep 9
 > Added the JsonEncompassConfig to support using JSON for configuration files
-> and added support for Loggly.Fatal errors for when things go really wrong.
+> and added support for Logger.Fatal errors for when things go really wrong.
 
 * **Add**  - JsonEncompassConfig
-* **Add**  - Loggly.Fatal
+* **Add**  - Logger.Fatal
 
 ```c#
 [GuaranteedRate.Sextant "16.2.3.0"]

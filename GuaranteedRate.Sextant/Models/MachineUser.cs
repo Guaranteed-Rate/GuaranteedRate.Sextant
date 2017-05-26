@@ -1,5 +1,4 @@
-﻿using GuaranteedRate.Sextant.Loggers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -29,7 +28,7 @@ namespace GuaranteedRate.Sextant.Models
                 }
                 catch (Exception ex)
                 {
-                    Loggly.Error("MachineUser", "Exception in MachineUser while getting Windows Login Name:" + ex);
+                    Logger.Error("MachineUser", "Exception in MachineUser while getting Windows Login Name:" + ex);
                     return "";
                 }
             }
@@ -49,7 +48,7 @@ namespace GuaranteedRate.Sextant.Models
                 }
                 catch (Exception ex)
                 {
-                    Loggly.Error("MachineUser", "Exception in MachineUser while getting Program Run As Name:" + ex);
+                    Logger.Error("MachineUser", "Exception in MachineUser while getting Program Run As Name:" + ex);
                     return "";
                 }
             }
@@ -80,7 +79,7 @@ namespace GuaranteedRate.Sextant.Models
                 }
                 catch (Exception ex)
                 {
-                    Loggly.Error("MachineUser", "Exception in MachineUser while getting Machine IP" + ex);
+                    Logger.Error("MachineUser", "Exception in MachineUser while getting Machine IP" + ex);
                     return "";
                 }
             }
@@ -100,7 +99,7 @@ namespace GuaranteedRate.Sextant.Models
                 }
                 catch (Exception ex)
                 {
-                    Loggly.Error("MachineUser", "Exception in MachineUser while getting Computer Name:" + ex);
+                    Logger.Error("MachineUser", "Exception in MachineUser while getting Computer Name:" + ex);
                     return "";
                 }
             }
