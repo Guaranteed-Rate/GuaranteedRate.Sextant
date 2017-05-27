@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using GuaranteedRate.Sextant.Loggers;
 using NUnit.Framework;
 
 namespace GuaranteedRate.SextantTests
@@ -18,7 +17,7 @@ namespace GuaranteedRate.SextantTests
 
             var logger = new Sextant.Logging.Elasticsearch.ElasticsearchLogger();
 
-            GuaranteedRate.Sextant.Logging.Logger.AddReporter(logger);
+            GuaranteedRate.Sextant.Logging.Logger.AddAppender(logger);
         }
 
     }

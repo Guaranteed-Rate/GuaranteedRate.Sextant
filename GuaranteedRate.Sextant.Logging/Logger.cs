@@ -2,13 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GuaranteedRate.Sextant.Loggers;
 
 namespace GuaranteedRate.Sextant.Logging
 {
     public class Logger
     {
-        private static volatile IList<ILogReporter> _reporters;
+        private static volatile IList<ILogAppender> _reporters;
         private static readonly object syncRoot = new Object();
         private const string ERROR = "ERROR";
         private const string WARN = "WARN";
@@ -16,36 +15,31 @@ namespace GuaranteedRate.Sextant.Logging
         private const string DEBUG = "DEBUG";
         private const string FATAL = "FATAL";
 
-        public static void Init(ILogReporter reporter)
+        /// <summary>
+        /// Initializes the logger with a single appender
+        /// </summary>
+        /// <param name="appender"></param>
+        public static void Init(ILogAppender appender)
         {
-            AddReporter(reporter);
+            AddAppender(appender);
         }
 
-        public static void AddReporter(ILogReporter reporter)
+        /// <summary>
+        /// Adds a log appender to the collection of appenders.  
+        /// </summary>
+        /// <param name="appender"></param>
+        public static void AddAppender(ILogAppender appender)
         {
             lock (syncRoot)
             {
-
                 if (_reporters == null)
                 {
-                    _reporters = new List<ILogReporter>();
+                    _reporters = new List<ILogAppender>();
                 }
-                _reporters.Add(reporter);
+                _reporters.Add(appender);
             }
         }
-
        
-
-        private static  IDictionary<string, string> PopulateEvent(IDictionary<string, string> fields, string loggerName, string level)
-        {
-            fields.Add("level", level);
-            fields.Add("timestamp", DateTime.Now.ToString("MM/dd/yyyyTHH:mm:ss.fffzzz"));
-            fields.Add("hostname", System.Environment.MachineName);
-            fields.Add("process", Process.GetCurrentProcess().ProcessName);
-            fields.Add("loggerName", loggerName);
-            return fields;
-        }
-
         private static IDictionary<string, string> PopulateEvent(string loggerName, string level, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
@@ -71,7 +65,6 @@ namespace GuaranteedRate.Sextant.Logging
         {
             Log(PopulateEvent(logger, message, FATAL));
         }
-
         public static void Info(string logger, string message)
         {
             Log(PopulateEvent(logger, message, INFO));
@@ -82,7 +75,7 @@ namespace GuaranteedRate.Sextant.Logging
             Log(PopulateEvent(logger, message, WARN));
         }
 
-        void Log(IDictionary<string, string> fields, string loggerName, string level)
+        public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
             if (!fields.ContainsKey("logger"))
             {

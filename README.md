@@ -13,8 +13,11 @@ The primary goal is to extend plugin functionality in a few key areas:
 * EncompassUtils.LoanDataUtils - This class has methods for extracting all Loan Fields into a Dictionary.
 * EncompassUtils.Reporting - This class has methods for common reports.
 * EncompassUtils.User - This class extends the Encompass session object to easily read and write to user collections.
-* Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
+* Logging outside of Encompass (via Loggly or some other mechanism) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
+
+#### Update 17.2.0.0
+This update changes logging to support arbitrary log appenders.  The ILogAppender interface describes how a log appender works.  Loggly dependencies have been moved to GuaranteedRate.Sextant.Logging.Loggly project.  
 
 #### Update 17.1.0.0
 This updates the Encompass SDK to 17.1.  We returned to using the Encompass nuget package.  Instructions for how to build your own package may be found in the BuildYourOwnEncompassNuget folder.   

@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.WebClients;
 using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant
 {
-    public class LogglyLogReporter : AsyncEventReporter
+    public class LogglyAppender: AsyncEventReporter, ILogAppender
     {
         private static ISet<string> tags = new HashSet<string>();
         private static int QUEUE_SIZE = DEFAULT_QUEUE_SIZE;
         private static string POST_URL;
         private static readonly int DEFAULT_QUEUE_SIZE = 1000;
-        private string HOST_NAME = Environment.MachineName;
-        private string PROCESS_NAME = Process.GetCurrentProcess().ProcessName;
-
         public bool ErrorEnabled { get; set; }
         public bool WarnEnabled { get; set; }
         public bool InfoEnabled { get; set; }
         public bool DebugEnabled { get; set; }
         public bool FatalEnabled { get; set; }
-
-
+        
         /// <summary>
         /// Tags must be added BEFORE anything is logged.
         /// Once the first event is logged, the tags are locked
@@ -99,7 +96,7 @@ namespace GuaranteedRate.Sextant
         public static string LOGGLY_TAGS = "Logger.Tags";
         #endregion
 
-        public LogglyLogReporter(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
+        public LogglyAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
         {
             POST_URL = url;
             QUEUE_SIZE = queueSize;

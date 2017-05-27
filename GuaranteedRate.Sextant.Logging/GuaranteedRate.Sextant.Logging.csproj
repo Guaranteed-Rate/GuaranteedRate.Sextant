@@ -160,7 +160,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILogReporter.cs" />
+    <Compile Include="ILogAppender.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
