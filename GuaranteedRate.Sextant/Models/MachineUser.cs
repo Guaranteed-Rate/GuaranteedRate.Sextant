@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using GuaranteedRate.Sextant.Logging;
 
 namespace GuaranteedRate.Sextant.Models
 {

@@ -2,6 +2,7 @@
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
 using GuaranteedRate.Sextant.Models;
+using GuaranteedRate.Sextant.Logging;
 using System;
 using System.Collections.Generic;
 

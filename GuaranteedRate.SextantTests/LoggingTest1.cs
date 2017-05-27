@@ -14,16 +14,11 @@ namespace GuaranteedRate.SextantTests
         [Test()]
         public async void foo()
         {
-            var logger = new GuaranteedRate.Sextant.Logging.Elasticsearch.ElasticsearchLogger();
-            var dict = new Dictionary<string, string>();
-            dict.Add("foo", "bar");
 
-            for (int i = 0; i < 40; i++)
-            {
-               var result=   await logger.Log(dict, "begytest", "error");
-                Assert.That(result);
-            }
 
+            var logger = new Sextant.Logging.Elasticsearch.ElasticsearchLogger();
+
+            GuaranteedRate.Sextant.Logging.Logger.AddReporter(logger);
         }
 
     }

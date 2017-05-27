@@ -195,9 +195,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Config\GuaranteedRate.Sextant.Config.csproj">
+      <Project>{7095d364-2fb0-4502-b212-789c196b3db9}</Project>
+      <Name>GuaranteedRate.Sextant.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GuaranteedRate.Sextant.Logging.Elasticsearch\GuaranteedRate.Sextant.Logging.Elasticsearch.csproj">
       <Project>{1324701b-e763-4e87-8d14-ba188048350d}</Project>
       <Name>GuaranteedRate.Sextant.Logging.Elasticsearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging.Loggly\GuaranteedRate.Sextant.Logging.Loggly.csproj">
+      <Project>{041d750b-efe2-4737-a178-d3e30776ca49}</Project>
+      <Name>GuaranteedRate.Sextant.Logging.Loggly</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj">
+      <Project>{aeaf650b-5e6f-4475-b424-504f2d17fe3f}</Project>
+      <Name>GuaranteedRate.Sextant.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj">
+      <Project>{07752aac-1bf5-4eba-a5d5-1b847d8e6a8e}</Project>
+      <Name>GuaranteedRate.Sextant.WebClients</Name>
     </ProjectReference>
     <ProjectReference Include="..\GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj">
       <Project>{6388E4A7-456A-4363-9AC4-936F742CA63F}</Project>

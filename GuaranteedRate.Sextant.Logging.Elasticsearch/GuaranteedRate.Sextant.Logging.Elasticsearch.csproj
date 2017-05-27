@@ -175,6 +175,16 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Config\GuaranteedRate.Sextant.Config.csproj">
+      <Project>{7095d364-2fb0-4502-b212-789c196b3db9}</Project>
+      <Name>GuaranteedRate.Sextant.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj">
+      <Project>{aeaf650b-5e6f-4475-b424-504f2d17fe3f}</Project>
+      <Name>GuaranteedRate.Sextant.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

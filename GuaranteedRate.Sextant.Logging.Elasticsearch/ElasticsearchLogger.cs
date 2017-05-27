@@ -3,31 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Loggers;
 using Nest;
 
 namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 {
-    public class ElasticsearchLogger
+    public class ElasticsearchLogger:ILogReporter
     {
         private Uri node = null;
         private ConnectionSettings settings = null;
         private ElasticClient client = null;
 
-        public ElasticsearchLogger()
+      
+       
+
+        public void SetUp(IEncompassConfig config)
         {
-            node = new Uri("https://elasticsearch.gr-dev.com:9200");
+            node = new Uri(config.GetValue("ElasticSearch.Url"));
             settings = new ConnectionSettings(node);
             client = new ElasticClient(settings);
-             
-        }
-        public async Task<bool> Log(IDictionary<string, string> fields, string loggerName, string level)
-        {
 
-            var response = await client.IndexAsync(fields,
+        }
+
+        public void Log(IDictionary<string, string> fields)
+        {
+            var loggerName = "undefined";
+            if (fields.ContainsKey("logger"))
+            {
+                loggerName = fields["logger"];
+            }
+              client.Index(fields,
                 idx =>
                     idx.Index(
                         $"{loggerName}-{DateTime.UtcNow.ToString("yyyy-MM-dd")}"));
-            return response.Created;
+       
         }
     }
 

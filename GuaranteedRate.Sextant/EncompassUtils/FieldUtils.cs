@@ -5,6 +5,7 @@ using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Reporting;
 using System;
 using System.Collections.Generic;
+using  GuaranteedRate.Sextant.Logging;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
