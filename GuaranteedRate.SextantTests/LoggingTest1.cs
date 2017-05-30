@@ -15,7 +15,7 @@ namespace GuaranteedRate.SextantTests
         {
 
 
-            var logger = new Sextant.Logging.Elasticsearch.ElasticsearchLogger();
+            var logger = new Sextant.Logging.Elasticsearch.ElasticsearchLogAppender();
 
             GuaranteedRate.Sextant.Logging.Logger.AddAppender(logger);
         }

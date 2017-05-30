@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant
 {
-    public class LogglyAppender: AsyncEventReporter, ILogAppender
+    public class LogglyLogAppender: AsyncEventReporter, ILogAppender
     {
         private static ISet<string> tags = new HashSet<string>();
         private static int QUEUE_SIZE = DEFAULT_QUEUE_SIZE;
@@ -86,17 +86,17 @@ namespace GuaranteedRate.Sextant
         }
 
         #region config mappings
-        public static string LOGGLY_URL = "Logger.Url";
-        public static string LOGGLY_ALL = "Logger.All.Enabled";
-        public static string LOGGLY_ERROR = "Logger.Error.Enabled";
-        public static string LOGGLY_WARN = "Logger.Warn.Enabled";
-        public static string LOGGLY_INFO = "Logger.Info.Enabled";
-        public static string LOGGLY_DEBUG = "Logger.Debug.Enabled";
-        public static string LOGGLY_FATAL = "Logger.Fatal.Enabled";
+        public static string LOGGLY_URL = "LogglyLogAppender.Url";
+        public static string LOGGLY_ALL = "LogglyLogAppender.All.Enabled";
+        public static string LOGGLY_ERROR = "LogglyLogAppender.Error.Enabled";
+        public static string LOGGLY_WARN = "LogglyLogAppender.Warn.Enabled";
+        public static string LOGGLY_INFO = "LogglyLogAppender.Info.Enabled";
+        public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
+        public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
         public static string LOGGLY_TAGS = "Logger.Tags";
         #endregion
 
-        public LogglyAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
+        public LogglyLogAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
         {
             POST_URL = url;
             QUEUE_SIZE = queueSize;

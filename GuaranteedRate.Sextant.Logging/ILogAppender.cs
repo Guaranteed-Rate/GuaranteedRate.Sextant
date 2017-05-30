@@ -3,6 +3,9 @@ using GuaranteedRate.Sextant.Config;
 
 namespace GuaranteedRate.Sextant.Logging
 {
+    /// <summary>
+    /// describes a class for appending log information to an arbitrary source
+    /// </summary>
     public interface ILogAppender
     {
         void Setup(IEncompassConfig config);

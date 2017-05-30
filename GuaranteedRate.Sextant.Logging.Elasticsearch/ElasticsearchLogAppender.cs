@@ -8,7 +8,7 @@ using Nest;
 
 namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 {
-    public class ElasticsearchLogger:ILogAppender
+    public class ElasticsearchLogAppender:ILogAppender
     {
         private Uri node = null;
         private ConnectionSettings settings = null;
@@ -16,14 +16,14 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         public void Setup(IEncompassConfig config)
         {
-            node = new Uri(config.GetValue("ElasticSearch.Url"));
+            node = new Uri(config.GetValue("ElasticSearchLogAppender.Url"));
             settings = new ConnectionSettings(node);
             client = new ElasticClient(settings);
-            DebugEnabled = config.GetValue("ElasticSearch.DebugEnabled", true);
-            InfoEnabled = config.GetValue("ElasticSearch.InfoEnabled", true);
-            WarnEnabled = config.GetValue("ElasticSearch.WarnEnabled", true);
-            ErrorEnabled = config.GetValue("ElasticSearch.ErrorEnabled", true);
-            FatalEnabled = config.GetValue("ElasticSearch.FatalEnabled", true);
+            DebugEnabled = config.GetValue("ElasticSearchLogAppender.Debug.Enabled", true);
+            InfoEnabled = config.GetValue("ElasticSearchLogAppender.Info.Enabled", true);
+            WarnEnabled = config.GetValue("ElasticSearchLogAppender.Warn.Enabled", true);
+            ErrorEnabled = config.GetValue("ElasticSearchLogAppender.Error.Enabled", true);
+            FatalEnabled = config.GetValue("ElasticSearchLogAppender.Fatal.Enabled", true);
 
         }
 

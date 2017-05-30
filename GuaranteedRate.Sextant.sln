@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.WebClients", "GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj", "{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingTestRig", "LoggingTestRig\LoggingTestRig.csproj", "{DA5133FB-B814-4107-BE88-FCEE2C079CFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
