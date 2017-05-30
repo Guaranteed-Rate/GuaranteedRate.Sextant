@@ -15,7 +15,7 @@ namespace LoggingTestRig
         static void Main(string[] args)
         {
             var config = new JsonEncompassConfig();
-            config.Init(System.IO.File.ReadAllText("../../../../LoggingTest.json"));
+            config.Init(System.IO.File.ReadAllText("../../../../SextantLogTest.json"));
                 
             var console = new ConsoleLogAppender();
             console.Setup(config);
@@ -36,7 +36,8 @@ namespace LoggingTestRig
             Logger.Warn("SextantTestRig", "Test warn message");
             Logger.Error("SextantTestRig", "Test error message");
             Logger.Fatal("SextantTestRig", "Test fatal message");
-
+            Console.WriteLine("press enter to quit.");
+            Console.ReadLine();
         }
     }
 }

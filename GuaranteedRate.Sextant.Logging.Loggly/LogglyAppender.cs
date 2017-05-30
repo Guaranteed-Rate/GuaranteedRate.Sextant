@@ -13,7 +13,6 @@ namespace GuaranteedRate.Sextant
     {
         private static ISet<string> tags = new HashSet<string>();
         private static int QUEUE_SIZE = DEFAULT_QUEUE_SIZE;
-        private static string POST_URL;
         private static readonly int DEFAULT_QUEUE_SIZE = 1000;
         public bool ErrorEnabled { get; set; }
         public bool WarnEnabled { get; set; }
@@ -34,16 +33,7 @@ namespace GuaranteedRate.Sextant
             }
         }
 
-        public void SetSize(int queueSize)
-        {
-            QUEUE_SIZE = queueSize;
-        }
-
-        public static void SetPostUrl(string url)
-        {
-            POST_URL = url;
-        }
-
+       
         public void Setup(IEncompassConfig config, ICollection<string> tags = null)
         {
             Setup(config);
@@ -69,7 +59,7 @@ namespace GuaranteedRate.Sextant
         /// <param name="config">Config file to load.  Will re-initialize when this is used.</param>
         public void Setup(IEncompassConfig config)
         {
-            POST_URL = config.GetValue(LOGGLY_URL);
+            this.Url = config.GetValue(LOGGLY_URL);
 
             var allEnabled = config.GetValue(LOGGLY_ALL, false);
             var errorEnabled = config.GetValue(LOGGLY_ERROR, false);
@@ -98,7 +88,7 @@ namespace GuaranteedRate.Sextant
 
         public LogglyLogAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
         {
-            POST_URL = url;
+            this.Url = url;
             QUEUE_SIZE = queueSize;
 
         }

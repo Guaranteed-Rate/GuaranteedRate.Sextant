@@ -33,7 +33,7 @@ namespace GuaranteedRate.Sextant.WebClients
             HttpStatusCode.OK
         };
 
-        private readonly string url;
+        public string Url { get; set; }
         private readonly BlockingCollection<string> eventQueue;
         private readonly int retries;
 
@@ -46,7 +46,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
-            this.url = url;
+            this.Url = url;
             ContentType = "application/json";
             this.eventQueue = new BlockingCollection<string>(new ConcurrentQueue<string>(), queueSize);
             this.retries = retries;
@@ -142,7 +142,7 @@ namespace GuaranteedRate.Sextant.WebClients
                 /**
                  * According to documentation, .NET will reuse connection but not WebRequest object
                  */
-                WebRequest webRequest = WebRequest.Create(url);
+                WebRequest webRequest = WebRequest.Create(Url);
                 if (webRequest != null)
                 {
                     webRequest.Method = "POST";
@@ -168,7 +168,7 @@ namespace GuaranteedRate.Sextant.WebClients
                                 if (!SUCCESS_CODES.Contains(response.StatusCode))
                                 {
                                     Logger.Warn(this.GetType().Name.ToString(),
-                                        "Webservice at " + url + " returned status code:" + response.StatusCode);
+                                        "Webservice at " + Url + " returned status code:" + response.StatusCode);
                                     return false;
                                 }
                             }
@@ -177,7 +177,7 @@ namespace GuaranteedRate.Sextant.WebClients
                 }
                 else
                 {
-                    Logger.Warn(this.GetType().Name.ToString(), "WebService url invalid. url=" + url);
+                    Logger.Warn(this.GetType().Name.ToString(), "WebService Url invalid. Url=" + Url);
                 }
             }
             catch (Exception ex)

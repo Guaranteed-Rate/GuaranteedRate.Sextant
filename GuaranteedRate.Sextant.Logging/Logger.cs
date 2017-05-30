@@ -53,26 +53,26 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Debug(string logger, string message)
         {
-            Log(PopulateEvent(logger, message, DEBUG));
+            Log(PopulateEvent(logger, DEBUG, message));
         }
 
         public static void Error(string logger, string message)
         {
-            Log(PopulateEvent(logger, message, ERROR));
+            Log(PopulateEvent(logger, ERROR, message));
         }
 
         public static void Fatal(string logger, string message)
         {
-            Log(PopulateEvent(logger, message, FATAL));
+            Log(PopulateEvent(logger,  FATAL, message));
         }
         public static void Info(string logger, string message)
         {
-            Log(PopulateEvent(logger, message, INFO));
+            Log(PopulateEvent(logger, INFO, message));
         }
 
         public static void Warn(string logger, string message)
         {
-            Log(PopulateEvent(logger, message, WARN));
+            Log(PopulateEvent(logger, WARN, message)); 
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)

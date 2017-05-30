@@ -16,14 +16,14 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         public void Setup(IEncompassConfig config)
         {
-            node = new Uri(config.GetValue("ElasticSearchLogAppender.Url"));
+            node = new Uri(config.GetValue("ElasticsearchLogAppender.Url"));
             settings = new ConnectionSettings(node);
             client = new ElasticClient(settings);
-            DebugEnabled = config.GetValue("ElasticSearchLogAppender.Debug.Enabled", true);
-            InfoEnabled = config.GetValue("ElasticSearchLogAppender.Info.Enabled", true);
-            WarnEnabled = config.GetValue("ElasticSearchLogAppender.Warn.Enabled", true);
-            ErrorEnabled = config.GetValue("ElasticSearchLogAppender.Error.Enabled", true);
-            FatalEnabled = config.GetValue("ElasticSearchLogAppender.Fatal.Enabled", true);
+            DebugEnabled = config.GetValue("ElasticsearchLogAppender.Debug.Enabled", true);
+            InfoEnabled = config.GetValue("ElasticsearchLogAppender.Info.Enabled", true);
+            WarnEnabled = config.GetValue("ElasticsearchLogAppender.Warn.Enabled", true);
+            ErrorEnabled = config.GetValue("ElasticsearchLogAppender.Error.Enabled", true);
+            FatalEnabled = config.GetValue("ElasticsearchLogAppender.Fatal.Enabled", true);
 
         }
 
