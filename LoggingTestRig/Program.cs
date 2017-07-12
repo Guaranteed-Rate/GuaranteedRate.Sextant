@@ -7,6 +7,7 @@ using GuaranteedRate.Sextant;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.Logging.Elasticsearch;
+using GuaranteedRate.Sextant.Logging.Loggly;
 
 namespace LoggingTestRig
 {

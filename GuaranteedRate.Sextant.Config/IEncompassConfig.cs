@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Config
 {
@@ -24,9 +22,5 @@ namespace GuaranteedRate.Sextant.Config
         bool GetValue(string key, bool defaultValue);
         ICollection<string> GetKeys();
         IEncompassConfig GetConfigGroup(string key);
-
-       
-
-
     }
 }

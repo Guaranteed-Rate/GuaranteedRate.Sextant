@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using GuaranteedRate.Sextant.Config;
-using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.WebClients;
 using Newtonsoft.Json;
 
-namespace GuaranteedRate.Sextant
+namespace GuaranteedRate.Sextant.Logging.Loggly
 {
     public class LogglyLogAppender: AsyncEventReporter, ILogAppender
     {
