@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GuaranteedRate.Sextant;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.Logging.Elasticsearch;
