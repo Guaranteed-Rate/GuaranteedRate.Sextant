@@ -39,7 +39,7 @@ namespace GuaranteedRate.Sextant.Logging
                 _reporters.Add(appender);
             }
         }
-       
+
         private static IDictionary<string, string> PopulateEvent(string loggerName, string level, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
@@ -63,8 +63,9 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Fatal(string logger, string message)
         {
-            Log(PopulateEvent(logger,  FATAL, message));
+            Log(PopulateEvent(logger, FATAL, message));
         }
+
         public static void Info(string logger, string message)
         {
             Log(PopulateEvent(logger, INFO, message));
@@ -72,7 +73,7 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Warn(string logger, string message)
         {
-            Log(PopulateEvent(logger, WARN, message)); 
+            Log(PopulateEvent(logger, WARN, message));
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
@@ -88,7 +89,7 @@ namespace GuaranteedRate.Sextant.Logging
             Log(fields);
         }
 
-        static void  Log(IDictionary<string, string> fields)
+        private static void Log(IDictionary<string, string> fields)
         {
             lock (syncRoot)
             {
@@ -98,6 +99,5 @@ namespace GuaranteedRate.Sextant.Logging
                 }
             }
         }
-        }
     }
-
+}
