@@ -9,29 +9,29 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 {
     public class LogglyLogAppender: AsyncEventReporter, ILogAppender
     {
-        private static ISet<string> tags = new HashSet<string>();
-        private static int QUEUE_SIZE = DEFAULT_QUEUE_SIZE;
-        private static readonly int DEFAULT_QUEUE_SIZE = 1000;
+        private static ISet<string> tags;
         public bool ErrorEnabled { get; set; }
         public bool WarnEnabled { get; set; }
         public bool InfoEnabled { get; set; }
         public bool DebugEnabled { get; set; }
         public bool FatalEnabled { get; set; }
-        
-        /// <summary>
-        /// Tags must be added BEFORE anything is logged.
-        /// Once the first event is logged, the tags are locked
-        /// </summary>
-        /// <param name="tag"></param>
-        public void AddTag(string tag)
+
+        #region config mappings
+        public static string LOGGLY_URL = "LogglyLogAppender.Url";
+        public static string LOGGLY_ALL = "LogglyLogAppender.All.Enabled";
+        public static string LOGGLY_ERROR = "LogglyLogAppender.Error.Enabled";
+        public static string LOGGLY_WARN = "LogglyLogAppender.Warn.Enabled";
+        public static string LOGGLY_INFO = "LogglyLogAppender.Info.Enabled";
+        public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
+        public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
+        public static string LOGGLY_TAGS = "Logger.Tags";
+        #endregion
+
+        public LogglyLogAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
         {
-            if (!tags.Contains(tag.Trim()))
-            {
-                tags.Add(tag.Trim());
-            }
+            tags = new HashSet<string>();
         }
 
-       
         public void Setup(IEncompassConfig config, ICollection<string> tags = null)
         {
             Setup(config);
@@ -47,8 +47,6 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             {
                 AddTag(tag);
             }
-
-
         }
 
         /// <summary>
@@ -73,32 +71,26 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             FatalEnabled = allEnabled || fatalEnabled;
         }
 
-        #region config mappings
-        public static string LOGGLY_URL = "LogglyLogAppender.Url";
-        public static string LOGGLY_ALL = "LogglyLogAppender.All.Enabled";
-        public static string LOGGLY_ERROR = "LogglyLogAppender.Error.Enabled";
-        public static string LOGGLY_WARN = "LogglyLogAppender.Warn.Enabled";
-        public static string LOGGLY_INFO = "LogglyLogAppender.Info.Enabled";
-        public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
-        public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
-        public static string LOGGLY_TAGS = "Logger.Tags";
-        #endregion
-
-        public LogglyLogAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
+        /// <summary>
+        /// Tags must be added BEFORE anything is logged.
+        /// Once the first event is logged, the tags are locked
+        /// </summary>
+        /// <param name="tag"></param>
+        public void AddTag(string tag)
         {
-            this.Url = url;
-            QUEUE_SIZE = queueSize;
-
+            if (!tags.Contains(tag.Trim()))
+            {
+                tags.Add(tag.Trim());
+            }
         }
 
         public void Log(IDictionary<string, string> fields)
         {
             //Having Indented formatting makes the data format better in the Loggly
             //Search screen
-            string json = JsonConvert.SerializeObject(fields, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(fields, Formatting.Indented);
             ReportEvent(json);
         }
-
 
         private static string MakeTagCsv()
         {
@@ -111,8 +103,8 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
                 }
             }
             builder.Remove(builder.Length - 1, 1);
+
             return builder.ToString();
         }
-
     }
 }
