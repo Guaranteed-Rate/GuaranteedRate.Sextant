@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant", "GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj", "{6388E4A7-456A-4363-9AC4-936F742CA63F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AEAF650B-5E6F-4475-B424-504F2D17FE3F} = {AEAF650B-5E6F-4475-B424-504F2D17FE3F}
+		{7095D364-2FB0-4502-B212-789C196B3DB9} = {7095D364-2FB0-4502-B212-789C196B3DB9}
+		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E} = {07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E07E09F8-4100-490E-93D7-0C70EBAE92E7}"
 	ProjectSection(SolutionItems) = preProject
