@@ -24,7 +24,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests
             {
                 {"Application", "Encompass"},
                 {"Company", "Guaranteed Rate"},
-                {"logger", "Guaranteed Rate Encompass Logger" }
+                {"loggerName", "Guaranteed Rate Encompass Logger" }
             };
             _sut.Log(fields);
 

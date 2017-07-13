@@ -74,9 +74,9 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             if (fields == null) return true;
 
             var loggerName = "undefined";
-            if (fields.ContainsKey("logger"))
+            if (fields.ContainsKey("loggerName"))
             {
-                loggerName = fields["logger"];
+                loggerName = fields["loggerName"];
             }
 
             try
