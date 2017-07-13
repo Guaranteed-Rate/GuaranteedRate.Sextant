@@ -54,7 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <Compile Include="LogglyLogAppenderIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="packages.config" />
