@@ -1,33 +1,57 @@
+## v17.2.1.0 / 2017 Jul 13
+> Bugfix for IniConfig.GetValue(string key, bool defaultValue) - previously, this method never actually pulled values from the config
+
+
+```csharp
+[GuaranteedRate.Sextant "17.2.1.0"]
+```
+
 ## v17.2.0.6 / 2017 Apr 27
 > Bugfix for Json configs of <T>
+
+```csharp
+[GuaranteedRate.Sextant "17.2.1.0"]
+```
 
 ## v17.2.0.5 / 2017 Apr 21
 > Have SessionUtils support Loan OpenLoan(Session session, Guid guid)
 
+```csharp
+[GuaranteedRate.Sextant "17.2.0.5"]
+```
+
 ## v17.2.0.4 / 2017 Apr 21
 > Encompass expects string interpretations of Guids to be wrapped in braces.  Safe checking for this as Guid.ToString() will emit a guid that does not follow this standard.
+
+```csharp
+[GuaranteedRate.Sextant "17.2.0.4"]
+```
 
 ## v17.2.0.3 / 2017 Apr 17
 > This release upgrades Newtonsoft to 10.0.2 which is needed by Encompass 17.2.0.2
 
+```csharp
+[GuaranteedRate.Sextant "17.2.0.3"]
+```
+
 ## v17.2.0.2 / 2017 Apr 17
 > This release allows for support of Encompass 17.2.0.2
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "17.2.0.2"]
 ```
 
 ## v17.1.0.5 / 2017 Mar 20
 > This release corrects a regression in LoanDataUtils that allowed null values to be set to properties instead of leaving unset properties as empty strings.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "17.1.0.5"]
 ```
 
 ## v17.1.0.4 / 2017 Mar 16
 > This release extends IJsonEncompassConfig to support T GetValue<T>(string key, T defaultValue = default(T))
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "17.1.0.4"]
 ```
 
@@ -47,7 +71,7 @@
 * **Update** - Encompass SDK to 17.1.
 * **Add** - Encompass Nuget package nuspec and instructions.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "17.1.0.0"]
 ```
 
@@ -58,7 +82,7 @@
 
 * **Fix** - `AsyncEventReporter` now considers 201 & 204 successful responses
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.7.1"]
 ```
 
@@ -68,7 +92,7 @@
 
 * **Add** - Expose a function to return the loan guid for a given loan number.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.7.0"]
 ```
 
@@ -80,7 +104,7 @@
 
 * **Add** - LoanFee data to the set of data extracted in `LoanDataUtils`
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.6.0"]
 ```
 
@@ -97,7 +121,7 @@
 * **Update**  - Changed the dictionary insertions in `LoanDataUtils` to be safe
 in case of duplicates.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.5.3"]
 
 ```
@@ -107,7 +131,7 @@ in case of duplicates.
 
 * **Update**  - Logger.cs  
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.5.2"]
 
 ```
@@ -117,7 +141,7 @@ in case of duplicates.
 
 * **Update**  - LoanDataUtils 
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.5.1"]
 
 ```
@@ -129,7 +153,7 @@ in case of duplicates.
 * **Update**  - IniConfig
 * **Update**  - IEncompassConfig
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.5.0"]
 ```
 
@@ -157,7 +181,7 @@ in case of duplicates.
 
 * **Update**  - Logger.cs overloaded init method that doesn't do a force reload
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.4.0"]
 ```
 ## v16.2.3.0 / 2016 Sep 9
@@ -167,7 +191,7 @@ in case of duplicates.
 * **Add**  - JsonEncompassConfig
 * **Add**  - Logger.Fatal
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.3.0"]
 ```
 
@@ -183,7 +207,7 @@ created by LoanDataUtils.
 * **Add** - `smart client id` as `SessionSmartClientId` to the Loan Dictonary 
 created by LoanDataUtils.  This value is derived from the ServerURI.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.2.0"]
 ```
 
@@ -197,7 +221,7 @@ created by LoanDataUtils.  This value is derived from the ServerURI.
 * **Update** - Removed the EncompassSDK nuget package, and added hardcoded
 references to the installed EncompassSDK
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.1.0"]
 ```
 
@@ -212,7 +236,7 @@ references to the installed EncompassSDK
 * **Update** - Updated to EncompassSDK 16.2
 * **Update** - Changed project versioning scheme
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "16.2.0.0"]
 ```
 
@@ -226,7 +250,7 @@ references to the installed EncompassSDK
 to the header of the events being posted.
 * **Add** - Methods for extracting user/licensing info in `UserUtils`
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.14.0"]
 ```
 
@@ -237,8 +261,7 @@ to the header of the events being posted.
 * **Add** - Added AddMeter to datadog reporter
 * **Fix** - Correct spelling in datadog reporter.  `guage` should be `gauge`.  Add additional method to support old spelling.  Mark old spelling "obsolete."
 
-
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.13.3"]
 ```
 
@@ -248,7 +271,7 @@ to the header of the events being posted.
 
 * **Fix** - Fixed invalid object casting in `LoanDataUtils`
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.13.2"]
 ```
 
@@ -260,7 +283,7 @@ to the header of the events being posted.
 * **Fix** - Switched back from EncompassSDK.Standard to EncompassSDK.Complete.  
 Standard isn't sufficient for standalone apps.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.13.1"]
 ```
 
@@ -275,7 +298,7 @@ Complete is unneccessary.
 configure itself from config
 * **Add** - Added ability to turn logging levels on/off
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.13.0"]
 ```
 
@@ -291,7 +314,7 @@ configure itself from config
 * **Add** - Convience method in SessionUtils to open a loan by LoanNumber instead
 of GUID
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.12.2"]
 ```
 
@@ -299,7 +322,7 @@ of GUID
 
 > Updating to Encompass SDK 15.2.  No other changes.
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.12.1"]
 ```
 
@@ -308,7 +331,7 @@ of GUID
 > Adding the ability to collect active directory and machine information
 > Adding AD and machine information to ExtractEverything method data return
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.12.0"]
 ```
 
@@ -319,7 +342,7 @@ of GUID
 
 * **Fix** - Java dev makes C# mistake...
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.11.3"]
 ```
 
@@ -330,7 +353,7 @@ of GUID
 
 * **Fix** - `AsyncEventReporter` now calls `ExtraSetup` when setting up an event
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.11.2"]
 ```
 
@@ -341,7 +364,7 @@ of GUID
 
 * **Update** - `LoanDataUtils` logging to include the loan number
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.11.1"]
 ```
 
@@ -353,7 +376,7 @@ of GUID
 
 * **Update** - `FieldUtils` now supports removing specific fields
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.11.0"]
 ```
 
@@ -363,7 +386,7 @@ of GUID
 
 * **Update** - `LoanDataUtils` now has a configurable datetime formatter
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.6"]
 ```
 
@@ -371,7 +394,7 @@ of GUID
 
 > Trying date-time formatter again
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.5"]
 ```
 
@@ -379,7 +402,7 @@ of GUID
 
 > Restoring Loan.LastModified code from master
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.4"]
 ```
 
@@ -391,7 +414,7 @@ of GUID
 * **FIX** - `AysncEventReporter` now has a set of `success` http response codes:
 HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.3"]
 ```
 
@@ -399,7 +422,7 @@ HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
 
 > Non-release debug version for tracking the LastModified problem
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.2"]
 ```
 
@@ -412,7 +435,7 @@ HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
 * **Fix** - New logic for getting last modified in 
 `LoanDataUtils.GetBestGuessLastModified(Loan loan)`
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.1"]
 ```
 
@@ -424,7 +447,7 @@ HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Continue
 * **Fix** - `AsyncEventReporter.Shutdown()` to shutdown cleanly.  A side effect
 of this change is that this method now *BLOCKS* until the reporter has shutdown
 
-```c#
+```csharp
 [GuaranteedRate.Sextant "1.10.0"]
 ```
 
@@ -485,7 +508,6 @@ the index fields without boundaries.
 
 * **Update** - `LoanDataUtils.ExtractProperties` to include the UserId associated
 with the current session
-* **JIRA** - [POL-244](http://jira.guaranteedrate.com/browse/POL-244)
 
 ## v1.5.1 / 2015 Oct 12
 
@@ -518,14 +540,12 @@ to the cached list
 * **Update** - LoanDataUtils now extracts Milestone Task indexed multifields
 * **Update** - LoanDataUtils now extracts Milestone indexed multifields
 * **Update** - LoanDataUtils now extracts Role indexed multifields
-* **JIRA** - [POL-228](http://jira.guaranteedrate.com/browse/POL-228)
 
 ## v1.4.0 / 2015 Oct 8
 
 > Improvements to Borrower-Pair collection
 
 * **Update** - FieldUtils.BORROWER_PAIR_FIELDS - Add field "1268", Co-Borrower email
-* **JIRA** - [POL-224](http://jira.guaranteedrate.com/browse/POL-224)
 
 ## v1.3.4 / 2015 Sept 22
 
