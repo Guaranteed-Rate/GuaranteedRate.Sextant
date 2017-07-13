@@ -19,7 +19,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly.Integration.Tests
             _sut = new LogglyLogAppender(new IntegrationEncompassConfig());    
         }
 
-        [Test]
+        [Test, Category("Integration")]
         public void WhenLog_ThenSuccess()
         {
             

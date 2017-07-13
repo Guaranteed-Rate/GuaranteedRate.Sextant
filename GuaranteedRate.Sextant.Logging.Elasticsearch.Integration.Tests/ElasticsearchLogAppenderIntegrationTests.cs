@@ -17,7 +17,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests
             _sut = new ElasticsearchLogAppender(new IntegrationEncompassConfig());
         }
 
-        [Test]
+        [Test, Category("Integration")]
         public void WhenLog_ThenSuccess()
         {
             var fields = new Dictionary<string, string>
