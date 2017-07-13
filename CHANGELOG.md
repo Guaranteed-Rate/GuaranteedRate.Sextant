@@ -1,6 +1,6 @@
 ## v17.2.1.0 / 2017 Jul 13
-> Bugfix for IniConfig.GetValue(string key, bool defaultValue) - previously, this method never actually pulled values from the config
-
+* **Fix** - Bugfix for IniConfig.GetValue(string key, bool defaultValue) - previously, this method never actually pulled values from the config
+* **Add** - `LogglyAppender` and `elasticsearchLogAppender` as starter appenders for Logger
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.1.0"]
