@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Logging.Loggly
 {
-    public class LogglyLogAppender: AsyncEventReporter, ILogAppender
+    public class LogglyLogAppender : AsyncEventReporter, ILogAppender
     {
-        private static ISet<string> tags;
+        private static ISet<string> _tags;
         public bool ErrorEnabled { get; set; }
         public bool WarnEnabled { get; set; }
         public bool InfoEnabled { get; set; }
@@ -17,7 +17,10 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
         public bool FatalEnabled { get; set; }
 
         #region config mappings
+
         public static string LOGGLY_URL = "LogglyLogAppender.Url";
+        public static string LOGGLY_QUEUE_SIZE = "LogglyLogAppender.QueueSize";
+        public static string LOGGLY_RETRY_LIMIT = "LogglyLogAppender.RetryLimit";
         public static string LOGGLY_ALL = "LogglyLogAppender.All.Enabled";
         public static string LOGGLY_ERROR = "LogglyLogAppender.Error.Enabled";
         public static string LOGGLY_WARN = "LogglyLogAppender.Warn.Enabled";
@@ -25,37 +28,26 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
         public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
         public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
         public static string LOGGLY_TAGS = "Logger.Tags";
+
         #endregion
 
         public LogglyLogAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
         {
-            tags = new HashSet<string>();
+            _tags = new HashSet<string>();
         }
 
-        public void Setup(IEncompassConfig config, ICollection<string> tags = null)
+        public LogglyLogAppender(IEncompassConfig config)
+            : base(config.GetValue(LOGGLY_URL),
+                config.GetValue(LOGGLY_QUEUE_SIZE, 1000),
+                config.GetValue(LOGGLY_RETRY_LIMIT, 3))
         {
+            _tags = new HashSet<string>();
             Setup(config);
-            if (tags != null)
-            {
-                foreach (string tag in tags)
-                {
-                    AddTag(tag);
-                }
-            }
-
-            foreach (var tag in config.GetValue(LOGGLY_TAGS, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                AddTag(tag);
-            }
         }
 
-        /// <summary>
-        /// Initializes the loggly log reporter
-        /// </summary>
-        /// <param name="config">Config file to load.  Will re-initialize when this is used.</param>
         public void Setup(IEncompassConfig config)
         {
-            this.Url = config.GetValue(LOGGLY_URL);
+            Url = config.GetValue(LOGGLY_URL);
 
             var allEnabled = config.GetValue(LOGGLY_ALL, false);
             var errorEnabled = config.GetValue(LOGGLY_ERROR, false);
@@ -69,6 +61,18 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             InfoEnabled = allEnabled || infoEnabled;
             DebugEnabled = allEnabled || debugEnabled;
             FatalEnabled = allEnabled || fatalEnabled;
+
+            if(_tags == null) _tags = new HashSet<string>();
+
+            var configTags = config.GetValue(LOGGLY_TAGS, string.Empty);
+
+            if (!string.IsNullOrEmpty(configTags))
+            {
+                foreach (var tag in configTags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    AddTag(tag);
+                }
+            }
         }
 
         /// <summary>
@@ -78,9 +82,9 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
         /// <param name="tag"></param>
         public void AddTag(string tag)
         {
-            if (!tags.Contains(tag.Trim()))
+            if (!_tags.Contains(tag.Trim()))
             {
-                tags.Add(tag.Trim());
+                _tags.Add(tag.Trim());
             }
         }
 
@@ -95,7 +99,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
         private static string MakeTagCsv()
         {
             StringBuilder builder = new StringBuilder();
-            foreach (string tag in tags)
+            foreach (string tag in _tags)
             {
                 if (!string.IsNullOrWhiteSpace(tag))
                 {
