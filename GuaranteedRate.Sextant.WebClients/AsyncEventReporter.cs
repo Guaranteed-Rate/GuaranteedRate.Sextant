@@ -40,6 +40,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
         private volatile bool _finished;
+
         protected IGenericClient Client { get; private set; }
 
         public AsyncEventReporter(IGenericClient client, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
@@ -47,6 +48,7 @@ namespace GuaranteedRate.Sextant.WebClients
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
             Client = client;
+            
             Init();
         }
 
@@ -55,6 +57,7 @@ namespace GuaranteedRate.Sextant.WebClients
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
             CreateClient(url);
+
             Init();
         }
 
@@ -62,6 +65,7 @@ namespace GuaranteedRate.Sextant.WebClients
         {
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
+
             Init();
         }
 
@@ -79,6 +83,7 @@ namespace GuaranteedRate.Sextant.WebClients
              * https://msdn.microsoft.com/en-us/library/dd997371(v=vs.110).aspx
              */
             // A simple blocking consumer with no cancellation.
+            
             Task.Run(() =>
             {
                 while (!_eventQueue.IsCompleted)

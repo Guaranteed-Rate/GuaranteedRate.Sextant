@@ -91,5 +91,28 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
             return true;
         }
+
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Shutdown();
+                }
+            }
+
+            _client = null;
+
+            disposedValue = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

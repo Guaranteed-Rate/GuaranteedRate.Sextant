@@ -111,5 +111,26 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
             return builder.ToString();
         }
+
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Shutdown();
+                }
+            }
+
+            disposedValue = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
