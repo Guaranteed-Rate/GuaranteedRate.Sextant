@@ -6,7 +6,7 @@ using Nest;
 
 namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 {
-    public class ElasticsearchLogAppender:ILogAppender
+    public class ElasticsearchLogAppender : ILogAppender
     {
         private Uri _node;
         private ConnectionSettings _settings;
@@ -27,7 +27,6 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             WarnEnabled = config.GetValue("ElasticsearchLogAppender.Warn.Enabled", true);
             ErrorEnabled = config.GetValue("ElasticsearchLogAppender.Error.Enabled", true);
             FatalEnabled = config.GetValue("ElasticsearchLogAppender.Fatal.Enabled", true);
-
         }
 
         public void Log(IDictionary<string, string> fields)
@@ -37,7 +36,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             {
                 loggerName = fields["logger"];
             }
-              _client.Index(fields,
+            _client.Index(fields,
                 idx =>
                     idx.Index(
                         $"{loggerName}-{DateTime.UtcNow.ToString("yyyy-MM-dd")}"));

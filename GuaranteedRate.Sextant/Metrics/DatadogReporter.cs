@@ -131,11 +131,13 @@ namespace GuaranteedRate.Sextant.Metrics
 
         private void AddMetric(string metric, long value, string type)
         {
-            Event e = new Event();
-            e.metric = metric;
-            e.type = type;
-            e.host = host;
-            e.tags = jsonTags;
+            Event e = new Event
+            {
+                metric = metric,
+                type = type,
+                host = host,
+                tags = jsonTags
+            };
             IList<long> point = new List<long>();
             point.Add(GetEpochTime());
             point.Add(value);
@@ -144,9 +146,7 @@ namespace GuaranteedRate.Sextant.Metrics
 
             e.points = points;
 
-            Series s = new Series();
-            s.series = new List<Event>();
-            s.series.Add(e);
+            Series s = new Series {series = new List<Event> {e}};
 
             string json = JsonConvert.SerializeObject(s);
             datadogPoster.ReportEvent(json);
