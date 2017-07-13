@@ -50,49 +50,38 @@ namespace GuaranteedRate.Sextant.Config
             catch (Exception ex)
             {
                 throw new Exception($"Cannot parse config: {ex.ToString()}");
-
             }
-
         }
 
-        public string GetValue(string key, string defaultVal = null)
+        public string GetValue(string key, string defaultValue = null)
         {
-            if (_config == null || String.IsNullOrWhiteSpace(key))
+            if (_config == null || string.IsNullOrWhiteSpace(key))
             {
-                return defaultVal;
+                return defaultValue;
+            }
+            
+            string retVal;
+            return _config.TryGetValue(key.ToLower(), out retVal)
+                ? retVal
+                : defaultValue;
+        }
+
+        public int GetValue(string key, int defaultValue)
+        {
+            if (_config == null || string.IsNullOrWhiteSpace(key))
+            {
+                return defaultValue;
             }
             try
             {
-                string retVal = null;
-                if (_config.TryGetValue(key.ToLower(), out retVal))
+                string stringVal;
+                int retVal;
+                if (_config.TryGetValue(key.ToLower(), out stringVal) && int.TryParse(stringVal, out retVal))
                 {
                     return retVal;
                 }
-                else
-                {
-                    return defaultVal;
-                }
-            }
-            catch
-            {
-                return defaultVal;
-            }
-        }
 
-        public ICollection<string> GetKeys()
-        {
-            if (_config == null)
-            {
-                return null;
-            }
-            return _config.Keys;
-        }
-
-        public bool GetValue(string value, bool defaultValue)
-        {
-            try
-            {
-                return Boolean.Parse(value);
+                return defaultValue;
             }
             catch
             {
@@ -100,6 +89,33 @@ namespace GuaranteedRate.Sextant.Config
             }
         }
 
+        public bool GetValue(string key, bool defaultValue)
+        {
+            if (_config == null || string.IsNullOrWhiteSpace(key))
+            {
+                return defaultValue;
+            }
+            try
+            {
+                string stringVal;
+                bool retVal;
+                if (_config.TryGetValue(key.ToLower(), out stringVal) && bool.TryParse(stringVal, out retVal))
+                {
+                    return retVal;
+                }
+
+                return defaultValue;
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        public ICollection<string> GetKeys()
+        {
+            return _config?.Keys;
+        }
 
         /// <summary>
         /// Do not use.  Always returns null in the iniConfig impllementation
@@ -110,7 +126,6 @@ namespace GuaranteedRate.Sextant.Config
         {
             return null;
         }
-
 
         /// <summary>
         /// Loads the config from teh given string
@@ -147,7 +162,6 @@ namespace GuaranteedRate.Sextant.Config
             {
                 throw new Exception($"Cannot parse config: {ex.ToString()}");
             }
-            
         }
     }
 }
