@@ -5,7 +5,7 @@ Most importantly, this library works with **BOTH** Encompass Plugins and standal
 
 This allows developers to bake configuration, logging and performance into plugins, which will reduce development time, decrease bugs, make deployments easier and improve user experience.
 
-While this code is general purpose and should work for everyone, the adapters for Datadog (http://datadog.com) and Loggly (http://Logger.com) will only be useful if your organization uses these tools.  Both companies offer a free tier which are sufficient for small organizations or for demo purposes.
+While this code is general purpose and should work for everyone, the adapters for Datadog (http://datadog.com) and Loggly (http://loggly.com) will only be useful if your organization uses these tools.  Both companies offer a free tier which are sufficient for small organizations or for demo purposes.
 
 The primary goal is to extend plugin functionality in a few key areas:
 * A common and consistant configuration system using CommonDataObjects
