@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GuaranteedRate.SextantTests.Config
+namespace GuaranteedRate.Sextant.Config.Tests
 {
     public class WindowModel
     {

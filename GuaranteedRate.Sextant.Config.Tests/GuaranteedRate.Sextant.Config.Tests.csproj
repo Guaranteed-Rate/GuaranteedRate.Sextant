@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}</ProjectGuid>
+    <ProjectGuid>{63A58276-99C5-4E10-BA5A-29F57A2626EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GuaranteedRate.SextantTests</RootNamespace>
-    <AssemblyName>GuaranteedRate.SextantTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>GuaranteedRate.Sextant.Config.Tests</RootNamespace>
+    <AssemblyName>GuaranteedRate.Sextant.Config.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,7 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,10 +57,6 @@
     </Reference>
     <Reference Include="DocumentConverter, Version=7.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
       <HintPath>..\packages\EncompassSDK.Complete.17.2.0.2\lib\net45\DocumentConverter.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Elasticsearch.Net, Version=6.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elasticsearch.Net.6.0.0-alpha1\lib\net45\Elasticsearch.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elli.ElliEnum, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
@@ -132,12 +127,8 @@
       <HintPath>..\packages\EncompassSDK.Complete.17.2.0.2\lib\net45\Jed.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nest, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\NEST.5.4.0\lib\net45\Nest.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\EncompassSDK.Complete.17.2.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -176,48 +167,34 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise />
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Config\IniConfigTests.cs" />
-    <Compile Include="Config\JsonEncompassConfigTests.cs" />
-    <Compile Include="Config\WindowModel.cs" />
-    <Compile Include="LoggingTest1.cs" />
+    <Compile Include="IniConfigTests.cs" />
+    <Compile Include="JsonEncompassConfitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Config\TestJson.json">
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Configs\TestIni.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
+    <None Include="packages.config" />
+    <None Include="Configs\TestJson.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GuaranteedRate.Sextant.Config\GuaranteedRate.Sextant.Config.csproj">
       <Project>{7095d364-2fb0-4502-b212-789c196b3db9}</Project>
       <Name>GuaranteedRate.Sextant.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging.Elasticsearch\GuaranteedRate.Sextant.Logging.Elasticsearch.csproj">
-      <Project>{1324701b-e763-4e87-8d14-ba188048350d}</Project>
-      <Name>GuaranteedRate.Sextant.Logging.Elasticsearch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging.Loggly\GuaranteedRate.Sextant.Logging.Loggly.csproj">
-      <Project>{041d750b-efe2-4737-a178-d3e30776ca49}</Project>
-      <Name>GuaranteedRate.Sextant.Logging.Loggly</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj">
-      <Project>{aeaf650b-5e6f-4475-b424-504f2d17fe3f}</Project>
-      <Name>GuaranteedRate.Sextant.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj">
-      <Project>{07752aac-1bf5-4eba-a5d5-1b847d8e6a8e}</Project>
-      <Name>GuaranteedRate.Sextant.WebClients</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj">
-      <Project>{6388E4A7-456A-4363-9AC4-936F742CA63F}</Project>
-      <Name>GuaranteedRate.Sextant</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
