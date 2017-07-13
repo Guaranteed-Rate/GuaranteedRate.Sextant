@@ -161,7 +161,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogglyAppender.cs" />
+    <Compile Include="LogglyLogAppender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
