@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Logging;
@@ -32,30 +31,48 @@ namespace GuaranteedRate.Sextant.WebClients
             HttpStatusCode.NoContent,
             HttpStatusCode.OK
         };
-
-        public string Url { get; set; }
-        private readonly BlockingCollection<string> eventQueue;
-        private readonly int retries;
+        
+        private readonly BlockingCollection<object> _eventQueue;
+        private readonly int _retries;
 
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
 
-        public string ContentType { get; set; }
+        protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
+        private volatile bool _finished;
+        protected IGenericClient Client { get; private set; }
 
-        private volatile bool finished;
+        public AsyncEventReporter(IGenericClient client, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
+        {
+            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
+            _retries = retries;
+            Client = client;
+            Init();
+        }
 
         public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
-            this.Url = url;
-            ContentType = "application/json";
-            this.eventQueue = new BlockingCollection<string>(new ConcurrentQueue<string>(), queueSize);
-            this.retries = retries;
-            init();
+            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
+            _retries = retries;
+            CreateClient(url);
+            Init();
         }
 
-        private void init()
+        public AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
-            finished = false;
+            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
+            _retries = retries;
+            Init();
+        }
+
+        protected void CreateClient(string url)
+        {
+            Client = new GenericClient(url);    
+        }
+
+        private void Init()
+        {
+            _finished = false;
 
             /**
              * Taken directly from
@@ -64,9 +81,9 @@ namespace GuaranteedRate.Sextant.WebClients
             // A simple blocking consumer with no cancellation.
             Task.Run(() =>
             {
-                while (!eventQueue.IsCompleted)
+                while (!_eventQueue.IsCompleted)
                 {
-                    string nextEvent = null;
+                    object nextEvent = null;
                     // Blocks if number.Count == 0 
                     // IOE means that Take() was called on a completed collection. 
                     // Some other thread can call CompleteAdding after we pass the 
@@ -75,33 +92,33 @@ namespace GuaranteedRate.Sextant.WebClients
                     // loop will break on the next iteration. 
                     try
                     {
-                        nextEvent = eventQueue.Take();
+                        nextEvent = _eventQueue.Take();
                     }
                     catch (InvalidOperationException e)
                     {
-                        Logger.Warn(this.GetType().Name.ToString(), "InvalidOperationException reading from queue:" + e);
+                        Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}");
                     }
 
                     if (nextEvent != null)
                     {
                         bool success = false;
                         int tries = 0;
-                        while (!success && tries < retries)
+                        while (!success && tries < _retries)
                         {
                             success = PostEvent(nextEvent);
                             if (!success)
                             {
-                                Logger.Info(this.GetType().Name.ToString(), "Post failed, try number: " + tries);
+                                Logger.Info(Name, $"Post failed, try number: {tries}");
                             }
                             tries++;
                         }
                         if (!success)
                         {
-                            Logger.Error(this.GetType().Name.ToString(), "Post failed after " + tries + " tries");
+                            Logger.Error(Name, $"Post failed after {tries} tries");
                         }
                     }
                 }
-                finished = true;
+                _finished = true;
             });
         }
 
@@ -112,16 +129,16 @@ namespace GuaranteedRate.Sextant.WebClients
 
         public void Shutdown()
         {
-            eventQueue.CompleteAdding();
-            while (!finished)
+            _eventQueue.CompleteAdding();
+            while (!_finished)
             {
                 Thread.Sleep(1000);
             }
         }
 
-        public bool ReportEvent(string formattedData)
+        public bool ReportEvent(object formattedData)
         {
-            eventQueue.Add(formattedData);
+            _eventQueue.Add(formattedData);
             return true;
         }
 
@@ -133,58 +150,23 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected virtual void ExtraSetup(WebRequest webRequest)
         {
+
         }
 
-        private bool PostEvent(string formattedData)
+        protected virtual bool PostEvent(object data)
         {
             try
             {
-                /**
-                 * According to documentation, .NET will reuse connection but not WebRequest object
-                 */
-                WebRequest webRequest = WebRequest.Create(Url);
-                if (webRequest != null)
-                {
-                    webRequest.Method = "POST";
-                    webRequest.Timeout = 45000;
-                    webRequest.ContentType = ContentType;
-                    ExtraSetup(webRequest);
-
-                    using (Stream stream = webRequest.GetRequestStream())
-                    {
-                        using (System.IO.StreamWriter sw = new System.IO.StreamWriter(stream))
-                            sw.Write(formattedData);
-                    }
-
-                    using (System.IO.Stream s = webRequest.GetResponse().GetResponseStream())
-                    {
-                        using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                        {
-                            var jsonResponse = sr.ReadToEnd();
-
-                            HttpWebResponse response = webRequest.GetResponse() as HttpWebResponse;
-                            if (response != null)
-                            {
-                                if (!SUCCESS_CODES.Contains(response.StatusCode))
-                                {
-                                    Logger.Warn(this.GetType().Name.ToString(),
-                                        "Webservice at " + Url + " returned status code:" + response.StatusCode);
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Logger.Warn(this.GetType().Name.ToString(), "WebService Url invalid. Url=" + Url);
-                }
+                Client.Post("", data);
             }
-            catch (Exception ex)
+            catch (ApiException ex)
             {
-                Logger.Error(this.GetType().Name.ToString(), "Log by Post to Service failed: " + ex.ToString());
+                var error =
+                    $"The following request returned a {ex.StackTrace} status code, resource endpoint: {Client.BaseAddress} model: {ex.Message}. Response {ex.Response}";
+                Logger.Warn(Name, error);
                 return false;
             }
+
             return true;
         }
     }

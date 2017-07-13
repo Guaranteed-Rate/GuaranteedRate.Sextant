@@ -173,7 +173,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +186,10 @@
     <ProjectReference Include="..\GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj">
       <Project>{aeaf650b-5e6f-4475-b424-504f2d17fe3f}</Project>
       <Name>GuaranteedRate.Sextant.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj">
+      <Project>{07752aac-1bf5-4eba-a5d5-1b847d8e6a8e}</Project>
+      <Name>GuaranteedRate.Sextant.WebClients</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

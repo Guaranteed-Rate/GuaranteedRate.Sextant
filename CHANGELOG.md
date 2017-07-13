@@ -1,6 +1,7 @@
 ## v17.2.1.0 / 2017 Jul 13
 * **Fix** - Bugfix for IniConfig.GetValue(string key, bool defaultValue) - previously, this method never actually pulled values from the config
 * **Add** - `LogglyAppender` and `elasticsearchLogAppender` as starter appenders for Logger
+* **Update** - `AsyncEventReporter.PostEvent()` is now virtual and can be overriden by derived classes
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.1.0"]

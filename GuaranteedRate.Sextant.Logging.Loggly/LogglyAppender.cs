@@ -9,6 +9,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 {
     public class LogglyLogAppender : AsyncEventReporter, ILogAppender
     {
+        protected override string Name { get; } = typeof(LogglyLogAppender).Name;
         private static ISet<string> _tags;
         public bool ErrorEnabled { get; set; }
         public bool WarnEnabled { get; set; }
@@ -47,8 +48,8 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         public void Setup(IEncompassConfig config)
         {
-            Url = config.GetValue(LOGGLY_URL);
-
+            CreateClient(config.GetValue(LOGGLY_URL));
+            
             var allEnabled = config.GetValue(LOGGLY_ALL, false);
             var errorEnabled = config.GetValue(LOGGLY_ERROR, false);
             var warnEnabled = config.GetValue(LOGGLY_WARN, false);

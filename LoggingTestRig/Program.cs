@@ -22,8 +22,7 @@ namespace LoggingTestRig
             loggly.Setup(config);
 
 
-            var elasticSearch = new ElasticsearchLogAppender();
-            elasticSearch.Setup(config);
+            var elasticSearch = new ElasticsearchLogAppender(config);
 
             Logger.AddAppender(console);
             Logger.AddAppender(loggly);

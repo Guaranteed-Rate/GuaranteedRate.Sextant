@@ -2,7 +2,7 @@
 {
     public interface IEventReporter
     {
-        bool ReportEvent(string formattedData);
+        bool ReportEvent(object formattedData);
         void Shutdown();
     }
 }
