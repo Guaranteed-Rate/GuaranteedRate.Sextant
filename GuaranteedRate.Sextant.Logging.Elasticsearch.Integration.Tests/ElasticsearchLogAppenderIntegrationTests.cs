@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using GuaranteedRate.Sextant.Integration.Core;
 using NUnit.Framework;
 
@@ -22,10 +23,12 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests
             var fields = new Dictionary<string, string>
             {
                 {"Application", "Encompass"},
-                {"Company", "Guaranteed Rate"}
-
+                {"Company", "Guaranteed Rate"},
+                {"logger", "Guaranteed Rate Encompass Logger" }
             };
             _sut.Log(fields);
+
+            Thread.Sleep(10000);
         }
     }
 }
