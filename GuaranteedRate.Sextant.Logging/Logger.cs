@@ -48,6 +48,7 @@ namespace GuaranteedRate.Sextant.Logging
             fields.Add("hostname", System.Environment.MachineName);
             fields.Add("process", Process.GetCurrentProcess().ProcessName);
             fields.Add("loggerName", loggerName);
+            fields.Add("message", message);
             return fields;
         }
 
