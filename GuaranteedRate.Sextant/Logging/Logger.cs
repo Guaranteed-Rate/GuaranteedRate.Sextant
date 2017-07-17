@@ -7,7 +7,7 @@ namespace GuaranteedRate.Sextant.Logging
 {
     public class Logger
     {
-        private static volatile IList<ILogAppender> _reporters;
+        private static volatile IList<ILogAppender> _reporters = new List<ILogAppender>();
         private static readonly object syncRoot = new Object();
         private const string ERROR = "ERROR";
         private const string WARN = "WARN";
