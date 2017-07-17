@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Inte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests", "GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests\GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests.csproj", "{7F42011F-9F3E-4CAD-88FA-496C18CC1321}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Datadog", "GuaranteedRate.Sextant.Logging.Datadog\GuaranteedRate.Sextant.Logging.Datadog.csproj", "{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,5 +165,6 @@ Global
 		{D73D06AA-3E56-4D38-85F1-2CB7296F290A} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
 		{1C0A0D30-1FCE-4650-8B36-4611DA6C1546} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
 		{7F42011F-9F3E-4CAD-88FA-496C18CC1321} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
+		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
 	EndGlobalSection
 EndGlobal

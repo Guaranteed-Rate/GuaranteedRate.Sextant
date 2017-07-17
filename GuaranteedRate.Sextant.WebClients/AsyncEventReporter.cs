@@ -15,7 +15,7 @@ namespace GuaranteedRate.Sextant.WebClients
      * creates a worker task to process messages from the queue in a separate thead.
      * 
      */
-    public class AsyncEventReporter : IEventReporter
+    public abstract class AsyncEventReporter : IDisposable, IEventReporter
     {
         /// <summary>
         /// This is the set of http status codes that are condsidered successful
@@ -41,7 +41,7 @@ namespace GuaranteedRate.Sextant.WebClients
         protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
         private volatile bool _finished;
 
-        protected IGenericClient Client { get; private set; }
+        protected IGenericClient Client { get; set; }
 
         public AsyncEventReporter(IGenericClient client, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
@@ -160,19 +160,30 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected virtual bool PostEvent(object data)
         {
-            try
+            throw new NotImplementedException();
+        }
+
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
             {
-                Client.Post("", data);
-            }
-            catch (ApiException ex)
-            {
-                var error =
-                    $"The following request returned a {ex.StackTrace} status code, resource endpoint: {Client.BaseAddress} model: {ex.Message}. Response {ex.Response}";
-                Logger.Warn(Name, error);
-                return false;
+                if (disposing)
+                {
+                    Shutdown();
+                }
             }
 
-            return true;
+            Client = null;
+
+            disposedValue = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

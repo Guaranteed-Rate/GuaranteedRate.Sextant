@@ -34,8 +34,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         #endregion
 
         public ElasticsearchLogAppender(IEncompassConfig config)
-            : base(config.GetValue(ELASTICSEARCH_URL),
-                config.GetValue(ELASTICSEARCH_QUEUE_SIZE, 1000),
+            : base(config.GetValue(ELASTICSEARCH_QUEUE_SIZE, 1000),
                 config.GetValue(ELASTICSEARCH_RETRY_LIMIT, 3))
         {
             Setup(config);
@@ -90,29 +89,6 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             }
 
             return true;
-        }
-
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    Shutdown();
-                }
-            }
-
-            _client = null;
-
-            disposedValue = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

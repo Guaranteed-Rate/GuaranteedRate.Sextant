@@ -166,8 +166,6 @@
     <Compile Include="EncompassUtils\Reporting.cs" />
     <Compile Include="EncompassUtils\SessionUtils.cs" />
     <Compile Include="EncompassUtils\UserUtils.cs" />
-    <Compile Include="Metrics\DatadogReporter.cs" />
-    <Compile Include="Metrics\IDataDogReporter.cs" />
     <Compile Include="Models\EncompassUser.cs" />
     <Compile Include="Models\MachineUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
