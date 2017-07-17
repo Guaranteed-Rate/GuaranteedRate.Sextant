@@ -186,10 +186,6 @@
     <Compile Include="Logging\ApiException.cs" />
     <Compile Include="Logging\AsyncEventReporter.cs" />
     <Compile Include="Logging\ConsoleLogAppender.cs" />
-    <Compile Include="Logging\Datadog\DatadogLogAppender.cs" />
-    <Compile Include="Logging\Datadog\Event.cs" />
-    <Compile Include="Logging\Datadog\IDatadogLogAppender.cs" />
-    <Compile Include="Logging\Datadog\Series.cs" />
     <Compile Include="Logging\Elasticsearch\ElasticsearchLogAppender.cs" />
     <Compile Include="Logging\GenericClient.cs" />
     <Compile Include="Logging\IEventReporter.cs" />
@@ -198,6 +194,8 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\Loggly\LogglyLogAppender.cs" />
     <Compile Include="Logging\SecureAsyncEventReporter.cs" />
+    <Compile Include="Metrics\Datadog\DatadogReporter.cs" />
+    <Compile Include="Metrics\Datadog\IDatadogReporter.cs" />
     <Compile Include="Models\EncompassUser.cs" />
     <Compile Include="Models\MachineUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
