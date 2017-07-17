@@ -81,7 +81,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
             try
             {
-                _client.Index(fields, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy-MM-dd")}"));
+                _client.Index(fields, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
             }
             catch (Exception ex)
             {
