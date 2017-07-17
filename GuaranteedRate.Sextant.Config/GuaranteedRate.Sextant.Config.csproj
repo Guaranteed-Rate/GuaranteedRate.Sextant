@@ -161,10 +161,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IEncompassConfig.cs" />
-    <Compile Include="IJsonEncompassConfig.cs" />
-    <Compile Include="IniConfig.cs" />
-    <Compile Include="JsonEncompassConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

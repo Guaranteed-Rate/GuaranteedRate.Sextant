@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant", "GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj", "{6388E4A7-456A-4363-9AC4-936F742CA63F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AEAF650B-5E6F-4475-B424-504F2D17FE3F} = {AEAF650B-5E6F-4475-B424-504F2D17FE3F}
-		{7095D364-2FB0-4502-B212-789C196B3DB9} = {7095D364-2FB0-4502-B212-789C196B3DB9}
-		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E} = {07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E07E09F8-4100-490E-93D7-0C70EBAE92E7}"
 	ProjectSection(SolutionItems) = preProject
@@ -34,16 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYourOwnEncompassNuget"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncompassFilesGoHere", "EncompassFilesGoHere", "{AFA7929B-100C-422D-8239-1C706E0A7F24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Elasticsearch", "GuaranteedRate.Sextant.Logging.Elasticsearch\GuaranteedRate.Sextant.Logging.Elasticsearch.csproj", "{1324701B-E763-4E87-8D14-BA188048350D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging", "GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj", "{AEAF650B-5E6F-4475-B424-504F2D17FE3F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Config", "GuaranteedRate.Sextant.Config\GuaranteedRate.Sextant.Config.csproj", "{7095D364-2FB0-4502-B212-789C196B3DB9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Loggly", "GuaranteedRate.Sextant.Logging.Loggly\GuaranteedRate.Sextant.Logging.Loggly.csproj", "{041D750B-EFE2-4737-A178-D3E30776CA49}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.WebClients", "GuaranteedRate.Sextant.WebClients\GuaranteedRate.Sextant.WebClients.csproj", "{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingTestRig", "LoggingTestRig\LoggingTestRig.csproj", "{DA5133FB-B814-4107-BE88-FCEE2C079CFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{41100F91-C886-4E0F-825C-26075421568C}"
@@ -54,15 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{D7170C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Tests", "GuaranteedRate.Sextant.Tests\GuaranteedRate.Sextant.Tests.csproj", "{B725E1AD-2397-4F37-AB42-CBEB7903B3D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Config.Tests", "GuaranteedRate.Sextant.Config.Tests\GuaranteedRate.Sextant.Config.Tests.csproj", "{63A58276-99C5-4E10-BA5A-29F57A2626EE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Loggly.Integration.Tests", "GuaranteedRate.Sextant.Logging.Loggly.Integration.Tests\GuaranteedRate.Sextant.Logging.Loggly.Integration.Tests.csproj", "{D73D06AA-3E56-4D38-85F1-2CB7296F290A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Integration.Core", "GuaranteedRate.Sextant.Integration.Core\GuaranteedRate.Sextant.Integration.Core.csproj", "{1C0A0D30-1FCE-4650-8B36-4611DA6C1546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests", "GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests\GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests.csproj", "{7F42011F-9F3E-4CAD-88FA-496C18CC1321}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Logging.Datadog", "GuaranteedRate.Sextant.Logging.Datadog\GuaranteedRate.Sextant.Logging.Datadog.csproj", "{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.Integration.Tests", "GuaranteedRate.Sextant.Integration.Tests\GuaranteedRate.Sextant.Integration.Tests.csproj", "{31B8F757-16CC-4B03-A49C-3168A157586E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,26 +73,6 @@ Global
 		{91257481-3D46-4515-8BBB-1311DD6EABD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91257481-3D46-4515-8BBB-1311DD6EABD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91257481-3D46-4515-8BBB-1311DD6EABD3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1324701B-E763-4E87-8D14-BA188048350D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1324701B-E763-4E87-8D14-BA188048350D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1324701B-E763-4E87-8D14-BA188048350D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1324701B-E763-4E87-8D14-BA188048350D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEAF650B-5E6F-4475-B424-504F2D17FE3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7095D364-2FB0-4502-B212-789C196B3DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7095D364-2FB0-4502-B212-789C196B3DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7095D364-2FB0-4502-B212-789C196B3DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7095D364-2FB0-4502-B212-789C196B3DB9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{041D750B-EFE2-4737-A178-D3E30776CA49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{041D750B-EFE2-4737-A178-D3E30776CA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{041D750B-EFE2-4737-A178-D3E30776CA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{041D750B-EFE2-4737-A178-D3E30776CA49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA5133FB-B814-4107-BE88-FCEE2C079CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -122,26 +81,14 @@ Global
 		{B725E1AD-2397-4F37-AB42-CBEB7903B3D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B725E1AD-2397-4F37-AB42-CBEB7903B3D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B725E1AD-2397-4F37-AB42-CBEB7903B3D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63A58276-99C5-4E10-BA5A-29F57A2626EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63A58276-99C5-4E10-BA5A-29F57A2626EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63A58276-99C5-4E10-BA5A-29F57A2626EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63A58276-99C5-4E10-BA5A-29F57A2626EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D73D06AA-3E56-4D38-85F1-2CB7296F290A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D73D06AA-3E56-4D38-85F1-2CB7296F290A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D73D06AA-3E56-4D38-85F1-2CB7296F290A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D73D06AA-3E56-4D38-85F1-2CB7296F290A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C0A0D30-1FCE-4650-8B36-4611DA6C1546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C0A0D30-1FCE-4650-8B36-4611DA6C1546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C0A0D30-1FCE-4650-8B36-4611DA6C1546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C0A0D30-1FCE-4650-8B36-4611DA6C1546}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F42011F-9F3E-4CAD-88FA-496C18CC1321}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B8F757-16CC-4B03-A49C-3168A157586E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B8F757-16CC-4B03-A49C-3168A157586E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B8F757-16CC-4B03-A49C-3168A157586E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B8F757-16CC-4B03-A49C-3168A157586E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,17 +101,9 @@ Global
 		{47DD2EC4-99F6-40CD-BDB7-15D15B72F124} = {41100F91-C886-4E0F-825C-26075421568C}
 		{91257481-3D46-4515-8BBB-1311DD6EABD3} = {41100F91-C886-4E0F-825C-26075421568C}
 		{AFA7929B-100C-422D-8239-1C706E0A7F24} = {DCEA544E-C56A-45BF-9626-DA9922D2B27C}
-		{1324701B-E763-4E87-8D14-BA188048350D} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
-		{AEAF650B-5E6F-4475-B424-504F2D17FE3F} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
-		{7095D364-2FB0-4502-B212-789C196B3DB9} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
-		{041D750B-EFE2-4737-A178-D3E30776CA49} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
-		{07752AAC-1BF5-4EBA-A5D5-1B847D8E6A8E} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
 		{DA5133FB-B814-4107-BE88-FCEE2C079CFE} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
 		{B725E1AD-2397-4F37-AB42-CBEB7903B3D2} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
-		{63A58276-99C5-4E10-BA5A-29F57A2626EE} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
-		{D73D06AA-3E56-4D38-85F1-2CB7296F290A} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
 		{1C0A0D30-1FCE-4650-8B36-4611DA6C1546} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
-		{7F42011F-9F3E-4CAD-88FA-496C18CC1321} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
-		{8757F556-4F31-4C54-B7AD-5C2D6E4AEEC2} = {D7170C9C-349A-48D5-8266-EC7F63A0AEA9}
+		{31B8F757-16CC-4B03-A49C-3168A157586E} = {8E81E1E4-1DB6-4506-B54B-03DA26D1900E}
 	EndGlobalSection
 EndGlobal

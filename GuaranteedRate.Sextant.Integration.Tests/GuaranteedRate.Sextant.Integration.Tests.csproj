@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7F42011F-9F3E-4CAD-88FA-496C18CC1321}</ProjectGuid>
+    <ProjectGuid>{31B8F757-16CC-4B03-A49C-3168A157586E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests</RootNamespace>
-    <AssemblyName>GuaranteedRate.Sextant.Logging.Elasticsearch.Integration.Tests</AssemblyName>
+    <RootNamespace>GuaranteedRate.Sextant.Integration.Tests</RootNamespace>
+    <AssemblyName>GuaranteedRate.Sextant.Integration.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,18 +62,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Logging\Elasticsearch\ElasticsearchLogAppenderIntegrationTests.cs" />
+    <Compile Include="Logging\Loggly\LogglyLogAppenderIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GuaranteedRate.Sextant.Integration.Core\GuaranteedRate.Sextant.Integration.Core.csproj">
       <Project>{1c0a0d30-1fce-4650-8b36-4611da6c1546}</Project>
       <Name>GuaranteedRate.Sextant.Integration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj">
+      <Project>{6388e4a7-456a-4363-9ac4-936f742ca63f}</Project>
+      <Name>GuaranteedRate.Sextant</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

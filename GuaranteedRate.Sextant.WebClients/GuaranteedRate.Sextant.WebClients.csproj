@@ -49,19 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiException.cs" />
-    <Compile Include="AsyncEventReporter.cs" />
-    <Compile Include="GenericClient.cs" />
-    <Compile Include="IEventReporter.cs" />
-    <Compile Include="IGenericClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecureAsyncEventReporter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GuaranteedRate.Sextant.Logging\GuaranteedRate.Sextant.Logging.csproj">
-      <Project>{aeaf650b-5e6f-4475-b424-504f2d17fe3f}</Project>
-      <Name>GuaranteedRate.Sextant.Logging</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
