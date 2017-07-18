@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Logging;
@@ -34,6 +36,7 @@ namespace GuaranteedRate.Sextant.WebClients
         
         private readonly BlockingCollection<object> _eventQueue;
         private readonly int _retries;
+        private string _url;
 
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
@@ -41,17 +44,8 @@ namespace GuaranteedRate.Sextant.WebClients
         protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
         private volatile bool _finished;
 
-        protected IGenericClient Client { get; set; }
-
-        public AsyncEventReporter(IGenericClient client, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
-        {
-            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
-            _retries = retries;
-            Client = client;
-            
-            Init();
-        }
-
+        protected HttpClient Client { get; set; }
+        
         public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
@@ -71,7 +65,8 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected void CreateClient(string url)
         {
-            Client = new GenericClient(url);    
+            _url = url;
+            Client = new HttpClient();  
         }
 
         private void Init()
@@ -162,7 +157,8 @@ namespace GuaranteedRate.Sextant.WebClients
         {
             try
             {
-                Client.Post("", data);
+                var content = new ObjectContent<object>(data, new JsonMediaTypeFormatter());
+                var response = Client.PostAsync(_url, content).Result;  // Blocking call!
             }
             catch (ApiException ex)
             {

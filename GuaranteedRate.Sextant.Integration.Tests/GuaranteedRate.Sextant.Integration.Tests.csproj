@@ -64,6 +64,8 @@
   <ItemGroup>
     <Compile Include="Logging\Elasticsearch\ElasticsearchLogAppenderIntegrationTests.cs" />
     <Compile Include="Logging\Loggly\LogglyLogAppenderIntegrationTests.cs" />
+    <Compile Include="Metrics\Datadog\DatadogReporterIntegrationTests.cs" />
+    <Compile Include="Metrics\Graphite\GraphiteReporterIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +82,7 @@
       <Name>GuaranteedRate.Sextant</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

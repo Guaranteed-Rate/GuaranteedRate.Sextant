@@ -1,84 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.WebClients;
 using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Metrics.Datadog
 {
-    public class DatadogReporter : IDatadogReporter
+    public class DatadogReporter : AsyncEventReporter, IReporter
     {
-        private readonly IEventReporter datadogPoster;
-        public string host { get; set; }
-
-        private IList<string> jsonTags;
         private readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private string _host;
+        private IList<string> jsonTags;
 
-        private static volatile DatadogReporter INSTANCE;
-        private static object syncRoot = new Object();
+        #region config mappings
 
-        private static int QUEUE_SIZE = -1;
-        private static string API_KEY;
-        private static string ENDPOINT;
+        public static string DATADOG_URL = "DatadogReporter.Url";
+        public static string DATADOG_APIKEY = "DatadogReporter.ApiKey";
+        public static string DATADOG_QUEUE_SIZE = "DatadogReporter.QueueSize";
+        public static string DATADOG_RETRY_LIMIT = "DatadogReporter.RetryLimit";
 
-        public static void SetQueueSize(int queueSize)
+        #endregion
+
+        public DatadogReporter(IEncompassConfig config)
+            : base($"{config.GetValue(DATADOG_URL)}?api_key={config.GetValue(DATADOG_APIKEY)}",
+                config.GetValue(DATADOG_QUEUE_SIZE, 1000),
+                config.GetValue(DATADOG_RETRY_LIMIT, 3))
         {
-            QUEUE_SIZE = queueSize;
+            Setup();
         }
 
-        public static void SetApiKey(string apiKey)
+        public DatadogReporter(string endpoint, string apiKey, int queueSize = 1000, int retries = 3)
+            :base($"{endpoint}?api_key={apiKey}", queueSize, retries)
         {
-            API_KEY = apiKey;
+            Setup();
         }
 
-        public static void SetEndPoint(string endPoint)
+        private void Setup()
         {
-            ENDPOINT = endPoint;
-        }
-
-        /**
-         * Double-check locking to ensure the singleton is only created once.
-         * Note the dogReporter is also volatile which is requried to make the double-check correct.
-         */
-
-        public static DatadogReporter Instance
-        {
-            get
-            {
-                if (INSTANCE == null)
-                {
-                    lock (syncRoot)
-                    {
-                        if (INSTANCE == null)
-                        {
-                            if (QUEUE_SIZE > 0)
-                            {
-                                INSTANCE = new DatadogReporter(ENDPOINT, API_KEY, QUEUE_SIZE);
-                            }
-                            else
-                            {
-                                INSTANCE = new DatadogReporter(ENDPOINT, API_KEY);
-                            }
-                        }
-                    }
-                }
-                return INSTANCE;
-            }
-        }
-
-        public DatadogReporter(string datadogEndpoint, string apiKey, int queueSize = -1)
-        {
-            string url = datadogEndpoint + "?api_key=" + apiKey;
-            host = Environment.MachineName;
+            _host = Environment.MachineName;
             jsonTags = new List<string>();
-
-            if (queueSize > 0)
-            {
-                datadogPoster = new AsyncEventReporter(url, queueSize);
-            }
-            else
-            {
-                datadogPoster = new AsyncEventReporter(url);
-            }
         }
 
         public void AddTag(string tag, string value)
@@ -97,7 +60,6 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
             AddMetric(metric, value, "counter");
         }
 
-
         /// <summary>
         /// Send a metric to DataDog
         /// </summary>
@@ -106,17 +68,6 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
         public void AddGauge(string metric, long value)
         {
             AddMetric(metric, value, "gauge");
-        }
-
-        /// <summary>
-        /// deprecataed because misspelled.  Use AddGauge instead.
-        /// </summary>
-        /// <param name="metric">name of metric e.g. HogsHeadsPerMile</param>
-        /// <param name="value">value to send to DataDog  e.g. 67</param>
-        [Obsolete("Use AddGauge instead.")]
-        public void AddGuage(string metric, long value)
-        {
-            AddGauge(metric, value);
         }
 
         /// <summary>
@@ -131,27 +82,29 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
 
         private void AddMetric(string metric, long value, string type)
         {
-            Event e = new Event();
-            e.metric = metric;
-            e.type = type;
-            e.host = host;
-            e.tags = jsonTags;
-            IList<long> point = new List<long>();
-            point.Add(GetEpochTime());
-            point.Add(value);
+            var e = new Event
+            {
+                metric = metric,
+                type = type,
+                host = _host,
+                tags = jsonTags
+            };
+            IList<long> point = new List<long>
+            {
+                GetEpochTime(),
+                value
+            };
+
             IList<IList<long>> points = new List<IList<long>>();
             points.Add(point);
 
             e.points = points;
 
-            Series s = new Series();
-            s.series = new List<Event>();
-            s.series.Add(e);
+            var s = new Series {series = new List<Event> {e}};
+            var json = JsonConvert.SerializeObject(s);
 
-            string json = JsonConvert.SerializeObject(s);
-            datadogPoster.ReportEvent(json);
+            ReportEvent(json);
         }
-
 
         private class Event
         {
