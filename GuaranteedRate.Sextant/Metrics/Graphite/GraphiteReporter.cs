@@ -71,7 +71,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
 
         private void AddEvent(string name, long value)
         {
-            var gaugeEvent = $"{_prefix}{name} {value} {GetEpochTime()}";
+            var gaugeEvent = $"{_prefix}.{name} {value} {GetEpochTime()}{Environment.NewLine}";
             ReportEvent(gaugeEvent);
         }
 
