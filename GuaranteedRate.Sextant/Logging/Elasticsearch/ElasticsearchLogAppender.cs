@@ -40,7 +40,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             Setup(config);
         }
 
-        public void Setup(IEncompassConfig config)
+        protected void Setup(IEncompassConfig config)
         {
             var url = config.GetValue(ELASTICSEARCH_URL);
             _node = new Uri(url);

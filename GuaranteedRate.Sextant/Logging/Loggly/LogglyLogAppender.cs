@@ -52,7 +52,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             return $"{url}/inputs/{apiKey}/tag";
         }
 
-        public void Setup(IEncompassConfig config)
+        protected void Setup(IEncompassConfig config)
         {
             CreateClient(config.GetValue(LOGGLY_URL));
             

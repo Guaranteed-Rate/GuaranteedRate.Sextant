@@ -27,7 +27,12 @@ namespace GuaranteedRate.Sextant.Logging
 
         #endregion
 
-        public void Setup(IEncompassConfig config)
+        public ConsoleLogAppender(IEncompassConfig config)
+        {
+            Setup(config);
+        }
+
+        protected void Setup(IEncompassConfig config)
         {
             DebugEnabled = config.GetValue(CONSOLE_DEBUG, false);
             InfoEnabled = config.GetValue(CONSOLE_INFO, false);

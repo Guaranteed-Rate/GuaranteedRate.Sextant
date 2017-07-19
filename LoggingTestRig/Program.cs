@@ -18,8 +18,7 @@ namespace LoggingTestRig
             var config = new JsonEncompassConfig();
             config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
                 
-            var console = new ConsoleLogAppender();
-            console.Setup(config);
+            var console = new ConsoleLogAppender(config);
 
             var loggly = new LogglyLogAppender(config);
             var elasticSearch = new ElasticsearchLogAppender(config);
