@@ -1,7 +1,7 @@
 ## v17.2.1.0 / 2017 Jul 13
 * **Fix** - Bugfix for IniConfig.GetValue(string key, bool defaultValue) - previously, this method never actually pulled values from the config
-* **Add** - `LogglyAppender` and `elasticsearchLogAppender` as starter appenders for Logger
-* **Add** - Support for Graphite metrics 
+* **Add** - `LogglyAppender` and `ElasticsearchLogAppender` as starter appenders for Logger
+* **Add** - `DatadogReporter` and `GraphiteReporter` as starter appenders for Metrics
 * **Update** - `AsyncEventReporter.PostEvent()` is now virtual and can be overriden by derived classes
 
 ```csharp
@@ -23,42 +23,42 @@
 ```
 
 ## v17.2.0.4 / 2017 Apr 21
-> Encompass expects string interpretations of Guids to be wrapped in braces.  Safe checking for this as Guid.ToString() will emit a guid that does not follow this standard.
+* **Update** - Encompass expects string interpretations of Guids to be wrapped in braces.  Safe checking for this as Guid.ToString() will emit a guid that does not follow this standard.
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.0.4"]
 ```
 
 ## v17.2.0.3 / 2017 Apr 17
-> This release upgrades Newtonsoft to 10.0.2 which is needed by Encompass 17.2.0.2
+* **Update** - This release upgrades Newtonsoft to 10.0.2 which is needed by Encompass 17.2.0.2
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.0.3"]
 ```
 
 ## v17.2.0.2 / 2017 Apr 17
-> This release allows for support of Encompass 17.2.0.2
+* **Update** - This release allows for support of Encompass 17.2.0.2
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.0.2"]
 ```
 
 ## v17.1.0.5 / 2017 Mar 20
-> This release corrects a regression in LoanDataUtils that allowed null values to be set to properties instead of leaving unset properties as empty strings.
+* **Fix** - This release corrects a regression in LoanDataUtils that allowed null values to be set to properties instead of leaving unset properties as empty strings.
 
 ```csharp
 [GuaranteedRate.Sextant "17.1.0.5"]
 ```
 
 ## v17.1.0.4 / 2017 Mar 16
-> This release extends IJsonEncompassConfig to support T GetValue<T>(string key, T defaultValue = default(T))
+* **Add** - This release extends IJsonEncompassConfig to support T GetValue<T>(string key, T defaultValue = default(T))
 
 ```csharp
 [GuaranteedRate.Sextant "17.1.0.4"]
 ```
 
 ## v17.1.0.3 / 2017 Mar 07
-> Extending JsonEncompassConfig to implement an IJsonEncompassConfig
+* **Update** - Extending JsonEncompassConfig to implement an IJsonEncompassConfig
 
 ## v17.1.0.2 / 2017 Mar 07
 > This release updates the IniConfig to be able to accept values that contain an equal sign
