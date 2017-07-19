@@ -1,4 +1,4 @@
-**[Updates](#updates)** | **[Config](#config)** | **[Logging](#logging)** | **[Metrics](#metrics)** | **[ILMerge](#ilmerge)**
+**[Updates](#updates)** | **[Config](#config)** | **[Logging](#logging)** | **[Metrics](#metrics)** | **[ILMerge](#ilmerge)** | **[Testing Programs](#testing-programs)** | **[Developer Notes](#developer-notes)**
 
 # GuaranteedRate.Sextant
 
@@ -21,14 +21,47 @@ For a comprehensive list of version updates.  Please consult our [Changlog](CHAN
 
 `IEncompassConfig` is an interface for using an Encompass CustomDataObject as a config file.
 
-**IniConfig** is a simple implementation that treats the config file like a classic INI file.
+### IniConfig
+> This has been deprecated.  Please consult the [JsonEncompassConfig](#jsonencompassconfig)
+
+**IniConfig** is a simple implementation that treats the config file like a classic INI file. 
+It is important to note that the `IniConfig` will lowercase all values handed to it, so it is not an ideal configuration store for case sensitive configurations such as database passwords.  
+
 ```
 [Key]=[Value]\n
 # Lines starting with # are considered comments
+# (Blank lines are ignored)
 ```
-(Blank lines are ignored)
 
+Sample INI file
+```
+# Datadog configurations
+DatadogReporter.ApiKey 0123456789012345678901234567890
+
+# Loggly configurations
+LogglyLogAppender.Error.Enabled true
+LogglyLogAppender.Warn.Enabled false
+```
+
+### JsonEncompassConfig
 **JsonEncompassConfig** is a simple implementation that uses a json config file.  
+
+Sample Json file
+```javascript
+{
+  "ElasticsearchLogAppender": {
+    "Url": "https://my.elasticsearch.com",
+    "Debug": { "Enabled": true },
+    "Info": { "Enabled": true },
+    "Warn": { "Enabled": true },
+    "Error": { "Enabled": false },
+    "Fatal": { "Enabled": true },
+	"Tags": "dev,project1",
+	"QueueSize": 1000,
+	"RetryLimit": 3
+  }
+}
+```
 
 ## Logging
 
@@ -112,7 +145,7 @@ You will also need to add the following additional packages to be included in yo
 
 * json.net (newtonsoft)
 
-## Example/Testing Programs
+## Testing Programs
 
 ### FieldUtils
 
