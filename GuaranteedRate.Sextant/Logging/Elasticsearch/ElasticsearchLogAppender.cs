@@ -76,11 +76,17 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             if (fields.ContainsKey("loggerName"))
             {
                 loggerName = fields["loggerName"];
+                loggerName = loggerName.ToLower();
             }
 
             try
             {
-                _client.Index(fields, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
+                var response = _client.Index(fields, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
+
+                if (!response.IsValid)
+                {
+                    Logger.Warn(Name, $"The Elasticsearch request returned an error {response.DebugInformation}");
+                }
             }
             catch (Exception ex)
             {
