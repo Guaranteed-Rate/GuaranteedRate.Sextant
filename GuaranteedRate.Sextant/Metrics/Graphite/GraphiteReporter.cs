@@ -37,7 +37,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
 
             if (config.GetValue(GRAPHITE_TRACK_HOSTMACHINE, true))
             {
-                _prefix += Environment.MachineName;
+                _prefix = $"{_prefix}.{Environment.MachineName}";
             }
 
             var host = config.GetValue(GRAPHITE_HOST);
