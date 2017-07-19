@@ -20,6 +20,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
         #region config mappings
 
         public static string LOGGLY_URL = "LogglyLogAppender.Url";
+        public static string LOGGLY_APIKEY = "LogglyLogAppender.ApiKey";
         public static string LOGGLY_QUEUE_SIZE = "LogglyLogAppender.QueueSize";
         public static string LOGGLY_RETRY_LIMIT = "LogglyLogAppender.RetryLimit";
         public static string LOGGLY_ALL = "LogglyLogAppender.All.Enabled";
@@ -32,18 +33,23 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         #endregion
 
-        public LogglyLogAppender(string url, int queueSize = 1000, int retries = 3) : base(url, queueSize, retries)
+        public LogglyLogAppender(string url, string apiKey, int queueSize = 1000, int retries = 3) : base(CreateUrl(url, apiKey), queueSize, retries)
         {
             _tags = new HashSet<string>();
         }
 
         public LogglyLogAppender(IEncompassConfig config)
-            : base(config.GetValue(LOGGLY_URL),
+            : base(CreateUrl(config.GetValue(LOGGLY_URL), config.GetValue(LOGGLY_APIKEY)),
                 config.GetValue(LOGGLY_QUEUE_SIZE, 1000),
                 config.GetValue(LOGGLY_RETRY_LIMIT, 3))
         {
             _tags = new HashSet<string>();
             Setup(config);
+        }
+
+        protected static string CreateUrl(string url, string apiKey)
+        {
+            return $"{url}/inputs/{apiKey}/tag";
         }
 
         public void Setup(IEncompassConfig config)
