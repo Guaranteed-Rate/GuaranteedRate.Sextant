@@ -65,6 +65,34 @@ Sample Json file
 
 ## Logging
 
+### logger
+
+**Logger** is a static holding object that contain any number of `ILogAppender`.  Once an appender is registered with Logger it will be called each time the `Logger` is invoked in your Application
+
+Sample usage
+```csharp
+var config = new JsonEncompassConfig();
+config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
+                
+var console = new ConsoleLogAppender(config);
+
+var loggly = new LogglyLogAppender(config);
+var elasticSearch = new ElasticsearchLogAppender(config);
+
+Logger.AddAppender(console);
+Logger.AddAppender(loggly);
+Logger.AddAppender(elasticSearch);
+
+Logger.Debug("SextantTestRig", "Test debug message");
+Logger.Info("SextantTestRig", "Test info message");
+Logger.Warn("SextantTestRig", "Test warn message");
+Logger.Error("SextantTestRig", "Test error message");
+Logger.Fatal("SextantTestRig", "Test fatal message");
+
+```
+
+- An example usage of the `Logger` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
+
 ### Datadog
 
 **DatadogReporter** is an asynchronous web client that sends series data directly to datadog's RESTful interface. 
@@ -85,7 +113,7 @@ The client provides some common approximations of standard logging methods.  We 
 
 Example:
 
-```C#
+```csharp
 Logger.Error(this.GetType().Name.ToString(), "This is my error");
 IDictionary<string, string> fields = new Dictionary<string, string>();
 fields.Add("foo", "bar");
@@ -119,7 +147,7 @@ Create a post-build step like this:
   <img  src="doc/img/ilMerge-postBuild.png" border="0" />
 </p>
 
-```C#
+```csharp
 
 set ilMergePath=C:\Program Files (x86)\Microsoft\ILMerge
 set outPath=Combined\
@@ -224,6 +252,6 @@ For example Field "1393" (Trans Details Current Loan Status):
 The dropdown has a default value of "Active Loan", but if the field has never been touched, then the value will be empty.
 
 ie you can see the drop down showing "Active Loan", but in the SDK will show:
-```C#
+```csharp
 loan.Fields["1393"].Value == "";
 ```
