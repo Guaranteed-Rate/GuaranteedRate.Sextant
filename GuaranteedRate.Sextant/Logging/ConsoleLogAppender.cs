@@ -16,13 +16,24 @@ namespace GuaranteedRate.Sextant.Logging
         public bool ErrorEnabled { get; private set; }
         public bool FatalEnabled { get; private set; }
 
+        #region config mappings
+        
+        public static string CONSOLE_ALL = "ConsoleLogAppender.All.Enabled";
+        public static string CONSOLE_ERROR = "ConsoleLogAppender.Error.Enabled";
+        public static string CONSOLE_WARN = "ConsoleLogAppender.Warn.Enabled";
+        public static string CONSOLE_INFO = "ConsoleLogAppender.Info.Enabled";
+        public static string CONSOLE_DEBUG = "ConsoleLogAppender.Debug.Enabled";
+        public static string CONSOLE_FATAL = "ConsoleLogAppender.Fatal.Enabled";
+
+        #endregion
+
         public void Setup(IEncompassConfig config)
         {
-            DebugEnabled = config.GetValue("ConsoleLogAppender.Debug.Enabled", false);
-            InfoEnabled = config.GetValue("ConsoleLogAppender.Info.Enabled", false);
-            WarnEnabled = config.GetValue("ConsoleLogAppender.Warn.Enabled", false);
-            ErrorEnabled = config.GetValue("ConsoleLogAppender.Error.Enabled", true);
-            FatalEnabled = config.GetValue("ConsoleLogAppender.Fatal.Enabled", true);
+            DebugEnabled = config.GetValue(CONSOLE_DEBUG, false);
+            InfoEnabled = config.GetValue(CONSOLE_INFO, false);
+            WarnEnabled = config.GetValue(CONSOLE_WARN, false);
+            ErrorEnabled = config.GetValue(CONSOLE_ERROR, true);
+            FatalEnabled = config.GetValue(CONSOLE_FATAL, true);
         }
 
         public void Log(IDictionary<string, string> fields)
