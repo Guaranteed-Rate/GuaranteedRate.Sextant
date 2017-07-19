@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using GuaranteedRate.Sextant.Config;
-using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.WebClients;
 using Newtonsoft.Json;
 
@@ -25,7 +22,7 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
         #endregion
 
         public DatadogReporter(IEncompassConfig config)
-            : base($"{config.GetValue(DATADOG_URL)}?api_key={config.GetValue(DATADOG_APIKEY)}",
+            : base(CreateUrl(config.GetValue(DATADOG_URL),config.GetValue(DATADOG_APIKEY)),
                 config.GetValue(DATADOG_QUEUE_SIZE, 1000),
                 config.GetValue(DATADOG_RETRY_LIMIT, 3))
         {
@@ -33,9 +30,14 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
         }
 
         public DatadogReporter(string endpoint, string apiKey, int queueSize = 1000, int retries = 3)
-            :base($"{endpoint}?api_key={apiKey}", queueSize, retries)
+            :base(CreateUrl(endpoint, apiKey), queueSize, retries)
         {
             Setup();
+        }
+
+        protected static string CreateUrl(string url, string apiKey)
+        {
+            return $"{url}?api_key={apiKey}";
         }
 
         private void Setup()
