@@ -1,4 +1,4 @@
-**[Updates](#updates)** | **[Config](#config)** | **[Logging](#logging)** | **[Metrics](#metrics)** | **[ILMerge](#ilmerge)** | **[Testing Programs](#testing-programs)** | **[Developer Notes](#developer-notes)**
+**[Updates](#updates)** | **[Config](#config)** | **[Logging](#logging)** | **[Metrics Tracking](#metrics-tracking)** | **[ILMerge](#ilmerge)** | **[Testing Programs](#testing-programs)** | **[Developer Notes](#developer-notes)**
 
 # GuaranteedRate.Sextant
 
@@ -65,9 +65,12 @@ Sample Json file
 
 ## Logging
 
-### logger
+> As Encompass uses `log4net` under the hood we are not able to leverage `log4net` in our plugins.  
+Born out of necessity, we have created the GuaranteedRate.Logging library to support alternative logging means
 
-**Logger** is a static holding object that contain any number of `ILogAppender`.  Once an appender is registered with Logger it will be called each time the `Logger` is invoked in your Application
+### Logger
+
+**Logger** is a static holding object that can contain any number of `ILogAppender` objects.  Once a appender is registered with Logger it will be called each time `Logger` is invoked in your Application
 
 Sample usage
 ```csharp
@@ -91,25 +94,16 @@ Logger.Fatal("SextantTestRig", "Test fatal message");
 
 ```
 
-- An example usage of the `Logger` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
-
-### Datadog
-
-**DatadogReporter** is an asynchronous web client that sends series data directly to datadog's RESTful interface. 
-The `DatadogReporter` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
-freeing your application main thread to continue with other work.  
-
-- An example usage of the `DatadogReporter` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Metrics/Datadog/DatadogReporterIntegrationTests.cs)
-- An example usage of the `DatadogReporter` as a reporter attached to Logger can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
+- An example usage of `Logger` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
 ### Loggly
 
-**Loggly** is a lightweight wrapper around **AsyncEventReporter** that gives a basic logger experience.
-Under the covers it is sending data to Loggly via their REST interface.
+**LogglyLogAppender** is an asynchronous web client that sends data directly to Loggly's RESTful interface. 
+The `LogglyLogAppender` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
+freeing your application main thread to continue with other work.  
 
-You can't use the _log4net_ because it conflicts in some way with Encompass.
-
-The client provides some common approximations of standard logging methods.  We can expand as needed over time.
+- An example usage of the `LogglyLogAppender` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Logging/Loggly/LogglyLogAppenderIntegrationTests.cs)
+- An example usage of the `LogglyLogAppender` as a log appender attached to Logger can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
 Example:
 
@@ -121,9 +115,58 @@ fields.Add("foo2", "bar2");
 Logger.Info(this.GetType().Name.ToString(), fields);
 ```
 
+### Elastic Search
+
+**ElasticsearchLogAppender** is an asynchronous web client that sends data directly to Loggly's RESTful interface. 
+The `ElasticsearchLogAppender` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
+freeing your application main thread to continue with other work.  
+
+- An example usage of the `ElasticsearchLogAppender` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Logging/Elasticsearch/ElasticsearchLogAppenderIntegrationTests.cs)
+- An example usage of the `ElasticsearchLogAppender` as a log appender attached to Logger can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
+
+## Metrics tracking
+
+### Metrics
+
+**Metrics** is a static holding object that can contain any number of `IReporter` objects.  Once a reporter is registered with `Metrics` it will be called each time `Metrics` is invoked in your Application
+
+Sample usage
+```csharp
+var config = new JsonEncompassConfig();
+config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
+                
+var datadog = new DatadogReporter(config);
+var graphite = new GraphiteReporter(config);
+
+Metrics.AddReporter(datadog);
+Metrics.AddReporter(graphite);
+
+Metrics.AddGauge("SextantTestRig.Gauge", 10);
+Metrics.AddCounter("SextantTestRig.Counter", 10);
+Metrics.AddMeter("SextantTestRig.Meter", 10);
+
+```
+
+- An example usage of `Metrics` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
 
-## Metrics
+### Datadog
+
+**DatadogReporter** is an asynchronous web client that sends series data directly to datadog's RESTful interface. 
+The `DatadogReporter` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
+freeing your application main thread to continue with other work.  
+
+- An example usage of the `DatadogReporter` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Metrics/Datadog/DatadogReporterIntegrationTests.cs)
+- An example usage of the `DatadogReporter` as a reporter attached to Metrics can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
+
+### Graphite
+
+**GraphiteReporter** is an asynchronous web client that sends series data directly to datadog's RESTful interface. 
+The `GraphiteReporter` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
+freeing your application main thread to continue with other work.  
+
+- An example usage of the `GraphiteReporter` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Metrics/Graphite/GraphiteReporterIntegrationTests.cs)
+- An example usage of the `GraphiteReporter` as a reporter attached to Metrics can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
 ## AsyncEventReporter
 
@@ -133,8 +176,6 @@ The calling thread adds to a Queue, and internally a Task thread will read the q
 Note on queue sizes: If/when the queue is full, the writing thread will block until there is room on the queue.  Since the writing thread comes from Encompass, Encompass will seem to hang when this occurs.  Set up your queue sizes to be larger than you expect to need.
 
 When run as an Encompass plugin, a moderate machine will drain the queue at about 600 events/minute.
-
-
 
 ## ILMerge
 
