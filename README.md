@@ -38,7 +38,7 @@ For a comprehensive list of version updates.  Please consult our [Changlog](CHAN
 The `DatadogReporter` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
 freeing your application main thread to continue with other work.  
 
-- An example usage of the `DatadogReporter` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Metrics/Datadog)
+- An example usage of the `DatadogReporter` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Metrics/Datadog/DatadogReporterIntegrationTests.cs)
 - An example usage of the `DatadogReporter` as a reporter attached to Logger can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
 ### Loggly
