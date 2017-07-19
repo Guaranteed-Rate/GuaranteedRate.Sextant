@@ -9,14 +9,14 @@
 ```
 
 ## v17.2.0.6 / 2017 Apr 27
-> Bugfix for Json configs of <T>
+* **Fix** - for Json configs of <T>
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.1.0"]
 ```
 
 ## v17.2.0.5 / 2017 Apr 21
-> Have SessionUtils support Loan OpenLoan(Session session, Guid guid)
+* **Add** - Have SessionUtils support Loan OpenLoan(Session session, Guid guid)
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.0.5"]
