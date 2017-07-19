@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Metrics
 {
@@ -28,19 +26,12 @@ namespace GuaranteedRate.Sextant.Metrics
         {
             lock (syncRoot)
             {
-                if (_reporters == null)
-                {
-                    _reporters = new List<IReporter>();
-                }
                 _reporters.Add(reporter);
             }
         }
 
-
         public static void AddCounter(string name, long value)
         {
-            if (_reporters == null) return;
-
             foreach (var reporter in _reporters)
             {
                 reporter.AddCounter(name, value);
@@ -49,8 +40,6 @@ namespace GuaranteedRate.Sextant.Metrics
 
         public static void AddGauge(string name, long value)
         {
-            if (_reporters == null) return;
-
             foreach (var reporter in _reporters)
             {
                 reporter.AddGauge(name, value);
@@ -59,8 +48,6 @@ namespace GuaranteedRate.Sextant.Metrics
 
         public static void AddMeter(string name, long value)
         {
-            if (_reporters == null) return;
-
             foreach (var reporter in _reporters)
             {
                 reporter.AddMeter(name, value);
