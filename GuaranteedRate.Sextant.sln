@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYourOwnEncompassNuget"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncompassFilesGoHere", "EncompassFilesGoHere", "{AFA7929B-100C-422D-8239-1C706E0A7F24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuaranteedRate.Sextant.CustomFieldComparer", "GuaranteedRate.Sextant.CustomFieldComparer\GuaranteedRate.Sextant.CustomFieldComparer.csproj", "{873E749D-42D9-4385-B426-C72728A52554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D92AB6D-16CD-4BDC-B64C-4AEBEFDAC378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{873E749D-42D9-4385-B426-C72728A52554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{873E749D-42D9-4385-B426-C72728A52554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{873E749D-42D9-4385-B426-C72728A52554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{873E749D-42D9-4385-B426-C72728A52554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

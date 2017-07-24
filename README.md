@@ -16,6 +16,13 @@ The primary goal is to extend plugin functionality in a few key areas:
 * Logging outside of Encompass (via Loggly) so that Logs are easy to access, searchable, and do not add load onto the Encompass server.
 * Metrics (via Datadog) which allows tracking of events, latency, usage, etc without adding any load onto the Encompass server.
 
+### Tools
+* GuaranteedRate.Sextant.CustomFieldComparer - This tool queries an Encompass environment and serializes field definitions to text files.  This utility can be called by providing login credentials directly on the command line or by passing the path of a json config file.   This tool is useful for dumping say, a dev environment to one folder and a production environment to a second and using a merge compare tool to compare the two environments.
+
+
+#### Update 17.2.0.0
+This updates the Encompass SDK to 17.1.  We returned to using the Encompass nuget package.  Instructions for how to build your own package may be found in the BuildYourOwnEncompassNuget folder.   
+
 #### Update 17.1.0.0
 This updates the Encompass SDK to 17.1.  We returned to using the Encompass nuget package.  Instructions for how to build your own package may be found in the BuildYourOwnEncompassNuget folder.   
 
