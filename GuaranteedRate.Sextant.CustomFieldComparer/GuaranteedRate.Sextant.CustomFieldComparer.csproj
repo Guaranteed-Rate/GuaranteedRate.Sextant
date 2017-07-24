@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="encompass-config\dev.json" />
     <None Include="packages.config" />
     <None Include="Sample.ps1" />
   </ItemGroup>

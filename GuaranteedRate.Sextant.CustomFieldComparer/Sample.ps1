@@ -4,7 +4,7 @@ $environments = ("dev", "stage", "prod")
 git checkout master
 
 foreach($environment in $environments){
-	C:\git\GuaranteedRate.Sextant\GuaranteedRate.Sextant.CustomFieldComparer\bin\Debug\GuaranteedRate.Sextant.CustomFieldComparer.exe -j \\Mac\Home\Documents\encompass-config\$environment.json
+	bin\Debug\GuaranteedRate.Sextant.CustomFieldComparer.exe -j encompass-config\$environment.json
 }
 
 write-host "adding some insane number of files."
