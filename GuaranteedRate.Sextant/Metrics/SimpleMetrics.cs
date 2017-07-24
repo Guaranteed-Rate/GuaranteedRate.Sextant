@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GuaranteedRate.Sextant.Metrics
 {
-    public class Metrics
+    public class SimpleMetrics
     {
         private static volatile IList<IReporter> _reporters = new List<IReporter>();
         private static readonly object syncRoot = new Object();
