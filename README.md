@@ -254,6 +254,12 @@ Knowing the boundary index for multivalue fields allows faster and safer itterat
 
 It will show you MultiValue Index fields without known boundaries, as well as the values of the known indexes.
 
+
+### GuaranteedRate.Sextant.CustomFieldComparer 
+
+This tool queries an Encompass environment and serializes field definitions to text files.  This utility can be called by providing login credentials directly on the command line or by passing the path of a json config file.   This tool is useful for dumping say, a dev environment to one folder and a production environment to a second and using a merge compare tool to compare the two environments.
+
+
 ## Developer Notes
 
 ### Legacy Security Policy Setup
