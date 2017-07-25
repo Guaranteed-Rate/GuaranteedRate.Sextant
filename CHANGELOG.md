@@ -1,4 +1,8 @@
 ## v17.2.1.0 / 2017 Jul 13
+> This release intruduces a new approach to logging and metrics tracking.  Instead of instantiating a Loggly logger you can now use the all 
+purpose `Logger` object and attach an appender (such as `LogglyAppender` and `ElasticsearchLogAppender`) to log system data.  Following suit
+with this, we are now exposing `Metrics`.  This tool will aloow for adding `DatadogReporter` and `GraphiteReporter` reporters for tracking
+system metrics. 
 * **Fix** - Bugfix for IniConfig.GetValue(string key, bool defaultValue) - previously, this method never actually pulled values from the config
 * **Add** - `LogglyAppender` and `ElasticsearchLogAppender` as starter appenders for Logger
 * **Add** - `DatadogReporter` and `GraphiteReporter` as starter appenders for Metrics
