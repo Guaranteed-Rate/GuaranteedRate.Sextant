@@ -164,8 +164,8 @@ Random r = new Random();
 timer.StartRecording();
 
 var counter = StatsDMetrics.Counter("sextant-statd-tests-counter", 
-										Unit.Events, 
-										MetricTags.None);
+				    Unit.Events, 
+				    MetricTags.None);
 counter.Increment(r.Next(0, 100));
 counter.Increment(r.Next(0, 10));
 counter.Increment(r.Next(0, 10));
