@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GuaranteedRate.Sextant.WebClients
+﻿namespace GuaranteedRate.Sextant.WebClients
 {
     public interface IEventReporter
     {
-        bool ReportEvent(string formattedData);
+        bool ReportEvent(object formattedData);
         void Shutdown();
     }
 }

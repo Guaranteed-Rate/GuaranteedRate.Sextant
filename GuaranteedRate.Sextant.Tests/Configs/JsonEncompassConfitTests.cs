@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using GuaranteedRate.SextantTests.Config;
+using GuaranteedRate.Sextant.Config;
 using NUnit.Framework;
 
-namespace GuaranteedRate.Sextant.Config.Tests
+namespace GuaranteedRate.Sextant.Tests.Configs
 {
     [TestFixture]
     public class JsonEncompassConfigTests
@@ -16,7 +14,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         public void SetUp()
         {
             _sut = new JsonEncompassConfig();
-            _sut.Init(File.ReadAllText("Config\\TestJson.json"));
+            _sut.Init(File.ReadAllText("Configs//TestJson.json"));
         }
 
         [Test]
@@ -178,7 +176,7 @@ namespace GuaranteedRate.Sextant.Config.Tests
         [Test]
         public void GivenInvalidPathWithDefaultReturnVal_WhenGetValueT_ThenReturnDefaultReturnVal()
         {
-            var expected = new WindowModel {Height = 1, Name = "test", Title = "test title", Width = 1};
+            var expected = new WindowModel { Height = 1, Name = "test", Title = "test title", Width = 1 };
             var actual = _sut.GetValue<WindowModel>("widgets.window", expected);
 
             Assert.AreEqual(expected, actual);

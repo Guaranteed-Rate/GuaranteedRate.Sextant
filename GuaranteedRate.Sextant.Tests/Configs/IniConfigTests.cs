@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using GuaranteedRate.Sextant.Config;
 using NUnit.Framework;
 
-namespace GuaranteedRate.SextantTests.Config
+namespace GuaranteedRate.Sextant.Tests.Configs
 {
     [TestFixture]
     public class IniConfigTests
@@ -16,18 +12,14 @@ namespace GuaranteedRate.SextantTests.Config
         [SetUp]
         public void SetUp()
         {
-            _sut = new IniConfig("testfile.txt");    
+            _sut = new IniConfig("Configs//TestIni.ini");
+            _sut.Init(File.ReadAllText("Configs//TestIni.ini"));
         }
-
-        #region GetValue
 
         [Test]
         public void GivenLowerCaseValue_WhenGetValue_ThenExpectedValueReturned()
         {
             var expected = "myval";
-            var configVal = "TestKey=" + expected;
-
-            _sut.Init(configVal);
 
             var actual = _sut.GetValue("testkey");
 
@@ -37,7 +29,7 @@ namespace GuaranteedRate.SextantTests.Config
         [Test]
         public void GivenKeyThatDoesntExist_WhenGetValue_ThenNullReturned()
         {
-            var actual = _sut.GetValue("testkey");
+            var actual = _sut.GetValue("testkey123");
 
             Assert.AreEqual(null, actual);
         }
@@ -46,22 +38,15 @@ namespace GuaranteedRate.SextantTests.Config
         public void GivenKeyThatDoesntExistWithDefault_WhenGetValue_ThenDefaultReturned()
         {
             var expected = "default";
-            var actual = _sut.GetValue("testkey", expected);
+            var actual = _sut.GetValue("testkey1234", expected);
 
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion
-
-        #region Init
 
         [Test]
         public void GivenLineWithoutSpaces_WhenInit_ThenExpectedValueSet()
         {
             var expected = "myval";
-            var configVal = "TestKey=" + expected;
-
-            _sut.Init(configVal);
 
             var actual = _sut.GetValue("TestKey");
 
@@ -72,9 +57,6 @@ namespace GuaranteedRate.SextantTests.Config
         public void GivenLine_WhenInit_ThenExpectedValueSet()
         {
             var expected = "myval";
-            var configVal = "TestKey = " + expected;
-
-            _sut.Init(configVal);
 
             var actual = _sut.GetValue("TestKey");
 
@@ -85,15 +67,10 @@ namespace GuaranteedRate.SextantTests.Config
         public void GivenLineWith2Equals_WhenInit_ThenExpectedValueSet()
         {
             var expected = "myval=anothervalue";
-            var configVal = "TestKey = " + expected;
 
-            _sut.Init(configVal);
-
-            var actual = _sut.GetValue("TestKey");
+            var actual = _sut.GetValue("TestKey2");
 
             Assert.AreEqual(expected.ToLower(), actual);
         }
-
-        #endregion
     }
 }

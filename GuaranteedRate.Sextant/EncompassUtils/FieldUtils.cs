@@ -5,7 +5,7 @@ using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Reporting;
 using System;
 using System.Collections.Generic;
-using GuaranteedRate.Sextant.Loggers;
+using  GuaranteedRate.Sextant.Logging;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -765,7 +765,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
                 else
                 {
-                    Loggly.Error("FieldUtils", $"Duplicate field Ids ({fieldDescriptor.FieldID}) found in GetAllFieldDescriptors. "+ 
+                    Logger.Error("FieldUtils", $"Duplicate field Ids ({fieldDescriptor.FieldID}) found in GetAllFieldDescriptors. "+ 
                         $"Existing value: {fieldsAndDescriptions[fieldDescriptor.FieldID]}, New value: {fieldDescriptor.Description}");
                 }
             }

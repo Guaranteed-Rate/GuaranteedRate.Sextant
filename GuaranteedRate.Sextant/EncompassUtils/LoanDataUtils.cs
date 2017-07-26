@@ -1,8 +1,8 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.BusinessObjects.Loans.Logging;
 using EllieMae.Encompass.Client;
-using GuaranteedRate.Sextant.Loggers;
 using GuaranteedRate.Sextant.Models;
+using GuaranteedRate.Sextant.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -120,7 +120,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractEverything while getting " + key + ":" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractEverything while getting " + key + ":" + ex);
             }
         }
 
@@ -176,7 +176,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
                 catch (Exception ex)
                 {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractFundingFees in FundingFeeList:" + ex);
+                    Logger.Error("LoandataUtils", "Exception in ExtractFundingFees in FundingFeeList:" + ex);
                 }
 
                 try
@@ -194,7 +194,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
                 catch (Exception ex)
                 {
-                    Loggly.Error("LoandataUtils", "Exception in ExtractFundingFees ucd section:" + ex);
+                    Logger.Error("LoandataUtils", "Exception in ExtractFundingFees ucd section:" + ex);
                 }
             }
             return fieldValues;
@@ -227,7 +227,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractProperties:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractProperties:" + ex);
             }
             return fieldValues;
         }
@@ -269,7 +269,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractAssociates:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractAssociates:" + ex);
             }
             return associateExtract;
         }
@@ -363,7 +363,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractMilestones:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractMilestones:" + ex);
             }
             return milestones;
         }
@@ -383,7 +383,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in FormatSSN:" + ex);
+                Logger.Error("LoandataUtils", "Exception in FormatSSN:" + ex);
             }
             return null;
         }
@@ -459,7 +459,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractIntIndexFields:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractIntIndexFields:" + ex);
             }
 
             return fieldDictionary;
@@ -492,7 +492,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         }
                         catch (Exception ex)
                         {
-                            Loggly.Warn("LoandataUtils",
+                            Logger.Warn("LoandataUtils",
                                 $"Error extracting field {fullKey} from loan #:{loanNumber} loan guid:{currentLoan.Guid} Exception:{ex}");
                         }
                     }
@@ -500,7 +500,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractStringIndexFields:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractStringIndexFields:" + ex);
             }
 
             return fieldDictionary;
@@ -534,14 +534,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        Loggly.Error("LoandataUtils",
+                        Logger.Error("LoandataUtils",
                             $"Failed to pull loan={loanNumber} field={fieldId} index={index} Exception: {e}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractEndIndexFields:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractEndIndexFields:" + ex);
             }
 
             return fieldDictionary;
@@ -591,14 +591,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        Loggly.Error("LoandataUtils",
+                        Logger.Error("LoandataUtils",
                             $"Failed to pull loan={loanNumber} field={fieldId} inded={index} Exception: {e}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractMiddleIndexFields:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractMiddleIndexFields:" + ex);
             }
 
             return fieldDictionary;
@@ -627,14 +627,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        Loggly.Error("LoandataUtils",
+                        Logger.Error("LoandataUtils",
                             $"Failed to pull loan={loanNumber} field={fieldId} Exception: {e}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractSimpleFields:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractSimpleFields:" + ex);
             }
 
             return fieldDictionary;
@@ -652,7 +652,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
             catch (Exception e)
             {
-                Loggly.Error("LoandataUtils",
+                Logger.Error("LoandataUtils",
                     $"Failed to pull loan={loanNumber} field={field} Exception: {e}");
             }
             return null;
@@ -684,14 +684,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     }
                     catch (Exception e)
                     {
-                        Loggly.Error("LoandataUtils",
+                        Logger.Error("LoandataUtils",
                             $"Failed to pull loan={loanNumber} borrowerPair={borrowerPair} field={fieldId} Exception: {e}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Loggly.Error("LoandataUtils", "Exception in ExtractSimpleFields with BorrowerPairs:" + ex);
+                Logger.Error("LoandataUtils", "Exception in ExtractSimpleFields with BorrowerPairs:" + ex);
             }
 
             return fieldDictionary;

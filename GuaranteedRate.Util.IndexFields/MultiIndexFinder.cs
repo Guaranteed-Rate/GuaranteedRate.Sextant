@@ -1,12 +1,9 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
-using EllieMae.Encompass.BusinessObjects.Loans.Servicing;
 using EllieMae.Encompass.Client;
 using GuaranteedRate.Sextant.EncompassUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Util.IndexFields
 {

@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Config
 {
@@ -18,15 +16,13 @@ namespace GuaranteedRate.Sextant.Config
         /// Get value of key, return default if key does not exist
         /// </summary>
         /// <param name="key">The key</param>
-        /// <param name="defaultVal">The default if the key does not exist</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
         /// <returns>The value of the key or the default.</returns>
-        string GetValue(string key, string defaultVal = null);
+        string GetValue(string key, string defaultValue = null);
         bool GetValue(string key, bool defaultValue);
+        int GetValue(string key, int defaultValue);
+
         ICollection<string> GetKeys();
         IEncompassConfig GetConfigGroup(string key);
-
-       
-
-
     }
 }

@@ -53,7 +53,12 @@ namespace GuaranteedRate.Sextant.Config
         /// <returns></returns>
         public bool GetValue(string key, bool defaultVal)
         {
-            return Boolean.Parse(GetValue(key, defaultVal.ToString()));
+            return GetValue<bool>(key, defaultVal);
+        }
+
+        public int GetValue(string key, int defaultValue)
+        {
+            return GetValue<int>(key, defaultValue);
         }
 
         /// <summary>
