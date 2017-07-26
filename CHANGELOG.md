@@ -4,6 +4,7 @@ to backbone the effort of transposing metrics into StatsD compliant metrics for 
 We have elected to supoort Graphite with the `GraphiteReporter` from [Metrics.NET.Graphite](https://github.com/Recognos/Metrics.NET.Graphite) and
 Datadog with the `DatadogReporter` from  [Metrics.NET.Datadog](https://github.com/danzel/Metrics.NET.Datadog)
 * **Add** - `SimpleMetrics` and `StatsDMetrics` as available Metrics trackers
+* **Update** - Sextant has been rolled up to .NET 4.5.2 to utilize Metrics.NET 
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.2.0"]
