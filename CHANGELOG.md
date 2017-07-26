@@ -1,3 +1,14 @@
+## v17.2.2.0 / 2017 JUl 26
+> This release intruduces the concept of StatsD driven metrics tracking.  We are leveraging [Metrics.NET](https://github.com/Recognos/Metrics.NET)
+to backbone the effort of transposing metrics into StatsD compliant metrics for consumption by our third party reporters.  
+We have elected to supoort Graphite with the `GraphiteReporter` from [Metrics.NET.Graphite](https://github.com/Recognos/Metrics.NET.Graphite) and
+Datadog with the `DatadogReporter` from  [Metrics.NET.Datadog](https://github.com/danzel/Metrics.NET.Datadog)
+* **Add** - `SimpleMetrics` and `StatsDMetrics` as available Metrics trackers
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.0"]
+```
+
 ## v17.2.1.0 / 2017 Jul 13
 > This release intruduces a new approach to logging and metrics tracking.  Instead of instantiating a Loggly logger you can now use the all 
 purpose `Logger` object and attach an appender (such as `LogglyAppender` and `ElasticsearchLogAppender`) to log system data.  Following suit
