@@ -128,7 +128,7 @@ freeing your application main thread to continue with other work.
 
 ### Metrics
 
-**Metrics** is a static holding object that can contain any number of `IReporter` objects.  Once a reporter is registered with `Metrics` it will be called each time `Metrics` is invoked in your Application
+**SimpleMetrics** is a static holding object that can contain any number of `IReporter` objects.  Once a reporter is registered with `Metrics` it will be called each time `Metrics` is invoked in your Application
 
 Sample usage
 ```csharp
@@ -138,13 +138,44 @@ config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
 var datadog = new DatadogReporter(config);
 var graphite = new GraphiteReporter(config);
 
-Metrics.AddReporter(datadog);
-Metrics.AddReporter(graphite);
+SimpleMetrics.AddReporter(datadog);
+SimpleMetrics.AddReporter(graphite);
 
-Metrics.AddGauge("SextantTestRig.Gauge", 10);
-Metrics.AddCounter("SextantTestRig.Counter", 10);
-Metrics.AddMeter("SextantTestRig.Meter", 10);
+SimpleMetrics.AddGauge("SextantTestRig.Gauge", 10);
+SimpleMetrics.AddCounter("SextantTestRig.Counter", 10);
+SimpleMetrics.AddMeter("SextantTestRig.Meter", 10);
+```
 
+- An example usage of `Metrics` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
+
+
+**StatsDMetrics** is a static holding object that emits metrics out to [Metrics.NET](https://github.com/Recognos/Metrics.NET) compliant reporters
+
+Sample usage
+```csharp
+var config = new JsonEncompassConfig();
+config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
+                
+StatsDMetrics.Setup(config);
+
+var timer = StatsDMetrics.Timer("sextant-statd-tests-timer", Unit.Calls);
+Random r = new Random();
+            
+timer.StartRecording();
+
+var counter = StatsDMetrics.Counter("sextant-statd-tests-counter", 
+				    Unit.Events, 
+				    MetricTags.None);
+counter.Increment(r.Next(0, 100));
+counter.Increment(r.Next(0, 10));
+counter.Increment(r.Next(0, 10));
+counter.Increment(r.Next(0, 10));
+counter.Increment(r.Next(0, 10));
+counter.Increment(r.Next(0, 10));
+counter.Increment(r.Next(0, 10));
+counter.Increment(r.Next(0, 10));
+            
+timer.EndRecording();
 ```
 
 - An example usage of `Metrics` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
@@ -254,8 +285,7 @@ Knowing the boundary index for multivalue fields allows faster and safer itterat
 
 It will show you MultiValue Index fields without known boundaries, as well as the values of the known indexes.
 
-
-### GuaranteedRate.Sextant.CustomFieldComparer 
+### GuaranteedRate.Sextant.CustomFieldComparer
 
 This tool queries an Encompass environment and serializes field definitions to text files.  This utility can be called by providing login credentials directly on the command line or by passing the path of a json config file.   This tool is useful for dumping say, a dev environment to one folder and a production environment to a second and using a merge compare tool to compare the two environments.
 
