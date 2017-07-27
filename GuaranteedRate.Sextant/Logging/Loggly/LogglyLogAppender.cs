@@ -29,7 +29,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
         public static string LOGGLY_INFO = "LogglyLogAppender.Info.Enabled";
         public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
         public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
-        public static string LOGGLY_TAGS = "Logger.Tags";
+        public static string LOGGLY_TAGS = "LogglyLogAppender.Tags";
 
         #endregion
 
