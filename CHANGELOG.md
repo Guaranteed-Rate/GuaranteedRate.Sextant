@@ -1,4 +1,7 @@
-## v17.2.2.0 / 2017 JUl 26
+## v17.2.2.1 / 2017 Jul 27
+* **Fix** - Bugfix to throw a meaningful exception if an `AsyncEventReporter` has been created without a base url
+
+## v17.2.2.0 / 2017 Jul 26
 > This release intruduces the concept of StatsD driven metrics tracking.  We are leveraging [Metrics.NET](https://github.com/Recognos/Metrics.NET)
 to backbone the effort of transposing metrics into StatsD compliant metrics for consumption by our third party reporters.  
 We have elected to supoort Graphite with the `GraphiteReporter` from [Metrics.NET.Graphite](https://github.com/Recognos/Metrics.NET.Graphite) and

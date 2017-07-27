@@ -48,6 +48,11 @@ namespace GuaranteedRate.Sextant.WebClients
         
         public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url", "Base URL must be provided");
+            }
+
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
             CreateClient(url);
