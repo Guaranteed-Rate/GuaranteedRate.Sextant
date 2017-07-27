@@ -147,17 +147,6 @@ namespace GuaranteedRate.Sextant.WebClients
             return true;
         }
 
-        /**
-         * This is an empty method that allows subclasses to add 
-         * additional functionality
-         * 
-         */
-
-        protected virtual void ExtraSetup(WebRequest webRequest)
-        {
-
-        }
-
         protected virtual bool PostEvent(object data)
         {
             try
