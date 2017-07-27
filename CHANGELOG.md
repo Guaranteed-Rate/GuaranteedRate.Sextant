@@ -1,5 +1,6 @@
 ## v17.2.2.1 / 2017 Jul 27
 * **Fix** - Bugfix to throw a meaningful exception if an `AsyncEventReporter` has been created without a base url
+* **Fix** - Bugfix to correctly look for `LogglyLogAppender.Tags` in configuration files for the `LogglyLogAppender`
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.2.1"]
