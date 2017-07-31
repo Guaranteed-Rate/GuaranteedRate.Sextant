@@ -241,3 +241,7 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /LoggingTestRig/SextantConfigTest.json
+
+# Mac / Parallels
+.DS_Store
+._.DS_Store
