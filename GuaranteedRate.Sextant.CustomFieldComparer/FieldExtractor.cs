@@ -1,5 +1,7 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.Client;
+using EllieMae.Encompass.Collections;
+using EllieMae.Encompass.Reporting;
 using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.CustomFieldComparer
@@ -26,6 +28,7 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
                 Extract(_session.Loans.FieldDescriptors.VirtualFields, _filePath);
             }
             Extract(_session.Loans.FieldDescriptors.CustomFields, _filePath);
+            ExtractReporting(_filePath);
         }
 
         private static bool WriteFieldToFile(string filePath, string content)
@@ -46,6 +49,17 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             return true;
         }
 
+        private void ExtractReporting(string outPath)
+        {
+            ReportingFieldDescriptorList reportableFields = _session.Reports.GetReportingDatabaseFields();
+            foreach (ReportingFieldDescriptor field in reportableFields)
+            {
+                var filePath = outPath + "REPORTING-" + field.FieldID + ".json";
+                var fieldDesc = ExpandField(field);
+                WriteFieldToFile(filePath, fieldDesc);
+            }
+        }
+
         private void Extract(FieldDescriptors fieldCollection, string outPath)
         {
             foreach (FieldDescriptor field in fieldCollection)
@@ -57,6 +71,11 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
         }
 
         private string ExpandField(FieldDescriptor field)
+        {
+            return JsonConvert.SerializeObject(field, Formatting.Indented);
+        }
+
+        private string ExpandField(ReportingFieldDescriptor field)
         {
             return JsonConvert.SerializeObject(field, Formatting.Indented);
         }
