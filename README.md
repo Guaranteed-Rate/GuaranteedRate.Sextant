@@ -287,7 +287,16 @@ It will show you MultiValue Index fields without known boundaries, as well as th
 
 ### GuaranteedRate.Sextant.CustomFieldComparer
 
-This tool queries an Encompass environment and serializes field definitions to text files.  This utility can be called by providing login credentials directly on the command line or by passing the path of a json config file.   This tool is useful for dumping say, a dev environment to one folder and a production environment to a second and using a merge compare tool to compare the two environments.
+This tool queries an Encompass environment and serializes field definitions to 
+text files.  There are two use cases where this tool is useful:
+
+1) It enables you to track custom and reporting field changes over time.  This
+is extremely useful for auditing and general change management.
+2) If you are supporting *multiple* Encompass environments having the field 
+definitions available as flat files makes comparing the lists for divergence
+managable.
+
+This utility can be called by providing login credentials directly on the command line or by passing the path of a json config file.   This tool is useful for dumping say, a dev environment to one folder and a production environment to a second and using a merge compare tool to compare the two environments.
 
 
 ## Developer Notes
