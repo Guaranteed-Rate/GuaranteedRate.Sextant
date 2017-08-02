@@ -1,35 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommandLine;
-using EllieMae.EMLite.Compiler;
+using EllieMae.Encompass.BusinessObjects.Loans;
 using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.CustomFieldComparer
 {
+    /// <summary>
+    /// This tool extracts details of custom fields from Encompass to flat files.
+    /// 
+    /// If you have a single Encompass environment, this is a useful tool for 
+    /// tracking field changes over time.
+    /// 
+    /// If you are supporting *multiple* environments easily compared flat files
+    /// are extremely useful for tracking differences, change management, etc
+    /// </summary>
     class Program
     {
-
-        private static bool WriteContentIfNeeded(string filePath, string content)
-        {
-            if (System.IO.File.Exists(filePath))
-            {
-                if (System.IO.File.ReadAllText(filePath) == content)
-                {
-                    return false;
-                }
-                System.IO.File.Delete(filePath);
-            }
-            using (var sw = System.IO.File.CreateText(filePath))
-            {
-                sw.Write(content);
-                sw.Flush();
-            }
-            return true;
-        }
-
         static void Main(string[] args)
         {
             var ops = new OptionsConfig();
@@ -38,13 +24,11 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             if (!String.IsNullOrEmpty(ops.JsonConfig))
             {
                 ops = JsonConvert.DeserializeObject<OptionsConfig>(System.IO.File.ReadAllText(ops.JsonConfig));
-
             }
 
             Console.WriteLine("SEXTANT FIELD CONFIG DUMP TOOL");
             Console.WriteLine("What does it do?");
             Console.WriteLine("Creates a series of text files containing field data.  These are ideal for checking into source control and monitoring environments for drift.");
-
            
             if (String.IsNullOrEmpty(ops.EncompassPassword))
             {
@@ -55,28 +39,10 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
 
             var primarySession = EncompassUtils.SessionUtils.GetEncompassSession(ops.EncompassPrimaryUrl, ops.EncompassUserName,
                 ops.EncompassPassword);
-            EncompassUtils.FieldUtils.session = primarySession;
-            foreach (var f in EncompassUtils.FieldUtils.GetFieldsAndDescriptions())
-            {
-                var fd = primarySession.Loans.FieldDescriptors.StandardFields[f.Key];
 
-                if (fd == null)
-                {
-                    fd = primarySession.Loans.FieldDescriptors.VirtualFields[f.Key];
-                }
-
-
-                if (fd == null)
-                {
-                    fd = primarySession.Loans.FieldDescriptors.CustomFields[f.Key];
-                }
-
-                var filePath = ops.OutputPath + fd.FieldID + ".json";
-                 if (!ops.CustomOnly || fd.IsCustomField)
-                 {
-                     WriteContentIfNeeded(filePath, JsonConvert.SerializeObject(fd, Formatting.Indented));
-                 }
-            }
+            var fieldExtractor = new FieldExtractor(primarySession, ops.OutputPath, ops.CustomOnly);
+            fieldExtractor.Extract();
+            
             Console.WriteLine("Done!");
         }
 
