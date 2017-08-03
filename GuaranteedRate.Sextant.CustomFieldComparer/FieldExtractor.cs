@@ -56,13 +56,13 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             var keys = content.Keys.ToList();
             keys.Sort();
             StringBuilder manualJson = new StringBuilder();
-            manualJson.Append("[\n");
+            manualJson.AppendLine("[");
             foreach (var key in keys)
             {
                 //sortedContent.Add(content[key]); 
-                manualJson.Append("\t" + content[key] + ",\n");
+                manualJson.AppendLine(content[key] + ",");
             }
-            manualJson.Append("]\n");
+            manualJson.AppendLine("]");
             return manualJson.ToString();
         }
 
