@@ -3,5 +3,6 @@
   "EncompassPassword": "",
   "EncompassPrimaryUrl": "",
   "OutputPath": "",
+  "Environment": "",
   "CustomOnly": false
 }
