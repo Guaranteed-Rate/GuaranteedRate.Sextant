@@ -38,29 +38,30 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             Extract(_session.Loans.FieldDescriptors.CustomFields, _environmentPath);
             ExtractReporting(_environmentPath);
 
-            var fullMonty = MergeAndSort(_fullExport);
+            var fullMonty = BuildGiantJson(_fullExport);
 
             WriteFieldToFile(_fullFile, fullMonty);
         }
 
         /// <summary>
-        /// Transform the master content dictionary into a sorted list of
-        /// field descriptions, then transform the list into a single giant
-        /// json array of field description maps.
+        /// Content is a dictionary of fieldIds and json serializations of
+        /// field descriptions.
+        /// 
+        /// Rather than double serialize, or deal with double escaping, this
+        /// function is manually converting the descriptions into a json array
+        /// of descriptions.
         /// </summary>
         /// <param name="content"></param>
-        /// <returns></returns>
-        private string MergeAndSort(IDictionary<string, string> content)
+        /// <returns>A json array of field description maps, about 20megs</returns>
+        private string BuildGiantJson(IDictionary<string, string> content)
         {
-            IList<string> sortedContent = new List<string>();
             var keys = content.Keys.ToList();
             keys.Sort();
             StringBuilder manualJson = new StringBuilder();
             manualJson.AppendLine("[");
             foreach (var key in keys)
             {
-                //sortedContent.Add(content[key]); 
-                manualJson.AppendLine(content[key] + ",");
+                manualJson.Append(content[key]).AppendLine(",");
             }
             manualJson.AppendLine("]");
             return manualJson.ToString();
