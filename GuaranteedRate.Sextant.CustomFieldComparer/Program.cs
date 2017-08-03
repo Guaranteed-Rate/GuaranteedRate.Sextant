@@ -40,7 +40,7 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             var primarySession = EncompassUtils.SessionUtils.GetEncompassSession(ops.EncompassPrimaryUrl, ops.EncompassUserName,
                 ops.EncompassPassword);
 
-            var fieldExtractor = new FieldExtractor(primarySession, ops.OutputPath, ops.CustomOnly);
+            var fieldExtractor = new FieldExtractor(primarySession, ops.OutputPath, ops.CustomOnly, ops.Environment);
             fieldExtractor.Extract();
             
             Console.WriteLine("Done!");
@@ -67,21 +67,23 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
     {
         [Option('e', "encompassUrl", HelpText = "Url of the server.")]
         public string EncompassPrimaryUrl { get; set; }
+
         [Option('u', "userName", HelpText = "UserName.")]
         public string EncompassUserName { get; set; }
+
         [Option('p', "Password", HelpText = "Password.")]
         public string EncompassPassword { get; set; }
 
         [Option('o', "OutputPath", HelpText = "Output Path.")]
-
         public string OutputPath { get; set; }
-        [Option('c', "CustomOnly", HelpText = "Custom Only.")]
 
+        [Option('c', "CustomOnly", HelpText = "Custom Only.")]
         public bool CustomOnly { get; set; }
 
         [Option('j', "JsonConfig", HelpText = "Path to the Json config to use instead of arguments.")]
-
         public string JsonConfig { get; set; }
-         
+
+        [Option('e', "Environment", HelpText = "Encompass Environment")]
+        public string Environment { get; set; }
     }
 }
