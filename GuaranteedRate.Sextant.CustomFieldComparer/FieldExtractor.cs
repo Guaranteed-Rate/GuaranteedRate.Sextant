@@ -16,6 +16,7 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
         private readonly string _fullFile;
         private readonly string _environmentPath;
         private readonly bool _includeAll;
+        private readonly IDictionary<string, IList<IReportingFieldDescriptor>> _reportableFields;
         private readonly IDictionary<string, string> _fullExport; 
 
         public FieldExtractor(Session session, string baseFilePath, bool onlyCustomFields, string environment)
@@ -26,6 +27,10 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             _environmentPath = baseFilePath + environment + "\\";
             _includeAll = !onlyCustomFields;
             _fullExport = new Dictionary<string, string>();
+            _reportableFields = new Dictionary<string, IList<IReportingFieldDescriptor>>();
+
+            InitReportableFields();
+
         }
 
         public void Extract()
@@ -36,7 +41,6 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
                 Extract(_session.Loans.FieldDescriptors.VirtualFields, _environmentPath);
             }
             Extract(_session.Loans.FieldDescriptors.CustomFields, _environmentPath);
-            ExtractReporting(_environmentPath);
 
             var fullMonty = BuildGiantJson(_fullExport);
 
@@ -84,16 +88,23 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             }
             return true;
         }
-
-        private void ExtractReporting(string outPath)
+         
+        private void InitReportableFields()
         {
             ReportingFieldDescriptorList reportableFields = _session.Reports.GetReportingDatabaseFields();
             foreach (ReportingFieldDescriptor field in reportableFields)
             {
-                var filePath = outPath + "REPORTING-" + field.FieldID + ".json";
-                var fieldDesc = ExpandField(field);
-                _fullExport["REPORTING-" +  field.FieldID] = fieldDesc;
-                WriteFieldToFile(filePath, fieldDesc);
+                IList<IReportingFieldDescriptor> fields;
+                if (_reportableFields.ContainsKey(field.FieldID))
+                {
+                    fields = _reportableFields[field.FieldID];
+                }
+                else
+                {
+                    fields = new List<IReportingFieldDescriptor>();
+                    _reportableFields.Add(field.FieldID, fields);
+                }
+                fields.Add(field);
             }
         }
 
@@ -102,20 +113,30 @@ namespace GuaranteedRate.Sextant.CustomFieldComparer
             foreach (FieldDescriptor field in fieldCollection)
             {
                 var filePath = outPath + field.FieldID + ".json";
-                var fieldDesc = ExpandField(field);
+                IList<IReportingFieldDescriptor> reportingDesc = null;
+                if (_reportableFields.ContainsKey(field.FieldID))
+                {
+                    reportingDesc = _reportableFields[field.FieldID];
+                }
+                var fullField = MergeFieldDescriptions(field, reportingDesc);
+                var fieldDesc = ExpandField(fullField);
                 _fullExport[field.FieldID] = fieldDesc;
                 WriteFieldToFile(filePath, fieldDesc);
             }
         }
 
-        private string ExpandField(FieldDescriptor field)
+        private FullFieldDescription MergeFieldDescriptions(FieldDescriptor field, IList<IReportingFieldDescriptor> reportingFields)
         {
-            return JsonConvert.SerializeObject(field, Formatting.Indented);
+            FullFieldDescription fullField = new FullFieldDescription();
+
+            fullField.fieldDescriptor = field;
+            fullField.reportingFields = reportingFields;
+            return fullField;
         }
 
-        private string ExpandField(ReportingFieldDescriptor field)
+        private string ExpandField(FullFieldDescription fullField)
         {
-            return JsonConvert.SerializeObject(field, Formatting.Indented);
+            return JsonConvert.SerializeObject(fullField, Formatting.Indented);
         }
-    }
+   }
 }
