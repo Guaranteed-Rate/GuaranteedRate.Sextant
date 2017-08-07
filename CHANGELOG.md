@@ -10,7 +10,7 @@
 * **Fix** - Correct a regression that was preventing `SecureAsyncEventReporter` from settings it's authorization header
  
 ```csharp
-[GuaranteedRate.Sextant "17.2.2.2"]
+[GuaranteedRate.Sextant "17.2.2.1"]
 ```
 
 ## v17.2.2.0 / 2017 Jul 26
