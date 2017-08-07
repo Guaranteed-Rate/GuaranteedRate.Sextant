@@ -127,8 +127,8 @@
       <HintPath>..\packages\EncompassSDK.Complete.17.2.0.2\lib\net45\Jed.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Metrics, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Metrics.NET.0.5.0-pre\lib\net45\Metrics.dll</HintPath>
+    <Reference Include="Metrics, Version=0.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Metrics.NET.0.5.3\lib\net45\Metrics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Metrics.NET.Datadog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -136,7 +136,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Metrics.NET.Graphite, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Metrics.NET.Graphite.0.5.0-pre\lib\net45\Metrics.NET.Graphite.dll</HintPath>
+      <HintPath>..\packages\Metrics.NET.Graphite.0.5.0\lib\net45\Metrics.NET.Graphite.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Nest, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
