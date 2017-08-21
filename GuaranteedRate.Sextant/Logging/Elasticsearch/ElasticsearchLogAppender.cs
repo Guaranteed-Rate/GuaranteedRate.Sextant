@@ -21,6 +21,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         #region config mappings
 
+        public static string ELASTICSEARCH_ENABLED = "ElasticsearchLogAppender.Enabled";
         public static string ELASTICSEARCH_URL = "ElasticsearchLogAppender.Url";
         public static string ELASTICSEARCH_QUEUE_SIZE = "ElasticsearchLogAppender.QueueSize";
         public static string ELASTICSEARCH_RETRY_LIMIT = "ElasticsearchLogAppender.RetryLimit";

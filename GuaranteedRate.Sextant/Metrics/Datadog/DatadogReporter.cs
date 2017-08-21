@@ -14,6 +14,8 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
 
         #region config mappings
 
+        public static string DATADOG_ROOTNAMESPACE = "DatadogReporter.RootNamespace";
+        public static string DATADOG_ENABLED = "DatadogReporter.Enabled";
         public static string DATADOG_URL = "DatadogReporter.Url";
         public static string DATADOG_APIKEY = "DatadogReporter.ApiKey";
         public static string DATADOG_QUEUE_SIZE = "DatadogReporter.QueueSize";

@@ -15,6 +15,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
 
         #region config mappings
 
+        public static string GRAPHITE_ENABLED = "GraphiteReporter.Enabled";
         public static string GRAPHITE_HOST = "GraphiteReporter.Host";
         public static string GRAPHITE_PORT = "GraphiteReporter.Port";
         public static string GRAPHITE_QUEUE_SIZE = "GraphiteReporter.QueueSize";
