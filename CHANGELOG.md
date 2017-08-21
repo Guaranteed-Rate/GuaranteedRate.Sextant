@@ -1,3 +1,9 @@
+## v17.2.2.3 / 2017 Aug 21
+* **Update** - Added `Loggers.Setup()` to allow for the same configuration flow as seen in `StatsDMetrics`
+
+[GuaranteedRate.Sextant "17.2.2.3"]
+```
+
 ## v17.2.2.2 / 2017 Aug 04
 * **Update** - Metrics.NET was released to stable, updating the nuget packages to reflect the change
 ```csharp

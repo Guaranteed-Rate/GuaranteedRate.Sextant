@@ -19,6 +19,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         #region config mappings
 
+        public static string LOGGLY_ENABLED = "LogglyLogAppender.Enabled";
         public static string LOGGLY_URL = "LogglyLogAppender.Url";
         public static string LOGGLY_APIKEY = "LogglyLogAppender.ApiKey";
         public static string LOGGLY_QUEUE_SIZE = "LogglyLogAppender.QueueSize";

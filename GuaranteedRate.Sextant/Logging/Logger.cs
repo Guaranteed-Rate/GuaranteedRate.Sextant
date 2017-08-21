@@ -2,6 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Logging.Elasticsearch;
+using GuaranteedRate.Sextant.Logging.Loggly;
 
 namespace GuaranteedRate.Sextant.Logging
 {
@@ -9,11 +12,27 @@ namespace GuaranteedRate.Sextant.Logging
     {
         private static volatile IList<ILogAppender> _reporters = new List<ILogAppender>();
         private static readonly object syncRoot = new Object();
+
         private const string ERROR = "ERROR";
         private const string WARN = "WARN";
         private const string INFO = "INFO";
         private const string DEBUG = "DEBUG";
         private const string FATAL = "FATAL";
+
+        public static void Setup(IEncompassConfig config)
+        {
+            var logglyEnabled = config.GetValue(LogglyLogAppender.LOGGLY_ENABLED, false);
+            if (logglyEnabled)
+            {
+                AddAppender(new LogglyLogAppender(config));
+            }
+
+            var elasticSearchEnabled = config.GetValue(ElasticsearchLogAppender.ELASTICSEARCH_ENABLED, false);
+            if (elasticSearchEnabled)
+            {
+                AddAppender(new ElasticsearchLogAppender(config));
+            }
+        }
 
         /// <summary>
         /// Initializes the logger with a single appender

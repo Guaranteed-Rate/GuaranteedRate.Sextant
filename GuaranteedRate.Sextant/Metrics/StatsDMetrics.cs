@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Metrics.Datadog;
 using GuaranteedRate.Sextant.Metrics.Graphite;
 using Metrics;
 using Metrics.Graphite;
@@ -11,39 +12,26 @@ namespace GuaranteedRate.Sextant.Metrics
 {
     public class StatsDMetrics
     {
-        #region Config Mappings
-
-        private static string DATADOG_ENABLED = "DatadogReporter.Enabled";
-        private static string DATADOG_APIKEY = "DatadogReporter.ApiKey";
-        private static string DATADOG_ROOTNAMESPACE = "DatadogReporter.RootNamespace";
-
-        private static string GRAPHITE_ENABLED = "GraphiteReporter.Enabled";
-        private static string GRAPHITE_HOST = "GraphiteReporter.Host";
-        private static string GRAPHITE_PORT = "GraphiteReporter.Port";
-        private static string GRAPHITE_ROOTNAMESPACE = "GraphiteReporter.RootNamespace";
-
-        #endregion
-
         public static void Setup(IEncompassConfig config)
         {
             var metricConfig = Metric.Config;
 
-            var datadogEnabled = config.GetValue(DATADOG_ENABLED, false);
+            var datadogEnabled = config.GetValue(DatadogReporter.DATADOG_ENABLED, false);
             if (datadogEnabled)
             {
                 metricConfig.WithReporting(
                     report =>
-                        report.WithDatadog(config.GetValue(DATADOG_APIKEY),
+                        report.WithDatadog(config.GetValue(DatadogReporter.DATADOG_APIKEY),
                             Environment.MachineName,
-                            config.GetValue(DATADOG_ROOTNAMESPACE),
+                            config.GetValue(DatadogReporter.DATADOG_ROOTNAMESPACE),
                             TimeSpan.FromSeconds(1)));
             }
 
-            var graphiteEnabled = config.GetValue(GRAPHITE_ENABLED, false);
+            var graphiteEnabled = config.GetValue(GraphiteReporter.GRAPHITE_ENABLED, false);
             if (graphiteEnabled)
             {
-                var gs = new TcpGraphiteSender(config.GetValue(GRAPHITE_HOST), config.GetValue(GRAPHITE_PORT, 0));
-                var gr = new StatsDGraphiteReport(gs, config.GetValue(GRAPHITE_ROOTNAMESPACE, string.Empty));
+                var gs = new TcpGraphiteSender(config.GetValue(GraphiteReporter.GRAPHITE_HOST), config.GetValue(GraphiteReporter.GRAPHITE_PORT, 0));
+                var gr = new StatsDGraphiteReport(gs, config.GetValue(GraphiteReporter.GRAPHITE_ROOT_NAMESPACE, string.Empty));
                 
                 metricConfig.WithReporting(report => report.WithReport(gr, TimeSpan.FromSeconds(1)));
             }
