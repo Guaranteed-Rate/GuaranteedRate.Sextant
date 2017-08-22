@@ -22,7 +22,8 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
         public static string GRAPHITE_RETRY_LIMIT = "GraphiteReporter.RetryLimit";
         public static string GRAPHITE_ROOT_NAMESPACE = "GraphiteReporter.RootNamespace";
         public static string GRAPHITE_TRACK_HOSTMACHINE = "GraphiteReporter.TrackHostmachine";
-        
+        public static string GRAPHITE_TAGS = "GraphiteReporter.Tags";
+
         #endregion
 
         public GraphiteReporter(IEncompassConfig config)

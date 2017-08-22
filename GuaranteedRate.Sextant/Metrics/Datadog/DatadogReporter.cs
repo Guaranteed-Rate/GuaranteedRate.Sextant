@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
         public static string DATADOG_APIKEY = "DatadogReporter.ApiKey";
         public static string DATADOG_QUEUE_SIZE = "DatadogReporter.QueueSize";
         public static string DATADOG_RETRY_LIMIT = "DatadogReporter.RetryLimit";
+        public static string DATADOG_TAGS = "DatadogReporter.Tags";
 
         #endregion
 
@@ -29,6 +31,16 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
                 config.GetValue(DATADOG_RETRY_LIMIT, 3))
         {
             Setup();
+            var tags = config.GetValue(DATADOG_TAGS, "");
+            if (!string.IsNullOrEmpty(tags))
+            {
+                var trimmedTags = tags.Split(',')
+                                      .Select(s => s.Trim())
+                                      .Where(s => !string.IsNullOrEmpty(s))
+                                      .ToList();
+
+                trimmedTags.ForEach(t => jsonTags.Add(t));
+            }
         }
 
         public DatadogReporter(string endpoint, string apiKey, int queueSize = 1000, int retries = 3)
