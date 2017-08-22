@@ -62,6 +62,21 @@ namespace GuaranteedRate.Sextant.Metrics
             }
         }
 
+        public static void AddGlobalTag(string tag)
+        {
+            if (!_globalTags.HasValue)
+            {
+                _globalTags = new MetricTags(tag);
+            }
+            else
+            {
+                var tags = _globalTags.Value.Tags.ToList();
+                var newTags = TrimTags(tag);
+                tags.AddRange(newTags);
+                _globalTags = new MetricTags(tags);
+            }
+        }
+
         private static List<string> TrimTags(string tags)
         {
             if (string.IsNullOrEmpty(tags))
