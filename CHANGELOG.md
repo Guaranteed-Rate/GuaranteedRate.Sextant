@@ -1,6 +1,14 @@
+## v17.2.2.4 / 2017 Aug 22
+* **Add** - Added ability to set global tags for `StatsDMetrics`
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.4"]
+```
+
 ## v17.2.2.3 / 2017 Aug 21
 * **Update** - Added `Loggers.Setup()` to allow for the same configuration flow as seen in `StatsDMetrics`
 
+```chsarp
 [GuaranteedRate.Sextant "17.2.2.3"]
 ```
 
