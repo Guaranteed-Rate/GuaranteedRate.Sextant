@@ -210,14 +210,11 @@ in case of duplicates.
 
 * **Update**  - LoanDataUtils.cs will return clearer error messages. 
 
-
-
 ## v16.2.4.1 / 2016 Sep 15
 
 >Fixed an issue with a flipped boolean in json config init.
 
 * **Update**  - JsonEncompassConfig.cs was returning false on success fix to true. 
-
 
 ## v16.2.4.0 / 2016 Sep 13
 
@@ -645,14 +642,12 @@ a SSN
 * **Updated** - `LoanDataUtils.ExtractLoanFields` to call the 2 new functions
 
 ## v1.1.0 / 2015 Sept 4
-
-> Added `LoanDataUtils.ExtractMilestones` which returns a list of milestone data.
-> Added `LoanDataUtils.ExtractEverything` which runs all the extraction methods and returns a dictonary of the collections.
+* **Added** - `LoanDataUtils.ExtractMilestones` which returns a list of milestone data.
+* **Added** - `LoanDataUtils.ExtractEverything` which runs all the extraction methods and returns a dictonary of the collections.
 
 ## v1.0.1 / 2015 Aug 28
-
-> Update to FieldUtils to make it possible to collect a subset of fields instead of always getting all fields.
-> Revised the readme to be more descriptive
+* **Update** - Update to FieldUtils to make it possible to collect a subset of fields instead of always getting all fields.
+* **Update** - Revised the readme to be more descriptive
 
 ## v1.0.0 / 2015 Aug 27
 
