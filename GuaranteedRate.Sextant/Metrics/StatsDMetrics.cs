@@ -12,13 +12,26 @@ namespace GuaranteedRate.Sextant.Metrics
 {
     public class StatsDMetrics
     {
+        private static MetricTags? _globalTags;
+        private static string STATSD_METRICS_TAGS = "StatsDMetrics.Tags";
+
         public static void Setup(IEncompassConfig config)
         {
             var metricConfig = Metric.Config;
-
+            
+            var statsdTags = config.GetValue(STATSD_METRICS_TAGS, "");
+            var globalTags = TrimTags(statsdTags);
+            
             var datadogEnabled = config.GetValue(DatadogReporter.DATADOG_ENABLED, false);
             if (datadogEnabled)
             {
+                var datadogTags = TrimTags(config.GetValue(DatadogReporter.DATADOG_TAGS));
+
+                if (datadogTags.Any())
+                {
+                    globalTags.AddRange(datadogTags);
+                }
+
                 metricConfig.WithReporting(
                     report =>
                         report.WithDatadog(config.GetValue(DatadogReporter.DATADOG_APIKEY),
@@ -30,11 +43,39 @@ namespace GuaranteedRate.Sextant.Metrics
             var graphiteEnabled = config.GetValue(GraphiteReporter.GRAPHITE_ENABLED, false);
             if (graphiteEnabled)
             {
+                var grapiteTags = TrimTags(config.GetValue(GraphiteReporter.GRAPHITE_TAGS));
+
+                if (grapiteTags.Any())
+                {
+                    globalTags.AddRange(grapiteTags);
+                }
+
                 var gs = new TcpGraphiteSender(config.GetValue(GraphiteReporter.GRAPHITE_HOST), config.GetValue(GraphiteReporter.GRAPHITE_PORT, 0));
                 var gr = new StatsDGraphiteReport(gs, config.GetValue(GraphiteReporter.GRAPHITE_ROOT_NAMESPACE, string.Empty));
                 
                 metricConfig.WithReporting(report => report.WithReport(gr, TimeSpan.FromSeconds(1)));
             }
+
+            if (globalTags.Any())
+            {
+                _globalTags = new MetricTags(globalTags);
+            }
+        }
+
+        private static List<string> TrimTags(string tags)
+        {
+            if (string.IsNullOrEmpty(tags))
+            {
+                return new List<string>();
+            }
+
+            var trimmedTags = tags
+                                .Split(',')
+                                .Select(s => s.Trim())
+                                .Where(s => !string.IsNullOrEmpty(s))
+                                .ToList();
+
+            return trimmedTags;
         }
 
         //
@@ -59,7 +100,31 @@ namespace GuaranteedRate.Sextant.Metrics
         //     Reference to the metric
         public static Counter Counter(string name, Unit unit, MetricTags tags = default(MetricTags))
         {
-            return Metric.Counter(name, unit, tags);
+            var metricTags = GenerateTags(tags);
+
+            return Metric.Counter(name, unit, metricTags);
+        }
+
+        private static MetricTags GenerateTags(MetricTags tags)
+        {
+            var tagList = new List<string>();
+            var metricTags = tags;
+
+            if (_globalTags.HasValue)
+            {
+                tagList.AddRange(_globalTags.Value.Tags);
+            }
+
+            if (tags.Tags.Any())
+            {
+                tagList.AddRange(tags.Tags);
+            }
+
+            if (tagList.Any())
+            {
+                metricTags = new MetricTags(tagList);
+            }
+            return metricTags;
         }
 
         //
@@ -85,7 +150,9 @@ namespace GuaranteedRate.Sextant.Metrics
         public static void Gauge(string name, Func<double> valueProvider, Unit unit,
             MetricTags tags = default(MetricTags))
         {
-            Metric.Gauge(name, valueProvider, unit, tags);
+            var metricTags = GenerateTags(tags);
+
+            Metric.Gauge(name, valueProvider, unit, metricTags);
         }
 
         //
@@ -112,7 +179,9 @@ namespace GuaranteedRate.Sextant.Metrics
         public static Histogram Histogram(string name, Unit unit, SamplingType samplingType = SamplingType.Default,
             MetricTags tags = default(MetricTags))
         {
-            return Metric.Histogram(name, unit, samplingType, tags);
+            var metricTags = GenerateTags(tags);
+
+            return Metric.Histogram(name, unit, samplingType, metricTags);
         }
 
         //
@@ -148,7 +217,9 @@ namespace GuaranteedRate.Sextant.Metrics
         public static Meter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds,
             MetricTags tags = default(MetricTags))
         {
-            return Metric.Meter(name, unit, rateUnit, tags);
+            var metricTags = GenerateTags(tags);
+
+            return Metric.Meter(name, unit, rateUnit, metricTags);
         }
 
         //
@@ -179,7 +250,9 @@ namespace GuaranteedRate.Sextant.Metrics
         public static void PerformanceCounter(string name, string counterCategory, string counterName,
             string counterInstance, Unit unit, MetricTags tags = default(MetricTags))
         {
-            Metric.PerformanceCounter(name, counterCategory, counterName, counterInstance, unit, tags);
+            var metricTags = GenerateTags(tags);
+
+            Metric.PerformanceCounter(name, counterCategory, counterName, counterInstance, unit, metricTags);
         }
 
         //
@@ -214,7 +287,9 @@ namespace GuaranteedRate.Sextant.Metrics
             TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds,
             MetricTags tags = default(MetricTags))
         {
-            return Metric.Timer(name, unit, samplingType, rateUnit, durationUnit, tags);
+            var metricTags = GenerateTags(tags);
+
+            return Metric.Timer(name, unit, samplingType, rateUnit, durationUnit, metricTags);
         }
     }
 }
