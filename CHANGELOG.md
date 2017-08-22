@@ -1,3 +1,10 @@
+## v17.2.2.5 / 2017 Aug 22
+* **Add** - Added ability to add global runtime tags for `StatsDMetrics`
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.5"]
+```
+
 ## v17.2.2.4 / 2017 Aug 22
 * **Add** - Added ability to set global tags for `StatsDMetrics`
 
