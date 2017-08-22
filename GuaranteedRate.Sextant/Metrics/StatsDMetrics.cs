@@ -100,6 +100,13 @@ namespace GuaranteedRate.Sextant.Metrics
         //     Reference to the metric
         public static Counter Counter(string name, Unit unit, MetricTags tags = default(MetricTags))
         {
+            var metricTags = GenerateTags(tags);
+
+            return Metric.Counter(name, unit, metricTags);
+        }
+
+        private static MetricTags GenerateTags(MetricTags tags)
+        {
             var tagList = new List<string>();
             var metricTags = tags;
 
@@ -117,8 +124,7 @@ namespace GuaranteedRate.Sextant.Metrics
             {
                 metricTags = new MetricTags(tagList);
             }
-
-            return Metric.Counter(name, unit, metricTags);
+            return metricTags;
         }
 
         //
@@ -144,23 +150,7 @@ namespace GuaranteedRate.Sextant.Metrics
         public static void Gauge(string name, Func<double> valueProvider, Unit unit,
             MetricTags tags = default(MetricTags))
         {
-            var tagList = new List<string>();
-            var metricTags = tags;
-
-            if (_globalTags.HasValue)
-            {
-                tagList.AddRange(_globalTags.Value.Tags);
-            }
-
-            if (tags.Tags.Any())
-            {
-                tagList.AddRange(tags.Tags);
-            }
-
-            if (tagList.Any())
-            {
-                metricTags = new MetricTags(tagList);
-            }
+            var metricTags = GenerateTags(tags);
 
             Metric.Gauge(name, valueProvider, unit, metricTags);
         }
@@ -189,23 +179,7 @@ namespace GuaranteedRate.Sextant.Metrics
         public static Histogram Histogram(string name, Unit unit, SamplingType samplingType = SamplingType.Default,
             MetricTags tags = default(MetricTags))
         {
-            var tagList = new List<string>();
-            var metricTags = tags;
-
-            if (_globalTags.HasValue)
-            {
-                tagList.AddRange(_globalTags.Value.Tags);
-            }
-
-            if (tags.Tags.Any())
-            {
-                tagList.AddRange(tags.Tags);
-            }
-
-            if (tagList.Any())
-            {
-                metricTags = new MetricTags(tagList);
-            }
+            var metricTags = GenerateTags(tags);
 
             return Metric.Histogram(name, unit, samplingType, metricTags);
         }
@@ -243,23 +217,7 @@ namespace GuaranteedRate.Sextant.Metrics
         public static Meter Meter(string name, Unit unit, TimeUnit rateUnit = TimeUnit.Seconds,
             MetricTags tags = default(MetricTags))
         {
-            var tagList = new List<string>();
-            var metricTags = tags;
-
-            if (_globalTags.HasValue)
-            {
-                tagList.AddRange(_globalTags.Value.Tags);
-            }
-
-            if (tags.Tags.Any())
-            {
-                tagList.AddRange(tags.Tags);
-            }
-
-            if (tagList.Any())
-            {
-                metricTags = new MetricTags(tagList);
-            }
+            var metricTags = GenerateTags(tags);
 
             return Metric.Meter(name, unit, rateUnit, metricTags);
         }
@@ -292,23 +250,7 @@ namespace GuaranteedRate.Sextant.Metrics
         public static void PerformanceCounter(string name, string counterCategory, string counterName,
             string counterInstance, Unit unit, MetricTags tags = default(MetricTags))
         {
-            var tagList = new List<string>();
-            var metricTags = tags;
-
-            if (_globalTags.HasValue)
-            {
-                tagList.AddRange(_globalTags.Value.Tags);
-            }
-
-            if (tags.Tags.Any())
-            {
-                tagList.AddRange(tags.Tags);
-            }
-
-            if (tagList.Any())
-            {
-                metricTags = new MetricTags(tagList);
-            }
+            var metricTags = GenerateTags(tags);
 
             Metric.PerformanceCounter(name, counterCategory, counterName, counterInstance, unit, metricTags);
         }
@@ -345,23 +287,7 @@ namespace GuaranteedRate.Sextant.Metrics
             TimeUnit rateUnit = TimeUnit.Seconds, TimeUnit durationUnit = TimeUnit.Milliseconds,
             MetricTags tags = default(MetricTags))
         {
-            var tagList = new List<string>();
-            var metricTags = tags;
-
-            if (_globalTags.HasValue)
-            {
-                tagList.AddRange(_globalTags.Value.Tags);
-            }
-
-            if (tags.Tags.Any())
-            {
-                tagList.AddRange(tags.Tags);
-            }
-
-            if (tagList.Any())
-            {
-                metricTags = new MetricTags(tagList);
-            }
+            var metricTags = GenerateTags(tags);
 
             return Metric.Timer(name, unit, samplingType, rateUnit, durationUnit, metricTags);
         }
