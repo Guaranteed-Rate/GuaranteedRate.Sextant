@@ -10,6 +10,7 @@ namespace GuaranteedRate.Sextant.Logging
     /// </summary>
     public class ConsoleLogAppender : ILogAppender
     {
+        public bool AllEnabled { get; private set; }
         public bool DebugEnabled { get; private set; }
         public bool InfoEnabled { get; private set; }
         public bool WarnEnabled { get; private set; }
@@ -34,32 +35,44 @@ namespace GuaranteedRate.Sextant.Logging
 
         protected void Setup(IEncompassConfig config)
         {
-            DebugEnabled = config.GetValue(CONSOLE_DEBUG, false);
-            InfoEnabled = config.GetValue(CONSOLE_INFO, false);
-            WarnEnabled = config.GetValue(CONSOLE_WARN, false);
-            ErrorEnabled = config.GetValue(CONSOLE_ERROR, true);
-            FatalEnabled = config.GetValue(CONSOLE_FATAL, true);
+            var allEnabled = config.GetValue(CONSOLE_ALL, true);
+            var errorEnabled = config.GetValue(CONSOLE_ERROR, true);
+            var warnEnabled = config.GetValue(CONSOLE_WARN, true);
+            var infoEnabled = config.GetValue(CONSOLE_INFO, true);
+            var debugEnabled = config.GetValue(CONSOLE_DEBUG, true);
+            var fatalEnabled = config.GetValue(CONSOLE_FATAL, true);
+
+            AllEnabled = allEnabled;
+            ErrorEnabled = allEnabled || errorEnabled;
+            WarnEnabled = allEnabled || warnEnabled;
+            InfoEnabled = allEnabled || infoEnabled;
+            DebugEnabled = allEnabled || debugEnabled;
+            FatalEnabled = allEnabled || fatalEnabled;
         }
 
         public void Log(IDictionary<string, string> fields)
         {
-            if (string.Equals(fields["level"], "debug", StringComparison.CurrentCultureIgnoreCase) && DebugEnabled)
+            if (AllEnabled)
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            if (string.Equals(fields["level"], "info", StringComparison.CurrentCultureIgnoreCase) && InfoEnabled)
+            else if (DebugEnabled && string.Equals(fields["level"], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            if (string.Equals(fields["level"], "warn", StringComparison.CurrentCultureIgnoreCase) && WarnEnabled)
+            else if (InfoEnabled && string.Equals(fields["level"], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            if (string.Equals(fields["level"], "error", StringComparison.CurrentCultureIgnoreCase) && ErrorEnabled)
+            else if (WarnEnabled && string.Equals(fields["level"], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            if (string.Equals(fields["level"], "fatal", StringComparison.CurrentCultureIgnoreCase) && FatalEnabled)
+            else if (ErrorEnabled && string.Equals(fields["level"], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            {
+                Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
+            }
+            else if (FatalEnabled && string.Equals(fields["level"], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }

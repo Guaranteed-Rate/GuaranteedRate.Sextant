@@ -16,6 +16,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         private ConnectionSettings _settings;
         private ElasticClient _client;
         private static ISet<string> _tags;
+        public bool AllEnabled { get; set; }
         public bool DebugEnabled { get; private set; }
         public bool InfoEnabled { get; private set; }
         public bool WarnEnabled { get; private set; }
@@ -60,6 +61,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var debugEnabled = config.GetValue(ELASTICSEARCH_DEBUG, true);
             var fatalEnabled = config.GetValue(ELASTICSEARCH_FATAL, true);
 
+            AllEnabled = allEnabled;
             ErrorEnabled = allEnabled || errorEnabled;
             WarnEnabled = allEnabled || warnEnabled;
             InfoEnabled = allEnabled || infoEnabled;
@@ -81,7 +83,30 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         public void Log(IDictionary<string, string> fields)
         {
-            ReportEvent(fields);
+            if (AllEnabled)
+            {
+                ReportEvent(fields);
+            }
+            else if (DebugEnabled && string.Equals(fields["level"], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (InfoEnabled && string.Equals(fields["level"], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (WarnEnabled && string.Equals(fields["level"], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (ErrorEnabled && string.Equals(fields["level"], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (FatalEnabled && string.Equals(fields["level"], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
         }
 
         protected override bool PostEvent(object data)

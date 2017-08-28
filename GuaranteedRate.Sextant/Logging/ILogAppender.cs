@@ -9,6 +9,7 @@ namespace GuaranteedRate.Sextant.Logging
     {
         void Log(IDictionary<string, string> fields);
         void AddTag(string tag);
+        bool AllEnabled { get; }
         bool DebugEnabled { get; }
         bool InfoEnabled { get; }
         bool WarnEnabled { get; }
