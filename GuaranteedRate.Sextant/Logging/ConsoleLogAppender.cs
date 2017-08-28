@@ -18,7 +18,8 @@ namespace GuaranteedRate.Sextant.Logging
         public bool FatalEnabled { get; private set; }
 
         #region config mappings
-        
+
+        public static string CONSOLE_ENABLED = "ConsoleLogAppender.Enabled";
         public static string CONSOLE_ALL = "ConsoleLogAppender.All.Enabled";
         public static string CONSOLE_ERROR = "ConsoleLogAppender.Error.Enabled";
         public static string CONSOLE_WARN = "ConsoleLogAppender.Warn.Enabled";
@@ -56,23 +57,23 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (DebugEnabled && string.Equals(fields["level"], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
+            else if (DebugEnabled && string.Equals(fields[Logger.LEVEL], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (InfoEnabled && string.Equals(fields["level"], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
+            else if (InfoEnabled && string.Equals(fields[Logger.LEVEL], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (WarnEnabled && string.Equals(fields["level"], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
+            else if (WarnEnabled && string.Equals(fields[Logger.LEVEL], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (ErrorEnabled && string.Equals(fields["level"], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            else if (ErrorEnabled && string.Equals(fields[Logger.LEVEL], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (FatalEnabled && string.Equals(fields["level"], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
+            else if (FatalEnabled && string.Equals(fields[Logger.LEVEL], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }

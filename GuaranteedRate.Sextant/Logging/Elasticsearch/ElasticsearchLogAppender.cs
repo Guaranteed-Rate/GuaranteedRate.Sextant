@@ -87,23 +87,23 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             {
                 ReportEvent(fields);
             }
-            else if (DebugEnabled && string.Equals(fields["level"], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
+            else if (DebugEnabled && string.Equals(fields[Logger.LEVEL], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (InfoEnabled && string.Equals(fields["level"], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
+            else if (InfoEnabled && string.Equals(fields[Logger.LEVEL], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (WarnEnabled && string.Equals(fields["level"], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
+            else if (WarnEnabled && string.Equals(fields[Logger.LEVEL], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (ErrorEnabled && string.Equals(fields["level"], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            else if (ErrorEnabled && string.Equals(fields[Logger.LEVEL], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (FatalEnabled && string.Equals(fields["level"], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
+            else if (FatalEnabled && string.Equals(fields[Logger.LEVEL], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }

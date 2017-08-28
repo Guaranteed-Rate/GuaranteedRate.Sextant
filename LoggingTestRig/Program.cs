@@ -18,15 +18,18 @@ namespace LoggingTestRig
         {
             var config = new JsonEncompassConfig();
             config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
-                
-            var console = new ConsoleLogAppender(config);
+            
+            //manually set appenders    
+            //var console = new ConsoleLogAppender(config);
+            //var loggly = new LogglyLogAppender(config);
+            //var elasticSearch = new ElasticsearchLogAppender(config);
+            //Logger.AddAppender(console);
+            //Logger.AddAppender(loggly);
+            //Logger.AddAppender(elasticSearch);
 
-            var loggly = new LogglyLogAppender(config);
-            var elasticSearch = new ElasticsearchLogAppender(config);
+            //automatically set appenders
+            Logger.Setup(config);
 
-            Logger.AddAppender(console);
-            Logger.AddAppender(loggly);
-            Logger.AddAppender(elasticSearch);
             Logger.AddTag("runtime-tag");
 
             Logger.Debug("SextantTestRig", "Test debug message");

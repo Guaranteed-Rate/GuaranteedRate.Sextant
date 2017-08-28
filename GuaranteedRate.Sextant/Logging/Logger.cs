@@ -13,6 +13,7 @@ namespace GuaranteedRate.Sextant.Logging
         private static volatile IList<ILogAppender> _reporters = new List<ILogAppender>();
         private static readonly object syncRoot = new Object();
 
+        public const string LEVEL = "level";
         public const string ERROR = "ERROR";
         public const string WARN = "WARN";
         public const string INFO = "INFO";
@@ -31,6 +32,12 @@ namespace GuaranteedRate.Sextant.Logging
             if (elasticSearchEnabled)
             {
                 AddAppender(new ElasticsearchLogAppender(config));
+            }
+
+            var consoleEnabled = config.GetValue(ConsoleLogAppender.CONSOLE_ENABLED, false);
+            if (consoleEnabled)
+            {
+                AddAppender(new ConsoleLogAppender(config));
             }
         }
 
@@ -76,7 +83,7 @@ namespace GuaranteedRate.Sextant.Logging
         private static IDictionary<string, string> PopulateEvent(string loggerName, string level, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
-            fields.Add("level", level);
+            fields.Add(LEVEL, level);
             fields.Add("timestamp", DateTime.Now.ToString("MM/dd/yyyyTHH:mm:ss.fffzzz"));
             fields.Add("hostname", System.Environment.MachineName);
             fields.Add("process", Process.GetCurrentProcess().ProcessName);
@@ -116,9 +123,9 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 fields.Add("logger", loggerName);
             }
-            if (!fields.ContainsKey("level"))
+            if (!fields.ContainsKey(LEVEL))
             {
-                fields.Add("level", level);
+                fields.Add(LEVEL, level);
             }
             Log(fields);
         }
