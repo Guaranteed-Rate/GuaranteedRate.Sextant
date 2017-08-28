@@ -1,7 +1,8 @@
 ## v17.2.2.6 / 2017 Aug 28
 * **Fix** - Regression in Loggly support that was preventing logs from being searchable
 * **Add** - Added ability to add runtime tags to `Logger` via `Logger.AddTag()`
-
+* **Add** - Support for tagging in Elassticsearch
+ 
 ```csharp
 [GuaranteedRate.Sextant "17.2.2.6"]
 ```
