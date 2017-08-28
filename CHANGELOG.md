@@ -1,3 +1,10 @@
+## v17.2.2.8 / 2017 Aug 28
+* **Add** - Added support for automatic configuration of the `ConsoleLogAppender` when utilizing `Logger.Setup()`
+ 
+```csharp
+[GuaranteedRate.Sextant "17.2.2.8"]
+```
+
 ## v17.2.2.7 / 2017 Aug 28
 * **Fix** - Fix regression that prevented loggers from filtering logs based on configured log level tolerance
  
