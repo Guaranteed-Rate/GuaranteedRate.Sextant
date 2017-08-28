@@ -93,7 +93,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var loggerName = "undefined";
             if (fields.ContainsKey("loggerName"))
             {
-                loggerName = (string)fields["loggerName"];
+                loggerName = fields["loggerName"];
                 loggerName = loggerName.ToLower();
             }
 

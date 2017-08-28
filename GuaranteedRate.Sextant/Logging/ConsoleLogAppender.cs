@@ -67,7 +67,7 @@ namespace GuaranteedRate.Sextant.Logging
 
         public void AddTag(string tag)
         {
-            
+            //tagging not supported for console log appender
         }
     }
 }
