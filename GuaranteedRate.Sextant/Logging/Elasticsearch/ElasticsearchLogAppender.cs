@@ -4,16 +4,18 @@ using System.Linq;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
 using Nest;
+using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 {
     public class ElasticsearchLogAppender : AsyncEventReporter, ILogAppender
     {
+        //private readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         protected override string Name { get; } = typeof(ElasticsearchLogAppender).Name;
         private Uri _node;
         private ConnectionSettings _settings;
         private ElasticClient _client;
-        
+        private static ISet<string> _tags;
         public bool DebugEnabled { get; private set; }
         public bool InfoEnabled { get; private set; }
         public bool WarnEnabled { get; private set; }
@@ -32,6 +34,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         public static string ELASTICSEARCH_INFO = "ElasticsearchLogAppender.Info.Enabled";
         public static string ELASTICSEARCH_DEBUG = "ElasticsearchLogAppender.Debug.Enabled";
         public static string ELASTICSEARCH_FATAL = "ElasticsearchLogAppender.Fatal.Enabled";
+        public static string ELASTICSEARCH_TAGS = "ElasticsearchLogAppender.Tags";
 
         #endregion
 
@@ -39,6 +42,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             : base(config.GetValue(ELASTICSEARCH_QUEUE_SIZE, 1000),
                 config.GetValue(ELASTICSEARCH_RETRY_LIMIT, 3))
         {
+            _tags = new HashSet<string>();
             Setup(config);
         }
 
@@ -61,6 +65,18 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             InfoEnabled = allEnabled || infoEnabled;
             DebugEnabled = allEnabled || debugEnabled;
             FatalEnabled = allEnabled || fatalEnabled;
+
+            if (_tags == null) _tags = new HashSet<string>();
+
+            var configTags = config.GetValue(ELASTICSEARCH_TAGS, string.Empty);
+
+            if (!string.IsNullOrEmpty(configTags))
+            {
+                foreach (var tag in configTags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    AddTag(tag);
+                }
+            }
         }
 
         public void Log(IDictionary<string, string> fields)
@@ -77,9 +93,13 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var loggerName = "undefined";
             if (fields.ContainsKey("loggerName"))
             {
-                loggerName = fields["loggerName"];
+                loggerName = (string)fields["loggerName"];
                 loggerName = loggerName.ToLower();
             }
+
+            //fields["timestamp"] = GetEpochTime().ToString();
+
+            fields["tags"] = JsonConvert.SerializeObject(_tags);
 
             try
             {
@@ -101,8 +121,15 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         public void AddTag(string tag)
         {
-            //throw new NotImplementedException();
+            if (!_tags.Contains(tag.Trim()))
+            {
+                _tags.Add(tag.Trim());
+            }
         }
 
+        //private long GetEpochTime()
+        //{
+        //    return Convert.ToInt64((DateTime.Now.ToUniversalTime() - epoch).TotalSeconds);
+        //}
     }
 }
