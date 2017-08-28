@@ -13,11 +13,11 @@ namespace GuaranteedRate.Sextant.Logging
         private static volatile IList<ILogAppender> _reporters = new List<ILogAppender>();
         private static readonly object syncRoot = new Object();
 
-        private const string ERROR = "ERROR";
-        private const string WARN = "WARN";
-        private const string INFO = "INFO";
-        private const string DEBUG = "DEBUG";
-        private const string FATAL = "FATAL";
+        public const string ERROR = "ERROR";
+        public const string WARN = "WARN";
+        public const string INFO = "INFO";
+        public const string DEBUG = "DEBUG";
+        public const string FATAL = "FATAL";
 
         public static void Setup(IEncompassConfig config)
         {

@@ -13,6 +13,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         protected override string Name { get; } = typeof(LogglyLogAppender).Name;
         private static ISet<string> _tags;
+        public bool AllEnabled { get; set; }
         public bool ErrorEnabled { get; set; }
         public bool WarnEnabled { get; set; }
         public bool InfoEnabled { get; set; }
@@ -76,6 +77,7 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             var debugEnabled = config.GetValue(LOGGLY_DEBUG, false);
             var fatalEnabled = config.GetValue(LOGGLY_FATAL, false);
 
+            AllEnabled = allEnabled;
             ErrorEnabled = allEnabled || errorEnabled;
             WarnEnabled = allEnabled || warnEnabled;
             InfoEnabled = allEnabled || infoEnabled;
@@ -117,7 +119,30 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         public void Log(IDictionary<string, string> fields)
         {
-            ReportEvent(fields);
+            if (AllEnabled)
+            {
+                ReportEvent(fields);
+            }
+            else if (DebugEnabled && string.Equals(fields["level"], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (InfoEnabled && string.Equals(fields["level"], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (WarnEnabled && string.Equals(fields["level"], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (ErrorEnabled && string.Equals(fields["level"], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
+            else if (FatalEnabled && string.Equals(fields["level"], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
+            {
+                ReportEvent(fields);
+            }
         }
     }
 }

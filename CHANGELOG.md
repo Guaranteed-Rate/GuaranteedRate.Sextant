@@ -1,3 +1,10 @@
+## v17.2.2.7 / 2017 Aug 28
+* **Fix** - Fix regression that prevented loggers from filtering logs based on configured log level tolerance
+ 
+```csharp
+[GuaranteedRate.Sextant "17.2.2.7"]
+```
+
 ## v17.2.2.6 / 2017 Aug 28
 * **Fix** - Regression in Loggly support that was preventing logs from being searchable
 * **Add** - Added ability to add runtime tags to `Logger` via `Logger.AddTag()`
