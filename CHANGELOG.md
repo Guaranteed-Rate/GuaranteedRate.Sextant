@@ -2,7 +2,7 @@
 * **Add** - Added support for automatic configuration of the `ConsoleLogAppender` when utilizing `Logger.Setup()`
  
 ```csharp
-[GuaranteedRate.Sextant "17.2.2.7"]
+[GuaranteedRate.Sextant "17.2.2.8"]
 ```
 
 ## v17.2.2.7 / 2017 Aug 28
