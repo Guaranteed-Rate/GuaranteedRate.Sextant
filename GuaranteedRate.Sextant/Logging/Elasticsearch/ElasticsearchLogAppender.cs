@@ -13,6 +13,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         private Uri _node;
         private ConnectionSettings _settings;
         private ElasticClient _client;
+        
         public bool DebugEnabled { get; private set; }
         public bool InfoEnabled { get; private set; }
         public bool WarnEnabled { get; private set; }
@@ -97,5 +98,11 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
             return true;
         }
+
+        public void AddTag(string tag)
+        {
+            //throw new NotImplementedException();
+        }
+
     }
 }

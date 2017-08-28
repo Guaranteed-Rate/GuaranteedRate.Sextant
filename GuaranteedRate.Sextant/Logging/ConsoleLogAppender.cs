@@ -64,5 +64,10 @@ namespace GuaranteedRate.Sextant.Logging
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
         }
+
+        public void AddTag(string tag)
+        {
+            
+        }
     }
 }

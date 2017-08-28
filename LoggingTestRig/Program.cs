@@ -27,6 +27,7 @@ namespace LoggingTestRig
             Logger.AddAppender(console);
             Logger.AddAppender(loggly);
             Logger.AddAppender(elasticSearch);
+            Logger.AddTag("runtime-tag");
 
             Logger.Debug("SextantTestRig", "Test debug message");
             Logger.Info("SextantTestRig", "Test info message");

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
-using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Logging.Loggly
 {
@@ -55,7 +55,9 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         protected void Setup(IEncompassConfig config)
         {
-            CreateClient(config.GetValue(LOGGLY_URL));
+            var url = CreateUrl(config.GetValue(LOGGLY_URL), config.GetValue(LOGGLY_APIKEY));
+
+            CreateClient(url);
             
             var allEnabled = config.GetValue(LOGGLY_ALL, false);
             var errorEnabled = config.GetValue(LOGGLY_ERROR, false);
@@ -98,10 +100,12 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         public void Log(IDictionary<string, string> fields)
         {
-            //Having Indented formatting makes the data format better in the Loggly
-            //Search screen
-            var json = JsonConvert.SerializeObject(fields, Formatting.Indented);
-            ReportEvent(json);
+            if (fields != null)
+            {
+                fields["tag"] = string.Join(",", _tags);
+            }
+
+            ReportEvent(fields);
         }
 
         private static string MakeTagCsv()

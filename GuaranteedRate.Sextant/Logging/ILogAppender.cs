@@ -8,6 +8,7 @@ namespace GuaranteedRate.Sextant.Logging
     public interface ILogAppender
     {
         void Log(IDictionary<string, string> fields);
+        void AddTag(string tag);
         bool DebugEnabled { get; }
         bool InfoEnabled { get; }
         bool WarnEnabled { get; }
