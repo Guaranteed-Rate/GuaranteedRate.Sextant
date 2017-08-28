@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
-using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Logging.Loggly
 {
     public class LogglyLogAppender : AsyncEventReporter, ILogAppender
     {
+        private readonly string _url = "";
+        private readonly string _apiKey = "";
+
         protected override string Name { get; } = typeof(LogglyLogAppender).Name;
         private static ISet<string> _tags;
         public bool ErrorEnabled { get; set; }
@@ -36,6 +38,8 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
 
         public LogglyLogAppender(string url, string apiKey, int queueSize = 1000, int retries = 3) : base(CreateUrl(url, apiKey), queueSize, retries)
         {
+            _url = url;
+            _apiKey = apiKey;
             _tags = new HashSet<string>();
         }
 
@@ -44,19 +48,27 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
                 config.GetValue(LOGGLY_QUEUE_SIZE, 1000),
                 config.GetValue(LOGGLY_RETRY_LIMIT, 3))
         {
+            _url = config.GetValue(LOGGLY_URL);
+            _apiKey = config.GetValue(LOGGLY_APIKEY);
             _tags = new HashSet<string>();
             Setup(config);
         }
 
         protected static string CreateUrl(string url, string apiKey)
         {
-            return $"{url}/inputs/{apiKey}/tag";
+            var baseUrl = $"{url}/inputs/{apiKey}/tag";
+
+            if (_tags != null && _tags.Any())
+            {
+                var tagCsv = string.Join(",", _tags);
+                baseUrl += $"/{tagCsv}/";
+            }
+
+            return baseUrl;
         }
 
         protected void Setup(IEncompassConfig config)
         {
-            CreateClient(config.GetValue(LOGGLY_URL));
-            
             var allEnabled = config.GetValue(LOGGLY_ALL, false);
             var errorEnabled = config.GetValue(LOGGLY_ERROR, false);
             var warnEnabled = config.GetValue(LOGGLY_WARN, false);
@@ -81,6 +93,10 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
                     AddTag(tag);
                 }
             }
+
+            var url = CreateUrl(config.GetValue(LOGGLY_URL), config.GetValue(LOGGLY_APIKEY));
+
+            CreateClient(url);
         }
 
         /// <summary>
@@ -93,30 +109,15 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             if (!_tags.Contains(tag.Trim()))
             {
                 _tags.Add(tag.Trim());
+
+                var url = CreateUrl(_url, _apiKey);
+                CreateClient(url);
             }
         }
 
         public void Log(IDictionary<string, string> fields)
         {
-            //Having Indented formatting makes the data format better in the Loggly
-            //Search screen
-            var json = JsonConvert.SerializeObject(fields, Formatting.Indented);
-            ReportEvent(json);
-        }
-
-        private static string MakeTagCsv()
-        {
-            StringBuilder builder = new StringBuilder();
-            foreach (string tag in _tags)
-            {
-                if (!string.IsNullOrWhiteSpace(tag))
-                {
-                    builder.Append(tag).Append(",");
-                }
-            }
-            builder.Remove(builder.Length - 1, 1);
-
-            return builder.ToString();
+            ReportEvent(fields);
         }
     }
 }

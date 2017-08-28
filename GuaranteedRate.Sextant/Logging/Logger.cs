@@ -59,6 +59,20 @@ namespace GuaranteedRate.Sextant.Logging
             }
         }
 
+        public static void AddTag(string tag)
+        {
+            lock(syncRoot)
+            {
+                if (_reporters != null)
+                {
+                    foreach (var reporter in _reporters)
+                    {
+                        reporter.AddTag(tag);
+                    }
+                }
+            }
+        }
+
         private static IDictionary<string, string> PopulateEvent(string loggerName, string level, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
