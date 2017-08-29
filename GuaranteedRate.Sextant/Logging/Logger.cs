@@ -14,11 +14,11 @@ namespace GuaranteedRate.Sextant.Logging
         private static readonly object syncRoot = new Object();
 
         public const string LEVEL = "level";
-        public const string ERROR = "ERROR";
-        public const string WARN = "WARN";
-        public const string INFO = "INFO";
-        public const string DEBUG = "DEBUG";
-        public const string FATAL = "FATAL";
+        public const string ERROR_LEVEL = "ERROR";
+        public const string WARN_LEVEL = "WARN";
+        public const string INFO_LEVEL = "INFO";
+        public const string DEBUG_LEVEL = "DEBUG";
+        public const string FATAL_LEVEL = "FATAL";
 
         public static void Setup(IEncompassConfig config)
         {
@@ -94,27 +94,27 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Debug(string logger, string message)
         {
-            Log(PopulateEvent(logger, DEBUG, message));
+            Log(PopulateEvent(logger, DEBUG_LEVEL, message));
         }
 
         public static void Error(string logger, string message)
         {
-            Log(PopulateEvent(logger, ERROR, message));
+            Log(PopulateEvent(logger, ERROR_LEVEL, message));
         }
 
         public static void Fatal(string logger, string message)
         {
-            Log(PopulateEvent(logger, FATAL, message));
+            Log(PopulateEvent(logger, FATAL_LEVEL, message));
         }
 
         public static void Info(string logger, string message)
         {
-            Log(PopulateEvent(logger, INFO, message));
+            Log(PopulateEvent(logger, INFO_LEVEL, message));
         }
 
         public static void Warn(string logger, string message)
         {
-            Log(PopulateEvent(logger, WARN, message));
+            Log(PopulateEvent(logger, WARN_LEVEL, message));
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)

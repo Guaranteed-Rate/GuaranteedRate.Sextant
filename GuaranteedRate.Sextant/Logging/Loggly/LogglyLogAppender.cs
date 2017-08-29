@@ -123,23 +123,23 @@ namespace GuaranteedRate.Sextant.Logging.Loggly
             {
                 ReportEvent(fields);
             }
-            else if (DebugEnabled && string.Equals(fields[Logger.LEVEL], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
+            else if (DebugEnabled && string.Equals(fields[Logger.LEVEL], Logger.DEBUG_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (InfoEnabled && string.Equals(fields[Logger.LEVEL], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
+            else if (InfoEnabled && string.Equals(fields[Logger.LEVEL], Logger.INFO_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (WarnEnabled && string.Equals(fields[Logger.LEVEL], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
+            else if (WarnEnabled && string.Equals(fields[Logger.LEVEL], Logger.WARN_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (ErrorEnabled && string.Equals(fields[Logger.LEVEL], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            else if (ErrorEnabled && string.Equals(fields[Logger.LEVEL], Logger.ERROR_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }
-            else if (FatalEnabled && string.Equals(fields[Logger.LEVEL], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
+            else if (FatalEnabled && string.Equals(fields[Logger.LEVEL], Logger.FATAL_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 ReportEvent(fields);
             }

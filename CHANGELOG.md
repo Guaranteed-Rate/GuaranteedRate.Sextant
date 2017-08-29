@@ -1,3 +1,10 @@
+## v17.2.2.9 / 2017 Aug 29
+* **Update** - Update Logger level naming convention to suffix `_LEVEL` so as to make IDE typeahead more pleasant
+ 
+```csharp
+[GuaranteedRate.Sextant "17.2.2.9"]
+```
+
 ## v17.2.2.8 / 2017 Aug 28
 * **Add** - Added support for automatic configuration of the `ConsoleLogAppender` when utilizing `Logger.Setup()`
  
