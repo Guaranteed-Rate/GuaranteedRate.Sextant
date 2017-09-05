@@ -38,7 +38,7 @@ namespace GuaranteedRate.Sextant.WebClients
         private readonly BlockingCollection<object> _eventQueue;
         private readonly int _retries;
         private string _url;
-        public string ContentType { get; set; }
+        public string ContentType { get; set; } = "application/json";
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
 
