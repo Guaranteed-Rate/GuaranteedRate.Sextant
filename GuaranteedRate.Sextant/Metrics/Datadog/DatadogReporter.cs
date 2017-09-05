@@ -117,9 +117,8 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
             e.points = points;
 
             var s = new Series {series = new List<Event> {e}};
-            var json = JsonConvert.SerializeObject(s);
 
-            ReportEvent(json);
+            ReportEvent(s);
         }
 
         private class Event
