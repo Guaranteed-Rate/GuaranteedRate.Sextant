@@ -184,8 +184,7 @@ namespace GuaranteedRate.Sextant.WebClients
                             {
                                 if (!SUCCESS_CODES.Contains(response.StatusCode))
                                 {
-                                    Logger.Warn(this.GetType().Name.ToString(),
-                                        "Webservice at " + _url + " returned status code:" + response.StatusCode);
+                                    Logger.Warn(Name, $"Webservice at {_url} returned status code: {response.StatusCode}");
                                     return false;
                                 }
                             }
@@ -194,12 +193,12 @@ namespace GuaranteedRate.Sextant.WebClients
                 }
                 else
                 {
-                    Logger.Warn(this.GetType().Name.ToString(), "WebService url invalid. url=" + _url);
+                    Logger.Warn(Name, $"WebService url invalid. url={_url}");
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(this.GetType().Name.ToString(), "Log by Post to Service failed: " + ex.ToString());
+                Logger.Error(Name, $"Log by Post to Service failed: {ex}");
                 return false;
             }
             return true;
