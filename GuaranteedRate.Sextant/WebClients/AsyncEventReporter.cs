@@ -146,8 +146,14 @@ namespace GuaranteedRate.Sextant.WebClients
             return true;
         }
 
+        /// <summary>
+        /// Any additional actions that need to be applied to the WebRequest object
+        /// prior to being processed by PostEvent
+        /// </summary>
+        /// <param name="webRequest"></param>
         protected virtual void ExtraSetup(WebRequest webRequest)
         {
+
         }
 
         protected virtual bool PostEvent(object formattedData)
