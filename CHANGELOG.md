@@ -1,6 +1,13 @@
-## v17.2.2.11 / 2017 Sep 05
+## v17.2.2.12 / 2017 Sep 05
 * **Fix** - Datadog was serializing objects passed to the AsyncEventReporter which caused a send failure
 
+```csharp
+[GuaranteedRate.Sextant "17.2.2.12"]
+```
+
+## v17.2.2.11 / 2017 Sep 05
+* **Update** - Update Logger level naming convention to suffix `_LEVEL` so as to make IDE typeahead more pleasant
+ 
 ```csharp
 [GuaranteedRate.Sextant "17.2.2.11"]
 ```
