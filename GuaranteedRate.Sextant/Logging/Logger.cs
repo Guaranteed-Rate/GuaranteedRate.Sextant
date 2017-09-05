@@ -134,12 +134,9 @@ namespace GuaranteedRate.Sextant.Logging
 
         private static void Log(IDictionary<string, string> fields)
         {
-            lock (syncRoot)
+            foreach (var r in _reporters)
             {
-                foreach (var r in _reporters)
-                {
-                    r.Log(fields);
-                }
+                r.Log(fields);
             }
         }
     }

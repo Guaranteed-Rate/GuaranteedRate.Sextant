@@ -1,3 +1,10 @@
+## v17.2.2.13 / 2017 Sep 05
+* **Fix** - Do not lock the log statement in `Logger.cs`
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.13"]
+```
+
 ## v17.2.2.12 / 2017 Sep 05
 * **Fix** - Datadog was serializing objects passed to the AsyncEventReporter which caused a send failure
 
