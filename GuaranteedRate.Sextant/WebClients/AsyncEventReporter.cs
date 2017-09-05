@@ -44,8 +44,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
         private volatile bool _finished;
-
-        protected HttpClient Client { get; set; }
+        
 
         public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
         {
@@ -72,7 +71,6 @@ namespace GuaranteedRate.Sextant.WebClients
         protected void CreateClient(string url)
         {
             _url = url;
-            Client = new HttpClient();
         }
 
         private void Init()
@@ -218,8 +216,6 @@ namespace GuaranteedRate.Sextant.WebClients
                     Shutdown();
                 }
             }
-
-            Client = null;
 
             disposedValue = true;
         }

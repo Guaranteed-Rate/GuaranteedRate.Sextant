@@ -107,10 +107,8 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
                     _client.Close();
                 }
             }
-
-            Client = null;
+            
             _client = null;
-
             _disposedValue = true;
         }
 
