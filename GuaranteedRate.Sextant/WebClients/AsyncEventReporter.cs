@@ -41,7 +41,7 @@ namespace GuaranteedRate.Sextant.WebClients
         public string ContentType { get; set; } = "application/json";
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
-
+        protected int DefaultTimeout = 45000;
         protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
         private volatile bool _finished;
         
@@ -161,7 +161,7 @@ namespace GuaranteedRate.Sextant.WebClients
                 if (webRequest != null)
                 {
                     webRequest.Method = "POST";
-                    webRequest.Timeout = 45000;
+                    webRequest.Timeout = DefaultTimeout;
                     webRequest.ContentType = ContentType;
                     ExtraSetup(webRequest);
 
