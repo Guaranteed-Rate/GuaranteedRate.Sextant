@@ -1,4 +1,11 @@
-## v17.2.2.11 / 2017 Aug 29
+## v17.2.2.12 / 2017 Sep 05
+* **Fix** - Datadog was serializing objects passed to the AsyncEventReporter which caused a send failure
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.12"]
+```
+
+## v17.2.2.11 / 2017 Sep 05
 * **Update** - Update Logger level naming convention to suffix `_LEVEL` so as to make IDE typeahead more pleasant
  
 ```csharp
@@ -11,13 +18,13 @@
 ```csharp
 [GuaranteedRate.Sextant "17.2.2.10"]
 ```
+
 ## v17.2.2.9 / 2017 Sep 05
 * **Fix** - Bump version to assist in debugging errors.
 
 ```csharp
 [GuaranteedRate.Sextant "17.2.2.9"]
 ```
-
 
 ## v17.2.2.8 / 2017 Aug 28
 * **Add** - Added support for automatic configuration of the `ConsoleLogAppender` when utilizing `Logger.Setup()`
