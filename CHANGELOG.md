@@ -6,6 +6,14 @@
 ```
 
 
+## v17.2.2.9 / 2017 Sep 05
+* **Fix** - Bump version to assist in debugging errors.
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.9"]
+```
+
+
 ## v17.2.2.8 / 2017 Aug 28
 * **Add** - Added support for automatic configuration of the `ConsoleLogAppender` when utilizing `Logger.Setup()`
  
