@@ -37,16 +37,18 @@ namespace GuaranteedRate.Sextant.WebClients
 
         private readonly BlockingCollection<object> _eventQueue;
         private readonly int _retries;
+        private readonly int _timeout;
         private string _url;
         public string ContentType { get; set; } = "application/json";
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
-        protected int DefaultTimeout = 45000;
+        protected const int DEFAULT_TIMEOUT = 45000;
+        
         protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
         private volatile bool _finished;
         
 
-        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
+        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -55,15 +57,17 @@ namespace GuaranteedRate.Sextant.WebClients
 
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
+            _timeout = timeout;
             CreateClient(url);
 
             Init();
         }
 
-        public AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
+        public AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
         {
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
+            _timeout = timeout;
 
             Init();
         }
@@ -167,7 +171,7 @@ namespace GuaranteedRate.Sextant.WebClients
                 if (webRequest != null)
                 {
                     webRequest.Method = "POST";
-                    webRequest.Timeout = DefaultTimeout;
+                    webRequest.Timeout = _timeout;
                     webRequest.ContentType = ContentType;
                     ExtraSetup(webRequest);
 
