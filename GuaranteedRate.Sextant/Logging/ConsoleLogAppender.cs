@@ -57,23 +57,23 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (DebugEnabled && string.Equals(fields[Logger.LEVEL], Logger.DEBUG, StringComparison.CurrentCultureIgnoreCase))
+            else if (DebugEnabled && string.Equals(fields[Logger.LEVEL], Logger.DEBUG_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (InfoEnabled && string.Equals(fields[Logger.LEVEL], Logger.INFO, StringComparison.CurrentCultureIgnoreCase))
+            else if (InfoEnabled && string.Equals(fields[Logger.LEVEL], Logger.INFO_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (WarnEnabled && string.Equals(fields[Logger.LEVEL], Logger.WARN, StringComparison.CurrentCultureIgnoreCase))
+            else if (WarnEnabled && string.Equals(fields[Logger.LEVEL], Logger.WARN_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (ErrorEnabled && string.Equals(fields[Logger.LEVEL], Logger.ERROR, StringComparison.CurrentCultureIgnoreCase))
+            else if (ErrorEnabled && string.Equals(fields[Logger.LEVEL], Logger.ERROR_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
-            else if (FatalEnabled && string.Equals(fields[Logger.LEVEL], Logger.FATAL, StringComparison.CurrentCultureIgnoreCase))
+            else if (FatalEnabled && string.Equals(fields[Logger.LEVEL], Logger.FATAL_LEVEL, StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.WriteLine(fields.Values.Aggregate((a, b) => $"{a}, {b}"));
             }
