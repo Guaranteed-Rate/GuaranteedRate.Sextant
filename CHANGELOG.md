@@ -1,3 +1,11 @@
+## v17.3.0.0 / 2017 Sep 05
+* **Update** - Update EncompassSDK.Complete to 17.3.0.0
+
+```csharp
+[GuaranteedRate.Sextant "17.3.0.0"]
+```
+
+
 ## v17.2.2.8 / 2017 Aug 28
 * **Add** - Added support for automatic configuration of the `ConsoleLogAppender` when utilizing `Logger.Setup()`
  
