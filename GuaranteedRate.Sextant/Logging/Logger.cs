@@ -22,11 +22,6 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Setup(IEncompassConfig config)
         {
-            var logglyEnabled = config.GetValue(LogglyLogAppender.LOGGLY_ENABLED, false);
-            if (logglyEnabled)
-            {
-                AddAppender(new LogglyLogAppender(config));
-            }
 
             var elasticSearchEnabled = config.GetValue(ElasticsearchLogAppender.ELASTICSEARCH_ENABLED, false);
             if (elasticSearchEnabled)
@@ -39,6 +34,13 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 AddAppender(new ConsoleLogAppender(config));
             }
+
+            var logglyEnabled = config.GetValue(LogglyLogAppender.LOGGLY_ENABLED, false);
+            if (logglyEnabled)
+            {
+                AddAppender(new LogglyLogAppender(config));
+            }
+
         }
 
         /// <summary>
