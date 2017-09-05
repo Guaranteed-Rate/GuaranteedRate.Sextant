@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Logging;
+using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.WebClients
 {
@@ -17,6 +17,7 @@ namespace GuaranteedRate.Sextant.WebClients
      * creates a worker task to process messages from the queue in a separate thead.
      * 
      */
+
     public class AsyncEventReporter : IDisposable, IEventReporter
     {
         /// <summary>
@@ -33,20 +34,21 @@ namespace GuaranteedRate.Sextant.WebClients
             HttpStatusCode.NoContent,
             HttpStatusCode.OK
         };
-        
+
         private readonly BlockingCollection<object> _eventQueue;
         private readonly int _retries;
+        private readonly int _timeout;
         private string _url;
-
+        public string ContentType { get; set; } = "application/json";
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
-
-        protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
-        private volatile bool _finished;
-
-        protected HttpClient Client { get; set; }
+        protected const int DEFAULT_TIMEOUT = 45000;
         
-        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
+        protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
+        private volatile bool _finished;
+        
+
+        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -55,15 +57,17 @@ namespace GuaranteedRate.Sextant.WebClients
 
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
+            _timeout = timeout;
             CreateClient(url);
 
             Init();
         }
 
-        public AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES)
+        public AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
         {
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             _retries = retries;
+            _timeout = timeout;
 
             Init();
         }
@@ -71,7 +75,6 @@ namespace GuaranteedRate.Sextant.WebClients
         protected void CreateClient(string url)
         {
             _url = url;
-            Client = new HttpClient();  
         }
 
         private void Init()
@@ -83,7 +86,7 @@ namespace GuaranteedRate.Sextant.WebClients
              * https://msdn.microsoft.com/en-us/library/dd997371(v=vs.110).aspx
              */
             // A simple blocking consumer with no cancellation.
-            
+
             Task.Run(() =>
             {
                 while (!_eventQueue.IsCompleted)
@@ -147,21 +150,67 @@ namespace GuaranteedRate.Sextant.WebClients
             return true;
         }
 
-        protected virtual bool PostEvent(object data)
+        /// <summary>
+        /// Any additional actions that need to be applied to the WebRequest object
+        /// prior to being processed by PostEvent
+        /// </summary>
+        /// <param name="webRequest"></param>
+        protected virtual void ExtraSetup(WebRequest webRequest)
+        {
+
+        }
+
+        protected virtual bool PostEvent(object formattedData)
         {
             try
             {
-                var content = new ObjectContent<object>(data, new JsonMediaTypeFormatter());
-                var response = Client.PostAsync(_url, content).Result;  // Blocking call!
+                /**
+                 * According to documentation, .NET will reuse connection but not WebRequest object
+                 */
+                WebRequest webRequest = WebRequest.Create(_url);
+                if (webRequest != null)
+                {
+                    webRequest.Method = "POST";
+                    webRequest.Timeout = _timeout;
+                    webRequest.ContentType = ContentType;
+                    ExtraSetup(webRequest);
+
+                    var stringFormattedData = JsonConvert.SerializeObject(formattedData);
+
+                    using (Stream stream = webRequest.GetRequestStream())
+                    {
+                        using (System.IO.StreamWriter sw = new System.IO.StreamWriter(stream))
+                            sw.Write(stringFormattedData);
+                    }
+
+                    using (System.IO.Stream s = webRequest.GetResponse().GetResponseStream())
+                    {
+                        using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+                        {
+                            var jsonResponse = sr.ReadToEnd();
+
+                            HttpWebResponse response = webRequest.GetResponse() as HttpWebResponse;
+                            if (response != null)
+                            {
+                                if (!SUCCESS_CODES.Contains(response.StatusCode))
+                                {
+                                    Logger.Warn(Name, $"Webservice at {_url} returned status code: {response.StatusCode}");
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Logger.Warn(Name, $"WebService url invalid. url={_url}");
+                }
             }
-            catch (ApiException ex)
+            catch (Exception ex)
             {
-                var error =
-                    $"The following request returned a {ex.StackTrace} status code, resource endpoint: {Client.BaseAddress} model: {ex.Message}. Response {ex.Response}";
-                Logger.Warn(Name, error);
+                Logger.Error(Name, $"Log by Post to Service failed: {ex}");
                 return false;
             }
-
             return true;
         }
 
@@ -176,8 +225,6 @@ namespace GuaranteedRate.Sextant.WebClients
                     Shutdown();
                 }
             }
-
-            Client = null;
 
             disposedValue = true;
         }
