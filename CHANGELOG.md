@@ -6,6 +6,12 @@
 ```
 
 
+## v17.2.2.10 / 2017 Sep 05
+* **Fix** - Make loggly log reporter run last so we can debug an intermittent loggly issue.
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.10"]
+```
 ## v17.2.2.9 / 2017 Sep 05
 * **Fix** - Bump version to assist in debugging errors.
 
