@@ -116,13 +116,13 @@ namespace GuaranteedRate.Sextant.WebClients
                             success = PostEvent(nextEvent);
                             if (!success)
                             {
-                                Logger.Info(Name, $"Post failed, try number: {tries}");
+                                Logger.Info(Name, $"Post failed, try number: {tries} to url: {_url}");
                             }
                             tries++;
                         }
                         if (!success)
                         {
-                            Logger.Error(Name, $"Post failed after {tries} tries");
+                            Logger.Error(Name, $"Post failed after {tries} tries to url: {_url}");
                         }
                     }
                 }
@@ -208,7 +208,7 @@ namespace GuaranteedRate.Sextant.WebClients
             }
             catch (Exception ex)
             {
-                Logger.Error(Name, $"Log by Post to Service failed: {ex}");
+                Logger.Error(Name, $"Log by Post to Service: {_url} failed: {ex}");
                 return false;
             }
             return true;
