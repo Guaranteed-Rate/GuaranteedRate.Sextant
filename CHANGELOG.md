@@ -1,3 +1,10 @@
+## v17.2.2.15 / 2017 Sep 05
+* **Update** - Add the url of the failing service to the logs
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.15"]
+```
+
 ## v17.2.2.14 / 2017 Sep 05
 * **Fix** - Forcing `AsyncEventReporter` to use `WebRequest` under the hood as `HttpClient` will cause deadlocks in 
 systems with asynchronous entry points.

@@ -7,6 +7,8 @@ namespace GuaranteedRate.Sextant.WebClients
 {
     public class SecureAsyncEventReporter : AsyncEventReporter
     {
+        protected override string Name { get; } = typeof(SecureAsyncEventReporter).Name;
+
         private string _authorization { get; set; }
 
         public SecureAsyncEventReporter(string url, string authorization, int queueSize = DEFAULT_QUEUE_SIZE,
