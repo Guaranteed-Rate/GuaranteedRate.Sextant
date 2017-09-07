@@ -1,3 +1,12 @@
+## v17.2.2.16 / 2017 Sep 07
+* **Fix** - Now sending timestamps fully in UTC format
+* **Fix** - Fix `ElasticsearchLogAppender` to send timestamps in date format.  Previously we were sending dates as 
+a string which was preventing adequate date indexing
+
+```csharp
+[GuaranteedRate.Sextant "17.2.2.16"]
+```
+
 ## v17.2.2.15 / 2017 Sep 05
 * **Update** - Add the url of the failing service to the logs
 

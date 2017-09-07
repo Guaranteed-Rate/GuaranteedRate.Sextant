@@ -86,7 +86,7 @@ namespace GuaranteedRate.Sextant.Logging
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
             fields.Add(LEVEL, level);
-            fields.Add("timestamp", DateTime.Now.ToString("MM/dd/yyyyTHH:mm:ss.fffzzz"));
+            fields.Add("timestamp", DateTime.UtcNow.ToString());
             fields.Add("hostname", System.Environment.MachineName);
             fields.Add("process", Process.GetCurrentProcess().ProcessName);
             fields.Add("loggerName", loggerName);

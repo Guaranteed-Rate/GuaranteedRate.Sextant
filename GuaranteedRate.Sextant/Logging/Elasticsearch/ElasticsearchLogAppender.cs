@@ -126,9 +126,19 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
             fields["tags"] = JsonConvert.SerializeObject(_tags);
 
+            var logEvent = new ElasticLogEvent
+            {
+                loggerName = fields["loggerName"],
+                hostname = fields["hostname"],
+                timestamp = DateTime.Parse(fields["timestamp"]),
+                level = fields[Logger.LEVEL],
+                message = fields["message"],
+                process = fields["process"]
+            };
+
             try
             {
-                var response = _client.Index(fields, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
+                var response = _client.Index(logEvent, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
 
                 if (!response.IsValid)
                 {
