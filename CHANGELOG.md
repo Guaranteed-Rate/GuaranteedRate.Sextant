@@ -1,3 +1,10 @@
+## v17.3.0.0 /2017 Sep 18
+* **Update** Upgrade to Encompass 17.3
+
+```csharp
+[GuaranteedRate.Sextant "17.3.0.0"]
+```
+
 ## v17.2.2.16 / 2017 Sep 07
 * **Fix** - Now sending timestamps fully in UTC format
 * **Fix** - Fix `ElasticsearchLogAppender` to send timestamps in date format.  Previously we were sending dates as 
