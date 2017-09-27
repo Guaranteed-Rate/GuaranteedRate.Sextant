@@ -1,3 +1,10 @@
+## v17.2.3.0 / 2017 Sep 26
+* **Fix** - Sensible default index name so we aren't creating lots of elasticsearch indexes named after every logger.  
+
+```csharp
+[GuaranteedRate.Sextant "17.2.3.0"]
+```
+
 ## v17.2.2.16 / 2017 Sep 07
 * **Fix** - Now sending timestamps fully in UTC format
 * **Fix** - Fix `ElasticsearchLogAppender` to send timestamps in date format.  Previously we were sending dates as 
