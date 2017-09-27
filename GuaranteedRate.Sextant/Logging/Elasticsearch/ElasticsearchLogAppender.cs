@@ -14,6 +14,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         protected override string Name { get; } = typeof(ElasticsearchLogAppender).Name;
         private Uri _node;
         private ConnectionSettings _settings;
+        private string _indexName;
         private ElasticClient _client;
         private static ISet<string> _tags;
         public bool AllEnabled { get; set; }
@@ -36,6 +37,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         public static string ELASTICSEARCH_DEBUG = "ElasticsearchLogAppender.Debug.Enabled";
         public static string ELASTICSEARCH_FATAL = "ElasticsearchLogAppender.Fatal.Enabled";
         public static string ELASTICSEARCH_TAGS = "ElasticsearchLogAppender.Tags";
+        public static string ELASTICSEARCH_INDEX_NAME = "ElasticsearchLogAppender.IndexName";
 
         #endregion
 
@@ -53,7 +55,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             _node = new Uri(url);
             _settings = new ConnectionSettings(_node);
             _client = new ElasticClient(_settings);
-
+            _indexName = config.GetValue(ELASTICSEARCH_INDEX_NAME, "SextantLogger");
             var allEnabled = config.GetValue(ELASTICSEARCH_ALL, true);
             var errorEnabled = config.GetValue(ELASTICSEARCH_ERROR, true);
             var warnEnabled = config.GetValue(ELASTICSEARCH_WARN, true);
@@ -138,7 +140,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
             try
             {
-                var response = _client.Index(logEvent, idx => idx.Index($"{loggerName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
+                var response = _client.Index(logEvent, idx => idx.Index($"{_indexName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
 
                 if (!response.IsValid)
                 {

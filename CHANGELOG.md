@@ -1,3 +1,9 @@
+## v17.3.0.1/ 2017 Sep 26
+* **Fix** - Sensible default index name so we aren't creating lots of elasticsearch indexes named after every logger.  
+```csharp
+[GuaranteedRate.Sextant "17.3.0.1"]
+```
+
 ## v17.3.0.0 /2017 Sep 18
 * **Update** Upgrade to Encompass 17.3
 
