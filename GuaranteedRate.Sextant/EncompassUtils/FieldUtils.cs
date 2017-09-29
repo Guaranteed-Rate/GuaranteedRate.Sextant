@@ -98,6 +98,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 "69",
                 "70",
                 "71",
+                "84",
                 "97",
                 "98",
                 "100",
