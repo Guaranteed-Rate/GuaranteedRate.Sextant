@@ -1,9 +1,9 @@
-## v17.2.4.0 / 2017 Sep 26
+## v17.2.4.0 / 2017 Sep 29
 
 * **Add**  - Add Co-Borr Marital Status to BORROWER_PAIR_FIELDS
 
 ```csharp
-[GuaranteedRate.Sextant "17.2.3.0"]
+[GuaranteedRate.Sextant "17.2.4.0"]
 ```
 
 ## v17.2.3.0 / 2017 Sep 26
