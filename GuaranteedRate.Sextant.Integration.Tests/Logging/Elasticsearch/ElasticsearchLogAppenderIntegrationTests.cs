@@ -15,7 +15,7 @@ namespace GuaranteedRate.Sextant.Integration.Tests.Logging.Elasticsearch
             {
                 var fields = new Dictionary<string, string>
                 {
-                    {"Application", "Encompass"},
+                    {"Application", "SextantLogger"},
                     {"Company", "Guaranteed Rate"},
                     {"loggerName", "Guaranteed Rate Encompass Logger"}
                 };

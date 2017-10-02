@@ -55,7 +55,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             _node = new Uri(url);
             _settings = new ConnectionSettings(_node);
             _client = new ElasticClient(_settings);
-            _indexName = config.GetValue(ELASTICSEARCH_INDEX_NAME, "SextantLogger");
+            _indexName = config.GetValue(ELASTICSEARCH_INDEX_NAME, "SextantLogger").ToLower();
             var allEnabled = config.GetValue(ELASTICSEARCH_ALL, true);
             var errorEnabled = config.GetValue(ELASTICSEARCH_ERROR, true);
             var warnEnabled = config.GetValue(ELASTICSEARCH_WARN, true);
@@ -131,11 +131,11 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var logEvent = new ElasticLogEvent
             {
                 loggerName = fields["loggerName"],
-                hostname = fields["hostname"],
-                timestamp = DateTime.Parse(fields["timestamp"]),
-                level = fields[Logger.LEVEL],
-                message = fields["message"],
-                process = fields["process"]
+                hostname = fields.ContainsKey("hostname") ? fields["hostname"] : System.Environment.MachineName,
+                timestamp = fields.ContainsKey("timestamp") ? DateTime.Parse(fields["timestamp"]) :DateTime.UtcNow,
+                level = fields.ContainsKey(Logger.LEVEL) ? fields[Logger.LEVEL] : "INFO",
+                message = fields.ContainsKey("message") ? fields["message"] : "no message",
+                process = fields.ContainsKey("process") ? fields["process"] : "process not defined"
             };
 
             try
