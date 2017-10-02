@@ -19,6 +19,21 @@
 [GuaranteedRate.Sextant "17.3.0.0"]
 ```
 
+## v17.2.4.0 / 2017 Sep 29
+
+* **Add**  - Add Co-Borr Marital Status to BORROWER_PAIR_FIELDS
+
+```csharp
+[GuaranteedRate.Sextant "17.2.4.0"]
+```
+
+## v17.2.3.0 / 2017 Sep 26
+* **Fix** - Sensible default index name so we aren't creating lots of elasticsearch indexes named after every logger.  
+
+```csharp
+[GuaranteedRate.Sextant "17.2.3.0"]
+```
+
 ## v17.2.2.16 / 2017 Sep 07
 * **Fix** - Now sending timestamps fully in UTC format
 * **Fix** - Fix `ElasticsearchLogAppender` to send timestamps in date format.  Previously we were sending dates as 
