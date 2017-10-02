@@ -1,3 +1,12 @@
+## v17.3.1.0 / 2017 Oct 02
+
+* **Update** - Update to EncompassSDK 17.3
+* **Update** - Consolidate package for Elassticsearch and Json.net
+
+```csharp
+[GuaranteedRate.Sextant "17.3.1.0"]
+```
+
 ## v17.2.4.0 / 2017 Sep 29
 
 * **Add**  - Add Co-Borr Marital Status to BORROWER_PAIR_FIELDS
