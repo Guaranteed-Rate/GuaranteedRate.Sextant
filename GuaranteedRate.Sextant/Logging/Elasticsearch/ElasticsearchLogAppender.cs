@@ -138,7 +138,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
                     timestamp = fields.ContainsKey("timestamp") ? DateTime.Parse(fields["timestamp"]) : DateTime.UtcNow,
                     level = fields.ContainsKey(Logger.LEVEL) ? fields[Logger.LEVEL] : "INFO",
                     message = fields.ContainsKey("message") ? fields["message"] : "no message",
-                    process = fields.ContainsKey("process") ? fields["process"] : Assembly.GetExecutingAssembly().FullName;
+                    process = fields.ContainsKey("process") ? fields["process"] : Assembly.GetExecutingAssembly().FullName
                 };
 
 
