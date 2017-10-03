@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
 using Nest;
@@ -137,7 +138,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
                     timestamp = fields.ContainsKey("timestamp") ? DateTime.Parse(fields["timestamp"]) : DateTime.UtcNow,
                     level = fields.ContainsKey(Logger.LEVEL) ? fields[Logger.LEVEL] : "INFO",
                     message = fields.ContainsKey("message") ? fields["message"] : "no message",
-                    process = fields.ContainsKey("process") ? fields["process"] : "process not defined"
+                    process = fields.ContainsKey("process") ? fields["process"] : Assembly.GetExecutingAssembly().FullName;
                 };
 
 
