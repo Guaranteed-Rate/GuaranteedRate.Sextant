@@ -113,33 +113,34 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         protected override bool PostEvent(object data)
         {
-            var fields = data as IDictionary<string, string>;
-
-            if (fields == null) return true;
-
-            var loggerName = "undefined";
-            if (fields.ContainsKey("loggerName"))
-            {
-                loggerName = fields["loggerName"];
-                loggerName = loggerName.ToLower();
-            }
-
-            //fields["timestamp"] = GetEpochTime().ToString();
-
-            fields["tags"] = JsonConvert.SerializeObject(_tags);
-
-            var logEvent = new ElasticLogEvent
-            {
-                loggerName = fields["loggerName"],
-                hostname = fields.ContainsKey("hostname") ? fields["hostname"] : System.Environment.MachineName,
-                timestamp = fields.ContainsKey("timestamp") ? DateTime.Parse(fields["timestamp"]) :DateTime.UtcNow,
-                level = fields.ContainsKey(Logger.LEVEL) ? fields[Logger.LEVEL] : "INFO",
-                message = fields.ContainsKey("message") ? fields["message"] : "no message",
-                process = fields.ContainsKey("process") ? fields["process"] : "process not defined"
-            };
-
             try
             {
+                var fields = data as IDictionary<string, string>;
+
+                if (fields == null) return true;
+
+                var loggerName = "undefined";
+                if (fields.ContainsKey("loggerName"))
+                {
+                    loggerName = fields["loggerName"];
+                    loggerName = loggerName.ToLower();
+                }
+
+                //fields["timestamp"] = GetEpochTime().ToString();
+
+                fields["tags"] = JsonConvert.SerializeObject(_tags);
+
+                var logEvent = new ElasticLogEvent
+                {
+                    loggerName = fields["loggerName"],
+                    hostname = fields.ContainsKey("hostname") ? fields["hostname"] : System.Environment.MachineName,
+                    timestamp = fields.ContainsKey("timestamp") ? DateTime.Parse(fields["timestamp"]) : DateTime.UtcNow,
+                    level = fields.ContainsKey(Logger.LEVEL) ? fields[Logger.LEVEL] : "INFO",
+                    message = fields.ContainsKey("message") ? fields["message"] : "no message",
+                    process = fields.ContainsKey("process") ? fields["process"] : "process not defined"
+                };
+
+
                 var response = _client.Index(logEvent, idx => idx.Index($"{_indexName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
 
                 if (!response.IsValid)
