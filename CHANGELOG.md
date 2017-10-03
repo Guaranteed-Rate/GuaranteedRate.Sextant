@@ -1,6 +1,7 @@
 ## v17.3.1.1 / 2017 Oct 02
 
 * **Fix**  - force index name toLower because otherwise ElasticSearch dies horribly.
+* **Update** - Update Newtonsoft to 10.0.0.0
 
 ```csharp
 [GuaranteedRate.Sextant "17.3.1.1"]
