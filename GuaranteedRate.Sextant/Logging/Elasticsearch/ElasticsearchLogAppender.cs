@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Belikov.GenuineChannels;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
 using Nest;
@@ -55,7 +57,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             _node = new Uri(url);
             _settings = new ConnectionSettings(_node);
             _client = new ElasticClient(_settings);
-            _indexName = config.GetValue(ELASTICSEARCH_INDEX_NAME, "SextantLogger");
+            _indexName = config.GetValue(ELASTICSEARCH_INDEX_NAME, "SextantLogger").ToLower();
             var allEnabled = config.GetValue(ELASTICSEARCH_ALL, true);
             var errorEnabled = config.GetValue(ELASTICSEARCH_ERROR, true);
             var warnEnabled = config.GetValue(ELASTICSEARCH_WARN, true);
@@ -111,11 +113,12 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             }
         }
 
-        protected override bool PostEvent(object data)
+        private  ElasticLogEvent CreateLogEvent(object data)
         {
+
             var fields = data as IDictionary<string, string>;
 
-            if (fields == null) return true;
+            if (fields == null) return null;
 
             var loggerName = "undefined";
             if (fields.ContainsKey("loggerName"))
@@ -128,23 +131,43 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
             fields["tags"] = JsonConvert.SerializeObject(_tags);
 
+            //tolower all the keys
+            var lcfields = new Dictionary<string, string>();
+            foreach (var key in fields.Keys)
+            {
+                if (!lcfields.ContainsKey(key.ToLower()))
+                {
+                    lcfields.Add(key.ToLower(), fields[key]);  //if you have a key like "Message" and another like "message" you get only the contents of "message."  Don't do that.
+                }
+            }
+
             var logEvent = new ElasticLogEvent
             {
-                loggerName = fields["loggerName"],
-                hostname = fields["hostname"],
-                timestamp = DateTime.Parse(fields["timestamp"]),
-                level = fields[Logger.LEVEL],
-                message = fields["message"],
-                process = fields["process"]
+                loggerName =  lcfields.ContainsKey("loggername") ? lcfields["loggername"] : Assembly.GetExecutingAssembly().GetName().Name,
+                hostname = lcfields.ContainsKey("hostname") ? lcfields["hostname"] : System.Environment.MachineName,
+                timestamp = lcfields.ContainsKey("timestamp") ? DateTime.Parse(lcfields["timestamp"]) : DateTime.UtcNow,
+                level = fields.ContainsKey(Logger.LEVEL) ? fields[Logger.LEVEL] : "INFO",
+                message = lcfields.ContainsKey("message") ? lcfields["message"] : "no message",
+                process = lcfields.ContainsKey("process") ? lcfields["process"] : Assembly.GetExecutingAssembly().GetName().Name
             };
+            return logEvent;
+        }
 
+        protected override bool PostEvent(object data)
+        {
             try
             {
-                var response = _client.Index(logEvent, idx => idx.Index($"{_indexName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
 
-                if (!response.IsValid)
+                var le = CreateLogEvent(data);
+                if (le != null)
                 {
-                    Logger.Warn(Name, $"The Elasticsearch request returned an error {response.DebugInformation}");
+                    var response = _client.Index(le,
+                        idx => idx.Index($"{_indexName}-{DateTime.UtcNow.ToString("yyyy.MM.dd")}"));
+
+                    if (!response.IsValid)
+                    {
+                        Logger.Warn(Name, $"The Elasticsearch request returned an error {response.DebugInformation}");
+                    }
                 }
             }
             catch (Exception ex)

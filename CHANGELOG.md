@@ -1,3 +1,11 @@
+## v17.3.1.1 / 2017 Oct 02
+
+* **Fix**  - force index name toLower because otherwise ElasticSearch dies horribly.
+* **Update** - Update Newtonsoft to 10.0.0.0
+
+```csharp
+[GuaranteedRate.Sextant "17.3.1.1"]
+```
 ## v17.3.1.0 / 2017 Sep 29
 
 * **Add**  - Add Co-Borr Marital Status to BORROWER_PAIR_FIELDS
