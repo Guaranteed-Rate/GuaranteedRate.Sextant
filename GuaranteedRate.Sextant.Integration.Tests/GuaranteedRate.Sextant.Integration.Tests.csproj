@@ -66,6 +66,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Logging\File\FileLogAppenderIntegrationTests.cs" />
     <Compile Include="Logging\Elasticsearch\ElasticsearchLogAppenderIntegrationTests.cs" />
     <Compile Include="Logging\Loggly\LogglyLogAppenderIntegrationTests.cs" />
     <Compile Include="Metrics\Datadog\DatadogReporterIntegrationTests.cs" />

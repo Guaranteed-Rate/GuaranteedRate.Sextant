@@ -211,7 +211,8 @@
     <Compile Include="EncompassUtils\Reporting.cs" />
     <Compile Include="EncompassUtils\SessionUtils.cs" />
     <Compile Include="EncompassUtils\UserUtils.cs" />
-    <Compile Include="Logging\Elasticsearch\ElasticLogEvent.cs" />
+    <Compile Include="Logging\File\FileLogAppender.cs" />
+    <Compile Include="Logging\SimpleLogEvent.cs" />
     <Compile Include="Metrics\Graphite\GraphiteReporter.cs" />
     <Compile Include="Metrics\Graphite\StatsDGraphiteReport.cs" />
     <Compile Include="Metrics\IReporter.cs" />
