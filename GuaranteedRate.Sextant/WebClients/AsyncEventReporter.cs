@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -104,7 +105,7 @@ namespace GuaranteedRate.Sextant.WebClients
                     }
                     catch (InvalidOperationException e)
                     {
-                        Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}");
+                     //   Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}");
                     }
 
                     if (nextEvent != null)
@@ -132,15 +133,22 @@ namespace GuaranteedRate.Sextant.WebClients
 
         /**
          * This is the correct way to cleanly shutdown.
-         * Once called this method *WILL BLOCK* until the queue has been drained.
+         * Once called this method *WILL BLOCK for 30 seconds* until the queue has been drained.
          */
 
         public void Shutdown()
         {
+            Thread.Sleep(1000);
             _eventQueue.CompleteAdding();
+            var sw = new Stopwatch();
+            sw.Start();
             while (!_finished)
             {
-                Thread.Sleep(1000);
+                if (sw.ElapsedMilliseconds > 30000)
+                {
+                    return;
+                }
+                Thread.Sleep(100);
             }
         }
 

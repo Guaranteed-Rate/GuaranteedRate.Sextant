@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.WebClients;
 using Nest;
 
@@ -33,9 +35,11 @@ namespace GuaranteedRate.Sextant.Logging.File
 
         #endregion
 
+
+
         public void Log(IDictionary<string, string> fields)
         {
-            throw new NotImplementedException();
+            PostEvent(fields);
         }
 
         public void AddTag(string tag)
@@ -60,7 +64,8 @@ namespace GuaranteedRate.Sextant.Logging.File
             var infoEnabled = config.GetValue(FILE_INFO, true);
             var debugEnabled = config.GetValue(FILE_DEBUG, true);
             var fatalEnabled = config.GetValue(FILE_FATAL, true);
-
+            LogFolder = config.GetValue(LOG_FOLDER, System.IO.Path.GetTempPath());
+            LogName  = config.GetValue(LOG_NAME, "Sextant_log");
             AllEnabled = allEnabled;
             ErrorEnabled = allEnabled || errorEnabled;
             WarnEnabled = allEnabled || warnEnabled;
@@ -76,13 +81,35 @@ namespace GuaranteedRate.Sextant.Logging.File
         public bool WarnEnabled { get; private set; }
         public bool ErrorEnabled { get; private set; }
         public bool FatalEnabled { get; private set; }
+        public string LogFolder { get; private set; }
+        public double MaxLogAgeInHours = 12;
+        public DateTime LastLogScrub = DateTime.UtcNow;
+        public string LogName { get; private set; }
 
+        private void DeleteOldLogs()
+        {
+            foreach (var f in System.IO.Directory.GetFiles(LogFolder))
+            {
+                var fi = new FileInfo(f);
+                if (fi.Name.StartsWith(LogName))
+                {
+                    if ((DateTime.UtcNow - fi.CreationTime.ToUniversalTime()).TotalHours > MaxLogAgeInHours)
+                    {
+                        fi.Delete();
+                    }
+                }
+            }
+        }
 
         private string GetFilePath()
         {
-
-            return System.IO.Path.Combine(LOG_FOLDER,
-                $"{LOG_NAME}-{DateTime.UtcNow.Year}-{DateTime.UtcNow.Month}-{DateTime.UtcNow.Day}-{DateTime.UtcNow.Hour}");
+            if ((DateTime.UtcNow - LastLogScrub).TotalMinutes > 5)
+            {
+                DeleteOldLogs();
+                LastLogScrub=DateTime.UtcNow;
+            }
+            return Path.Combine(LogFolder,
+                $"{LogName}-{DateTime.UtcNow.Year}-{DateTime.UtcNow.Month}-{DateTime.UtcNow.Day}-{DateTime.UtcNow.Hour}.log");
         }
 
         protected override bool PostEvent(object data)
@@ -93,12 +120,24 @@ namespace GuaranteedRate.Sextant.Logging.File
                 var logEvent = SimpleLogEvent.Create(data, _tags);
                 if (logEvent != null)
                 {
-
-                    System.IO.File.WriteAllLines(path, new string[]
+                    try
                     {
-                        $"{logEvent.level}: {logEvent.hostname} - {logEvent.timestamp} - {logEvent.process} - {logEvent.message} - tags: {String.Join(",", _tags)}"
+                        System.IO.File.AppendAllLines(path, new string[]
+                        {
+                            $"{logEvent.level}: {logEvent.hostname} - {logEvent.timestamp} - {logEvent.process} - {logEvent.message} - tags: {String.Join(",", _tags)}"
 
-                    });
+                        });
+
+                    }
+                    catch (System.IO.IOException iox)
+                    {
+                        return false;
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
                 }
             }
             catch
