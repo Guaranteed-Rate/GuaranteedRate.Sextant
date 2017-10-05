@@ -86,6 +86,8 @@ namespace GuaranteedRate.Sextant.Logging.File
         public DateTime LastLogScrub = DateTime.UtcNow;
         public string LogName { get; private set; }
 
+        private  object locker = new object();
+
         private void DeleteOldLogs()
         {
             foreach (var f in System.IO.Directory.GetFiles(LogFolder))
@@ -120,23 +122,29 @@ namespace GuaranteedRate.Sextant.Logging.File
                 var logEvent = SimpleLogEvent.Create(data, _tags);
                 if (logEvent != null)
                 {
-                    try
+                    lock (locker)
                     {
-                        System.IO.File.AppendAllLines(path, new string[]
+                        try
                         {
-                            $"{logEvent.level}: {logEvent.hostname} - {logEvent.timestamp} - {logEvent.process} - {logEvent.message} - tags: {String.Join(",", _tags)}"
+                            using (
+                                var fs = new System.IO.FileStream(path, FileMode.Append, FileAccess.Write,
+                                    FileShare.None))
+                            {
+                                StreamWriter writer = new StreamWriter(fs);
+                                writer.WriteLine(
+                                    $"{logEvent.level}: {logEvent.hostname} - {logEvent.timestamp} - {logEvent.process} - {logEvent.message} - tags: {String.Join(",", _tags)}");
+                                writer.Flush();
+                            }
+                        }
+                        catch (System.IO.IOException iox)
+                        {
+                            return false;
+                        }
+                        catch (Exception ex)
+                        {
 
-                        });
-
-                    }
-                    catch (System.IO.IOException iox)
-                    {
-                        return false;
-                    }
-                    catch (Exception ex)
-                    {
-
-                        throw;
+                            throw;
+                        }
                     }
                 }
             }

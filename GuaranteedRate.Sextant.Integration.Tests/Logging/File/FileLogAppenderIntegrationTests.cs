@@ -21,9 +21,9 @@ namespace GuaranteedRate.Sextant.Integration.Tests.Logging.File
             {
                 Logger.AddAppender(sut);
                 var po = new ParallelOptions();
-                po.MaxDegreeOfParallelism = 6;
+                po.MaxDegreeOfParallelism = 2;
                 Parallel.For(0, 200, po, a => LogIt());
-                Thread.Sleep(10000);
+                Thread.Sleep(30000);
                 sut.Shutdown();
             }
 
