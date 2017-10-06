@@ -60,6 +60,7 @@ namespace GuaranteedRate.Sextant.Logging
             }
         }
 
+      
 
     }
 }

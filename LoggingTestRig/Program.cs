@@ -24,6 +24,8 @@ namespace LoggingTestRig
 
         static void Main(string[] args)
         {
+
+            int count = 0;
             var config = new JsonEncompassConfig();
             config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
             
@@ -50,11 +52,11 @@ namespace LoggingTestRig
 
             while (Console.ReadKey().Key!= ConsoleKey.Q)
             {
-
-                Parallel.For(0, 10, async => { Debug(); });
-
-           }
-
+                var increment = 19;
+                Parallel.For(0, increment, async => { Debug(); });
+                count = count + increment;
+            }
+            Console.WriteLine($"total queued: {count}");
             Console.WriteLine("Shutting down.");
             Logger.Shutdown(30);
             return;

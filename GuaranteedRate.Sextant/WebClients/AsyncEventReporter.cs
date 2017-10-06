@@ -46,10 +46,10 @@ namespace GuaranteedRate.Sextant.WebClients
         
         protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
         protected volatile bool _finished;
-        
+        protected bool LogRecurisively = true;
 
      
-        protected AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
+        protected AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT, bool logRecursively = true)
         {
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             if (retries == 0)
@@ -69,7 +69,11 @@ namespace GuaranteedRate.Sextant.WebClients
         protected void Init()
         {
             _finished = false;
-
+            var excludedReporters = new Type[0];  //Since we use this class to power our loggers, we can run in to recursive error problems.  Any errors here may result in us asking Elasticsearch (for example) to log errors that we encounter when logging to Elasticsearch.  Since the latter operation is likely to fail, we want to have the option of skipping it.  So when we log errors in this module, we pass in the current type so the logger doesn't write the error to it.
+            if (!LogRecurisively)
+            {
+                excludedReporters[0] = GetType();
+            }
             /**
              * Taken directly from
              * https://msdn.microsoft.com/en-us/library/dd997371(v=vs.110).aspx
@@ -90,18 +94,15 @@ namespace GuaranteedRate.Sextant.WebClients
                     // IsCompleted check but before we call Take.  
                     // In this example, we can simply catch the exception since the  
                     // loop will break on the next iteration. 
-                    try
-                    {
-                        Console.WriteLine($"------checking queue from {this.GetType().Name}  items: {_eventQueue.Count} on thread {System.Threading.Thread.CurrentThread.ManagedThreadId}.");
-                        nextEvent = _eventQueue.Take();
-                    }
-                    catch (InvalidOperationException e)
-                    {
-                            Console.WriteLine(e);
-                     //   Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}");
-                    }
-
-                    if (nextEvent != null)
+                        try
+                        {
+                            nextEvent = _eventQueue.Take();
+                        }
+                        catch (InvalidOperationException e)
+                        {
+                            Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}", excludedReporters);
+                        }
+                        if (nextEvent != null)
                     {
                         bool success = false;
                         int tries = 0;
@@ -111,19 +112,20 @@ namespace GuaranteedRate.Sextant.WebClients
                             success = PostEvent(nextEvent);
                             if (!success)
                             {
-                                Logger.Info(Name, $"Write failed, try number: {tries}.");
+                                Logger.Info(Name, $"Write failed, try number: {tries}.", excludedReporters);
                             }
                             tries++;
                         }
                         if (!success)
                         {
-                            Logger.Error(Name, $"Write failed after {tries} tries.");
+                            Logger.Error(Name, $"Write failed after {tries} tries.", excludedReporters);
                         }
                     }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Something terrible happened{ex}");
+
+                            Logger.Warn(Name, $"Exception processing reporter queue:{ex}", excludedReporters);
 
                         throw;
                     }
@@ -209,5 +211,6 @@ namespace GuaranteedRate.Sextant.WebClients
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        
     }
 }

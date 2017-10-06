@@ -41,7 +41,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         public static string ELASTICSEARCH_FATAL = "ElasticsearchLogAppender.Fatal.Enabled";
         public static string ELASTICSEARCH_TAGS = "ElasticsearchLogAppender.Tags";
         public static string ELASTICSEARCH_INDEX_NAME = "ElasticsearchLogAppender.IndexName";
-
+        public static string ELASTICSEARCH_LOG_RECURSIVELY = "ElasticsearchLogAppender.LogRecursively";
         #endregion
 
         public ElasticsearchLogAppender(IEncompassConfig config)
@@ -65,10 +65,8 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var infoEnabled = config.GetValue(ELASTICSEARCH_INFO, true);
             var debugEnabled = config.GetValue(ELASTICSEARCH_DEBUG, true);
             var fatalEnabled = config.GetValue(ELASTICSEARCH_FATAL, true);
-            var maxConnections = config.GetValue("MAXconnections", 100);
-
-            ServicePointManager.DefaultConnectionLimit = maxConnections;
-
+            LogRecurisively = config.GetValue(ELASTICSEARCH_LOG_RECURSIVELY, true);  
+            //e.g. if we fail writing a log to Elasticsearch, log the error to Elasticsearch.
             AllEnabled = allEnabled;
             ErrorEnabled = allEnabled || errorEnabled;
             WarnEnabled = allEnabled || warnEnabled;
@@ -117,14 +115,14 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             }
         }
 
-         
+
 
         protected override bool PostEvent(object data)
         {
             try
             {
 
-                var le = SimpleLogEvent.Create(data,_tags);
+                var le = SimpleLogEvent.Create(data, _tags);
                 if (le != null)
                 {
                     var response = _client.Index(le,

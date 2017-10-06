@@ -28,12 +28,12 @@ namespace GuaranteedRate.Sextant.Logging.Console
 
         #endregion
 
-        public ConsoleLogAppender(IEncompassConfig config):base(QUEUE_LENGTH,RETRIES)
+        public ConsoleLogAppender(IEncompassConfig config) : base(QUEUE_LENGTH, RETRIES)
         {
             Setup(config);
         }
 
-        public ConsoleLogAppender(IEncompassConfig config, int queueLength, int retries):base(queueLength,retries)
+        public ConsoleLogAppender(IEncompassConfig config, int queueLength, int retries) : base(queueLength, retries)
         {
             Setup(config);
         }
@@ -54,28 +54,28 @@ namespace GuaranteedRate.Sextant.Logging.Console
         {
             _tags.Add(tag);
         }
+        
 
-        /// <summary>
-        /// Post event actually writes it.
-        /// </summary>
-        /// <param name="formattedData"></param>
-        /// <returns></returns>
-        protected override bool PostEvent(object formattedData)
+    
+    /// <summary>
+    /// Post event actually writes it.
+    /// </summary>
+    /// <param name="formattedData"></param>
+    /// <returns></returns>
+    protected override bool PostEvent(object formattedData)
+    {
+        try
         {
-            try
-            {
+            var le = SimpleLogEvent.Create(formattedData, _tags);
+            System.Console.WriteLine(
+                $"{le.level}: {le.timestamp} - {le.message} - {string.Join(",", _tags)} {le.hostname}.");
+            return true;
+        }
+        catch (Exception ex)
+        {
 
-
-                var le = SimpleLogEvent.Create(formattedData, _tags);
-                System.Console.WriteLine(
-                    $"{le.level}: {le.timestamp} - {le.message} - {string.Join(",", _tags)} {le.hostname}.");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                    
-                throw;
-            }
+            throw;
         }
     }
+}
 }

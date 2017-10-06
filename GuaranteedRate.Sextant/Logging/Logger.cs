@@ -10,6 +10,8 @@ using GuaranteedRate.Sextant.Logging.Console;
 using GuaranteedRate.Sextant.Logging.Elasticsearch;
 using GuaranteedRate.Sextant.Logging.File;
 using GuaranteedRate.Sextant.Logging.Loggly;
+using GuaranteedRate.Sextant.Metrics;
+using Org.BouncyCastle.Asn1.X509.Qualified;
 
 namespace GuaranteedRate.Sextant.Logging
 {
@@ -109,22 +111,49 @@ namespace GuaranteedRate.Sextant.Logging
             Log(PopulateEvent(logger, DEBUG_LEVEL, message));
         }
 
-        public static void Error(string logger, string message)
+     
+        /// <summary>
+        /// writes a log entry as "error"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Error(string logger, string message, Type[] excludedReporters = null)
         {
-            Log(PopulateEvent(logger, ERROR_LEVEL, message));
+            Log(PopulateEvent(logger, ERROR_LEVEL, message), excludedReporters);
         }
 
-        public static void Fatal(string logger, string message)
+        /// <summary>
+        /// Writes a log entry as "fatal"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Fatal(string logger, string message, Type[] excludedReporters = null)
         {
-            Log(PopulateEvent(logger, FATAL_LEVEL, message));
+            Log(PopulateEvent(logger, FATAL_LEVEL, message), excludedReporters);
         }
 
-        public static void Info(string logger, string message)
+
+        /// <summary>
+        /// Writes a log entry as "info"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Info(string logger, string message, Type[] excludedReporters = null)
         {
             Log(PopulateEvent(logger, INFO_LEVEL, message));
         }
 
-        public static void Warn(string logger, string message)
+
+        /// <summary>
+        /// Writes a log entry as "warn"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Warn(string logger, string message, Type[] excludedReporters = null)
         {
             Log(PopulateEvent(logger, WARN_LEVEL, message));
         }
@@ -142,11 +171,14 @@ namespace GuaranteedRate.Sextant.Logging
             Log(fields);
         }
 
-        private static void Log(IDictionary<string, string> fields)
+        private static void Log(IDictionary<string, string> fields, Type[] excludedReporters = null)
         {
             foreach (var r in _reporters)
             {
-                r.Log(fields);
+                if (excludedReporters == null || excludedReporters.All(aa => aa != r.GetType()))
+                {
+                    r.Log(fields);
+                }
             }
         }
 
@@ -177,12 +209,13 @@ namespace GuaranteedRate.Sextant.Logging
                 degPar.MaxDegreeOfParallelism = _reporters.Count;
                 lock (syncRoot)
                 {
-                    Parallel.ForEach(_reporters, r =>
+                    Parallel.ForEach(_reporters, async r =>
                     {
-                        System.Console.WriteLine($"disposing {r.GetType().Name}");
-                        r.Shutdown(blockSeconds);
-                        r.Dispose();
-                        System.Console.WriteLine($"disposed {r.GetType().Name}");
+                        await Task.Run(() => {
+                            r.Shutdown(blockSeconds);
+                            r.Dispose();
+                        });
+
                     });
                 }
             }
@@ -194,9 +227,5 @@ namespace GuaranteedRate.Sextant.Logging
             GC.SuppressFinalize(this);
         }
 
-        ~Logger()
-        {
-            System.Console.WriteLine("FINALIZED!");
-        }
     }
 }
