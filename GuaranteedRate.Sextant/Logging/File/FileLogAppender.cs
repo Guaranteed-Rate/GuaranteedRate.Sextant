@@ -11,7 +11,7 @@ using Nest;
 
 namespace GuaranteedRate.Sextant.Logging.File
 {
-    public class FileLogAppender : AsyncEventReporter, ILogAppender
+    public class FileLogAppender : SimpleLogAppender, ILogAppender
     {
         //private readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         protected override string Name { get; } = typeof(FileLogAppender).Name;
@@ -37,11 +37,7 @@ namespace GuaranteedRate.Sextant.Logging.File
 
 
 
-        public void Log(IDictionary<string, string> fields)
-        {
-            PostEvent(fields);
-        }
-
+     
         public void AddTag(string tag)
         {
             _tags.Add(tag);

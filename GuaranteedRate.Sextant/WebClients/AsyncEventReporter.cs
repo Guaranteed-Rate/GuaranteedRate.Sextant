@@ -19,7 +19,7 @@ namespace GuaranteedRate.Sextant.WebClients
      * 
      */
 
-    public class AsyncEventReporter : IDisposable, IEventReporter
+    public abstract class AsyncEventReporter : IDisposable, IEventReporter
     {
         /// <summary>
         /// This is the set of http status codes that are condsidered successful
@@ -36,49 +36,37 @@ namespace GuaranteedRate.Sextant.WebClients
             HttpStatusCode.OK
         };
 
-        private readonly BlockingCollection<object> _eventQueue;
-        private readonly int _retries;
-        private readonly int _timeout;
-        private string _url;
+        protected readonly BlockingCollection<object> _eventQueue;
+        protected readonly int _retries;
+        protected readonly int _timeout;
         public string ContentType { get; set; } = "application/json";
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
         protected const int DEFAULT_TIMEOUT = 45000;
         
         protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
-        private volatile bool _finished;
+        protected volatile bool _finished;
         
 
-        public AsyncEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
+     
+        protected AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
         {
-            if (string.IsNullOrEmpty(url))
+            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
+            if (retries == 0)
             {
-                throw new ArgumentNullException("url", "Base URL must be provided");
+                _retries = 1;
             }
-
-            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
-            _retries = retries;
-            _timeout = timeout;
-            CreateClient(url);
-
-            Init();
-        }
-
-        public AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
-        {
-            _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
-            _retries = retries;
+            else
+            {
+                _retries = retries;
+            }
             _timeout = timeout;
 
             Init();
         }
 
-        protected void CreateClient(string url)
-        {
-            _url = url;
-        }
-
-        private void Init()
+        
+        protected void Init()
         {
             _finished = false;
 
@@ -92,6 +80,9 @@ namespace GuaranteedRate.Sextant.WebClients
             {
                 while (!_eventQueue.IsCompleted)
                 {
+                    try
+                    {
+
                     object nextEvent = null;
                     // Blocks if number.Count == 0 
                     // IOE means that Take() was called on a completed collection. 
@@ -101,10 +92,12 @@ namespace GuaranteedRate.Sextant.WebClients
                     // loop will break on the next iteration. 
                     try
                     {
+                        Console.WriteLine($"------checking queue from {this.GetType().Name}  items: {_eventQueue.Count} on thread {System.Threading.Thread.CurrentThread.ManagedThreadId}.");
                         nextEvent = _eventQueue.Take();
                     }
                     catch (InvalidOperationException e)
                     {
+                            Console.WriteLine(e);
                      //   Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}");
                     }
 
@@ -112,39 +105,50 @@ namespace GuaranteedRate.Sextant.WebClients
                     {
                         bool success = false;
                         int tries = 0;
+                       
                         while (!success && tries < _retries)
                         {
                             success = PostEvent(nextEvent);
                             if (!success)
                             {
-                                Logger.Info(Name, $"Post failed, try number: {tries} to url: {_url}");
+                                Logger.Info(Name, $"Write failed, try number: {tries}.");
                             }
                             tries++;
                         }
                         if (!success)
                         {
-                            Logger.Error(Name, $"Post failed after {tries} tries to url: {_url}");
+                            Logger.Error(Name, $"Write failed after {tries} tries.");
                         }
                     }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Something terrible happened{ex}");
+
+                        throw;
+                    }
+
                 }
+                Console.WriteLine("####----finished.");
+
                 _finished = true;
             });
         }
 
         /**
          * This is the correct way to cleanly shutdown.
-         * Once called this method *WILL BLOCK for 30 seconds* until the queue has been drained.
+         * Once called this method *WILL BLOCK for for blockSeconds seconds* until the queue has been drained.
          */
 
-        public void Shutdown()
+
+        public void Shutdown(int blockSeconds = 60)
         {
-            Thread.Sleep(1000);
             _eventQueue.CompleteAdding();
             var sw = new Stopwatch();
             sw.Start();
             while (!_finished)
             {
-                if (sw.ElapsedMilliseconds > 30000)
+                if (sw.ElapsedMilliseconds > blockSeconds*1000)
                 {
                     return;
                 }
@@ -152,6 +156,11 @@ namespace GuaranteedRate.Sextant.WebClients
             }
         }
 
+        /// <summary>
+        /// report event queues it.  Post event actually writes it.
+        /// </summary>
+        /// <param name="formattedData"></param>
+        /// <returns></returns>
         public bool ReportEvent(object formattedData)
         {
             _eventQueue.Add(formattedData);
@@ -168,77 +177,35 @@ namespace GuaranteedRate.Sextant.WebClients
 
         }
 
-        protected virtual bool PostEvent(object formattedData)
-        {
-            try
-            {
-                /**
-                 * According to documentation, .NET will reuse connection but not WebRequest object
-                 */
-                WebRequest webRequest = WebRequest.Create(_url);
-                if (webRequest != null)
-                {
-                    webRequest.Method = "POST";
-                    webRequest.Timeout = _timeout;
-                    webRequest.ContentType = ContentType;
-                    ExtraSetup(webRequest);
+        protected abstract bool  PostEvent(object formattedData);
 
-                    var stringFormattedData = JsonConvert.SerializeObject(formattedData);
-
-                    using (Stream stream = webRequest.GetRequestStream())
-                    {
-                        using (System.IO.StreamWriter sw = new System.IO.StreamWriter(stream))
-                            sw.Write(stringFormattedData);
-                    }
-
-                    using (System.IO.Stream s = webRequest.GetResponse().GetResponseStream())
-                    {
-                        using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                        {
-                            var jsonResponse = sr.ReadToEnd();
-
-                            HttpWebResponse response = webRequest.GetResponse() as HttpWebResponse;
-                            if (response != null)
-                            {
-                                if (!SUCCESS_CODES.Contains(response.StatusCode))
-                                {
-                                    Logger.Warn(Name, $"Webservice at {_url} returned status code: {response.StatusCode}");
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Logger.Warn(Name, $"WebService url invalid. url={_url}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(Name, $"Log by Post to Service: {_url} failed: {ex}");
-                return false;
-            }
-            return true;
-        }
 
         private bool disposedValue = false;
 
+        private int _shutdownTimeout = 60;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    Shutdown();
+                    Shutdown(_shutdownTimeout);
                 }
             }
 
             disposedValue = true;
         }
 
+#pragma warning disable CC0029 // Disposables Should Call Suppress Finalize
         public void Dispose()
+#pragma warning restore CC0029 // Disposables Should Call Suppress Finalize
         {
+            Dispose(60);
+        }
+
+        public void Dispose(int shutdownTimeout = 60)
+        {
+            _shutdownTimeout = shutdownTimeout;
             Dispose(true);
             GC.SuppressFinalize(this);
         }

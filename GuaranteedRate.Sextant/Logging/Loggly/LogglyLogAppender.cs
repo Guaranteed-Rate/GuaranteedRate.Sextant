@@ -6,7 +6,7 @@ using GuaranteedRate.Sextant.WebClients;
 
 namespace GuaranteedRate.Sextant.Logging.Loggly
 {
-    public class LogglyLogAppender : AsyncEventReporter, ILogAppender
+    public class LogglyLogAppender : AsyncWebEventReporter, ILogAppender
     {
         private readonly string _url = "";
         private readonly string _apiKey = "";

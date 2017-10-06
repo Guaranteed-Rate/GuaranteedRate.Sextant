@@ -5,7 +5,7 @@ using System.Net;
 
 namespace GuaranteedRate.Sextant.WebClients
 {
-    public class SecureAsyncEventReporter : AsyncEventReporter
+    public class SecureAsyncEventReporter : AsyncWebEventReporter
     {
         protected override string Name { get; } = typeof(SecureAsyncEventReporter).Name;
 

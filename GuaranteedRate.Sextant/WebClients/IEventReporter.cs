@@ -3,6 +3,6 @@
     public interface IEventReporter
     {
         bool ReportEvent(object formattedData);
-        void Shutdown();
+        void Shutdown(int blockSeconds);
     }
 }

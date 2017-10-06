@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using Belikov.GenuineChannels;
 using GuaranteedRate.Sextant.Config;
@@ -18,7 +19,7 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         private ConnectionSettings _settings;
         private string _indexName;
         private ElasticClient _client;
-        private static ISet<string> _tags;
+        protected static ISet<string> _tags;
         public bool AllEnabled { get; set; }
         public bool DebugEnabled { get; private set; }
         public bool InfoEnabled { get; private set; }
@@ -64,6 +65,9 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var infoEnabled = config.GetValue(ELASTICSEARCH_INFO, true);
             var debugEnabled = config.GetValue(ELASTICSEARCH_DEBUG, true);
             var fatalEnabled = config.GetValue(ELASTICSEARCH_FATAL, true);
+            var maxConnections = config.GetValue("MAXconnections", 100);
+
+            ServicePointManager.DefaultConnectionLimit = maxConnections;
 
             AllEnabled = allEnabled;
             ErrorEnabled = allEnabled || errorEnabled;
