@@ -14,13 +14,17 @@ using Metrics;
 
 namespace LoggingTestRig
 {
+    /// <summary>
+    /// this is essentially as scratch pad for testing logging.
+    /// </summary>
     class Program
     {
-        private  static   void Debug()
+
+        private static void Debug()
         {
-            Logger.Debug("SextantTestRig", $"Test debug message from thread {System.Threading.Thread.CurrentThread.ManagedThreadId}" );
-           }
-          
+            Logger.Debug("SextantTestRig", $"Test debug message from thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+        }
+
 
         static void Main(string[] args)
         {
@@ -28,9 +32,9 @@ namespace LoggingTestRig
             int count = 0;
             var config = new JsonEncompassConfig();
             config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
-            
+
             //manually set appenders    
-           // var console = new ConsoleLogAppender(config);
+            // var console = new ConsoleLogAppender(config);
             //var loggly = new LogglyLogAppender(config);
             //var elasticSearch = new ElasticsearchLogAppender(config);
             //Logger.AddAppender(console);
@@ -48,9 +52,9 @@ namespace LoggingTestRig
             Logger.Error("SextantTestRig", "Test error message");
             Logger.Fatal("SextantTestRig", "Test fatal message");
 
-           Console.WriteLine("press Q to quit or any other key to log another debug event.");
+            Console.WriteLine("press Q to quit or any other key to log another debug event.");
 
-            while (Console.ReadKey().Key!= ConsoleKey.Q)
+            while (Console.ReadKey().Key != ConsoleKey.Q)
             {
                 var increment = 19;
                 Parallel.For(0, increment, async => { Debug(); });
@@ -80,7 +84,7 @@ namespace LoggingTestRig
 
             var timer = StatsDMetrics.Timer("sextant-statd-tests-timer", Unit.Calls);
             Random r = new Random();
-            
+
             timer.StartRecording();
 
             var counter = StatsDMetrics.Counter("sextant-statd-tests-counter", Unit.Events, MetricTags.None);
@@ -92,7 +96,7 @@ namespace LoggingTestRig
             counter.Increment(r.Next(0, 10));
             counter.Increment(r.Next(0, 10));
             counter.Increment(r.Next(0, 10));
-            
+
             timer.EndRecording();
 
             #endregion
