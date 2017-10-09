@@ -131,8 +131,6 @@ namespace GuaranteedRate.Sextant.WebClients
                     }
 
                 }
-                Console.WriteLine("####----finished.");
-
                 _finished = true;
             });
         }

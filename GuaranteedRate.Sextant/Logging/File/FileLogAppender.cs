@@ -136,11 +136,7 @@ namespace GuaranteedRate.Sextant.Logging.File
                         {
                             return false;
                         }
-                        catch (Exception ex)
-                        {
-
-                            throw;
-                        }
+                       
                     }
                 }
             }

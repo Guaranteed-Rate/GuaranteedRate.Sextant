@@ -4,14 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Belikov.GenuineChannels;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.Logging.Console;
 using GuaranteedRate.Sextant.Logging.Elasticsearch;
 using GuaranteedRate.Sextant.Logging.File;
 using GuaranteedRate.Sextant.Logging.Loggly;
-using GuaranteedRate.Sextant.Metrics;
-using Org.BouncyCastle.Asn1.X509.Qualified;
 
 namespace GuaranteedRate.Sextant.Logging
 {
