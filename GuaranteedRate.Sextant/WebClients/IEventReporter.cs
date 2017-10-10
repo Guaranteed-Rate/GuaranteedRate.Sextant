@@ -4,5 +4,6 @@
     {
         bool ReportEvent(object formattedData);
         void Shutdown(int blockSeconds);
+        void Shutdown();
     }
 }

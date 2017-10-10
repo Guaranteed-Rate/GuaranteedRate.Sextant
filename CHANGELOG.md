@@ -1,4 +1,12 @@
-## v17.3.2.0 / 2017 Oct 06
+## v17.3.2.1 / 2017 Oct 10
+
+* **Add**  -  Expose Shutdown() on IEventReporter so consumers don't have to speicfy timeout seconds.
+
+```csharp
+[GuaranteedRate.Sextant "17.3.2.1"]
+```
+
+## v17.3.2.0 / 2017 Oct 10
 
 * **Fix**  -  Numerous fixes to logging.  
 * **Add**  -  Expose Shutdown() on logger.  Handle recursive errors.

@@ -141,7 +141,7 @@ namespace GuaranteedRate.Sextant.WebClients
          */
 
 
-        public void Shutdown(int blockSeconds = 60)
+        public void Shutdown(int blockSeconds)
         {
             _eventQueue.CompleteAdding();
             var sw = new Stopwatch();
@@ -154,6 +154,15 @@ namespace GuaranteedRate.Sextant.WebClients
                 }
                 Thread.Sleep(100);
             }
+        }
+        /**
+        * This is the correct way to cleanly shutdown.
+        * Once called this method *WILL BLOCK for for 60 seconds* until the queue has been drained.
+        */
+
+        public void Shutdown()
+        {
+            Shutdown(60);
         }
 
         /// <summary>
