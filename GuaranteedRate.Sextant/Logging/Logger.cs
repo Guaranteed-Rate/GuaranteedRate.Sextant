@@ -2,13 +2,17 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Logging.Console;
 using GuaranteedRate.Sextant.Logging.Elasticsearch;
+using GuaranteedRate.Sextant.Logging.File;
 using GuaranteedRate.Sextant.Logging.Loggly;
 
 namespace GuaranteedRate.Sextant.Logging
 {
-    public class Logger
+    public class Logger : IDisposable
     {
         private static volatile IList<ILogAppender> _reporters = new List<ILogAppender>();
         private static readonly object syncRoot = new Object();
@@ -29,6 +33,11 @@ namespace GuaranteedRate.Sextant.Logging
                 AddAppender(new ElasticsearchLogAppender(config));
             }
 
+            var fileEnabled = config.GetValue(FileLogAppender.FILE_ENABLED, false);
+            if (fileEnabled)
+            {
+                AddAppender(new FileLogAppender(config));
+            }
             var consoleEnabled = config.GetValue(ConsoleLogAppender.CONSOLE_ENABLED, false);
             if (consoleEnabled)
             {
@@ -70,7 +79,7 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void AddTag(string tag)
         {
-            lock(syncRoot)
+            lock (syncRoot)
             {
                 if (_reporters != null)
                 {
@@ -99,22 +108,49 @@ namespace GuaranteedRate.Sextant.Logging
             Log(PopulateEvent(logger, DEBUG_LEVEL, message));
         }
 
-        public static void Error(string logger, string message)
+     
+        /// <summary>
+        /// writes a log entry as "error"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Error(string logger, string message, Type[] excludedReporters = null)
         {
-            Log(PopulateEvent(logger, ERROR_LEVEL, message));
+            Log(PopulateEvent(logger, ERROR_LEVEL, message), excludedReporters);
         }
 
-        public static void Fatal(string logger, string message)
+        /// <summary>
+        /// Writes a log entry as "fatal"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Fatal(string logger, string message, Type[] excludedReporters = null)
         {
-            Log(PopulateEvent(logger, FATAL_LEVEL, message));
+            Log(PopulateEvent(logger, FATAL_LEVEL, message), excludedReporters);
         }
 
-        public static void Info(string logger, string message)
+
+        /// <summary>
+        /// Writes a log entry as "info"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Info(string logger, string message, Type[] excludedReporters = null)
         {
             Log(PopulateEvent(logger, INFO_LEVEL, message));
         }
 
-        public static void Warn(string logger, string message)
+
+        /// <summary>
+        /// Writes a log entry as "warn"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
+        public static void Warn(string logger, string message, Type[] excludedReporters = null)
         {
             Log(PopulateEvent(logger, WARN_LEVEL, message));
         }
@@ -132,12 +168,61 @@ namespace GuaranteedRate.Sextant.Logging
             Log(fields);
         }
 
-        private static void Log(IDictionary<string, string> fields)
+        private static void Log(IDictionary<string, string> fields, Type[] excludedReporters = null)
         {
             foreach (var r in _reporters)
             {
-                r.Log(fields);
+                if (excludedReporters == null || excludedReporters.All(aa => aa != r.GetType()))
+                {
+                    r.Log(fields);
+                }
             }
         }
+
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Shutdown();
+                }
+            }
+
+
+            disposedValue = true;
+        }
+
+        /// <summary>
+        /// flushes all reporters.  By default blocks for 60 seconds. 
+        /// </summary>
+        public static void Shutdown(int blockSeconds = 60)
+        {
+            if (_reporters != null && _reporters.Any())
+            {
+                var degPar = new ParallelOptions();
+                degPar.MaxDegreeOfParallelism = _reporters.Count;
+                lock (syncRoot)
+                {
+                    Parallel.ForEach(_reporters, async r =>
+                    {
+                        await Task.Run(() => {
+                            r.Shutdown(blockSeconds);
+                            r.Dispose();
+                        });
+
+                    });
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

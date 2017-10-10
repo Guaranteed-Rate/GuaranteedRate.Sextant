@@ -1,3 +1,13 @@
+## v17.3.2.0 / 2017 Oct 06
+
+* **Fix**  -  Numerous fixes to logging.  
+* **Add**  -  Expose Shutdown() on logger.  Handle recursive errors.
+* **Add**  -  Prmitive file logger (mainly useful in debugging other logging failures).
+
+```csharp
+[GuaranteedRate.Sextant "17.3.2.0"]
+```
+
 ## v17.3.1.1 / 2017 Oct 02
 
 * **Fix**  - force index name toLower because otherwise ElasticSearch dies horribly.

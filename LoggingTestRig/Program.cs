@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.Logging;
+using GuaranteedRate.Sextant.Logging.Console;
 using GuaranteedRate.Sextant.Logging.Elasticsearch;
 using GuaranteedRate.Sextant.Logging.Loggly;
 using GuaranteedRate.Sextant.Metrics;
@@ -12,15 +14,27 @@ using Metrics;
 
 namespace LoggingTestRig
 {
+    /// <summary>
+    /// this is essentially as scratch pad for testing logging.
+    /// </summary>
     class Program
     {
+
+        private static void Debug()
+        {
+            Logger.Debug("SextantTestRig", $"Test debug message from thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+        }
+
+
         static void Main(string[] args)
         {
+
+            int count = 0;
             var config = new JsonEncompassConfig();
             config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
-            
+
             //manually set appenders    
-            //var console = new ConsoleLogAppender(config);
+            // var console = new ConsoleLogAppender(config);
             //var loggly = new LogglyLogAppender(config);
             //var elasticSearch = new ElasticsearchLogAppender(config);
             //Logger.AddAppender(console);
@@ -31,13 +45,25 @@ namespace LoggingTestRig
             Logger.Setup(config);
 
             Logger.AddTag("runtime-tag");
+            Logger.Debug("SextantTestRig", "Test debug message.");
 
-            Logger.Debug("SextantTestRig", "Test debug message");
             Logger.Info("SextantTestRig", "Test info message");
             Logger.Warn("SextantTestRig", "Test warn message");
             Logger.Error("SextantTestRig", "Test error message");
             Logger.Fatal("SextantTestRig", "Test fatal message");
 
+            Console.WriteLine("press Q to quit or any other key to log another debug event.");
+
+            while (Console.ReadKey().Key != ConsoleKey.Q)
+            {
+                var increment = 19;
+                Parallel.For(0, increment, async => { Debug(); });
+                count = count + increment;
+            }
+            Console.WriteLine($"total queued: {count}");
+            Console.WriteLine("Shutting down.");
+            Logger.Shutdown(30);
+            return;
             #region Simple Metrics 
 
             var datadog = new DatadogReporter(config);
@@ -58,7 +84,7 @@ namespace LoggingTestRig
 
             var timer = StatsDMetrics.Timer("sextant-statd-tests-timer", Unit.Calls);
             Random r = new Random();
-            
+
             timer.StartRecording();
 
             var counter = StatsDMetrics.Counter("sextant-statd-tests-counter", Unit.Events, MetricTags.None);
@@ -70,7 +96,7 @@ namespace LoggingTestRig
             counter.Increment(r.Next(0, 10));
             counter.Increment(r.Next(0, 10));
             counter.Increment(r.Next(0, 10));
-            
+
             timer.EndRecording();
 
             #endregion

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GuaranteedRate.Sextant.Logging
 {
     /// <summary>
     /// describes a class for appending log information to an arbitrary source
     /// </summary>
-    public interface ILogAppender
+    public interface ILogAppender: IDisposable
     {
         void Log(IDictionary<string, string> fields);
         void AddTag(string tag);
@@ -14,6 +15,7 @@ namespace GuaranteedRate.Sextant.Logging
         bool InfoEnabled { get; }
         bool WarnEnabled { get; }
         bool ErrorEnabled { get; }
-        bool FatalEnabled { get; } 
+        bool FatalEnabled { get; }
+        void Shutdown(int blockSeconds);
     }
 }

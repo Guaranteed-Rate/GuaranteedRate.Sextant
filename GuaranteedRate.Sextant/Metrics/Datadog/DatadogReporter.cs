@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Metrics.Datadog
 {
-    public class DatadogReporter : AsyncEventReporter, IReporter
+    public class DatadogReporter : AsyncWebEventReporter, IReporter
     {
         private readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private string _host;
