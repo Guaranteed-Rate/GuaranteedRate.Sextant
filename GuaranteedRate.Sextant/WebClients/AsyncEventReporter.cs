@@ -44,14 +44,13 @@ namespace GuaranteedRate.Sextant.WebClients
         protected const int DEFAULT_RETRIES = 3;
         protected const int DEFAULT_TIMEOUT = 45000;
         
-        protected virtual string Name { get; private set; } = typeof (AsyncEventReporter).Name;
+        protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
         protected volatile bool _finished;
         protected bool LogRecurisively = true;
 
      
         protected AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT, bool logRecursively = true)
         {
-            Name = this.GetType().Name; //need derived type.
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             if (retries == 0)
             {

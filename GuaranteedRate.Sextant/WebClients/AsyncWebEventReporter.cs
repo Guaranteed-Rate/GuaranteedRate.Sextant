@@ -41,7 +41,6 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected virtual string Name { get; } = typeof(AsyncWebEventReporter).Name;
 
-
         public AsyncWebEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT) : base(queueSize, retries, timeout)
         {
             if (string.IsNullOrEmpty(url))
