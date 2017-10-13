@@ -143,6 +143,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         public void Shutdown(int blockSeconds)
         {
+           Logger.Debug(this.Name, $"shutting down event queue from {new StackTrace()}.");
             _eventQueue.CompleteAdding();
             var sw = new Stopwatch();
             sw.Start();

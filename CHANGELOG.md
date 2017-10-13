@@ -1,6 +1,14 @@
+## v17.3.2.2 / 2017 Oct 13
+
+* **Fix**  - Tweaks to logging to debug issues.
+
+```csharp
+[GuaranteedRate.Sextant "17.3.2.2"]
+```
+
 ## v17.3.2.1 / 2017 Oct 10
 
-* **Add**  -  Expose Shutdown() on IEventReporter so consumers don't have to speicfy timeout seconds.
+* **Add**  -  Expose Shutdown() on IEventReporter so consumers don't have to specify timeout seconds.
 
 ```csharp
 [GuaranteedRate.Sextant "17.3.2.1"]
