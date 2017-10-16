@@ -105,11 +105,29 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 AddLoanData(loanData, "milestones", ExtractMilestones(loan));
                 AddLoanData(loanData, "lastmodified", loan.LastModified.ToString(_DateFormat));
                 AddLoanData(loanData, "MachineUser", MachineUser.GetMachineUserIdentification());
-
+                AddLoanData(loanData, "attachments", ExtractLoanAttachments(loan));
+                
                 //restore state
                 loan.BorrowerPairs.Current = originalPair;
             }
             return loanData;
+        }
+
+
+        private static List<Dictionary<string, object>> ExtractLoanAttachments(Loan loan)
+        {
+            var docs = new List<Dictionary<string, object>>();
+            for (int i = 0; i < loan.Attachments.Count; i++)
+            {
+                var doc = new Dictionary<string, object>();
+                doc.Add("name", loan.Attachments[i].Name);
+                doc.Add("title", loan.Attachments[i].Title);
+                doc.Add("size", loan.Attachments[i].Size);
+                doc.Add("date", loan.Attachments[i].Date);
+                doc.Add("active", loan.Attachments[i].IsActive);
+                docs.Add(doc);
+            }
+            return docs;
         }
 
         private static void AddLoanData(IDictionary<string, object> loanData, string key, object value)
