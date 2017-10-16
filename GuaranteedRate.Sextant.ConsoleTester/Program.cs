@@ -58,19 +58,24 @@ namespace GuaranteedRate.Sextant.ConsoleTester
                 var sw = new Stopwatch();
                 foreach (var ln in loanNumbers)
                 {
-                    Console.WriteLine($"opening loan {ln}" );
-                    var loan =  SessionUtils.OpenLoanFromLoanNumber(sess,ln);
+                    Console.WriteLine($"opening loan {ln}");
+                    var loan = SessionUtils.OpenLoanFromLoanNumber(sess, ln);
                     Console.WriteLine("Extracting");
-                    FieldUtils.session=sess;
+                    FieldUtils.session = sess;
                     sw.Start();
                     var serialized = JsonConvert.SerializeObject(LoanDataUtils.ExtractEverything(loan));
-                    System.IO.File.WriteAllText(String.Format(@"c:\junk\{0}.json", ln), serialized);
+                    var path = String.Format(@"c:\junk\{0}.json", ln);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    System.IO.File.WriteAllText(path, serialized);
                     sw.Stop();
-                    Console.WriteLine($"Extracted loan {ln} in {sw.ElapsedMilliseconds/1000} seconds.");
+                    Console.WriteLine($"Extracted loan {ln} in {sw.ElapsedMilliseconds / 1000} seconds.");
                     sw.Reset();
                     loan.Close();
                 }
-Console.WriteLine("Press any key to exit.");
+                Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
             }
         }

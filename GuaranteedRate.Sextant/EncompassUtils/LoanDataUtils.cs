@@ -125,6 +125,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 doc.Add("size", loan.Attachments[i].Size);
                 doc.Add("date", loan.Attachments[i].Date);
                 doc.Add("active", loan.Attachments[i].IsActive);
+
                 docs.Add(doc);
             }
             return docs;
@@ -231,7 +232,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 fieldValues["LoanName"] = loan.LoanName;
                 fieldValues["LoanOfficerID"] = loan.LoanOfficerID;
                 fieldValues["LoanProcessorID"] = loan.LoanProcessorID;
-
                 Session session = loan.Session;
                 if (session != null)
                 {
@@ -242,6 +242,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                         //just the smartClientId
                     fieldValues["SessionUserId"] = session.UserID;
                 }
+                
             }
             catch (Exception ex)
             {

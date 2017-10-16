@@ -5,9 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GuaranteedRate.Examples.LoanDataUtils
 {
@@ -58,7 +55,7 @@ namespace GuaranteedRate.Examples.LoanDataUtils
             }
 
             IDictionary<string, object> loanData =
-                GuaranteedRate.Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
+                Sextant.EncompassUtils.LoanDataUtils.ExtractEverything(loan);
             string json = JsonConvert.SerializeObject(loanData);
             try
             {
