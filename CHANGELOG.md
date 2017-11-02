@@ -1,3 +1,18 @@
+## v17.3.3.1 / 2017 Oct 24
+
+* **Fix**  - Exclude bad fields from middle and end indexes.
+
+```csharp
+[GuaranteedRate.Sextant "17.3.3.0"]
+```
+## v17.3.3.0 / 2017 Oct 15
+
+* **Add**  - Support extraction of loan attachments to the loan data map
+
+```csharp
+[GuaranteedRate.Sextant "17.3.3.0"]
+```
+
 ## v17.3.2.2 / 2017 Oct 13
 
 * **Fix**  - Tweaks to logging to debug issues.

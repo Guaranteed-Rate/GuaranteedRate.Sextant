@@ -5,6 +5,7 @@ using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Reporting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using  GuaranteedRate.Sextant.Logging;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
@@ -56,6 +57,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private const string MORTGAGES_STARTS = "FM";
         private const string VESTING_PARITIES_STARTS = "TR";
 
+        private static readonly ISet<string> END_INDEX_EXCLUDE_LIST    = new HashSet<string>() {"IRS4506.X61", "IRS4506.X62"};
+        private static readonly ISet<string> MIDDLE_INDEX_EXCLUDE_LIST = new HashSet<string>() { "AUSTRACKING.AUS.X100" };
+      
         private const string DISCLOSURES_STARTS = "DISCLOSED";
 
         /**
@@ -77,7 +81,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
 
         /// <summary>
-        /// These* SEEM* to be the* Simple* fields that are affected by switching active borrower-pair.
+        /// These *SEEM* to be the *Simple* fields that are affected by switching active borrower-pair.
         /// Have not found a good way to know which fields are affected by the active borrower-pair.
         /// </summary>
         public static readonly ISet<string> BORROWER_PAIR_FIELDS =
@@ -596,7 +600,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                     else
                                     {
                                         UNKNOWN_KEYS.Add(key);
-                                        MIDDLE_INDEXED.Add(baseKey);
+                                        if (!MIDDLE_INDEX_EXCLUDE_LIST.Contains(baseKey))
+                                        {
+                                            MIDDLE_INDEXED.Add(baseKey);
+                                        }
                                     }
                                 }
                                 else
@@ -611,7 +618,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                                             break;
                                         }
                                     }
-                                    if (!matched)
+                                    if (!matched && !(END_INDEX_EXCLUDE_LIST.Contains(baseKey)))
                                     {
                                         END_INDEXED.Add(baseKey);
                                     }

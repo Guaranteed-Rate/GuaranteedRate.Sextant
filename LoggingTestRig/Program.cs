@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.Logging;
-using GuaranteedRate.Sextant.Logging.Console;
-using GuaranteedRate.Sextant.Logging.Elasticsearch;
-using GuaranteedRate.Sextant.Logging.Loggly;
 using GuaranteedRate.Sextant.Metrics;
 using GuaranteedRate.Sextant.Metrics.Datadog;
 using GuaranteedRate.Sextant.Metrics.Graphite;
