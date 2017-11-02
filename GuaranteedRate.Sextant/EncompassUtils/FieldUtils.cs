@@ -57,8 +57,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private const string MORTGAGES_STARTS = "FM";
         private const string VESTING_PARITIES_STARTS = "TR";
 
-        private static readonly string[] END_INDEX_EXCLUDE_LIST = {"IRS4506.X61.01"};
-        private static readonly string[] MIDDLE_INDEX_EXCLUDE_LIST = { "AUSTRACKING.AUS.X10" };
+        private static readonly string[] END_INDEX_EXCLUDE_LIST    = {"IRS4506.X61.01", "IRS4506.X62.01"};
+        private static readonly string[] MIDDLE_INDEX_EXCLUDE_LIST = { "AUSTRACKING.AUS.X100" };
       
         private const string DISCLOSURES_STARTS = "DISCLOSED";
 
@@ -81,7 +81,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
 
         /// <summary>
-        /// These* SEEM* to be the* Simple* fields that are affected by switching active borrower-pair.
+        /// These *SEEM* to be the *Simple* fields that are affected by switching active borrower-pair.
         /// Have not found a good way to know which fields are affected by the active borrower-pair.
         /// </summary>
         public static readonly ISet<string> BORROWER_PAIR_FIELDS =
