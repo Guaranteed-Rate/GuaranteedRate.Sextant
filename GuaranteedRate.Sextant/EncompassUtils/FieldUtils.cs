@@ -57,7 +57,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         private const string MORTGAGES_STARTS = "FM";
         private const string VESTING_PARITIES_STARTS = "TR";
 
-        private static readonly string[] END_INDEX_EXCLUDE_LIST    = {"IRS4506.X61.01", "IRS4506.X62.01"};
+        private static readonly string[] END_INDEX_EXCLUDE_LIST    = {"IRS4506.X61", "IRS4506.X62"};
         private static readonly string[] MIDDLE_INDEX_EXCLUDE_LIST = { "AUSTRACKING.AUS.X100" };
       
         private const string DISCLOSURES_STARTS = "DISCLOSED";
