@@ -106,7 +106,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 AddLoanData(loanData, "milestones", ExtractMilestones(loan));
                 AddLoanData(loanData, "lastmodified", loan.LastModified.ToString(_DateFormat));
                 AddLoanData(loanData, "MachineUser", MachineUser.GetMachineUserIdentification());
-                AddLoanData(loanData, "attachments", ExtractLoanAttachments(loan));
+                //FIXME: Commenting this out due to performance.
+                //Time is ~1s/file, and there can be 100+ files
+                //AddLoanData(loanData, "attachments", ExtractLoanAttachments(loan));
                 
                 //restore state
                 loan.BorrowerPairs.Current = originalPair;
