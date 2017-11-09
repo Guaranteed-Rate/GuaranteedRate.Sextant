@@ -5,6 +5,7 @@ using GuaranteedRate.Sextant.Models;
 using GuaranteedRate.Sextant.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
 {
@@ -105,7 +106,9 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 AddLoanData(loanData, "milestones", ExtractMilestones(loan));
                 AddLoanData(loanData, "lastmodified", loan.LastModified.ToString(_DateFormat));
                 AddLoanData(loanData, "MachineUser", MachineUser.GetMachineUserIdentification());
-                AddLoanData(loanData, "attachments", ExtractLoanAttachments(loan));
+                //FIXME: Commenting this out due to performance.
+                //Time is ~1s/file, and there can be 100+ files
+                //AddLoanData(loanData, "attachments", ExtractLoanAttachments(loan));
                 
                 //restore state
                 loan.BorrowerPairs.Current = originalPair;
@@ -116,18 +119,31 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
         private static List<Dictionary<string, object>> ExtractLoanAttachments(Loan loan)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+            int attachedFiles = 0;
             var docs = new List<Dictionary<string, object>>();
-            for (int i = 0; i < loan.Attachments.Count; i++)
+            try
             {
-                var doc = new Dictionary<string, object>();
-                doc.Add("name", loan.Attachments[i].Name);
-                doc.Add("title", loan.Attachments[i].Title);
-                doc.Add("size", loan.Attachments[i].Size);
-                doc.Add("date", loan.Attachments[i].Date);
-                doc.Add("active", loan.Attachments[i].IsActive);
+                attachedFiles = loan.Attachments.Count;
+                for (int i = 0; i < attachedFiles; i++)
+                {
+                    var doc = new Dictionary<string, object>();
+                    doc.Add("name", loan.Attachments[i].Name);
+                    doc.Add("title", loan.Attachments[i].Title);
+                    doc.Add("size", loan.Attachments[i].Size);
+                    doc.Add("date", loan.Attachments[i].Date);
+                    doc.Add("active", loan.Attachments[i].IsActive);
 
-                docs.Add(doc);
+                    docs.Add(doc);
+                }
             }
+            catch (Exception e)
+            {
+                Logger.Error("LoandataUtils", $"Loan {loan.LoanNumber} Exception extracting attachments {e}");
+            }
+            sw.Stop();
+            Logger.Error("LoandataUtils", $"Loan {loan.LoanNumber} Attachments: {attachedFiles} Time: {sw.Elapsed}");
             return docs;
         }
 

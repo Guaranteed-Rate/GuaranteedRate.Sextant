@@ -1,10 +1,20 @@
+## v17.3.3.2 / 2017 Nov 9
+
+* **Fix**  - Comment out the attachment collection code from `LoanDataUtils`
+It is to slow to use as part of the regular loan serialization.
+
+```csharp
+[GuaranteedRate.Sextant "17.3.3.2"]
+```
+
 ## v17.3.3.1 / 2017 Oct 24
 
 * **Fix**  - Exclude bad fields from middle and end indexes.
 
 ```csharp
-[GuaranteedRate.Sextant "17.3.3.0"]
+[GuaranteedRate.Sextant "17.3.3.1"]
 ```
+
 ## v17.3.3.0 / 2017 Oct 15
 
 * **Add**  - Support extraction of loan attachments to the loan data map
