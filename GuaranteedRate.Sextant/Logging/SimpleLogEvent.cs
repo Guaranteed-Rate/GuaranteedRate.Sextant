@@ -17,6 +17,7 @@ namespace GuaranteedRate.Sextant.Logging
         public string message { get; set; }
         public string hostname { get; set; }
 
+        public string tags { get; set; }
 
         public static SimpleLogEvent Create(object data, ISet<string> tags)
         {
@@ -59,7 +60,8 @@ namespace GuaranteedRate.Sextant.Logging
                 process =
                     lcfields.ContainsKey("process")
                         ? lcfields["process"]
-                        : Assembly.GetExecutingAssembly().GetName().Name
+                        : Assembly.GetExecutingAssembly().GetName().Name,
+                tags = lcfields.ContainsKey("tags") ? lcfields["tags"] : ""
             };
             return logEvent;
         }
