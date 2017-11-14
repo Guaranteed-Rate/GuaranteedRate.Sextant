@@ -1,3 +1,12 @@
+## v17.3.3.2 / 2017 Nov 13
+
+* **Fix**  - Include tags in Elasticsearch appender
+
+```csharp
+[GuaranteedRate.Sextant "17.3.3.3"]
+```
+
+
 ## v17.3.3.2 / 2017 Nov 9
 
 * **Fix**  - Comment out the attachment collection code from `LoanDataUtils`
