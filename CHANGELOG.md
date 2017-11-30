@@ -1,3 +1,10 @@
+## v17.4.0.0 / 2017 Nov 30
+
+* **Update**  - Move to Encompass 17.4
+```csharp
+[GuaranteedRate.Sextant "17.4.0.0"]
+```
+
 ## v17.3.3.4 / 2017 Nov 19
 
 * **Fix**  - Unbreak Newtonsoft dependencies.
