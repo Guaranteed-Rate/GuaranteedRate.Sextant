@@ -27,6 +27,8 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         public bool ErrorEnabled { get; private set; }
         public bool FatalEnabled { get; private set; }
 
+        protected string _appName = string.Empty;
+        protected string _environment = string.Empty;
         #region config mappings
 
         public static string ELASTICSEARCH_ENABLED = "ElasticsearchLogAppender.Enabled";
@@ -42,6 +44,8 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
         public static string ELASTICSEARCH_TAGS = "ElasticsearchLogAppender.Tags";
         public static string ELASTICSEARCH_INDEX_NAME = "ElasticsearchLogAppender.IndexName";
         public static string ELASTICSEARCH_LOG_RECURSIVELY = "ElasticsearchLogAppender.LogRecursively";
+        public static string ELASTICSEARCH_APPNAME = "ElasticsearchLogAppender.AppName";
+        public static string ELASTICSEARCH_ENVIRONMENT = "ElasticsearchLogAppender.Environment";
         #endregion
 
         public ElasticsearchLogAppender(IEncompassConfig config)
@@ -65,7 +69,10 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
             var infoEnabled = config.GetValue(ELASTICSEARCH_INFO, true);
             var debugEnabled = config.GetValue(ELASTICSEARCH_DEBUG, true);
             var fatalEnabled = config.GetValue(ELASTICSEARCH_FATAL, true);
-            LogRecurisively = config.GetValue(ELASTICSEARCH_LOG_RECURSIVELY, true);  
+            LogRecurisively = config.GetValue(ELASTICSEARCH_LOG_RECURSIVELY, true);
+            _environment = config.GetValue(ELASTICSEARCH_ENVIRONMENT, String.Empty);
+            _appName = config.GetValue(ELASTICSEARCH_APPNAME, String.Empty);
+
             //e.g. if we fail writing a log to Elasticsearch, log the error to Elasticsearch.
             AllEnabled = allEnabled;
             ErrorEnabled = allEnabled || errorEnabled;
@@ -89,6 +96,16 @@ namespace GuaranteedRate.Sextant.Logging.Elasticsearch
 
         public void Log(IDictionary<string, string> fields)
         {
+            if (!String.IsNullOrEmpty(_appName))
+            {
+                fields.Add("AppName", _appName);
+            }
+
+            if (!String.IsNullOrEmpty(_environment))
+            {
+                fields.Add("Environment", _environment);
+            }
+
             if (AllEnabled)
             {
                 ReportEvent(fields);
