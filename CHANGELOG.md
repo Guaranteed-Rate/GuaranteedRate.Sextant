@@ -1,3 +1,11 @@
+## v17.3.4.0 / 2017 Dec 04
+
+* **Add**  - Additional config-driven tags in Elasticsearch.  
+```csharp
+[GuaranteedRate.Sextant "17.3.4.0"]
+```
+
+
 ## v17.3.3.4 / 2017 Nov 19
 
 * **Fix**  - Unbreak Newtonsoft dependencies.
