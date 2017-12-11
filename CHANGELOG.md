@@ -1,3 +1,12 @@
+## v17.4.0.0 / 2017 Dec 07
+
+* **Update**  - Move to Encompass 17.4
+```csharp
+
+
+
+[GuaranteedRate.Sextant "17.4.0.0"]
+```
 ## v17.3.4.0 / 2017 Dec 04
 
 * **Add**  - Additional config-driven tags in Elasticsearch.  
