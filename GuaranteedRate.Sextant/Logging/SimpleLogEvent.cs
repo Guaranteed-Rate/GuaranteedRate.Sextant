@@ -17,6 +17,9 @@ namespace GuaranteedRate.Sextant.Logging
         public string message { get; set; }
         public string hostname { get; set; }
 
+        public string appname { get; set; }
+        public string environment { get; set; }
+
         public string tags { get; set; }
 
         public static SimpleLogEvent Create(object data, ISet<string> tags)
@@ -61,7 +64,9 @@ namespace GuaranteedRate.Sextant.Logging
                     lcfields.ContainsKey("process")
                         ? lcfields["process"]
                         : Assembly.GetExecutingAssembly().GetName().Name,
-                tags = lcfields.ContainsKey("tags") ? lcfields["tags"] : ""
+                tags = lcfields.ContainsKey("tags") ? lcfields["tags"] : "",
+                appname  = lcfields.ContainsKey("appname") ? lcfields["appname"] :"noappnamespecified",
+                environment = lcfields.ContainsKey("environment") ? lcfields["environment"] : System.Environment.MachineName
             };
             return logEvent;
         }

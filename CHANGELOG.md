@@ -1,7 +1,17 @@
+## v17.4.0.1 / 2017 Dec 12
+
+* **Update**  - Fix AppNam and Environment values in Elasticsearch.
+```csharp
+[GuaranteedRate.Sextant "17.4.0.1"]
+```
+
+
 ## v17.4.0.0 / 2017 Dec 07
 
 * **Update**  - Move to Encompass 17.4
 ```csharp
+[GuaranteedRate.Sextant "17.4.0.0"]
+```
 
 
 
