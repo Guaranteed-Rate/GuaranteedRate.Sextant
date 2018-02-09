@@ -38,8 +38,8 @@ namespace LoggingTestRig
 
             //automatically set appenders
             Logger.Setup(config);
+            Serilog.Debugging.SelfLog.Enable(Console.Error);
 
-            Logger.AddTag("runtime-tag");
             Logger.Debug("SextantTestRig", "Test debug message.");
 
             Logger.Info("SextantTestRig", "Test info message");
@@ -57,7 +57,7 @@ namespace LoggingTestRig
             }
             Console.WriteLine($"total queued: {count}");
             Console.WriteLine("Shutting down.");
-            Logger.Shutdown(30);
+            Logger.Shutdown();
             return;
             #region Simple Metrics 
 

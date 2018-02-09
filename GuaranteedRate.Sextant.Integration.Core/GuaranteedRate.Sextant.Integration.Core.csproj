@@ -59,10 +59,6 @@
       <HintPath>..\packages\EncompassSDK.Complete.17.4.0.2\lib\net45\DocumentConverter.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elasticsearch.Net, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elasticsearch.Net.5.4.0\lib\net45\Elasticsearch.Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Elli.AdvCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
       <HintPath>..\packages\EncompassSDK.Complete.17.4.0.2\lib\net45\Elli.AdvCode.dll</HintPath>
       <Private>True</Private>
