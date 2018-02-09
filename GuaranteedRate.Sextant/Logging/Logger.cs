@@ -84,36 +84,6 @@ namespace GuaranteedRate.Sextant.Logging
         #endregion
 
 
-
-        private static LogEventLevel GetMinLevel(IEncompassConfig config, string prefix)
-        {
-            if (config.GetValue($"{prefix}_ALL", false))
-            {
-                return LogEventLevel.Debug;
-            }
-            if (config.GetValue($"{prefix}_DEBUG", false))
-            {
-                return LogEventLevel.Debug;
-            }
-            if (config.GetValue($"{prefix}_INFO", false))
-            {
-                return LogEventLevel.Information;
-            }
-            if (config.GetValue($"{prefix}_WARN", false))
-            {
-                return LogEventLevel.Warning;
-            }
-            if (config.GetValue($"{prefix}_ERROR", false))
-            {
-                return LogEventLevel.Error;
-            }
-            if (config.GetValue($"{prefix}_FATAL", false))
-            {
-                return LogEventLevel.Fatal;
-            }
-            return LogEventLevel.Error;
-        }
-
         public static void Setup(IEncompassConfig config)
         {
 
@@ -122,52 +92,10 @@ namespace GuaranteedRate.Sextant.Logging
                 try
                 {
 
-                    var logConfig = new LoggerConfiguration();
-                    if (config.GetValue(ELASTICSEARCH_ENABLED, false))
-                    {
-                        var elasticOptions = new ElasticsearchSinkOptions(new Uri(config.GetValue(ELASTICSEARCH_URL, "")));
-                        elasticOptions.IndexFormat = config.GetValue(ELASTICSEARCH_INDEX_NAME, "sextant-serilog-");
-
-                        elasticOptions.MinimumLogEventLevel = GetMinLevel(config, "ELASTICSEARCH");
-                        elasticOptions.EmitEventFailure = EmitEventFailureHandling.ThrowException;
-                        logConfig = logConfig.WriteTo.Elasticsearch(elasticOptions);
-                    }
-
-                    if (config.GetValue(FILE_ENABLED, false))
-                    {
-                        logConfig = logConfig.WriteTo.RollingFile(
-                            new JsonFormatter(null, false, null), config.GetValue(LOG_FOLDER, "c:\\windows\\temp"),
-                            GetMinLevel(config, "FILE"),
-
-                            config.GetValue(FILE_MAX_FILE_BYTES, 10000),
-                            config.GetValue(FILE_MAX_FILES, 10));
-                    }
-
-                    if (config.GetValue(CONSOLE_ENABLED, false))
-                    {
-                        logConfig = logConfig.WriteTo.Console(
-                            new JsonFormatter(null, false, null),
-                            GetMinLevel(config, "CONSOLE"));
-                    }
-
-                    if (config.GetValue(LOGGLY_ENABLED, false))
-                    {
-                        var lc = new LogglyConfiguration();
-                        lc.CustomerToken = config.GetValue(LOGGLY_APIKEY);
-                        lc.EndpointHostName = config.GetValue(LOGGLY_URL, "logs-01.loggly.com").Replace("https://", "");
-                        lc.EndpointPort = 443;
-                        lc.ThrowExceptions = true;
-                        lc.ApplicationName = config.GetValue(LOGGLY_APPLICATION_NAME, "Unnamed Sextant App");
-                        var split = new[] { '|', ',' };
-                        lc.Tags = new List<string>();
-                        lc.Tags.AddRange(config.GetValue(LOGGLY_TAGS, "")
-                            .Split(split, StringSplitOptions.RemoveEmptyEntries));
-                        logConfig = logConfig.WriteTo.Loggly(
-                            logglyConfig: lc,
-                            restrictedToMinimumLevel: GetMinLevel(config, "LOGGLY"));
-                    }
-                    logConfig.WriteTo.File(path:@"c:\junk\foo.txt");
-                    Serilog.Log.Logger = logConfig.CreateLogger();
+                    Serilog.Log.Logger = new LoggerConfiguration().ConfigureConsole(config)
+                                            .ConfigureElasticSearch(config)
+                                            .ConfigureFile(config)
+                                            .ConfigureLoggly(config).CreateLogger();
                 }
                 catch (Exception ex)
                 {

@@ -248,12 +248,8 @@
     <Compile Include="EncompassUtils\Reporting.cs" />
     <Compile Include="EncompassUtils\SessionUtils.cs" />
     <Compile Include="EncompassUtils\UserUtils.cs" />
-    <Compile Include="Logging\Console\ConsoleConfig.cs" />
-    <Compile Include="Logging\File\FileLogAppender.cs" />
-    <Compile Include="Logging\Loggly\LogglyTarget.cs" />
+    <Compile Include="Logging\SerilogHelpers.cs" />
     <Compile Include="Logging\WebLogAppender.cs" />
-    <Compile Include="Logging\SimpleLogAppender.cs" />
-    <Compile Include="Logging\SimpleLogEvent.cs" />
     <Compile Include="Metrics\Graphite\GraphiteReporter.cs" />
     <Compile Include="Metrics\Graphite\StatsDGraphiteReport.cs" />
     <Compile Include="Metrics\IReporter.cs" />
@@ -261,12 +257,8 @@
     <Compile Include="WebClients\ApiException.cs" />
     <Compile Include="WebClients\AsyncWebEventReporter.cs" />
     <Compile Include="WebClients\AsyncEventReporter.cs" />
-    <Compile Include="Logging\Console\ConsoleLogAppender.cs" />
-    <Compile Include="Logging\Elasticsearch\ElasticsearchLogAppender.cs" />
     <Compile Include="WebClients\IEventReporter.cs" />
-    <Compile Include="Logging\ILogAppender.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Logging\Loggly\LogglyLogAppender.cs" />
     <Compile Include="WebClients\SecureAsyncEventReporter.cs" />
     <Compile Include="Metrics\Datadog\DatadogReporter.cs" />
     <Compile Include="Metrics\SimpleMetrics.cs" />
