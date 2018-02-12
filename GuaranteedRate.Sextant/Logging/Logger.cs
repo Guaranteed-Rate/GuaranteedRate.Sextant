@@ -86,16 +86,41 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Setup(IEncompassConfig config)
         {
-
+            LoggerConfiguration baseLogger = null;
             lock (syncRoot)
             {
                 try
                 {
+                    baseLogger = new LoggerConfiguration()
+                        .MinimumLevel.Verbose().Enrich.With<HostNameEnricher>()
+                        .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
 
-                    Serilog.Log.Logger = new LoggerConfiguration().ConfigureConsole(config)
-                                            .ConfigureElasticSearch(config)
-                                            .ConfigureFile(config)
-                                            .ConfigureLoggly(config).CreateLogger();
+                    baseLogger.WriteTo.Console();
+
+                    if (config.GetValue(Logger.ELASTICSEARCH_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.Elasticsearch(SerilogHelpers.GetElasticOptions(config));
+                    }
+
+                    if (config.GetValue(Logger.FILE_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.RollingFile(pathFormat: config.GetValue(
+                            Logger.LOG_FOLDER, "c:\\junk\\foo.txt"),
+                            formatter: new JsonFormatter(null, false, null),
+                            fileSizeLimitBytes: config.GetValue(Logger.FILE_MAX_FILE_BYTES, 10000),
+                            retainedFileCountLimit: config.GetValue(Logger.FILE_MAX_FILES, 10));
+                    }
+
+                    if (config.GetValue(Logger.LOGGLY_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.Loggly(logglyConfig: SerilogHelpers.GetLogglyConfig(config));
+                    }
+
+                    if (config.GetValue(Logger.CONSOLE_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.Console(new JsonFormatter(null, false, null));
+                    }
+                    Serilog.Log.Logger = baseLogger.CreateLogger();
                 }
                 catch (Exception ex)
                 {
@@ -106,12 +131,11 @@ namespace GuaranteedRate.Sextant.Logging
 
         }
 
-
+       
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
             fields.Add("timestamp", DateTime.UtcNow.ToString());
-            fields.Add("hostname", Environment.MachineName);
             fields.Add("process", Process.GetCurrentProcess().ProcessName);
             fields.Add("loggerName", loggerName);
             fields.Add("message", message);

@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
 using Serilog;
+using Serilog.Configuration;
 using Serilog.Events;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.Sinks.Loggly;
+using Serilog.Sinks.RollingFile;
 
 namespace GuaranteedRate.Sextant.Logging
 {
@@ -17,95 +19,108 @@ namespace GuaranteedRate.Sextant.Logging
 
         internal static LogEventLevel GetMinLevel(IEncompassConfig config, string prefix)
         {
-            if (config.GetValue($"{prefix}_ALL", false))
+            string all_key = "";
+            string debug_key = "";
+            string info_key = "";
+            string warn_key = "";
+            string error_key = "";
+            string fatal_key = "";
+
+            switch (prefix)
+            {
+                case "FILE":
+                    all_key = Logger.FILE_ALL;
+                    debug_key = Logger.FILE_DEBUG;
+                    info_key = Logger.FILE_INFO;
+                    warn_key = Logger.FILE_WARN;
+                    error_key = Logger.FILE_ERROR;
+                    fatal_key = Logger.FILE_FATAL;
+                    break;
+                case "ELASTICSEARCH":
+                    all_key = Logger.ELASTICSEARCH_ALL;
+                    debug_key = Logger.ELASTICSEARCH_DEBUG;
+                    info_key = Logger.ELASTICSEARCH_INFO;
+                    warn_key = Logger.ELASTICSEARCH_WARN;
+                    error_key = Logger.ELASTICSEARCH_ERROR;
+                    fatal_key = Logger.ELASTICSEARCH_FATAL;
+                    break;
+                case "CONSOLE":
+                    all_key = Logger.CONSOLE_ALL;
+                    debug_key = Logger.CONSOLE_DEBUG;
+                    info_key = Logger.CONSOLE_INFO;
+                    warn_key = Logger.CONSOLE_WARN;
+                    error_key = Logger.CONSOLE_ERROR;
+                    fatal_key = Logger.CONSOLE_FATAL;
+                    break;
+                default:
+                    all_key = Logger.LOGGLY_ALL;
+                    debug_key = Logger.LOGGLY_DEBUG;
+                    info_key = Logger.LOGGLY_INFO;
+                    warn_key = Logger.LOGGLY_WARN;
+                    error_key = Logger.LOGGLY_ERROR;
+                    fatal_key = Logger.CONSOLE_FATAL;
+                    break;
+            }
+
+            if (config.GetValue(all_key, false))
             {
                 return LogEventLevel.Debug;
             }
-            if (config.GetValue($"{prefix}_DEBUG", false))
+            if (config.GetValue(debug_key, false))
             {
                 return LogEventLevel.Debug;
             }
-            if (config.GetValue($"{prefix}_INFO", false))
+            if (config.GetValue(info_key, false))
             {
                 return LogEventLevel.Information;
             }
-            if (config.GetValue($"{prefix}_WARN", false))
+            if (config.GetValue(warn_key, false))
             {
                 return LogEventLevel.Warning;
             }
-            if (config.GetValue($"{prefix}_ERROR", false))
+            if (config.GetValue(error_key, false))
             {
                 return LogEventLevel.Error;
             }
-            if (config.GetValue($"{prefix}_FATAL", false))
+            if (config.GetValue(fatal_key, false))
             {
                 return LogEventLevel.Fatal;
             }
             return LogEventLevel.Error;
         }
+        
 
-
-        internal static LoggerConfiguration ConfigureFile(this LoggerConfiguration serilog,IEncompassConfig config )
+        internal static ElasticsearchSinkOptions GetElasticOptions( IEncompassConfig config)
         {
-            if (config.GetValue(Logger.FILE_ENABLED, false))
-            {
-                return serilog.WriteTo.RollingFile(
-                    new JsonFormatter(null, false, null), config.GetValue(Logger.LOG_FOLDER, "c:\\windows\\temp"),
-                    GetMinLevel(config, "FILE"), config.GetValue(Logger.FILE_MAX_FILE_BYTES, 10000),
-                    config.GetValue(Logger.FILE_MAX_FILES, 10));
-            }
-            return serilog;
-        }
-
-        internal static LoggerConfiguration ConfigureElasticSearch(this LoggerConfiguration serilog, IEncompassConfig config)
-        {
-            if (config.GetValue(Logger.ELASTICSEARCH_ENABLED, false))
-            {
+          
                 var elasticOptions = new ElasticsearchSinkOptions(
                     new Uri(config.GetValue(Logger.ELASTICSEARCH_URL, "NOT PROVIDED")));
                 elasticOptions.IndexFormat = config.GetValue(Logger.ELASTICSEARCH_INDEX_NAME, "sextant-serilog-");
 
                 elasticOptions.MinimumLogEventLevel = GetMinLevel(config, "ELASTICSEARCH");
                 elasticOptions.EmitEventFailure = EmitEventFailureHandling.ThrowException;
-                return serilog.WriteTo.Elasticsearch(elasticOptions);
-            }
-            return serilog;
+            return elasticOptions;
+
 
         }
 
-        internal static LoggerConfiguration ConfigureLoggly(this LoggerConfiguration serilog, IEncompassConfig config)
-        {
-            if (config.GetValue(Logger.LOGGLY_ENABLED, false))
-            {
-                var lc = new LogglyConfiguration();
-                lc.CustomerToken = config.GetValue(Logger.LOGGLY_APIKEY);
-                lc.EndpointHostName = config.GetValue(Logger.LOGGLY_URL, "logs-01.loggly.com").Replace("https://", "");
-                lc.EndpointPort = 443;
-                lc.ThrowExceptions = true;
-                lc.ApplicationName = config.GetValue(Logger.LOGGLY_APPLICATION_NAME, "Unnamed Sextant App");
-                var split = new[] { '|', ',' };
-                lc.Tags = new List<string>();
-                lc.Tags.AddRange(config.GetValue(Logger.LOGGLY_TAGS, "")
-                    .Split(split, StringSplitOptions.RemoveEmptyEntries));
-                return serilog.WriteTo.Loggly(
-                    logglyConfig: lc,
-                    restrictedToMinimumLevel: GetMinLevel(config, "LOGGLY"));
-            }
-            return serilog;
-
-        }
-
-        internal static LoggerConfiguration ConfigureConsole(this LoggerConfiguration serilog, IEncompassConfig config)
+        internal static LogglyConfiguration GetLogglyConfig( IEncompassConfig config)
         {
 
-            if (config.GetValue(Logger.CONSOLE_ENABLED, false))
-            {
-                return serilog.WriteTo.Console(
-                     new JsonFormatter(null, false, null),
-                     GetMinLevel(config, "CONSOLE"));
-            }
-            return serilog;
+            var lc = new LogglyConfiguration();
+            lc.CustomerToken = config.GetValue(Logger.LOGGLY_APIKEY);
+            lc.EndpointHostName = config.GetValue(Logger.LOGGLY_URL, "logs-01.loggly.com").Replace("https://", "");
+            lc.EndpointPort = 443;
+            lc.ThrowExceptions = true;
+            lc.ApplicationName = config.GetValue(Logger.LOGGLY_APPLICATION_NAME, "Unnamed Sextant App");
+            var split = new[] { '|', ',' };
+            lc.Tags = new List<string>();
+            lc.Tags.AddRange(config.GetValue(Logger.LOGGLY_TAGS, "")
+                .Split(split, StringSplitOptions.RemoveEmptyEntries));
+
+            return lc;
         }
 
+      
     }
 }
