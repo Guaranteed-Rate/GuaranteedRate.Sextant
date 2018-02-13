@@ -1,6 +1,14 @@
+## v17.4.1.3 / 2017 Feb 13
+
+* **Fix**  - Fix remaining NRE on debug statements if logging is not configured.
+```csharp
+[GuaranteedRate.Sextant "17.4.1.3"]
+```
+
+
 ## v17.4.1.2 / 2017 Feb 13
 
-* **Update**  - Don not null reference error if logging has not been configured.
+* **Update**  - Do not null reference error if logging has not been configured.
 ```csharp
 [GuaranteedRate.Sextant "17.4.1.2"]
 ```

@@ -148,7 +148,10 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Debug(string logger, string message)
         {
-            Serilog.Log.Logger.Debug($"{ logger }: {message}", PopulateEvent(logger, message));
+            if (configured)
+            {
+                Serilog.Log.Logger.Debug($"{logger}: {message}", PopulateEvent(logger, message));
+            }
         }
 
         [Obsolete("exlcuded reporters are no longer a thing.")]
