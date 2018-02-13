@@ -66,11 +66,11 @@ Sample Json file
 ## Logging
 
 > As Encompass uses `log4net` under the hood we are not able to leverage `log4net` in our plugins.  
-Born out of necessity, we have created the GuaranteedRate.Logging library to support alternative logging means
+Therefore, we use Serilog.  Out of the box, we support Console, Elasticsearch, and Loggly.  
 
 ### Logger
 
-**Logger** is a static holding object that can contain any number of `ILogAppender` objects.  Once a appender is registered with Logger it will be called each time `Logger` is invoked in your Application
+**Logger** is a static holding object that wraps Serilog and provides a configure method for setup.  For backwards compatibility, we honor the Logger.[Level](logger, message) syntax.
 
 Sample usage
 ```csharp
@@ -78,13 +78,7 @@ var config = new JsonEncompassConfig();
 config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
                 
 var console = new ConsoleLogAppender(config);
-
-var loggly = new LogglyLogAppender(config);
-var elasticSearch = new ElasticsearchLogAppender(config);
-
-Logger.AddAppender(console);
-Logger.AddAppender(loggly);
-Logger.AddAppender(elasticSearch);
+Sextant.Logging.Logger.Setup(config);
 
 Logger.Debug("SextantTestRig", "Test debug message");
 Logger.Info("SextantTestRig", "Test info message");
@@ -95,34 +89,6 @@ Logger.Fatal("SextantTestRig", "Test fatal message");
 ```
 
 - An example usage of `Logger` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
-
-### Loggly
-
-**LogglyLogAppender** is an asynchronous web client that sends data directly to Loggly's RESTful interface. 
-The `LogglyLogAppender` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
-freeing your application main thread to continue with other work.  
-
-- An example usage of the `LogglyLogAppender` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Logging/Loggly/LogglyLogAppenderIntegrationTests.cs)
-- An example usage of the `LogglyLogAppender` as a log appender attached to Logger can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
-
-Example:
-
-```csharp
-Logger.Error(this.GetType().Name.ToString(), "This is my error");
-IDictionary<string, string> fields = new Dictionary<string, string>();
-fields.Add("foo", "bar");
-fields.Add("foo2", "bar2");
-Logger.Info(this.GetType().Name.ToString(), fields);
-```
-
-### Elastic Search
-
-**ElasticsearchLogAppender** is an asynchronous web client that sends data directly to Loggly's RESTful interface. 
-The `ElasticsearchLogAppender` is built on top of [**AsyncEventReporter**](#asynceventreporter) and will run in a separate thread 
-freeing your application main thread to continue with other work.  
-
-- An example usage of the `ElasticsearchLogAppender` in isolation can be found in [GuaranteedRate.Sextant.Integration.Tests](GuaranteedRate.Sextant.Integration.Tests/Logging/Elasticsearch/ElasticsearchLogAppenderIntegrationTests.cs)
-- An example usage of the `ElasticsearchLogAppender` as a log appender attached to Logger can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
 ## Metrics tracking
 
