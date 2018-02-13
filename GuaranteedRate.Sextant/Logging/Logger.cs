@@ -188,7 +188,10 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Error(string logger, string message)
         {
-            Serilog.Log.Logger.Error($"{ logger }: {message}", PopulateEvent(logger, message));
+            if (Serilog.Log.Logger != null)
+            {
+                Serilog.Log.Logger.Error($"{logger}: {message}", PopulateEvent(logger, message));
+            }
         }
 
         /// <summary>
@@ -199,7 +202,10 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Fatal(string logger, string message)
         {
-            Serilog.Log.Logger.Fatal($"{ logger }: {message}", PopulateEvent(logger, message));
+            if (Serilog.Log.Logger != null)
+            {
+                Serilog.Log.Logger.Fatal($"{logger}: {message}", PopulateEvent(logger, message));
+            }
         }
 
         /// <summary>
@@ -210,7 +216,11 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Info(string logger, string message)
         {
-            Serilog.Log.Logger.Information($"{ logger }: {message}", PopulateEvent(logger, message));
+            if (Serilog.Log.Logger != null)
+            {
+
+                Serilog.Log.Logger.Information($"{logger}: {message}", PopulateEvent(logger, message));
+            }
         }
 
         /// <summary>
@@ -221,7 +231,10 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Warn(string logger, string message)
         {
-            Serilog.Log.Logger.Warning($"{ logger }: {message}", PopulateEvent(logger, message));
+            if (Serilog.Log.Logger != null)
+            {
+                Serilog.Log.Logger.Warning($"{logger}: {message}", PopulateEvent(logger, message));
+            }
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)

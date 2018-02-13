@@ -249,7 +249,6 @@
     <Compile Include="EncompassUtils\SessionUtils.cs" />
     <Compile Include="EncompassUtils\UserUtils.cs" />
     <Compile Include="Logging\SerilogHelpers.cs" />
-    <Compile Include="Logging\WebLogAppender.cs" />
     <Compile Include="Metrics\Graphite\GraphiteReporter.cs" />
     <Compile Include="Metrics\Graphite\StatsDGraphiteReport.cs" />
     <Compile Include="Metrics\IReporter.cs" />

@@ -1,4 +1,11 @@
-## v17.4.1.1 / 2017 Dec 13
+## v17.4.1.2 / 2017 Feb 13
+
+* **Update**  - Don not null reference error if logging has not been configured.
+```csharp
+[GuaranteedRate.Sextant "17.4.1.2"]
+```
+
+## v17.4.1.1 / 2017 Feb 13
 
 * **Update**  - Tear out homegrown logging framework and use Serilog instead.
 ```csharp
