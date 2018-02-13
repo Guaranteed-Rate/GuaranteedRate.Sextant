@@ -2,7 +2,7 @@
 
 * **Update**  - Tear out homegrown logging framework and use Serilog instead.
 ```csharp
-[GuaranteedRate.Sextant "17.4.0.1"]
+[GuaranteedRate.Sextant "17.4.1.1"]
 ```
 
 ## v17.4.0.1 / 2017 Dec 12
