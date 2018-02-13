@@ -77,9 +77,6 @@ Sample usage
 var config = new JsonEncompassConfig();
 config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
                 
-var console = new ConsoleLogAppender(config);
-Sextant.Logging.Logger.Setup(config);
-
 Logger.Debug("SextantTestRig", "Test debug message");
 Logger.Info("SextantTestRig", "Test info message");
 Logger.Warn("SextantTestRig", "Test warn message");
@@ -87,6 +84,17 @@ Logger.Error("SextantTestRig", "Test error message");
 Logger.Fatal("SextantTestRig", "Test fatal message");
 
 ```
+
+One can add aribitrary tags to the logs like this:
+
+Logger.Setup(config);
+Logger.AddTag("mytagName", "my attribute name");
+
+Under the hood, we automatically add three tags:
+
+ "process" = Process.GetCurrentProcess().ProcessName
+ "hostname" = Environment.MachineName
+ "windowsuser" =  Environment.UserName;
 
 - An example usage of `Logger` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
