@@ -12,7 +12,7 @@ namespace GuaranteedRate.Sextant.Logging
     public class Logger : IDisposable
     {
         private static readonly object syncRoot = new Object();
-
+        private static bool configured = false;
         public const string LEVEL = "level";
         public const string ERROR_LEVEL = "ERROR";
         public const string WARN_LEVEL = "WARN";
@@ -122,6 +122,7 @@ namespace GuaranteedRate.Sextant.Logging
                         baseLogger.WriteTo.Console(new JsonFormatter(null, false, null));
                     }
                     Serilog.Log.Logger = baseLogger.CreateLogger();
+                    configured = true;
                 }
                 catch (Exception ex)
                 {
@@ -188,7 +189,7 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Error(string logger, string message)
         {
-            if (Serilog.Log.Logger != null)
+            if (configured)
             {
                 Serilog.Log.Logger.Error($"{logger}: {message}", PopulateEvent(logger, message));
             }
@@ -202,7 +203,7 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Fatal(string logger, string message)
         {
-            if (Serilog.Log.Logger != null)
+            if (configured)
             {
                 Serilog.Log.Logger.Fatal($"{logger}: {message}", PopulateEvent(logger, message));
             }
@@ -216,7 +217,7 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Info(string logger, string message)
         {
-            if (Serilog.Log.Logger != null)
+            if (configured)
             {
 
                 Serilog.Log.Logger.Information($"{logger}: {message}", PopulateEvent(logger, message));
@@ -231,7 +232,7 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
         public static void Warn(string logger, string message)
         {
-            if (Serilog.Log.Logger != null)
+            if (configured)
             {
                 Serilog.Log.Logger.Warning($"{logger}: {message}", PopulateEvent(logger, message));
             }
