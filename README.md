@@ -87,7 +87,7 @@ Logger.Fatal("SextantTestRig", "Test fatal message");
 
 One can add aribitrary tags to the logs like this:
 
-```
+```csharp
 Logger.Setup(config);
 Logger.AddTag("mytagName", "my attribute name");
 ```
