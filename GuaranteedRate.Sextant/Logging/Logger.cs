@@ -88,7 +88,8 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 try
                 {
-                    _additionalTags= new Dictionary<string, string>();
+                    //Serilog has a clever "enricher" approach, but it is created at setup time and wouldn't be easily compatible with how we add tags to logs now.  We could make this a future enhancement.  For now, just add these to each log event when we log.
+                    _additionalTags = new Dictionary<string, string>();
                     _additionalTags.Add("process", Process.GetCurrentProcess().ProcessName);
                     _additionalTags.Add("hostname", Environment.MachineName);
                     _additionalTags.Add("windowsuser", Environment.UserName);
