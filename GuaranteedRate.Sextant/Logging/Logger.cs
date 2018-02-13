@@ -2,19 +2,15 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
-using GuaranteedRate.Sextant.Logging.Console;
-using GuaranteedRate.Sextant.Logging.Elasticsearch;
-using GuaranteedRate.Sextant.Logging.File;
-using GuaranteedRate.Sextant.Logging.Loggly;
+using Serilog;
+using Serilog.Formatting.Json;
 
 namespace GuaranteedRate.Sextant.Logging
 {
     public class Logger : IDisposable
     {
-        private static volatile IList<ILogAppender> _reporters = new List<ILogAppender>();
         private static readonly object syncRoot = new Object();
 
         public const string LEVEL = "level";
@@ -23,101 +19,176 @@ namespace GuaranteedRate.Sextant.Logging
         public const string INFO_LEVEL = "INFO";
         public const string DEBUG_LEVEL = "DEBUG";
         public const string FATAL_LEVEL = "FATAL";
+        private static Dictionary<string, string> _additionalTags;
+
+        #region config mappings
+
+        public static string ELASTICSEARCH_ENABLED = "ElasticsearchLogAppender.Enabled";
+        public static string ELASTICSEARCH_URL = "ElasticsearchLogAppender.Url";
+        public static string ELASTICSEARCH_QUEUE_SIZE = "ElasticsearchLogAppender.QueueSize";
+        public static string ELASTICSEARCH_RETRY_LIMIT = "ElasticsearchLogAppender.RetryLimit";
+        public static string ELASTICSEARCH_ALL = "ElasticsearchLogAppender.All.Enabled";
+        public static string ELASTICSEARCH_ERROR = "ElasticsearchLogAppender.Error.Enabled";
+        public static string ELASTICSEARCH_WARN = "ElasticsearchLogAppender.Warn.Enabled";
+        public static string ELASTICSEARCH_INFO = "ElasticsearchLogAppender.Info.Enabled";
+        public static string ELASTICSEARCH_DEBUG = "ElasticsearchLogAppender.Debug.Enabled";
+        public static string ELASTICSEARCH_MIN_LEVEL = "ElasticsearchLogAppender.Debug.Enabled";
+        public static string ELASTICSEARCH_FATAL = "ElasticsearchLogAppender.Fatal.Enabled";
+        public static string ELASTICSEARCH_TAGS = "ElasticsearchLogAppender.Tags";
+        public static string ELASTICSEARCH_INDEX_NAME = "ElasticsearchLogAppender.IndexName";
+        public static string ELASTICSEARCH_LOG_RECURSIVELY = "ElasticsearchLogAppender.LogRecursively";
+        public static string ELASTICSEARCH_APPNAME = "ElasticsearchLogAppender.AppName";
+        public static string ELASTICSEARCH_ENVIRONMENT = "ElasticsearchLogAppender.Environment";
+
+        public static string FILE_ENABLED = "FileLogAppender.Enabled";
+        public static string FILE_FOLDER = "FileLogAppender.Folder";
+        public static string FILE_NAME = "FileLogAppender.LogName";
+        public static string FILE_QUEUE_SIZE = "FileLogAppender.QueueSize";
+        public static string FILE_RETRY_LIMIT = "FileLogAppender.RetryLimit";
+        public static string FILE_ALL = "FileLogAppender.All.Enabled";
+        public static string FILE_ERROR = "FileLogAppender.Error.Enabled";
+        public static string FILE_WARN = "FileLogAppender.Warn.Enabled";
+        public static string FILE_INFO = "FileLogAppender.Info.Enabled";
+        public static string FILE_DEBUG = "FileLogAppender.Debug.Enabled";
+        public static string FILE_FATAL = "FileLogAppender.Fatal.Enabled";
+        public static string FILE_TAGS = "FileLogAppender.Tags";
+        public static string FILE_MAX_FILE_BYTES = "FileLogAppender.MaxFileBytes";
+        public static string FILE_MAX_FILES = "10";
+        public static string FILE_MESSAGE_FORMAT = "FileLogAppender.MessageFormat";
+
+        public static string CONSOLE_ENABLED = "ConsoleLogAppender.Enabled";
+        public static string CONSOLE_ALL = "ConsoleLogAppender.All.Enabled";
+        public static string CONSOLE_ERROR = "ConsoleLogAppender.Error.Enabled";
+        public static string CONSOLE_WARN = "ConsoleLogAppender.Warn.Enabled";
+        public static string CONSOLE_INFO = "ConsoleLogAppender.Info.Enabled";
+        public static string CONSOLE_DEBUG = "ConsoleLogAppender.Debug.Enabled";
+        public static string CONSOLE_FATAL = "ConsoleLogAppender.Fatal.Enabled";
+
+        public static string LOGGLY_ENABLED = "LogglyLogAppender.Enabled";
+        public static string LOGGLY_URL = "LogglyLogAppender.Url";
+        public static string LOGGLY_APPLICATION_NAME = "LogglyLogAppender.ApplicationName";
+        public static string LOGGLY_APIKEY = "LogglyLogAppender.ApiKey";
+        public static string LOGGLY_QUEUE_SIZE = "LogglyLogAppender.QueueSize";
+        public static string LOGGLY_RETRY_LIMIT = "LogglyLogAppender.RetryLimit";
+        public static string LOGGLY_ALL = "LogglyLogAppender.All.Enabled";
+        public static string LOGGLY_ERROR = "LogglyLogAppender.Error.Enabled";
+        public static string LOGGLY_WARN = "LogglyLogAppender.Warn.Enabled";
+        public static string LOGGLY_INFO = "LogglyLogAppender.Info.Enabled";
+        public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
+        public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
+        public static string LOGGLY_TAGS = "LogglyLogAppender.Tags";
+        public static string LOGGLY_LOG_RECURSIVELY = "LogglyLogAppender.LogRecursively";
+
+        #endregion
+
 
         public static void Setup(IEncompassConfig config)
         {
-
-            var elasticSearchEnabled = config.GetValue(ElasticsearchLogAppender.ELASTICSEARCH_ENABLED, false);
-            if (elasticSearchEnabled)
-            {
-                AddAppender(new ElasticsearchLogAppender(config));
-            }
-
-            var fileEnabled = config.GetValue(FileLogAppender.FILE_ENABLED, false);
-            if (fileEnabled)
-            {
-                AddAppender(new FileLogAppender(config));
-            }
-            var consoleEnabled = config.GetValue(ConsoleLogAppender.CONSOLE_ENABLED, false);
-            if (consoleEnabled)
-            {
-                AddAppender(new ConsoleLogAppender(config));
-            }
-
-            var logglyEnabled = config.GetValue(LogglyLogAppender.LOGGLY_ENABLED, false);
-            if (logglyEnabled)
-            {
-                AddAppender(new LogglyLogAppender(config));
-            }
-
-        }
-
-        /// <summary>
-        /// Initializes the logger with a single appender
-        /// </summary>
-        /// <param name="appender"></param>
-        public static void Init(ILogAppender appender)
-        {
-            AddAppender(appender);
-        }
-
-        /// <summary>
-        /// Adds a log appender to the collection of appenders.  
-        /// </summary>
-        /// <param name="appender"></param>
-        public static void AddAppender(ILogAppender appender)
-        {
+            LoggerConfiguration baseLogger = null;
             lock (syncRoot)
             {
-                if (_reporters == null)
+                try
                 {
-                    _reporters = new List<ILogAppender>();
-                }
-                _reporters.Add(appender);
-            }
-        }
+                    //Serilog has a clever "enricher" approach, but it is created at setup time and wouldn't be easily compatible with how we add tags to logs now.  We could make this a future enhancement.  For now, just add these to each log event when we log.
+                    _additionalTags = new Dictionary<string, string>();
+                    _additionalTags.Add("process", Process.GetCurrentProcess().ProcessName);
+                    _additionalTags.Add("hostname", Environment.MachineName);
+                    _additionalTags.Add("windowsuser", Environment.UserName);
 
-        public static void AddTag(string tag)
-        {
-            lock (syncRoot)
-            {
-                if (_reporters != null)
-                {
-                    foreach (var reporter in _reporters)
+                    baseLogger = new LoggerConfiguration()
+                        .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
+
+                    if (config.GetValue(Logger.ELASTICSEARCH_ENABLED, false))
                     {
-                        reporter.AddTag(tag);
+                        baseLogger.WriteTo.Elasticsearch(SerilogHelpers.GetElasticOptions(config));
                     }
+
+                    if (config.GetValue(Logger.FILE_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.RollingFile(pathFormat: config.GetValue(
+                            Logger.FILE_FOLDER, config.GetValue(Logger.FILE_NAME)),
+                            formatter: new JsonFormatter(null, false, null),
+                            fileSizeLimitBytes: config.GetValue(Logger.FILE_MAX_FILE_BYTES, 10000),
+                            retainedFileCountLimit: config.GetValue(Logger.FILE_MAX_FILES, 10));
+                    }
+
+                    if (config.GetValue(Logger.LOGGLY_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.Loggly(logglyConfig: SerilogHelpers.GetLogglyConfig(config));
+                    }
+
+                    if (config.GetValue(Logger.CONSOLE_ENABLED, false))
+                    {
+                        baseLogger.WriteTo.Console(new JsonFormatter(null, false, null));
+                    }
+                    Serilog.Log.Logger = baseLogger.CreateLogger();
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine($"ERROR CONFIGURING LOGGING:{ex}");
                 }
             }
         }
 
-        private static IDictionary<string, string> PopulateEvent(string loggerName, string level, string message)
+        private static IDictionary<string, string> PopulateEvent(string loggerName, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
-            fields.Add(LEVEL, level);
             fields.Add("timestamp", DateTime.UtcNow.ToString());
-            fields.Add("hostname", System.Environment.MachineName);
-            fields.Add("process", Process.GetCurrentProcess().ProcessName);
             fields.Add("loggerName", loggerName);
+
+            foreach (var tt in _additionalTags)
+            {
+                fields.Add(tt.Key, tt.Value);
+            }
+
             fields.Add("message", message);
             return fields;
         }
 
         public static void Debug(string logger, string message)
         {
-            Log(PopulateEvent(logger, DEBUG_LEVEL, message));
+            Serilog.Log.Logger.Debug($"{ logger }: {message}", PopulateEvent(logger, message));
         }
 
-     
+        [Obsolete("exlcuded reporters are no longer a thing.")]
+        public static void Info(string logger, string message, Type[] excludedReporters)
+        {
+            Info(logger, message);
+        }
+
+        [Obsolete("exlcuded reporters are no longer a thing.")]
+        public static void Error(string logger, string message, Type[] excludedReporters)
+        {
+            Error(logger, message);
+        }
+
+        [Obsolete("exlcuded reporters are no longer a thing.")]
+        public static void Warn(string logger, string message, Type[] excludedReporters)
+        {
+            Warn(logger, message);
+        }
+
+        [Obsolete("exlcuded reporters are no longer a thing.")]
+        public static void Debug(string logger, string message, Type[] excludedReporters)
+        {
+            Debug(logger, message);
+        }
+
+        [Obsolete("exlcuded reporters are no longer a thing.")]
+        public static void Fatal(string logger, string message, Type[] excludedReporters)
+        {
+            Fatal(logger, message);
+        }
+
         /// <summary>
         /// writes a log entry as "error"
         /// </summary>
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Error(string logger, string message, Type[] excludedReporters = null)
+        public static void Error(string logger, string message)
         {
-            Log(PopulateEvent(logger, ERROR_LEVEL, message), excludedReporters);
+            Serilog.Log.Logger.Error($"{ logger }: {message}", PopulateEvent(logger, message));
         }
 
         /// <summary>
@@ -126,11 +197,10 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Fatal(string logger, string message, Type[] excludedReporters = null)
+        public static void Fatal(string logger, string message)
         {
-            Log(PopulateEvent(logger, FATAL_LEVEL, message), excludedReporters);
+            Serilog.Log.Logger.Fatal($"{ logger }: {message}", PopulateEvent(logger, message));
         }
-
 
         /// <summary>
         /// Writes a log entry as "info"
@@ -138,11 +208,10 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Info(string logger, string message, Type[] excludedReporters = null)
+        public static void Info(string logger, string message)
         {
-            Log(PopulateEvent(logger, INFO_LEVEL, message));
+            Serilog.Log.Logger.Information($"{ logger }: {message}", PopulateEvent(logger, message));
         }
-
 
         /// <summary>
         /// Writes a log entry as "warn"
@@ -150,37 +219,34 @@ namespace GuaranteedRate.Sextant.Logging
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
         /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Warn(string logger, string message, Type[] excludedReporters = null)
+        public static void Warn(string logger, string message)
         {
-            Log(PopulateEvent(logger, WARN_LEVEL, message));
+            Serilog.Log.Logger.Warning($"{ logger }: {message}", PopulateEvent(logger, message));
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
-            if (!fields.ContainsKey("logger"))
+            switch (level.ToLowerInvariant())
             {
-                fields.Add("logger", loggerName);
-            }
-            if (!fields.ContainsKey(LEVEL))
-            {
-                fields.Add(LEVEL, level);
-            }
-            Log(fields);
-        }
-
-        private static void Log(IDictionary<string, string> fields, Type[] excludedReporters = null)
-        {
-            foreach (var r in _reporters)
-            {
-                if (excludedReporters == null || excludedReporters.All(aa => aa != r.GetType()))
-                {
-                    r.Log(fields);
-                }
+                case "fatal":
+                    Serilog.Log.Logger.Fatal($"{loggerName}: {fields}", fields);
+                    break;
+                case "error":
+                    Serilog.Log.Logger.Error($"{loggerName}: {fields}", fields);
+                    break;
+                case "warn":
+                    Serilog.Log.Logger.Warning($"{loggerName}: {fields}", fields);
+                    break;
+                case "info":
+                    Serilog.Log.Logger.Information($"{loggerName}: {fields}", fields);
+                    break;
+                default:
+                    Serilog.Log.Logger.Debug($"{loggerName}: {fields}", fields);
+                    break;
             }
         }
 
-        private bool disposedValue = false;
-
+        private bool disposedValue;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -190,38 +256,44 @@ namespace GuaranteedRate.Sextant.Logging
                     Shutdown();
                 }
             }
-
-
             disposedValue = true;
         }
 
         /// <summary>
-        /// flushes all reporters.  By default blocks for 60 seconds. 
+        /// flushes all logs. 
         /// </summary>
-        public static void Shutdown(int blockSeconds = 60)
+        /// <param name="timeout">wait this many seconds attempting to flush logs.</param>
+        /// <param name="throwOnTimeout">throw an exception if we time out flushing logs.</param>
+        public static void Shutdown(int timeout = 30, bool throwOnTimeout = false)
         {
-            if (_reporters != null && _reporters.Any())
+            var task = Task.Run(() => Serilog.Log.CloseAndFlush());
+            if (task.Wait(TimeSpan.FromSeconds(timeout)))
             {
-                var degPar = new ParallelOptions();
-                degPar.MaxDegreeOfParallelism = _reporters.Count;
-                lock (syncRoot)
-                {
-                    Parallel.ForEach(_reporters, async r =>
-                    {
-                        await Task.Run(() => {
-                            r.Shutdown(blockSeconds);
-                            r.Dispose();
-                        });
-
-                    });
-                }
+                return;
             }
+            if (throwOnTimeout)
+            {
+                throw new Exception("Timed out");
+            }
+
         }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void AddTag(string key, string value)
+        {
+            lock (syncRoot)
+            {
+                if (_additionalTags == null)
+                {
+                    _additionalTags = new Dictionary<string, string>();
+                }
+                _additionalTags.Add(key, value);
+            }
         }
 
     }

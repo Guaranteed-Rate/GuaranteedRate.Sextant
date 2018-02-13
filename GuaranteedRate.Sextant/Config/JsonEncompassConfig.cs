@@ -93,6 +93,10 @@ namespace GuaranteedRate.Sextant.Config
             var token = _jsonObject.SelectToken(key);
             try
             {
+                if (ReferenceEquals(token, null))
+                {
+                    return defaultValue;
+                }
                 return token.ToObject<T>();
             }
             catch (Exception)

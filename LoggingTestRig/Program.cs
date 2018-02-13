@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.Logging;
@@ -19,6 +20,10 @@ namespace LoggingTestRig
         {
             Logger.Debug("SextantTestRig", $"Test debug message from thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
         }
+        private static void Info()
+        {
+            Logger.Info("SextantTestRig", $"Test debug message from thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+        }
 
 
         static void Main(string[] args)
@@ -37,9 +42,11 @@ namespace LoggingTestRig
             //Logger.AddAppender(elasticSearch);
 
             //automatically set appenders
+            var tags = new Dictionary<string, string>();
+            tags.Add("bizz", "bazz");
             Logger.Setup(config);
+            Serilog.Debugging.SelfLog.Enable(Console.Error);
 
-            Logger.AddTag("runtime-tag");
             Logger.Debug("SextantTestRig", "Test debug message.");
 
             Logger.Info("SextantTestRig", "Test info message");
@@ -52,12 +59,12 @@ namespace LoggingTestRig
             while (Console.ReadKey().Key != ConsoleKey.Q)
             {
                 var increment = 19;
-                Parallel.For(0, increment, async => { Debug(); });
+                Parallel.For(0, increment, async => { Info(); });
                 count = count + increment;
             }
             Console.WriteLine($"total queued: {count}");
             Console.WriteLine("Shutting down.");
-            Logger.Shutdown(30);
+            Logger.Shutdown();
             return;
             #region Simple Metrics 
 

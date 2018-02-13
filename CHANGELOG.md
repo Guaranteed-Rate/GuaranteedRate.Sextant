@@ -1,3 +1,10 @@
+## v17.4.1.1 / 2017 Dec 13
+
+* **Update**  - Tear out homegrown logging framework and use Serilog instead.
+```csharp
+[GuaranteedRate.Sextant "17.4.1.1"]
+```
+
 ## v17.4.0.1 / 2017 Dec 12
 
 * **Update**  - Fix AppNam and Environment values in Elasticsearch.
