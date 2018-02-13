@@ -125,17 +125,13 @@ namespace GuaranteedRate.Sextant.Logging
                 {
                     System.Console.WriteLine($"ERROR CONFIGURING LOGGING:{ex}");
                 }
-
             }
-
         }
-
-       
+        
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
             fields.Add("timestamp", DateTime.UtcNow.ToString());
-
             fields.Add("loggerName", loggerName);
 
             foreach (var tt in _additionalTags)
@@ -152,27 +148,30 @@ namespace GuaranteedRate.Sextant.Logging
             Serilog.Log.Logger.Debug($"{ logger }: {message}", PopulateEvent(logger, message));
         }
 
-
         [Obsolete("exlcuded reporters are no longer a thing.")]
         public static void Info(string logger, string message, Type[] excludedReporters)
         {
             Info(logger, message);
         }
+
         [Obsolete("exlcuded reporters are no longer a thing.")]
         public static void Error(string logger, string message, Type[] excludedReporters)
         {
             Error(logger, message);
         }
+
         [Obsolete("exlcuded reporters are no longer a thing.")]
         public static void Warn(string logger, string message, Type[] excludedReporters)
         {
             Warn(logger, message);
         }
+
         [Obsolete("exlcuded reporters are no longer a thing.")]
         public static void Debug(string logger, string message, Type[] excludedReporters)
         {
             Debug(logger, message);
         }
+
         [Obsolete("exlcuded reporters are no longer a thing.")]
         public static void Fatal(string logger, string message, Type[] excludedReporters)
         {
@@ -200,8 +199,7 @@ namespace GuaranteedRate.Sextant.Logging
         {
             Serilog.Log.Logger.Fatal($"{ logger }: {message}", PopulateEvent(logger, message));
         }
-
-
+        
         /// <summary>
         /// Writes a log entry as "info"
         /// </summary>
@@ -212,8 +210,7 @@ namespace GuaranteedRate.Sextant.Logging
         {
             Serilog.Log.Logger.Information($"{ logger }: {message}", PopulateEvent(logger, message));
         }
-
-
+        
         /// <summary>
         /// Writes a log entry as "warn"
         /// </summary>
@@ -223,7 +220,6 @@ namespace GuaranteedRate.Sextant.Logging
         public static void Warn(string logger, string message)
         {
             Serilog.Log.Logger.Warning($"{ logger }: {message}", PopulateEvent(logger, message));
-
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
@@ -246,13 +242,9 @@ namespace GuaranteedRate.Sextant.Logging
                     Serilog.Log.Logger.Debug($"{loggerName}: {fields}", fields);
                     break;
             }
-
         }
 
-
-
         private bool disposedValue;
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -277,6 +269,18 @@ namespace GuaranteedRate.Sextant.Logging
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void AddTag(string key, string value)
+        {
+            lock (syncRoot)
+            {
+                if (_additionalTags == null)
+                {
+                    _additionalTags=new Dictionary<string, string>();
+                }
+                _additionalTags.Add(key,value);
+            }
         }
 
     }
