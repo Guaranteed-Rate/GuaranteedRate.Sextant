@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GuaranteedRate.Sextant.Config;
 using Serilog;
-using Serilog.Events;
 using Serilog.Formatting.Json;
-using Serilog.Sinks.Elasticsearch;
-using Serilog.Sinks.Loggly;
 
 namespace GuaranteedRate.Sextant.Logging
 {
@@ -21,7 +18,7 @@ namespace GuaranteedRate.Sextant.Logging
         public const string INFO_LEVEL = "INFO";
         public const string DEBUG_LEVEL = "DEBUG";
         public const string FATAL_LEVEL = "FATAL";
-
+        private static Dictionary<string, string> _additionalTags;
 
         #region config mappings
 
@@ -43,8 +40,8 @@ namespace GuaranteedRate.Sextant.Logging
         public static string ELASTICSEARCH_ENVIRONMENT = "ElasticsearchLogAppender.Environment";
 
         public static string FILE_ENABLED = "FileLogAppender.Enabled";
-        public static string LOG_FOLDER = "FileLogAppender.Folder";
-        public static string LOG_NAME = "FileLogAppender.LogName";
+        public static string FILE_FOLDER = "FileLogAppender.Folder";
+        public static string FILE_NAME = "FileLogAppender.LogName";
         public static string FILE_QUEUE_SIZE = "FileLogAppender.QueueSize";
         public static string FILE_RETRY_LIMIT = "FileLogAppender.RetryLimit";
         public static string FILE_ALL = "FileLogAppender.All.Enabled";
@@ -91,11 +88,13 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 try
                 {
-                    baseLogger = new LoggerConfiguration()
-                        .MinimumLevel.Verbose().Enrich.With<HostNameEnricher>()
-                        .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
+                    _additionalTags= new Dictionary<string, string>();
+                    _additionalTags.Add("process", Process.GetCurrentProcess().ProcessName);
+                    _additionalTags.Add("hostname", Environment.MachineName);
+                    _additionalTags.Add("windowsuser", Environment.UserName);
 
-                    baseLogger.WriteTo.Console();
+                    baseLogger = new LoggerConfiguration()
+                        .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
 
                     if (config.GetValue(Logger.ELASTICSEARCH_ENABLED, false))
                     {
@@ -105,7 +104,7 @@ namespace GuaranteedRate.Sextant.Logging
                     if (config.GetValue(Logger.FILE_ENABLED, false))
                     {
                         baseLogger.WriteTo.RollingFile(pathFormat: config.GetValue(
-                            Logger.LOG_FOLDER, "c:\\junk\\foo.txt"),
+                            Logger.FILE_FOLDER, config.GetValue(Logger.FILE_NAME)),
                             formatter: new JsonFormatter(null, false, null),
                             fileSizeLimitBytes: config.GetValue(Logger.FILE_MAX_FILE_BYTES, 10000),
                             retainedFileCountLimit: config.GetValue(Logger.FILE_MAX_FILES, 10));
@@ -136,8 +135,14 @@ namespace GuaranteedRate.Sextant.Logging
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
             fields.Add("timestamp", DateTime.UtcNow.ToString());
-            fields.Add("process", Process.GetCurrentProcess().ProcessName);
+
             fields.Add("loggerName", loggerName);
+
+            foreach (var tt in _additionalTags)
+            {
+                fields.Add(tt.Key,tt.Value);
+            }
+
             fields.Add("message", message);
             return fields;
         }
