@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
 using Serilog;
 using Serilog.Formatting.Json;
@@ -128,7 +129,7 @@ namespace GuaranteedRate.Sextant.Logging
                 }
             }
         }
-        
+
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message)
         {
             IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
@@ -137,7 +138,7 @@ namespace GuaranteedRate.Sextant.Logging
 
             foreach (var tt in _additionalTags)
             {
-                fields.Add(tt.Key,tt.Value);
+                fields.Add(tt.Key, tt.Value);
             }
 
             fields.Add("message", message);
@@ -200,7 +201,7 @@ namespace GuaranteedRate.Sextant.Logging
         {
             Serilog.Log.Logger.Fatal($"{ logger }: {message}", PopulateEvent(logger, message));
         }
-        
+
         /// <summary>
         /// Writes a log entry as "info"
         /// </summary>
@@ -211,7 +212,7 @@ namespace GuaranteedRate.Sextant.Logging
         {
             Serilog.Log.Logger.Information($"{ logger }: {message}", PopulateEvent(logger, message));
         }
-        
+
         /// <summary>
         /// Writes a log entry as "warn"
         /// </summary>
@@ -261,9 +262,20 @@ namespace GuaranteedRate.Sextant.Logging
         /// <summary>
         /// flushes all logs. 
         /// </summary>
-        public static void Shutdown()
+        /// <param name="timeout">wait this many seconds attempting to flush logs.</param>
+        /// <param name="throwOnTimeout">throw an exception if we time out flushing logs.</param>
+        public static void Shutdown(int timeout = 30, bool throwOnTimeout = false)
         {
-            Serilog.Log.CloseAndFlush();
+            var task = Task.Run(() => Serilog.Log.CloseAndFlush());
+            if (task.Wait(TimeSpan.FromSeconds(timeout)))
+            {
+                return;
+            }
+            if (throwOnTimeout)
+            {
+                throw new Exception("Timed out");
+            }
+
         }
 
         public void Dispose()
@@ -278,9 +290,9 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 if (_additionalTags == null)
                 {
-                    _additionalTags=new Dictionary<string, string>();
+                    _additionalTags = new Dictionary<string, string>();
                 }
-                _additionalTags.Add(key,value);
+                _additionalTags.Add(key, value);
             }
         }
 
