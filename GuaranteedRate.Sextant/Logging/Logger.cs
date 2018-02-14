@@ -2,9 +2,14 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
+using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
+using Serilog.Core.Enrichers;
 using Serilog.Formatting.Json;
 
 namespace GuaranteedRate.Sextant.Logging
@@ -19,7 +24,7 @@ namespace GuaranteedRate.Sextant.Logging
         public const string INFO_LEVEL = "INFO";
         public const string DEBUG_LEVEL = "DEBUG";
         public const string FATAL_LEVEL = "FATAL";
-        private static Dictionary<string, string> _additionalTags;
+        private static ConcurrentDictionary<string, string> _additionalTags;
 
         #region config mappings
 
@@ -82,7 +87,7 @@ namespace GuaranteedRate.Sextant.Logging
         #endregion
 
 
-        public static void Setup(IEncompassConfig config, Dictionary<string,string > additionalTags = null )
+        public static void Setup(IEncompassConfig config, Dictionary<string, string> additionalTags = null)
         {
             LoggerConfiguration baseLogger = null;
             lock (syncRoot)
@@ -90,21 +95,21 @@ namespace GuaranteedRate.Sextant.Logging
                 try
                 {
                     //Serilog has a clever "enricher" approach, but it is created at setup time and wouldn't be easily compatible with how we add tags to logs now.  We could make this a future enhancement.  For now, just add these to each log event when we log.
-                    if (ReferenceEquals(additionalTags, null))
+                    _additionalTags = new ConcurrentDictionary<string, string>();
+                    if (!ReferenceEquals(additionalTags, null))
                     {
-                        _additionalTags = new Dictionary<string, string>();
+                        foreach (var kv in additionalTags)
+                        {
+                            _additionalTags.TryAdd(kv.Key, kv.Value);
+                        }
                     }
-                    else
-                    {
-                        _additionalTags = additionalTags;
-                    }
-                    _additionalTags.Add("process", Process.GetCurrentProcess().ProcessName);
-                    _additionalTags.Add("hostname", Environment.MachineName);
-                    _additionalTags.Add("windowsuser", Environment.UserName);
+                    _additionalTags.TryAdd("process", Process.GetCurrentProcess().ProcessName);
+                    _additionalTags.TryAdd("hostname", Environment.MachineName);
+                    _additionalTags.TryAdd("windowsuser", Environment.UserName);
 
                     baseLogger = new LoggerConfiguration()
                         .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
-
+                    baseLogger.WriteTo.Logger(aa => aa.Destructure.ToMaximumDepth(20));
                     if (config.GetValue(Logger.ELASTICSEARCH_ENABLED, false))
                     {
                         baseLogger.WriteTo.Elasticsearch(SerilogHelpers.GetElasticOptions(config));
@@ -121,7 +126,8 @@ namespace GuaranteedRate.Sextant.Logging
 
                     if (config.GetValue(Logger.LOGGLY_ENABLED, false))
                     {
-                        baseLogger.WriteTo.Loggly(logglyConfig: SerilogHelpers.GetLogglyConfig(config));
+                        baseLogger.WriteTo.Loggly(logglyConfig: SerilogHelpers.GetLogglyConfig(config),
+                            formatProvider: CultureInfo.CurrentCulture);
                     }
 
                     if (config.GetValue(Logger.CONSOLE_ENABLED, false))
@@ -138,9 +144,16 @@ namespace GuaranteedRate.Sextant.Logging
             }
         }
 
-        private static IDictionary<string, string> PopulateEvent(string loggerName, string message)
+ 
+
+        private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)
         {
-            IDictionary<string, string> fields = new ConcurrentDictionary<string, string>();
+
+            if (fields == null)
+            {
+                fields = new ConcurrentDictionary<string, string>();
+            }
+            fields.Add("message", message);
             fields.Add("timestamp", DateTime.UtcNow.ToString());
             fields.Add("loggerName", loggerName);
 
@@ -149,16 +162,24 @@ namespace GuaranteedRate.Sextant.Logging
                 fields.Add(tt.Key, tt.Value);
             }
 
-            fields.Add("message", message);
             return fields;
         }
-
         public static void Debug(string logger, string message)
         {
-            if (configured)
+            try
             {
-                Serilog.Log.Logger.Debug($"{logger}: {message}", PopulateEvent(logger, message));
+                if (configured)
+                {
+                    var lv = PrepLogValues(logger, message);
+                    Serilog.Log.Logger.Debug(lv.Item1,lv.Item2);
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
 
         [Obsolete("exlcuded reporters are no longer a thing.")]
@@ -201,8 +222,28 @@ namespace GuaranteedRate.Sextant.Logging
         {
             if (configured)
             {
-                Serilog.Log.Logger.Error($"{logger}: {message}", PopulateEvent(logger, message));
+                var lv = PrepLogValues(logger, message);
+                Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
             }
+
+        }
+
+
+        private static Tuple<string, object[]> PrepLogValues(string logger, string message, IDictionary<string, string> fields=null)
+        {
+            var data = PopulateEvent(logger, message,fields);
+            var sb = new System.Text.StringBuilder("{Message}");
+            var log = new List<object>();
+            log.Add(message);
+            foreach (var d in data)
+            {
+                sb.Append("{@");
+                sb.Append(d.Key);
+                sb.Append("}");
+                log.Add(d.Value);
+
+            }
+            return new Tuple<string, object[]>(sb.ToString(), log.ToArray());
         }
 
         /// <summary>
@@ -215,7 +256,8 @@ namespace GuaranteedRate.Sextant.Logging
         {
             if (configured)
             {
-                Serilog.Log.Logger.Fatal($"{logger}: {message}", PopulateEvent(logger, message));
+                var lv = PrepLogValues(logger, message);
+                Serilog.Log.Logger.Fatal(lv.Item1, lv.Item2);
             }
         }
 
@@ -229,8 +271,8 @@ namespace GuaranteedRate.Sextant.Logging
         {
             if (configured)
             {
-
-                Serilog.Log.Logger.Information($"{logger}: {message}", PopulateEvent(logger, message));
+                var lv = PrepLogValues(logger, message);
+                Serilog.Log.Logger.Information(lv.Item1, lv.Item2);
             }
         }
 
@@ -244,29 +286,36 @@ namespace GuaranteedRate.Sextant.Logging
         {
             if (configured)
             {
-                Serilog.Log.Logger.Warning($"{logger}: {message}", PopulateEvent(logger, message));
+                var lv = PrepLogValues(logger, message);
+                Serilog.Log.Logger.Warning(lv.Item1, lv.Item2);
             }
         }
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
-            switch (level.ToLowerInvariant())
+
+            if (configured)
             {
-                case "fatal":
-                    Serilog.Log.Logger.Fatal($"{loggerName}: {fields}", fields);
-                    break;
-                case "error":
-                    Serilog.Log.Logger.Error($"{loggerName}: {fields}", fields);
-                    break;
-                case "warn":
-                    Serilog.Log.Logger.Warning($"{loggerName}: {fields}", fields);
-                    break;
-                case "info":
-                    Serilog.Log.Logger.Information($"{loggerName}: {fields}", fields);
-                    break;
-                default:
-                    Serilog.Log.Logger.Debug($"{loggerName}: {fields}", fields);
-                    break;
+                var lv = PrepLogValues(loggerName, "", fields);
+                Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
+                switch (level.ToLowerInvariant())
+                {
+                    case "fatal":
+                        Serilog.Log.Logger.Fatal(lv.Item1, lv.Item2);
+                        break;
+                    case "error":
+                        Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
+                        break;
+                    case "warn":
+                        Serilog.Log.Logger.Warning(lv.Item1, lv.Item2);
+                        break;
+                    case "info":
+                        Serilog.Log.Logger.Information(lv.Item1, lv.Item2);
+                        break;
+                    default:
+                        Serilog.Log.Logger.Debug(lv.Item1, lv.Item2);
+                        break;
+                }
             }
         }
 
@@ -314,9 +363,9 @@ namespace GuaranteedRate.Sextant.Logging
             {
                 if (_additionalTags == null)
                 {
-                    _additionalTags = new Dictionary<string, string>();
+                    _additionalTags = new ConcurrentDictionary<string, string>();
                 }
-                _additionalTags.Add(key, value);
+                _additionalTags.TryAdd(key, value);
             }
         }
 
