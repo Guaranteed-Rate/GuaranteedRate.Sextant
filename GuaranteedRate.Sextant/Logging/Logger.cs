@@ -82,7 +82,7 @@ namespace GuaranteedRate.Sextant.Logging
         #endregion
 
 
-        public static void Setup(IEncompassConfig config)
+        public static void Setup(IEncompassConfig config, Dictionary<string,string > additionalTags = null )
         {
             LoggerConfiguration baseLogger = null;
             lock (syncRoot)
@@ -90,7 +90,14 @@ namespace GuaranteedRate.Sextant.Logging
                 try
                 {
                     //Serilog has a clever "enricher" approach, but it is created at setup time and wouldn't be easily compatible with how we add tags to logs now.  We could make this a future enhancement.  For now, just add these to each log event when we log.
-                    _additionalTags = new Dictionary<string, string>();
+                    if (ReferenceEquals(additionalTags, null))
+                    {
+                        _additionalTags = new Dictionary<string, string>();
+                    }
+                    else
+                    {
+                        _additionalTags = additionalTags;
+                    }
                     _additionalTags.Add("process", Process.GetCurrentProcess().ProcessName);
                     _additionalTags.Add("hostname", Environment.MachineName);
                     _additionalTags.Add("windowsuser", Environment.UserName);
@@ -301,7 +308,7 @@ namespace GuaranteedRate.Sextant.Logging
             GC.SuppressFinalize(this);
         }
 
-        public void AddTag(string key, string value)
+        public static void AddTag(string key, string value)
         {
             lock (syncRoot)
             {

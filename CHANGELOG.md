@@ -1,3 +1,13 @@
+## v17.4.1.4 / 2017 Feb 13
+
+* **Add**  - Make AddTag static
+* **Add**  - Add optional dictionary of tags on setup.
+
+```csharp
+[GuaranteedRate.Sextant "17.4.1.4"]
+```
+
+
 ## v17.4.1.3 / 2017 Feb 13
 
 * **Fix**  - Fix remaining NRE on debug statements if logging is not configured.
