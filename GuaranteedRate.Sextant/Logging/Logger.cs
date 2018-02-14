@@ -144,7 +144,7 @@ namespace GuaranteedRate.Sextant.Logging
             }
         }
 
- 
+
 
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)
         {
@@ -166,20 +166,11 @@ namespace GuaranteedRate.Sextant.Logging
         }
         public static void Debug(string logger, string message)
         {
-            try
+            if (configured)
             {
-                if (configured)
-                {
-                    var lv = PrepLogValues(logger, message);
-                    Serilog.Log.Logger.Debug(lv.Item1,lv.Item2);
-                }
+                var lv = PrepLogValues(logger, message);
+                Serilog.Log.Logger.Debug(lv.Item1, lv.Item2);
             }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
         }
 
         [Obsolete("exlcuded reporters are no longer a thing.")]
@@ -229,9 +220,9 @@ namespace GuaranteedRate.Sextant.Logging
         }
 
 
-        private static Tuple<string, object[]> PrepLogValues(string logger, string message, IDictionary<string, string> fields=null)
+        private static Tuple<string, object[]> PrepLogValues(string logger, string message, IDictionary<string, string> fields = null)
         {
-            var data = PopulateEvent(logger, message,fields);
+            var data = PopulateEvent(logger, message, fields);
             var sb = new System.Text.StringBuilder("{Message}");
             var log = new List<object>();
             log.Add(message);
