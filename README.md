@@ -92,6 +92,14 @@ Logger.Setup(config);
 Logger.AddTag("mytagName", "my attribute name");
 ```
 
+Or pass the tags in at setup....
+
+```csharp
+var dict = new Dictionary<string,string>();
+dict.Add("foo","bar");
+Logger.Setup(config);
+```
+
 Under the hood, we automatically add three tags:
 
  "process" = Process.GetCurrentProcess().ProcessName

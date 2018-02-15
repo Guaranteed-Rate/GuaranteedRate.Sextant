@@ -1,3 +1,11 @@
+## v17.4.1.5 / 2017 Feb 14
+
+* **Update**  - Ensure logs contain structured data.
+
+```csharp
+[GuaranteedRate.Sextant "17.4.1.5"]
+```
+
 ## v17.4.1.4 / 2017 Feb 13
 
 * **Add**  - Make AddTag static
