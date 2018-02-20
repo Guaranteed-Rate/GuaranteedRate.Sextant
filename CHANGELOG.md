@@ -1,3 +1,11 @@
+## v17.4.1.7 / 2017 Feb 20
+
+* **Update**  - Ensure date format is provided in Elasticsearch indexes.
+
+```csharp
+[GuaranteedRate.Sextant "17.4.1.7"]
+```
+
 ## v17.4.1.6 / 2017 Feb 20
 
 * **Fix**  - Fix double logging. 

@@ -141,7 +141,7 @@ namespace GuaranteedRate.Sextant.Logging
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"ERROR CONFIGURING LOGGING:{ex}");
+                    System.Console.WriteLine($"ERROR CONFIGURING LOGGING: {ex}");
                 }
             }
         }
