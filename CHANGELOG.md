@@ -1,3 +1,12 @@
+## v17.4.1.6 / 2017 Feb 20
+
+* **Fix**  - Fix double logging. 
+* **Fix**  - Fix field collission.
+
+```csharp
+[GuaranteedRate.Sextant "17.4.1.6"]
+```
+
 ## v17.4.1.5 / 2017 Feb 14
 
 * **Update**  - Ensure logs contain structured data.
