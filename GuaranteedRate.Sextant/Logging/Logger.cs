@@ -148,8 +148,6 @@ namespace GuaranteedRate.Sextant.Logging
 
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)
         {
-            var tmpMsg = message;
-        
             if (fields == null)
             {
                 fields = new ConcurrentDictionary<string, string>();
@@ -157,15 +155,15 @@ namespace GuaranteedRate.Sextant.Logging
 
             if (fields.ContainsKey(MESSAGE_KEY) && string.IsNullOrEmpty(message))
             {
-                tmpMsg = fields[MESSAGE_KEY];
+                message = fields[MESSAGE_KEY];
             }
 
             fields.Remove(MESSAGE_KEY);
             fields.Remove(TIMESTAMP_KEY);
             fields.Remove(LOGGERNAME_KEY);
 
-            fields.Add(MESSAGE_KEY, tmpMsg);
-            fields.Add(TIMESTAMP_KEY, DateTime.UtcNow.ToString());
+            fields.Add(MESSAGE_KEY, message);
+            fields.Add(TIMESTAMP_KEY, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             fields.Add(LOGGERNAME_KEY, loggerName);
 
             foreach (var tt in _additionalTags)
