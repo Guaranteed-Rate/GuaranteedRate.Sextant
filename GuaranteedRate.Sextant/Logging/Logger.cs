@@ -24,6 +24,9 @@ namespace GuaranteedRate.Sextant.Logging
         public const string INFO_LEVEL = "INFO";
         public const string DEBUG_LEVEL = "DEBUG";
         public const string FATAL_LEVEL = "FATAL";
+        private const string MESSAGE_KEY = "message";
+        private const string TIMESTAMP_KEY = "timestamp";
+        private const string LOGGERNAME_KEY = "loggerName";
         private static ConcurrentDictionary<string, string> _additionalTags;
 
         #region config mappings
@@ -86,7 +89,6 @@ namespace GuaranteedRate.Sextant.Logging
 
         #endregion
 
-
         public static void Setup(IEncompassConfig config, Dictionary<string, string> additionalTags = null)
         {
             LoggerConfiguration baseLogger = null;
@@ -144,18 +146,25 @@ namespace GuaranteedRate.Sextant.Logging
             }
         }
 
-
-
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)
         {
-
             if (fields == null)
             {
                 fields = new ConcurrentDictionary<string, string>();
             }
-            fields.Add("message", message);
-            fields.Add("timestamp", DateTime.UtcNow.ToString());
-            fields.Add("loggerName", loggerName);
+
+            if (fields.ContainsKey(MESSAGE_KEY) && string.IsNullOrEmpty(message))
+            {
+                message = fields[MESSAGE_KEY];
+            }
+
+            fields.Remove(MESSAGE_KEY);
+            fields.Remove(TIMESTAMP_KEY);
+            fields.Remove(LOGGERNAME_KEY);
+
+            fields.Add(MESSAGE_KEY, message);
+            fields.Add(TIMESTAMP_KEY, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            fields.Add(LOGGERNAME_KEY, loggerName);
 
             foreach (var tt in _additionalTags)
             {
@@ -218,7 +227,6 @@ namespace GuaranteedRate.Sextant.Logging
             }
 
         }
-
 
         private static Tuple<string, object[]> PrepLogValues(string logger, string message, IDictionary<string, string> fields = null)
         {
@@ -284,23 +292,21 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
-
             if (configured)
             {
                 var lv = PrepLogValues(loggerName, "", fields);
-                Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
-                switch (level.ToLowerInvariant())
+                switch (level.ToUpperInvariant())
                 {
-                    case "fatal":
+                    case FATAL_LEVEL:
                         Serilog.Log.Logger.Fatal(lv.Item1, lv.Item2);
                         break;
-                    case "error":
+                    case ERROR_LEVEL:
                         Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
                         break;
-                    case "warn":
+                    case WARN_LEVEL:
                         Serilog.Log.Logger.Warning(lv.Item1, lv.Item2);
                         break;
-                    case "info":
+                    case INFO_LEVEL:
                         Serilog.Log.Logger.Information(lv.Item1, lv.Item2);
                         break;
                     default:
