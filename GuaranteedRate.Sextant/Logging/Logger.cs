@@ -297,18 +297,18 @@ namespace GuaranteedRate.Sextant.Logging
             if (configured)
             {
                 var lv = PrepLogValues(loggerName, "", fields);
-                switch (level.ToLowerInvariant())
+                switch (level.ToUpperInvariant())
                 {
-                    case "fatal":
+                    case FATAL_LEVEL:
                         Serilog.Log.Logger.Fatal(lv.Item1, lv.Item2);
                         break;
-                    case "error":
+                    case ERROR_LEVEL:
                         Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
                         break;
-                    case "warn":
+                    case WARN_LEVEL:
                         Serilog.Log.Logger.Warning(lv.Item1, lv.Item2);
                         break;
-                    case "info":
+                    case INFO_LEVEL:
                         Serilog.Log.Logger.Information(lv.Item1, lv.Item2);
                         break;
                     default:
