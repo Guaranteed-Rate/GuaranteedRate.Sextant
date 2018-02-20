@@ -95,9 +95,15 @@ namespace GuaranteedRate.Sextant.Logging
           
                 var elasticOptions = new ElasticsearchSinkOptions(
                     new Uri(config.GetValue(Logger.ELASTICSEARCH_URL, "NOT PROVIDED")));
-                elasticOptions.IndexFormat = config.GetValue(Logger.ELASTICSEARCH_INDEX_NAME, "sextant-serilog-");
 
-                elasticOptions.MinimumLogEventLevel = GetMinLevel(config, "ELASTICSEARCH");
+            var indexFormat = config.GetValue(Logger.ELASTICSEARCH_INDEX_NAME, "sextant-serilog-");
+            if (!indexFormat.Contains("{"))
+            {
+                indexFormat = indexFormat + "{0:yyyy.MM.dd}";
+            }
+
+            elasticOptions.IndexFormat = indexFormat;
+            elasticOptions.MinimumLogEventLevel = GetMinLevel(config, "ELASTICSEARCH");
                 elasticOptions.EmitEventFailure = EmitEventFailureHandling.ThrowException;
             return elasticOptions;
 

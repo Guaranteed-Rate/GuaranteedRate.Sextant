@@ -139,12 +139,10 @@ namespace GuaranteedRate.Sextant.Logging
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"ERROR CONFIGURING LOGGING:{ex}");
+                    System.Console.WriteLine($"ERROR CONFIGURING LOGGING: {ex}");
                 }
             }
         }
-
-
 
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)
         {

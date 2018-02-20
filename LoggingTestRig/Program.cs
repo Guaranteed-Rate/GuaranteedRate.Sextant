@@ -44,7 +44,7 @@ namespace LoggingTestRig
             //automatically set appenders
             var tags = new Dictionary<string, string>();
             tags.Add("bizz", "bazz");
-            Logger.Setup(config);
+            Logger.Setup(config,tags);
             Serilog.Debugging.SelfLog.Enable(Console.Error);
 
             Logger.Debug("SextantTestRig", "Test debug message.");
