@@ -86,7 +86,6 @@ namespace GuaranteedRate.Sextant.Logging
 
         #endregion
 
-
         public static void Setup(IEncompassConfig config, Dictionary<string, string> additionalTags = null)
         {
             LoggerConfiguration baseLogger = null;
@@ -144,11 +143,8 @@ namespace GuaranteedRate.Sextant.Logging
             }
         }
 
-
-
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)
         {
-
             if (fields == null)
             {
                 fields = new ConcurrentDictionary<string, string>();
@@ -219,7 +215,6 @@ namespace GuaranteedRate.Sextant.Logging
 
         }
 
-
         private static Tuple<string, object[]> PrepLogValues(string logger, string message, IDictionary<string, string> fields = null)
         {
             var data = PopulateEvent(logger, message, fields);
@@ -284,11 +279,9 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static void Log(IDictionary<string, string> fields, string loggerName, string level)
         {
-
             if (configured)
             {
                 var lv = PrepLogValues(loggerName, "", fields);
-                Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
                 switch (level.ToLowerInvariant())
                 {
                     case "fatal":
