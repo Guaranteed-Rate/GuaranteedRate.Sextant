@@ -211,6 +211,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="VersionInterface15, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\VersionInterface15.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xml3WayMerge, Version=6.2.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\Xml3WayMerge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

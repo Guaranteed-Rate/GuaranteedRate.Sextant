@@ -187,6 +187,14 @@
       <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="VersionInterface15, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\VersionInterface15.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xml3WayMerge, Version=6.2.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\Xml3WayMerge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

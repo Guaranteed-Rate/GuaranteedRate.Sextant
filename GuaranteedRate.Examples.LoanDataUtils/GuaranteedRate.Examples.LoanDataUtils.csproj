@@ -142,8 +142,8 @@
       <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\Jed.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PostSharp, Version=3.1.41.9, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
@@ -185,6 +185,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VersionInterface15, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\VersionInterface15.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xml3WayMerge, Version=6.2.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\Xml3WayMerge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoanExtractor.cs" />
@@ -194,6 +202,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj">
