@@ -3,7 +3,7 @@
 * **Update**  - Upgrade all projects to Encompass 18.1
 
 ```csharp
-[GuaranteedRate.Sextant "17.4.1.7"]
+[GuaranteedRate.Sextant "18.1.0.0"]
 ```
 
 ## v17.4.1.7 / 2018 Feb 20

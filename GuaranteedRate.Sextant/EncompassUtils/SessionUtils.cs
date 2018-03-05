@@ -34,7 +34,6 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 var loan = session.Loans.Open(guid);
                 return loan;
-                //return session.Loans.Open(guid);
             }
             catch (Exception e)
             {
