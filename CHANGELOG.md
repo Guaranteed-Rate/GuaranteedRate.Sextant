@@ -1,4 +1,12 @@
-## v17.4.1.7 / 2017 Feb 20
+## v18.1.0.0 / 2018 March 4
+
+* **Update**  - Upgrade all projects to Encompass 18.1
+
+```csharp
+[GuaranteedRate.Sextant "18.1.0.0"]
+```
+
+## v17.4.1.7 / 2018 Feb 20
 
 * **Update**  - Ensure date format is provided in Elasticsearch indexes.
 
@@ -6,7 +14,7 @@
 [GuaranteedRate.Sextant "17.4.1.7"]
 ```
 
-## v17.4.1.6 / 2017 Feb 20
+## v17.4.1.6 / 2018 Feb 20
 
 * **Fix**  - Fix double logging. 
 * **Fix**  - Fix field collision.
@@ -15,7 +23,7 @@
 [GuaranteedRate.Sextant "17.4.1.6"]
 ```
 
-## v17.4.1.5 / 2017 Feb 14
+## v17.4.1.5 / 2018 Feb 14
 
 * **Update**  - Ensure logs contain structured data.
 
@@ -23,7 +31,7 @@
 [GuaranteedRate.Sextant "17.4.1.5"]
 ```
 
-## v17.4.1.4 / 2017 Feb 13
+## v17.4.1.4 / 2018 Feb 13
 
 * **Add**  - Make AddTag static
 * **Add**  - Add optional dictionary of tags on setup.
@@ -41,14 +49,14 @@
 ```
 
 
-## v17.4.1.2 / 2017 Feb 13
+## v17.4.1.2 / 2018 Feb 13
 
 * **Update**  - Do not null reference error if logging has not been configured.
 ```csharp
 [GuaranteedRate.Sextant "17.4.1.2"]
 ```
 
-## v17.4.1.1 / 2017 Feb 13
+## v17.4.1.1 / 2018 Feb 13
 
 * **Update**  - Tear out homegrown logging framework and use Serilog instead.
 ```csharp
