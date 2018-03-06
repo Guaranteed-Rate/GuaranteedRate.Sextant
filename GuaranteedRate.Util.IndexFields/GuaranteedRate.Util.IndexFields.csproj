@@ -149,10 +149,6 @@
       <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\PostSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\RazorEngine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ReportingDbUtils, Version=6.5.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
       <HintPath>..\packages\EncompassSDK.Complete.18.1.0.1\lib\net45\ReportingDbUtils.dll</HintPath>
       <Private>True</Private>
