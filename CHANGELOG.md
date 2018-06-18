@@ -1,3 +1,7 @@
+## v18.2.0.1 / 2018 June 18
+
+* **Add**  - capture additional data about underwriting conditions into uw-conditions-metadata field
+
 ## v18.1.0.0 / 2018 March 4
 
 * **Update**  - Upgrade all projects to Encompass 18.1
