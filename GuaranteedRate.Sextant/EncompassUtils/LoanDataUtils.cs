@@ -68,6 +68,8 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             fieldValues["borrower-pairs"] = ExtractBorrowerPairs(currentLoan);
             fieldValues["Associates"] = ExtractAssociates(currentLoan);
 
+            fieldValues["uw-conditions-metadata"] = ExtractUWConditionsMetadata(currentLoan);
+
             ExtractEndIndexFields(currentLoan, FieldUtils.DisclosureMulti(), fieldValues,
                 currentLoan.Log.Disclosures.Count);
             ExtractFundingFees(currentLoan, fieldValues);
@@ -75,6 +77,49 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             ExtractProperties(currentLoan, fieldValues);
 
             return fieldValues;
+        }
+        /// <summary>
+        /// ExtractLoanFields method already extracts Underwriting conditions from dynamically generated fields discovered via  FieldUtils.UnderwritingMulti()
+        /// However, the set of fields for each conditions has the following limitations:
+        /// * There is no way to get Loan.Log.UnderwritingConditions[0].ForRole
+        /// * DateAdded comes through as date-at-midnight where as Loan.Log.UnderwritingConditions[0].DateAdded includes date and time.
+        /// * status comes through as a user-facing string e.g. "Added on 6/15/2018".
+        /// 
+        /// This method collects additional data that makes is possible sort and filter conditions correctly.
+        /// </summary>
+        /// <param name="loan"></param>
+        /// <returns>
+        /// A list of maps, 1 for each conditions containing the following keys:
+        /// "Title" - this is the primary key for the conditions that can be used to join this data to the the rest of condition data mentioned above
+        /// "DateAdded" - date and time when condition was added
+        /// "DateStatusUpdated" - date and time the conditions was updated last
+        /// "Status" = Current status of the condition - Added, Expected, Requested, Rerequested, Received, Reviewed, Sent, Cleared, Waived, Expired, Fulfilled, PastDue,Rejected
+        /// "ForRole" = Role responsible for the condition - "Shipper""Servicer""Quality Control""Post closer""Lock Desk""Loan Opener""Audit""Accounting""Funder""Closing Manager""Closer""Closing Coordinator""Underwriter""Underwriting Coord""POD Group""VPSenttoProc""SaleAssist""ProcessManager""Loan Coordinator""Mortgage Consultant""Loan Officer""Owner"        
+        /// </returns>
+        public static IList<IDictionary<string, object>> ExtractUWConditionsMetadata(Loan loan)
+        {
+
+            IList<IDictionary<string, object>> data = new List<IDictionary<string, object>>();
+            try
+            {
+                foreach (UnderwritingCondition c in loan.Log.UnderwritingConditions)
+                {
+                    data.Add(new Dictionary<string, object>()
+                    {
+                        {"Title", c.Title},
+                        {"DateAdded", c.DateAdded},
+                        {"DateStatusUpdated", c.Date},
+                        {"Status", c.Status.ToString()}, 
+                        {"ForRole", c.ForRole.Name}, 
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LoandataUtils", "Failed to extract UW conditions metadata" + e);
+                throw;
+            }
+            return data;
         }
 
         public static IDictionary<string, int> IndexKeySizes(Loan loan)
