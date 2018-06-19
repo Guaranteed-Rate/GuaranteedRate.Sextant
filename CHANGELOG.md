@@ -1,3 +1,8 @@
+## v18.2.0.1 / 2018 June 19
+
+* **Fix**  - Fix NPE when uw-conditigiton does not have a role assigned
+* **Update** - throw an exception including the condition title if error occurs while reading uw conditions
+
 ## v18.2.0.1 / 2018 June 18
 
 * **Add**  - capture additional data about underwriting conditions into uw-conditions-metadata field
