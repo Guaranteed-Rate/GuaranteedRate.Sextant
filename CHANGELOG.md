@@ -1,11 +1,12 @@
 ## v18.2.0.1 / 2018 June 19
 
-* **Fix**  - Fix NPE when uw-conditigiton does not have a role assigned
-* **Update** - throw an exception including the condition title if error occurs while reading uw conditions
+* **Fix**  - Fix NPE when uw-conditigiton does not have a role assigned (YBR-591)
+* **Update** - throw an exception including the condition title if error occurs while reading uw conditions (YBR-591)
+* **Add**  - capture additional data about underwriting conditions into uw-conditions-metadata field (YBR-591)
 
-## v18.2.0.1 / 2018 June 18
-
-* **Add**  - capture additional data about underwriting conditions into uw-conditions-metadata field
+```csharp
+[GuaranteedRate.Sextant "18.2.0.1"]
+```
 
 ## v18.1.0.0 / 2018 March 4
 
