@@ -98,26 +98,25 @@ namespace GuaranteedRate.Sextant.EncompassUtils
         /// </returns>
         public static IList<IDictionary<string, object>> ExtractUWConditionsMetadata(Loan loan)
         {
-
             IList<IDictionary<string, object>> data = new List<IDictionary<string, object>>();
-            try
+            
+            foreach (UnderwritingCondition c in loan.Log.UnderwritingConditions)
             {
-                foreach (UnderwritingCondition c in loan.Log.UnderwritingConditions)
+                try
                 {
                     data.Add(new Dictionary<string, object>()
-                    {
-                        {"Title", c.Title},
-                        {"DateAdded", c.DateAdded},
-                        {"DateStatusUpdated", c.Date},
-                        {"Status", c.Status.ToString()}, 
-                        {"ForRole", c.ForRole.Name}, 
-                    });
+                        {
+                            {"Title", c.Title},
+                            {"DateAdded", c.DateAdded},
+                            {"DateStatusUpdated", c.Date},
+                            {"Status", c.Status.ToString()},
+                            {"ForRole", c.ForRole?.Name},
+                        });
                 }
-            }
-            catch (Exception e)
-            {
-                Logger.Error("LoandataUtils", "Failed to extract UW conditions metadata" + e);
-                throw;
+                catch (Exception e)
+                {
+                    throw new Exception($"Failed to extract UW conditions metadata for condition {c?.Title}", e);
+                }
             }
             return data;
         }
