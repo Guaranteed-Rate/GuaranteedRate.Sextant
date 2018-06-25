@@ -248,6 +248,7 @@
     <Compile Include="Metrics\Graphite\StatsDGraphiteReport.cs" />
     <Compile Include="Metrics\IReporter.cs" />
     <Compile Include="Metrics\StatsDMetrics.cs" />
+    <Compile Include="Models\LoanMetadata.cs" />
     <Compile Include="WebClients\ApiException.cs" />
     <Compile Include="WebClients\AsyncWebEventReporter.cs" />
     <Compile Include="WebClients\AsyncEventReporter.cs" />

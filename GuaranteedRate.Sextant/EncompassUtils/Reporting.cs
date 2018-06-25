@@ -3,6 +3,7 @@ using EllieMae.Encompass.Client;
 using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Query;
 using EllieMae.Encompass.Reporting;
+using GuaranteedRate.Sextant.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,7 +120,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 PipelineCursor cursor = session.Loans.QueryPipeline(criterion, PipelineSortOrder.None);
                 foreach (PipelineData p in cursor)
                 {
-                    loans.Add(p.LoanIdentity.Guid, (DateTime) p["LastModified"]);
+                    loans.Add(p.LoanIdentity.Guid, (DateTime)p["LastModified"]);
                 }
                 cursor.Close();
             }
@@ -172,7 +173,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 LoanReportCursor results = session.Reports.OpenReportCursor(fields, criterion);
                 foreach (LoanReportData d in results)
                 {
-                    loans.Add(d.Guid, (DateTime) d["Loan.LastModified"]);
+                    loans.Add(d.Guid, (DateTime)d["Loan.LastModified"]);
                 }
                 results.Close();
             }
@@ -181,6 +182,43 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 //noop
             }
             return loans;
+        }
+        public static LoanMetadata GetLoanMetadata(Session session, string loanGuid)
+        {
+            LoanMetadata meta = null;
+            var guid = new StringFieldCriterion();
+            guid.FieldName = "GUID";
+            guid.MatchType = StringFieldMatchType.CaseInsensitive;
+            guid.Value = loanGuid;
+
+            var fields = new StringList();
+            fields.Add("Loan.LastModified");
+            fields.Add("Loan.Guid");
+            fields.Add("Loan.LoanFolder");
+            fields.Add("Loan.LoanNumber");
+
+            try
+            {
+                // Using Reports so that we can accomodate LoanFileSeqeuenceNumber when we add it to the reporting database
+                var cursor = session.Reports.OpenReportCursor(fields, guid);
+                if (cursor.Count > 0)
+                {
+                    var item = cursor.GetItem(0);
+                    meta = new LoanMetadata
+                    {
+                        Guid = (string)item["LoanGuid"],
+                        LoanNumber = (string)item["Loan.LoanNumber"],
+                        LoanFolder = (string)item["Loan.LoanFolder"],
+                        LastModified = (DateTime)item["Loan.LastModified"]
+                    };
+                }
+                cursor.Close();
+            }
+            catch
+            {
+                // noop; return null
+            }
+            return meta;
         }
     }
 }
