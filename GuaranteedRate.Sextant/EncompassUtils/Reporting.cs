@@ -28,6 +28,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     {
         private const string LAST_MODIFIED_FIELD = "LASTMODIFIED";
 
+        private const string FIELD_LOAN_LASTMODIFIED = "Loan.LastModified";
+        private const string FIELD_LOAN_GUID = "Loan.Guid";
+        private const string FIELD_LOAN_FOLDER = "Loan.LoanFolder";
+        private const string FIELD_LOAN_NUMBER = "Loan.LoanNumber";
+
         /**
          * Returns an IList of loan guids last modified between the start and end date
          * NOTE: There is NO sorting implied in the list
@@ -192,10 +197,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             guid.Value = loanGuid;
 
             var fields = new StringList();
-            fields.Add("Loan.LastModified");
-            fields.Add("Loan.Guid");
-            fields.Add("Loan.LoanFolder");
-            fields.Add("Loan.LoanNumber");
+            fields.Add(FIELD_LOAN_LASTMODIFIED);
+            fields.Add(FIELD_LOAN_GUID);
+            fields.Add(FIELD_LOAN_FOLDER);
+            fields.Add(FIELD_LOAN_NUMBER);
 
             try
             {
@@ -206,10 +211,10 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                     var item = cursor.GetItem(0);
                     meta = new LoanMetadata
                     {
-                        Guid = (string)item["LoanGuid"],
-                        LoanNumber = (string)item["Loan.LoanNumber"],
-                        LoanFolder = (string)item["Loan.LoanFolder"],
-                        LastModified = (DateTime)item["Loan.LastModified"]
+                        Guid = (string)item[FIELD_LOAN_GUID],
+                        LoanNumber = (string)item[FIELD_LOAN_NUMBER],
+                        LoanFolder = (string)item[FIELD_LOAN_FOLDER],
+                        LastModified = (DateTime)item[FIELD_LOAN_LASTMODIFIED]
                     };
                 }
                 cursor.Close();
