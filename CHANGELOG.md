@@ -1,3 +1,11 @@
+## v18.2.1.2 / 2018 June 25
+
+* **Add**  - create reporting method to retrieve LoanMetadata rather than retrieving entire loan (LOS-2255)
+
+```csharp
+[GuaranteedRate.Sextant "18.2.1.2"]
+```
+
 ## v18.2.0.1 / 2018 June 19
 
 * **Fix**  - Fix NPE when uw-conditigiton does not have a role assigned (YBR-591)
