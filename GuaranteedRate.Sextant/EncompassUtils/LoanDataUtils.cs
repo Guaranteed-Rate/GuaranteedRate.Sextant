@@ -68,7 +68,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             fieldValues["borrower-pairs"] = ExtractBorrowerPairs(currentLoan);
             fieldValues["Associates"] = ExtractAssociates(currentLoan);
 
-            fieldValues["uw-conditions-metadata"] = ExtractUWConditionsMetadata(currentLoan);
+            fieldValues["uw-conditions"] = ExtractUWConditions(currentLoan);
 
             ExtractEndIndexFields(currentLoan, FieldUtils.DisclosureMulti(), fieldValues,
                 currentLoan.Log.Disclosures.Count);
@@ -78,40 +78,104 @@ namespace GuaranteedRate.Sextant.EncompassUtils
 
             return fieldValues;
         }
+
         /// <summary>
         /// ExtractLoanFields method already extracts Underwriting conditions from dynamically generated fields discovered via  FieldUtils.UnderwritingMulti()
-        /// However, the set of fields for each conditions has the following limitations:
-        /// * There is no way to get Loan.Log.UnderwritingConditions[0].ForRole
-        /// * DateAdded comes through as date-at-midnight where as Loan.Log.UnderwritingConditions[0].DateAdded includes date and time.
-        /// * status comes through as a user-facing string e.g. "Added on 6/15/2018".
+        /// However, the those fields are keyed by condition title which is not guaranteed to be unique, and therefore leads to missing conditions in the data
         /// 
-        /// This method collects additional data that makes is possible sort and filter conditions correctly.
+        /// This method extracts underwriting conditions data into a robust format with that include unique ids and all necessary data
         /// </summary>
         /// <param name="loan"></param>
         /// <returns>
         /// A list of maps, 1 for each conditions containing the following keys:
-        /// "Title" - this is the primary key for the conditions that can be used to join this data to the the rest of condition data mentioned above
-        /// "DateAdded" - date and time when condition was added
-        /// "DateStatusUpdated" - date and time the conditions was updated last
-        /// "Status" = Current status of the condition - Added, Expected, Requested, Rerequested, Received, Reviewed, Sent, Cleared, Waived, Expired, Fulfilled, PastDue,Rejected
-        /// "ForRole" = Role responsible for the condition - "Shipper""Servicer""Quality Control""Post closer""Lock Desk""Loan Opener""Audit""Accounting""Funder""Closing Manager""Closer""Closing Coordinator""Underwriter""Underwriting Coord""POD Group""VPSenttoProc""SaleAssist""ProcessManager""Loan Coordinator""Mortgage Consultant""Loan Officer""Owner"        
+        /// "id
+        /// "title" - this is the primary key for the conditions that can be used to join this data to the the rest of condition data mentioned above
+        /// "date-added" - date and time when condition was added
+        /// "date-status-updated" - date and time the conditions was updated last
+        /// "status" = Current status of the condition - Added, Expected, Requested, Rerequested, Received, Reviewed, Sent, Cleared, Waived, Expired, Fulfilled, PastDue,Rejected
+        /// "for-role" = Role responsible for the condition - "Shipper""Servicer""Quality Control""Post closer""Lock Desk""Loan Opener""Audit""Accounting""Funder""Closing Manager""Closer""Closing Coordinator""Underwriter""Underwriting Coord""POD Group""VPSenttoProc""SaleAssist""ProcessManager""Loan Coordinator""Mortgage Consultant""Loan Officer""Owner"        
+        /// "prior-to" = event prior to which the condition must be satisfied.  on of "PTD", "PTA", "AC", "PTF"
+        /// "borrower-pair-index" = index (within the 'borrower-pairs' field) of the borrower pair associated with this condition
         /// </returns>
-        public static IList<IDictionary<string, object>> ExtractUWConditionsMetadata(Loan loan)
+        public static IList<IDictionary<string, object>> ExtractUWConditions(Loan loan)
         {
             IList<IDictionary<string, object>> data = new List<IDictionary<string, object>>();
-            
+            var pairToIndex = MapBorrowerPairToIndex(loan);
+
             foreach (UnderwritingCondition c in loan.Log.UnderwritingConditions)
             {
                 try
                 {
-                    data.Add(new Dictionary<string, object>()
+                    var cond = new Dictionary<string, object>()
                         {
-                            {"Title", c.Title},
-                            {"DateAdded", c.DateAdded},
-                            {"DateStatusUpdated", c.Date},
-                            {"Status", c.Status.ToString()},
-                            {"ForRole", c.ForRole?.Name},
-                        });
+                            {"id", c.ID},
+                            {"title", c.Title},
+                            {"description", c.Description},
+                            {"allow-to-clear", c.AllowToClear},
+                            {"borrower-pair-index", pairToIndex[c.BorrowerPair]},
+                            {"category", c.Category},
+                            {"source", c.Source },
+                            {"date-status-updated", c.Date},
+                            {"status", c.Status.ToString()},
+                            {"for-role", c.ForRole?.Name},
+                            {"prior-to", c.PriorTo},
+                            {"internal", c.ForInternalUse},
+                            {"external", c.ForExternalUse},
+
+                            {"date-added", c.DateAdded},
+                            {"added-by", c.AddedBy},
+                        };
+
+                    if (c.Cleared)
+                    {
+                        cond.Add("date-cleared", c.DateCleared);
+                        cond.Add("cleared-by", c.ClearedBy);
+                        cond.Add("cleared", c.Cleared);
+                    }
+
+                    if (c.Fulfilled)
+                    {
+                        cond.Add("fulfilled", c.Fulfilled);
+                        cond.Add("fulfilled-by", c.FulfilledBy);
+                        cond.Add("date-fulfilled", c.DateFulfilled);
+                    }
+
+                    if (c.Rejected)
+                    {
+                        cond.Add("rejected", c.Rejected);
+                        cond.Add("rejected-by", c.RejectedBy);
+                        cond.Add("date-rejected", c.DateRejected);
+                    }
+
+                    if (c.Requested)
+                    {
+                        cond.Add("requested", c.Requested);
+                        cond.Add("requested-by", c.RequestedBy);
+                        cond.Add("date-requested", c.DateRequested);
+                    }
+
+                    if (c.Rerequested)
+                    {
+                        cond.Add("rerequested", c.Rerequested);
+                        cond.Add("rerequested-by", c.RerequestedBy);
+                        cond.Add("date-rerequested", c.DateRerequested);
+                    }
+
+                    if (c.Reviewed)
+                    {
+                        cond.Add("reviewed", c.Reviewed);
+                        cond.Add("reviewed-by", c.ReviewedBy);
+                        cond.Add("date-reviewed", c.DateReviewed);
+                    }
+
+                    if (c.Cleared)
+                    {
+                        cond.Add("waived", c.Waived);
+                        cond.Add("waived-by", c.WaivedBy);
+                        cond.Add("date-waived", c.DateWaived);
+                    }
+                    data.Add(cond);
+
                 }
                 catch (Exception e)
                 {
@@ -119,6 +183,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                 }
             }
             return data;
+        }
+
+        private static IDictionary<BorrowerPair, int> MapBorrowerPairToIndex(Loan loan)
+        {
+            IDictionary<BorrowerPair, int> index = new Dictionary<BorrowerPair, int>();
+            int i = 0;
+            foreach(BorrowerPair pair in loan.BorrowerPairs)
+            {
+                index.Add(pair, i++);
+            }
+            return index;
         }
 
         public static IDictionary<string, int> IndexKeySizes(Loan loan)
