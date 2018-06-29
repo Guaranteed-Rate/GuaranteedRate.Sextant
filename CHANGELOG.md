@@ -1,3 +1,11 @@
+## v18.2.2.0 / 2018 June 29
+
+* **Update** - YBR-591: extract underwriting conditions data into a robust format
+
+```csharp
+[GuaranteedRate.Sextant "18.2.2.0"]
+```
+
 ## v18.2.1.3 / 2018 June 25
 
 * **Fix**  - Fix field name error in Loan Metadata (LOS-2255)
@@ -14,14 +22,14 @@
 [GuaranteedRate.Sextant "18.2.1.2"]
 ```
 
-## v18.2.0.1 / 2018 June 19
+## v18.2.1.1 / 2018 June 19
 
 * **Fix**  - Fix NPE when uw-conditigiton does not have a role assigned (YBR-591)
 * **Update** - throw an exception including the condition title if error occurs while reading uw conditions (YBR-591)
 * **Add**  - capture additional data about underwriting conditions into uw-conditions-metadata field (YBR-591)
 
 ```csharp
-[GuaranteedRate.Sextant "18.2.0.1"]
+[GuaranteedRate.Sextant "18.2.1.1"]
 ```
 
 ## v18.1.0.0 / 2018 March 4
