@@ -112,7 +112,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             {"title", c.Title},
                             {"description", c.Description},
                             {"allow-to-clear", c.AllowToClear},
-                            {"borrower-pair-index", pairToIndex[c.BorrowerPair]},
+                            
                             {"category", c.Category},
                             {"source", c.Source },
                             {"date-status-updated", c.Date},
@@ -125,6 +125,11 @@ namespace GuaranteedRate.Sextant.EncompassUtils
                             {"date-added", c.DateAdded},
                             {"added-by", c.AddedBy},
                         };
+
+                    if (c.BorrowerPair != null)
+                    {
+                        cond.Add("borrower-pair-index", pairToIndex[c.BorrowerPair]);
+                    }
 
                     if (c.Cleared)
                     {

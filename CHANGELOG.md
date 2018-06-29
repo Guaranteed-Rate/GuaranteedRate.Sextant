@@ -1,3 +1,11 @@
+## v18.2.2.1 / 2018 June 29
+
+* **Update** - YBR-591: fix NPE if Conditon is create with "for borrower pair" set to "all"
+
+```csharp
+[GuaranteedRate.Sextant "18.2.2.1"]
+```
+
 ## v18.2.2.0 / 2018 June 29
 
 * **Update** - YBR-591: extract underwriting conditions data into a robust format
