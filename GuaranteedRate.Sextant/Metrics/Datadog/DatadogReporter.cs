@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
-using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Metrics.Datadog
 {
@@ -22,15 +21,16 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
         public static string DATADOG_QUEUE_SIZE = "DatadogReporter.QueueSize";
         public static string DATADOG_RETRY_LIMIT = "DatadogReporter.RetryLimit";
         public static string DATADOG_TAGS = "DatadogReporter.Tags";
+        public static string DATADOG_TRACK_HOSTMACHINE = "DatadogReporter.TrackHostmachine";
 
         #endregion
 
         public DatadogReporter(IEncompassConfig config)
-            : base(CreateUrl(config.GetValue(DATADOG_URL),config.GetValue(DATADOG_APIKEY)),
+            : base(CreateUrl(config.GetValue(DATADOG_URL), config.GetValue(DATADOG_APIKEY)),
                 config.GetValue(DATADOG_QUEUE_SIZE, 1000),
                 config.GetValue(DATADOG_RETRY_LIMIT, 3))
         {
-            Setup();
+            Setup(config.GetValue(DATADOG_TRACK_HOSTMACHINE, true));
             var tags = config.GetValue(DATADOG_TAGS, "");
             if (!string.IsNullOrEmpty(tags))
             {
@@ -43,10 +43,10 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
             }
         }
 
-        public DatadogReporter(string endpoint, string apiKey, int queueSize = 1000, int retries = 3)
-            :base(CreateUrl(endpoint, apiKey), queueSize, retries)
+        public DatadogReporter(string endpoint, string apiKey, int queueSize = 1000, int retries = 3, bool reporthost = true)
+            : base(CreateUrl(endpoint, apiKey), queueSize, retries)
         {
-            Setup();
+            Setup(reporthost);
         }
 
         protected static string CreateUrl(string url, string apiKey)
@@ -54,9 +54,11 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
             return $"{url}?api_key={apiKey}";
         }
 
-        private void Setup()
+        private void Setup(bool reporthost)
         {
-            _host = Environment.MachineName;
+            _host = reporthost
+                ? Environment.MachineName
+                : null;
             jsonTags = new List<string>();
         }
 
@@ -116,7 +118,7 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
 
             e.points = points;
 
-            var s = new Series {series = new List<Event> {e}};
+            var s = new Series { series = new List<Event> { e } };
 
             ReportEvent(s);
         }
