@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GuaranteedRate.Sextant.Config;
 using GuaranteedRate.Sextant.WebClients;
-using Metrics;
-using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.Metrics.Datadog
 {
