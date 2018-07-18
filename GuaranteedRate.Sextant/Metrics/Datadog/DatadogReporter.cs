@@ -125,44 +125,11 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
             ReportEvent(s);
         }
 
-        public void AddHealthCheck(string name, Func<HealthCheckResult> check)
-        {
-            var e = new Event
-            {
-                metric = name,
-                type = "healthcheck",
-                host = _host,
-                tags = jsonTags
-            };
-
-            var result = check.Invoke();
-
-            e.points = new List<IList<long>>() {
-                new []
-                {
-                    GetEpochTime(),
-                    result.IsHealthy == true ? 1 : 0
-                }
-            };
-
-            e.values = new List<IList<string>>() {
-                new []
-                {
-                    result.Message
-                }
-            };
-
-            var s = new Series { series = new List<Event> { e } };
-
-            ReportEvent(s);
-        }
-
         private class Event
         {
             //Using lowercase to help with json
             public string metric { get; set; }
             public IList<IList<long>> points { get; set; }
-            public IList<IList<string>> values { get; set; }
             public string type { get; set; }
             public string host { get; set; }
             public IList<string> tags { get; set; }
