@@ -1,3 +1,12 @@
+## v18.2.3.0 / 2018 July 18
+
+* **Update** - LOS-2392: Allow us to not track the host. This is a cost saving measure for Datadog.
+
+```csharp
+[GuaranteedRate.Sextant "18.2.3.0"]
+```
+
+
 ## v18.2.2.1 / 2018 June 29
 
 * **Update** - YBR-591: fix NPE if Conditon is create with "for borrower pair" set to "all"
