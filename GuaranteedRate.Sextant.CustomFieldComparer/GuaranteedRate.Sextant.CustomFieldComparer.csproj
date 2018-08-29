@@ -164,6 +164,12 @@
       <HintPath>..\packages\EncompassSDK.Complete.18.2.0.2\lib\net45\SDKConfigImpl.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.5.0\lib\net45\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
     <Reference Include="Server, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
       <HintPath>..\packages\EncompassSDK.Complete.18.2.0.2\lib\net45\Server.dll</HintPath>
       <Private>True</Private>

@@ -1,3 +1,11 @@
+## v18.2.3.1 / 2018 Aug 29
+
+* **Update** - Upgraded Serilog.Loggly, Loggly and Loggly config nuget packates in order to resolve logging breaking
+
+```csharp
+[GuaranteedRate.Sextant "18.2.3.1"]
+```
+
 ## v18.2.3.0 / 2018 July 18
 
 * **Update** - LOS-2392: Allow us to not track the host. This is a cost saving measure for Datadog.

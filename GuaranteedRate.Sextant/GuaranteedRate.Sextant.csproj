@@ -139,13 +139,11 @@
       <HintPath>..\packages\EncompassSDK.Complete.18.2.0.2\lib\net45\Jed.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Loggly, Version=4.6.1.45, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
-      <HintPath>..\packages\loggly-csharp.4.6.1.45\lib\net45\Loggly.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Loggly, Version=4.6.1.55, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
+      <HintPath>..\packages\loggly-csharp.4.6.1.55\lib\net45\Loggly.dll</HintPath>
     </Reference>
-    <Reference Include="Loggly.Config, Version=4.6.1.45, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
-      <HintPath>..\packages\loggly-csharp-config.4.6.1.45\lib\net45\Loggly.Config.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Loggly.Config, Version=4.6.1.55, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
+      <HintPath>..\packages\loggly-csharp-config.4.6.1.55\lib\net45\Loggly.Config.dll</HintPath>
     </Reference>
     <Reference Include="Metrics, Version=0.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Metrics.NET.0.5.3\lib\net45\Metrics.dll</HintPath>
@@ -191,8 +189,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Serilog.Sinks.Loggly, Version=3.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.Loggly.5.2.0\lib\net45\Serilog.Sinks.Loggly.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Serilog.Sinks.Loggly.5.3.0\lib\net45\Serilog.Sinks.Loggly.dll</HintPath>
     </Reference>
     <Reference Include="Serilog.Sinks.PeriodicBatching, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Sinks.PeriodicBatching.2.1.1\lib\net45\Serilog.Sinks.PeriodicBatching.dll</HintPath>
