@@ -1,3 +1,11 @@
+## v18.3.0.0 / 2018 Aug 29
+
+* **Update** - Upgraded to EncompassSDK.Complete 18.3 for Encompass Upgrade
+
+```csharp
+[GuaranteedRate.Sextant "18.3.0.0"]
+```
+
 ## v18.2.3.1 / 2018 Aug 29
 
 * **Update** - Upgraded Serilog.Loggly, Loggly and Loggly config nuget packates in order to resolve logging breaking
