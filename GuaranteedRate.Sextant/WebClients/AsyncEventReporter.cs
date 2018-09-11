@@ -13,12 +13,11 @@ using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.WebClients
 {
-    /**
-     * This reporter creates a blocking queue to accept messages AND
-     * creates a worker task to process messages from the queue in a separate thead.
-     * 
-     */
 
+    /// <summary>
+    /// This reporter creates a blocking queue to accept messages AND
+    /// creates a worker task to process messages from the queue in a separate thead.
+    /// </summary>
     public abstract class AsyncEventReporter : IDisposable, IEventReporter
     {
         /// <summary>
@@ -43,13 +42,13 @@ namespace GuaranteedRate.Sextant.WebClients
         protected const int DEFAULT_QUEUE_SIZE = 1000;
         protected const int DEFAULT_RETRIES = 3;
         protected const int DEFAULT_TIMEOUT = 45000;
-        
-        protected virtual string Name { get; } = typeof (AsyncEventReporter).Name;
+
+        protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
         protected volatile bool _finished;
         protected bool LogRecurisively = true;
 
-     
-        protected AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT, bool logRecursively = true)
+
+        protected AsyncEventReporter(int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT)
         {
             _eventQueue = new BlockingCollection<object>(new ConcurrentQueue<object>(), queueSize);
             if (retries == 0)
@@ -65,21 +64,13 @@ namespace GuaranteedRate.Sextant.WebClients
             Init();
         }
 
-        
         protected void Init()
         {
             _finished = false;
-            var excludedReporters = new Type[0];  //Since we use this class to power our loggers, we can run in to recursive error problems.  Any errors here may result in us asking Elasticsearch (for example) to log errors that we encounter when logging to Elasticsearch.  Since the latter operation is likely to fail, we want to have the option of skipping it.  So when we log errors in this module, we pass in the current type so the logger doesn't write the error to it.
-            if (!LogRecurisively)
-            {
-                excludedReporters[0] = GetType();
-            }
             /**
              * Taken directly from
              * https://msdn.microsoft.com/en-us/library/dd997371(v=vs.110).aspx
              */
-            // A simple blocking consumer with no cancellation.
-
             Task.Run(() =>
             {
                 while (!_eventQueue.IsCompleted)
@@ -87,45 +78,43 @@ namespace GuaranteedRate.Sextant.WebClients
                     try
                     {
 
-                    object nextEvent = null;
-                    // Blocks if number.Count == 0 
-                    // IOE means that Take() was called on a completed collection. 
-                    // Some other thread can call CompleteAdding after we pass the 
-                    // IsCompleted check but before we call Take.  
-                    // In this example, we can simply catch the exception since the  
-                    // loop will break on the next iteration. 
+                        object nextEvent = null;
+                        // Blocks if number.Count == 0 
+                        // IOE means that Take() was called on a completed collection. 
+                        // Some other thread can call CompleteAdding after we pass the 
+                        // IsCompleted check but before we call Take.  
+                        // In this example, we can simply catch the exception since the  
+                        // loop will break on the next iteration. 
                         try
                         {
                             nextEvent = _eventQueue.Take();
                         }
-                        catch (InvalidOperationException e)
-                        {
-                            Logger.Warn(Name, $"InvalidOperationException reading from queue: {e}", excludedReporters);
-                        }
+                        catch (InvalidOperationException) { }
+
                         if (nextEvent != null)
-                    {
-                        bool success = false;
-                        int tries = 0;
-                       
-                        while (!success && tries < _retries)
                         {
-                            success = PostEvent(nextEvent);
+                            bool success = false;
+                            int tries = 0;
+
+                            while (!success && tries < _retries)
+                            {
+                                success = PostEvent(nextEvent);
+                                if (!success)
+                                {
+                                    Logger.Info(Name, $"Write failed, try number: {tries}.");
+                                }
+                                tries++;
+                            }
                             if (!success)
                             {
-                                Logger.Info(Name, $"Write failed, try number: {tries}.", excludedReporters);
+                                Logger.Error(Name, $"Write failed after {tries} tries.");
                             }
-                            tries++;
                         }
-                        if (!success)
-                        {
-                            Logger.Error(Name, $"Write failed after {tries} tries.", excludedReporters);
-                        }
-                    }
                     }
                     catch (Exception ex)
                     {
 
-                            Logger.Warn(Name, $"Exception processing reporter queue:{ex}", excludedReporters);
+                        Logger.Warn(Name, $"Exception processing reporter queue:{ex}");
 
                         throw;
                     }
@@ -135,32 +124,31 @@ namespace GuaranteedRate.Sextant.WebClients
             });
         }
 
-        /**
-         * This is the correct way to cleanly shutdown.
-         * Once called this method *WILL BLOCK for for blockSeconds seconds* until the queue has been drained.
-         */
-
-
+        /// <summary>
+        /// This is the correct way to cleanly shutdown.
+        /// Once called this method *WILL BLOCK for for blockSeconds seconds* until the queue has been drained.
+        /// </summary>
+        /// <param name="blockSeconds"></param>
         public void Shutdown(int blockSeconds)
         {
-           Logger.Debug(this.Name, $"shutting down event queue from {new StackTrace()}.");
+            Logger.Debug(this.Name, $"shutting down event queue from {new StackTrace()}.");
             _eventQueue.CompleteAdding();
             var sw = new Stopwatch();
             sw.Start();
             while (!_finished)
             {
-                if (sw.ElapsedMilliseconds > blockSeconds*1000)
+                if (sw.ElapsedMilliseconds > blockSeconds * 1000)
                 {
                     return;
                 }
                 Thread.Sleep(100);
             }
         }
-        /**
-        * This is the correct way to cleanly shutdown.
-        * Once called this method *WILL BLOCK for for 60 seconds* until the queue has been drained.
-        */
 
+        /// <summary>
+        /// This is the correct way to cleanly shutdown.
+        /// Once called this method* WILL BLOCK for for 60 seconds* until the queue has been drained.
+        /// </summary>
         public void Shutdown()
         {
             Shutdown(60);
@@ -187,7 +175,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         }
 
-        protected abstract bool  PostEvent(object formattedData);
+        protected abstract bool PostEvent(object formattedData);
 
 
         private bool disposedValue = false;
@@ -219,6 +207,5 @@ namespace GuaranteedRate.Sextant.WebClients
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
     }
 }
