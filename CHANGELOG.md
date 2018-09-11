@@ -1,13 +1,3 @@
-## v18.3.0.1 / 2018 Aug 29
-
-* **Update** - Stop extraneous Warning logging when a concurrent collection is empty.
-* **Update** - Add the NUnit 2.6.4 Test Runner
-* **Update** - Remove a use of the obsolete exclusion and recursive logging logic.
-
-```csharp
-[GuaranteedRate.Sextant "18.3.0.1"]
-```
-
 ## v18.3.0.0 / 2018 Aug 29
 
 * **Update** - Upgraded to EncompassSDK.Complete 18.3 for Encompass Upgrade
