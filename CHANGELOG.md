@@ -1,3 +1,11 @@
+## v18.4.0.0 / 2018 Dec 11
+
+* **Update** - Upgrade EncompassSDK.Complete 18.4 for Encompass Upgrade
+
+```csharp
+[GuaranteedRate.Sextant "18.4.0.0"]
+```
+
 ## v18.3.0.1 / 2018 Aug 29
 
 * **Update** - Stop extraneous Warning logging when a concurrent collection is empty.
