@@ -1,3 +1,8 @@
+## v18.4.0.1 / 2018 Dec 19
+
+* **Add** - New ILogger interface and SextantLogger implementation for supporting standard logging in form codebases to start with
+
+
 ## v18.4.0.0 / 2018 Dec 11
 
 * **Update** - Upgrade EncompassSDK.Complete 18.4 for Encompass Upgrade
