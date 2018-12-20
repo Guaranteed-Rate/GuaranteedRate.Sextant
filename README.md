@@ -108,6 +108,53 @@ Under the hood, we automatically add three tags:
 
 - An example usage of `Logger` in action can be found in [LoggingTestRig](LoggingTestRig/Program.cs)
 
+### ILogger
+
+**ILogger** is an interface that can be used for standard logging for form codebases among other places.  It can also be used in cases where dependency injection is required, and can be mocked for unit testing purposes.
+
+**SextantLogger** is an implementation of `ILogger` that wraps around the current `Logger` class for Loggly, and has constructors to be called directly in lieu of dependency injection support.
+
+Sample usage
+```csharp
+var config = new JsonEncompassConfig();
+config.Init(System.IO.File.ReadAllText("SextantConfigTest.json"));
+
+ILogger logger = new SextantLogger(config, "SextantTestRig");
+                
+logger.Debug("Test debug message");
+logger.Info("Test info message");
+logger.Warn("Test warn message");
+logger.Error("Test error message");
+logger.Fatal("Test fatal message");
+
+```
+
+The following is an example of how `ILogger` can be mocked in code that requires logging:
+
+```csharp
+[Test]
+public void Sample_Logger_Info_mock()
+{
+    // arrange
+    var loggerMock = new Mock<ILogger>();
+
+    var textToBeLogged = "Some text to log here";
+    var infoMessage = string.Empty;
+
+    loggerMock.Setup(x => x.Info(It.IsAny<string>())).Callback((string message) =>
+    {
+        infoMessage = message;
+    }).Verifiable();
+
+    // act
+    loggerMock.Object.Info(textToBeLogged);
+
+    // assert
+    Assert.AreEqual(textToBeLogged, infoMessage);
+}
+
+```
+
 ## Metrics tracking
 
 ### Metrics
