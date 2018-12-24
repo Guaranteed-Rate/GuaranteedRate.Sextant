@@ -1,3 +1,8 @@
+## v18.4.0.2 / 2018 Dec 24
+
+* **Add** - New `NullLogger` implementation of the `ILogger` interface for instances where configuration settings are not available.  As a result, log messages will be discarded.
+
+
 ## v18.4.0.1 / 2018 Dec 19
 
 * **Add** - New ILogger interface and SextantLogger implementation for supporting standard logging in form codebases to start with
