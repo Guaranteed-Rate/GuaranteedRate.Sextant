@@ -155,6 +155,46 @@ public void Sample_Logger_Info_mock()
 
 ```
 
+### NullLogger
+
+**NullLogger** is an implementation of `ILogger` for scenarios where no configuration settings are available to configure another implementation such as `SextantLogger`.
+
+This can come into play when multiple constructors for a given class are provided, and we still want to retain a valid `ILogger` reference through the class itself.
+
+Here is an example scenario for a simple Passport client.
+
+```csharp
+public class SampleClient : BaseClient, ISampleClient
+{
+    private ILogger _logger = null;
+
+    /// <summary>
+    /// Class name for this instance
+    /// </summary>
+    protected override string Name { get; } = typeof(SulleyClient).Name;
+
+    /// <summary>
+    /// Constructor for URL and token without a logger
+    /// </summary>
+    /// <param name="endpointUrl">URL for the endpoint to use for configuration</param>
+    /// <param name="token">Token for accessing the service</param>
+    public SampleClient(string endpointUrl, string token) : base(endpointUrl, token)
+    {
+		_logger = new NullLogger();
+	}
+
+    /// <summary>
+    /// Constructor using Encompass Config and using the default logger
+    /// </summary>
+    /// <param name="config"></param>
+    public SampleClient(IEncompassConfig config)
+    {
+        // create default logger
+        _logger = new SextantLogger(config, this.Name);
+    }
+
+```
+
 ## Metrics tracking
 
 ### Metrics
