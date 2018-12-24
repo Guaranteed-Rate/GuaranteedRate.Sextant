@@ -171,7 +171,7 @@ public class SampleClient : BaseClient, ISampleClient
     /// <summary>
     /// Class name for this instance
     /// </summary>
-    protected override string Name { get; } = typeof(SulleyClient).Name;
+    protected override string Name { get; } = typeof(SampleClient).Name;
 
     /// <summary>
     /// Constructor for URL and token without a logger
@@ -180,8 +180,8 @@ public class SampleClient : BaseClient, ISampleClient
     /// <param name="token">Token for accessing the service</param>
     public SampleClient(string endpointUrl, string token) : base(endpointUrl, token)
     {
-		_logger = new NullLogger();
-	}
+	_logger = new NullLogger();
+    }
 
     /// <summary>
     /// Constructor using Encompass Config and using the default logger
