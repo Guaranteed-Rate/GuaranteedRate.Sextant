@@ -1,16 +1,13 @@
-﻿using System;
+﻿using GuaranteedRate.Sextant.Config;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
-using GuaranteedRate.Sextant.Config;
-using Newtonsoft.Json;
-using Serilog;
-using Serilog.Context;
-using Serilog.Core.Enrichers;
-using Serilog.Formatting.Json;
 
 namespace GuaranteedRate.Sextant.Logging
 {
@@ -111,7 +108,9 @@ namespace GuaranteedRate.Sextant.Logging
 
                     baseLogger = new LoggerConfiguration()
                         .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
+
                     baseLogger.WriteTo.Logger(aa => aa.Destructure.ToMaximumDepth(20));
+
                     if (config.GetValue(Logger.ELASTICSEARCH_ENABLED, false))
                     {
                         baseLogger.WriteTo.Elasticsearch(SerilogHelpers.GetElasticOptions(config));
@@ -128,15 +127,19 @@ namespace GuaranteedRate.Sextant.Logging
 
                     if (config.GetValue(Logger.LOGGLY_ENABLED, false))
                     {
-                        baseLogger.WriteTo.Loggly(logglyConfig: SerilogHelpers.GetLogglyConfig(config),
-                            formatProvider: CultureInfo.CurrentCulture);
+                        Serilog.Events.LogEventLevel eventLevel;
+                        eventLevel = SetLogglyEventLevelFromConfig(config);
+                        baseLogger.WriteTo.Loggly(logglyConfig: SerilogHelpers.GetLogglyConfig(config), formatProvider: CultureInfo.CurrentCulture,
+                                                  restrictedToMinimumLevel: eventLevel);
                     }
 
                     if (config.GetValue(Logger.CONSOLE_ENABLED, false))
                     {
                         baseLogger.WriteTo.Console(new JsonFormatter(null, false, null));
                     }
+
                     Serilog.Log.Logger = baseLogger.CreateLogger();
+
                     configured = true;
                 }
                 catch (Exception ex)
@@ -144,6 +147,24 @@ namespace GuaranteedRate.Sextant.Logging
                     System.Console.WriteLine($"ERROR CONFIGURING LOGGING: {ex}");
                 }
             }
+        }
+
+        private static LogEventLevel SetLogglyEventLevelFromConfig(IEncompassConfig config)
+        {
+            if (Convert.ToBoolean(config.GetValue(LOGGLY_ALL)))
+                return LogEventLevel.Verbose;
+            else if (Convert.ToBoolean(config.GetValue(LOGGLY_DEBUG)))
+                return LogEventLevel.Debug;
+            else if (Convert.ToBoolean(config.GetValue(LOGGLY_INFO)))
+                return LogEventLevel.Information;
+            else if (Convert.ToBoolean(config.GetValue(LOGGLY_WARN)))
+                return LogEventLevel.Warning;
+            else if (Convert.ToBoolean(config.GetValue(LOGGLY_ERROR)))
+                return LogEventLevel.Error;
+            else if (Convert.ToBoolean(config.GetValue(LOGGLY_FATAL)))
+                return LogEventLevel.Fatal;
+            else
+                return LogEventLevel.Warning;
         }
 
         private static IDictionary<string, string> PopulateEvent(string loggerName, string message, IDictionary<string, string> fields = null)

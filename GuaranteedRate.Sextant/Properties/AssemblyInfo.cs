@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Guaranteed Rate")]
 [assembly: AssemblyProduct("GuaranteedRate.Sextant")]
-[assembly: AssemblyCopyright("Copyright © Guaranteed Rate 2015-2018")]
+[assembly: AssemblyCopyright("Copyright © Guaranteed Rate 2015-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,5 +36,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("18.4.0.2")]
-[assembly: AssemblyFileVersion("18.4.0.2")]
+[assembly: AssemblyVersion("18.4.0.3")]
+[assembly: AssemblyFileVersion("18.4.0.3")]

@@ -115,7 +115,7 @@ namespace GuaranteedRate.Sextant.Logging
 
             var lc = new LogglyConfiguration();
             lc.CustomerToken = config.GetValue(Logger.LOGGLY_APIKEY);
-            lc.EndpointHostName = config.GetValue(Logger.LOGGLY_URL, "logs-01.loggly.com").Replace("https://", "");
+            lc.EndpointHostName = config.GetValue(Logger.LOGGLY_URL, "logs-01.loggly.com").Replace("https://", "").Replace("http://", "");
             lc.EndpointPort = 443;
             lc.ThrowExceptions = true;
             lc.ApplicationName = config.GetValue(Logger.LOGGLY_APPLICATION_NAME, "Unnamed Sextant App");
