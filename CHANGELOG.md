@@ -1,3 +1,7 @@
+## v18.4.0.3 / 2019 Jan 22
+
+* **Update** - Updated Logger class to be able to resolve logging levels from the passed in Config file
+
 ## v18.4.0.2 / 2018 Dec 24
 
 * **Add** - New `NullLogger` implementation of the `ILogger` interface for instances where configuration settings are not available.  As a result, log messages will be discarded.
