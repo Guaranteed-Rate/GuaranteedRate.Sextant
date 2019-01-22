@@ -59,6 +59,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Logging\LogIntegrationTests.cs" />
+    <Compile Include="Logging\SextantLoggerIntegrationTests.cs" />
     <Compile Include="Metrics\Datadog\DatadogReporterIntegrationTests.cs" />
     <Compile Include="Metrics\Graphite\GraphiteReporterIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
