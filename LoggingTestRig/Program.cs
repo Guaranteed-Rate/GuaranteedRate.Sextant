@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Config;
+using GuaranteedRate.Sextant.Integration.Core;
 using GuaranteedRate.Sextant.Logging;
 using GuaranteedRate.Sextant.Metrics;
 using GuaranteedRate.Sextant.Metrics.Datadog;
@@ -30,8 +31,9 @@ namespace LoggingTestRig
         {
 
             int count = 0;
-            var config = new JsonEncompassConfig();
-            config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
+            var config = new IntegrationEncompassConfig();
+            //var config = new JsonEncompassConfig();
+            //config.Init(System.IO.File.ReadAllText("../../SextantConfigTest.json"));
 
             //manually set appenders    
             // var console = new ConsoleLogAppender(config);
