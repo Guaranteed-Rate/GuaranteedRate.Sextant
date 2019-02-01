@@ -12,7 +12,7 @@ namespace GuaranteedRate.Sextant.Integration.Tests.EncompassUtils
         public void GetEncompassSession_with_invalid_url_throws_connection_exception()
         {
             // arrange
-            var encompassUrl = "https://TEBE11158xxx.ea.elliemae.net$TEBE11158xxx";
+            var encompassUrl = "https://TExxx.ea.elliemae.net$TExxx";
             var login = "testlo";
             var pw = "password";
 
@@ -28,7 +28,7 @@ namespace GuaranteedRate.Sextant.Integration.Tests.EncompassUtils
         public void GetEncompassSession_with_invalid_login_throws_login_exception()
         {
             // arrange
-            var encompassUrl = "https://TEBE11158661.ea.elliemae.net$TEBE11158661";
+            var encompassUrl = "https://ADD_VALID_SERVER_URL_HERE";
             var login = "testloooooo";
             var pw = "password";
 
@@ -46,7 +46,7 @@ namespace GuaranteedRate.Sextant.Integration.Tests.EncompassUtils
         public void GetEncompassSession_with_invalid_password_throws_login_exception()
         {
             // arrange
-            var encompassUrl = "https://TEBE11158661.ea.elliemae.net$TEBE11158661";
+            var encompassUrl = "https://ADD_VALID_SERVER_URL_HERE";
             var login = "testlo";
             var pw = "not_my_password";
 
