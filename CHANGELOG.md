@@ -1,3 +1,7 @@
+## v18.4.0.4 / 2019 Feb 1
+
+* **Add** - Added strongly typed exceptions to `SessionUtils.GetEncompassSession` for consuming applications to customize error handling and retry policies based on various session errors.
+
 ## v18.4.0.3 / 2019 Jan 22
 
 * **Update** - Updated Logger class to be able to resolve logging levels from the passed in Config file
