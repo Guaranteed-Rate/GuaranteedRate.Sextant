@@ -2,6 +2,7 @@
 using EllieMae.Encompass.Client;
 using EllieMae.Encompass.Collections;
 using EllieMae.Encompass.Query;
+using GuaranteedRate.Sextant.Exceptions;
 using System;
 
 namespace GuaranteedRate.Sextant.EncompassUtils
@@ -14,9 +15,30 @@ namespace GuaranteedRate.Sextant.EncompassUtils
     {
         public static Session GetEncompassSession(string encompassUrl, string login, string pw)
         {
-            Session session = new Session();
-            session.Start(encompassUrl, login, pw);
-            return session;
+            try
+            {
+                Session session = new Session();
+                session.Start(encompassUrl, login, pw);
+                return session;
+            }
+            catch (ConnectionException ce)
+            {
+                throw new ServerConnectionException(ce.Message, ce);
+            }
+            catch (LoginException le)
+            {
+                // try get error type here, mapped from EM's login error type
+                ServerLoginException.ErrorTypes errorType;
+                try { errorType = (ServerLoginException.ErrorTypes)(int)le.ErrorType; }
+                catch { errorType = ServerLoginException.ErrorTypes.Unspecified; }
+
+                throw new ServerLoginException(le.Message, le, errorType);
+            }
+            catch
+            {
+                // unspecified, throw as-is
+                throw;
+            }
         }
 
         public static Loan OpenLoan(Session session, string guid)

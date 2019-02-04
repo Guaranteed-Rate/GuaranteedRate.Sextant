@@ -1,0 +1,64 @@
+﻿using GuaranteedRate.Sextant.EncompassUtils;
+using GuaranteedRate.Sextant.Exceptions;
+using NUnit.Framework;
+
+namespace GuaranteedRate.Sextant.Integration.Tests.EncompassUtils
+{
+    [TestFixture]
+    [Explicit]
+    public class SessionUtilsTests
+    {
+        [Test]
+        public void GetEncompassSession_with_invalid_url_throws_connection_exception()
+        {
+            // arrange
+            var encompassUrl = "https://TExxx.ea.elliemae.net$TExxx";
+            var login = "testlo";
+            var pw = "password";
+
+            // act
+            Assert.Throws<ServerConnectionException>(() =>
+            {
+                var actual = SessionUtils.GetEncompassSession(encompassUrl, login, pw);
+            });
+        }
+
+
+        [Test]
+        public void GetEncompassSession_with_invalid_login_throws_login_exception()
+        {
+            // arrange
+            var encompassUrl = "https://ADD_VALID_SERVER_URL_HERE";
+            var login = "testloooooo";
+            var pw = "password";
+
+            // act
+            var ex = Assert.Throws<ServerLoginException>(() =>
+            {
+                var actual = SessionUtils.GetEncompassSession(encompassUrl, login, pw);
+            });
+
+            // assert error type
+            Assert.AreEqual(ServerLoginException.ErrorTypes.UserNotFound, ex.ErrorType);
+        }
+
+        [Test]
+        public void GetEncompassSession_with_invalid_password_throws_login_exception()
+        {
+            // arrange
+            var encompassUrl = "https://ADD_VALID_SERVER_URL_HERE";
+            var login = "testlo";
+            var pw = "not_my_password";
+
+            // act
+            var ex = Assert.Throws<ServerLoginException>(() =>
+            {
+                var actual = SessionUtils.GetEncompassSession(encompassUrl, login, pw);
+            });
+
+            // assert error type
+            Assert.AreEqual(ServerLoginException.ErrorTypes.InvalidPassword, ex.ErrorType);
+        }
+
+    }
+}
