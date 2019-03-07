@@ -1,3 +1,7 @@
+## v18.4.0.5 / 2019 Mar 7
+* **Add** - Added a throw; to the SessionUtils.cs public static Loan OpenLoan(Session session, string guid) procedure. 
+			It was just swallowing the Exception and returning null 
+
 ## v18.4.0.4 / 2019 Feb 1
 
 * **Add** - Added strongly typed exceptions to `SessionUtils.GetEncompassSession` for consuming applications to customize error handling and retry policies based on various session errors.

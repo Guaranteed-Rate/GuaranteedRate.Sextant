@@ -60,7 +60,7 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return null;
+                throw;
             }
         }
 
