@@ -1,3 +1,11 @@
+## v19.1.0.1 / 2019 Apr 3
+
+* **Update** - Updated to EncompassSDK.Complete 19.1 for the Encompass Upgrade
+
+```csharp
+[GuaranteedRate.Sextant "19.1.0.1"]
+```
+
 ## v18.4.0.4 / 2019 Feb 1
 
 * **Add** - Added strongly typed exceptions to `SessionUtils.GetEncompassSession` for consuming applications to customize error handling and retry policies based on various session errors.
