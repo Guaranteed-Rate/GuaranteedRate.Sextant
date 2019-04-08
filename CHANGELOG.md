@@ -1,3 +1,7 @@
+## v19.1.0.2 / 2019 Apr 8
+
+* **Add** - New method `IsBusinessDay` helper method in `SessionUtils`
+
 ## v19.1.0.1 / 2019 Apr 3
 
 * **Update** - Updated to EncompassSDK.Complete 19.1 for the Encompass Upgrade

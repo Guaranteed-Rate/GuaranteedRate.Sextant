@@ -1,6 +1,7 @@
 ﻿using EllieMae.Encompass.BusinessObjects.Loans;
 using EllieMae.Encompass.Client;
 using EllieMae.Encompass.Collections;
+using EllieMae.Encompass.Configuration;
 using EllieMae.Encompass.Query;
 using GuaranteedRate.Sextant.Exceptions;
 using System;
@@ -102,6 +103,17 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Checks the system settings for the provided Session to determine if the Date provided is a Business Day
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="dateValue"></param>
+        /// <returns></returns>
+        public static bool IsBusinessDay(Session session, DateTime dateValue)
+        {
+            return session.SystemSettings.GetBusinessCalendar(BusinessCalendarType.Company).GetDayType(dateValue) == BusinessCalendarDayType.BusinessDay;
         }
     }
 }
