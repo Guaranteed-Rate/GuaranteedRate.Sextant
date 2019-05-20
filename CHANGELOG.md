@@ -1,3 +1,8 @@
+## v19.1.0.2 / 2019 May 20
+
+* **Update** - Updated `Elasticsearch.net` to 6.0.1
+* **Update** - Updated `Serilog` and `Serilog.Sinks.ElasticSearch` packages required for Elastic Search 6.0.1
+
 ## v19.1.0.1 / 2019 Apr 3
 
 * **Update** - Updated to EncompassSDK.Complete 19.1 for the Encompass Upgrade
