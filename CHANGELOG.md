@@ -1,3 +1,6 @@
+## v19.3.0.1 / 2019 August 19
+* **Update** - Upgraded to EncompassSDK.Complete 19.3 for Encompass Upgrade
+
 ## v19.1.0.2 / 2019 May 20
 
 * **Update** - Updated `Elasticsearch.net` to 6.0.1
