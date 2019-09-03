@@ -66,7 +66,7 @@ namespace GuaranteedRate.Sextant.Tests.Logging
             var textToBeLogged = "Some text to log here";
             var infoMessage = string.Empty;
 
-            loggerMock.Setup(x => x.Info(It.IsAny<string>())).Callback((string message) =>
+            loggerMock.Setup(x => x.Info(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Callback((string message) =>
             {
                 infoMessage = message;
             }).Verifiable();
