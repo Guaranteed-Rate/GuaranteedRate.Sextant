@@ -81,7 +81,7 @@ namespace GuaranteedRate.Sextant.WebClients
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //swallow json parsing exception.  The response has nothing else to offer us
             }

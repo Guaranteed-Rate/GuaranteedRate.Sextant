@@ -87,7 +87,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
                 stream.Write(bytes, 0, bytes.Length);
                 stream.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
