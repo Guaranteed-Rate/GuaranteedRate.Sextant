@@ -27,7 +27,7 @@ namespace GuaranteedRate.Sextant.WebClients
         /// does not have any ability to relay information back to the original
         /// class that wanted the data sent.
         /// </summary>
-        public static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode>
+        public new static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode>
         {
             HttpStatusCode.Accepted,
             HttpStatusCode.Continue,
@@ -37,9 +37,9 @@ namespace GuaranteedRate.Sextant.WebClients
         };
 
         private string _url;
-        public string ContentType { get; set; } = "application/json";
+        public new string ContentType { get; set; } = "application/json";
 
-        protected virtual string Name { get; } = typeof(AsyncWebEventReporter).Name;
+        protected override string Name { get; } = typeof(AsyncWebEventReporter).Name;
 
         public AsyncWebEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT) : base(queueSize, retries, timeout)
         {
@@ -65,7 +65,7 @@ namespace GuaranteedRate.Sextant.WebClients
         /// prior to being processed by PostEvent
         /// </summary>
         /// <param name="webRequest"></param>
-        protected virtual void ExtraSetup(WebRequest webRequest)
+        protected override void ExtraSetup(WebRequest webRequest)
         {
 
         }

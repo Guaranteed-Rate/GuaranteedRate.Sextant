@@ -112,7 +112,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
             _disposedValue = true;
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);

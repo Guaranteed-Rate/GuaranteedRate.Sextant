@@ -187,7 +187,10 @@ namespace GuaranteedRate.Sextant.Config
                 return null;
             }
 
-            return new JsonEncompassConfig(val.ToString());
+            var config = new JsonEncompassConfig();
+            config.Init(val.ToString());
+
+            return config;
         }
 
         /// <summary>
