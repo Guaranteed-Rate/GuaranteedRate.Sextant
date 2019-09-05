@@ -103,6 +103,7 @@ namespace GuaranteedRate.Sextant.Logging
                         }
                     }
                     _additionalTags.TryAdd("process", Process.GetCurrentProcess().ProcessName);
+                    _additionalTags.TryAdd("processid", Process.GetCurrentProcess().Id.ToString());
                     _additionalTags.TryAdd("hostname", Environment.MachineName);
                     _additionalTags.TryAdd("windowsuser", Environment.UserName);
 
@@ -189,6 +190,7 @@ namespace GuaranteedRate.Sextant.Logging
 
             foreach (var tt in _additionalTags)
             {
+                if (fields.ContainsKey(tt.Key)) continue;
                 fields.Add(tt.Key, tt.Value);
             }
 
