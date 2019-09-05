@@ -12,7 +12,7 @@ namespace GuaranteedRate.Sextant.Tests.Logging
     {
         private IEncompassConfig _encompassConfig;
         private string _loggerName = "SextantUnitTests";
-
+        
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
@@ -66,7 +66,7 @@ namespace GuaranteedRate.Sextant.Tests.Logging
             var textToBeLogged = "Some text to log here";
             var infoMessage = string.Empty;
 
-            loggerMock.Setup(x => x.Info(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Callback((string message) =>
+            loggerMock.Setup(x => x.Info(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Callback((string message, IDictionary<string, string> tags) =>
             {
                 infoMessage = message;
             }).Verifiable();
@@ -76,6 +76,32 @@ namespace GuaranteedRate.Sextant.Tests.Logging
 
             // assert
             Assert.AreEqual(textToBeLogged, infoMessage);
+        }
+
+
+        [Test]
+        public void Logger_Info_with_tags_dont_conflict_names()
+        {
+            // arrange
+            var additionalTags = new Dictionary<string, string>()
+            {
+                { "tag1", "value1" },
+                { "tag2", "value2" },
+                { "mine", "first" }
+            };
+
+            var logger = new SextantLogger(_encompassConfig, _loggerName, additionalTags);
+
+            var tags = new Dictionary<string, string>()
+            {
+                { "tag3", "value3" },
+                { "mine", "second" },
+                { "processid", "dont break" }
+            };
+
+            // act
+            Assert.DoesNotThrow(() => logger.Info("Some message", tags));
+
         }
 
     }
