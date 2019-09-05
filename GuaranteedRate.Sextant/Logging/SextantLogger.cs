@@ -72,9 +72,10 @@ namespace GuaranteedRate.Sextant.Logging
         /// Debugs the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void Debug(string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Debug(string message, IDictionary<string, string> tags = null)
         {
-            Logger.Debug(_logglyName, message);
+            Logger.Debug(_logglyName, message, tags);
         }
 
         /// <summary>
@@ -82,18 +83,20 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void Debug(string message, Exception exception)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Debug(string message, Exception exception, IDictionary<string, string> tags = null)
         {
-            Debug(Combine(message, exception));
+            Debug(Combine(message, exception), tags);
         }
 
         /// <summary>
         /// Informations the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void Info(string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Info(string message, IDictionary<string, string> tags = null)
         {
-            Logger.Info(_logglyName, message);
+            Logger.Info(_logglyName, message, tags);
         }
 
         /// <summary>
@@ -101,18 +104,20 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void Info(string message, Exception exception)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Info(string message, Exception exception, IDictionary<string, string> tags = null)
         {
-            Info(Combine(message, exception));
+            Info(Combine(message, exception), tags);
         }
 
         /// <summary>
         /// Warnings the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void Warning(string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Warning(string message, IDictionary<string, string> tags = null)
         {
-            Logger.Warn(_logglyName, message);
+            Logger.Warn(_logglyName, message, tags);
         }
 
         /// <summary>
@@ -120,18 +125,21 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void Warning(string message, Exception exception)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Warning(string message, Exception exception, IDictionary<string, string> tags = null)
         {
-            Warning(Combine(message, exception));
+            Warning(Combine(message, exception), tags);
 
         }
+
         /// <summary>
         /// Errors the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void Error(string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Error(string message, IDictionary<string, string> tags = null)
         {
-            Logger.Error(_logglyName, message);
+            Logger.Error(_logglyName, message, tags);
         }
 
         /// <summary>
@@ -139,26 +147,31 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void Error(string message, Exception exception)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Error(string message, Exception exception, IDictionary<string, string> tags = null)
         {
-            Error(Combine(message, exception));
+            Error(Combine(message, exception), tags);
         }
+
         /// <summary>
         /// Fatals the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void Fatal(string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Fatal(string message, IDictionary<string, string> tags = null)
         {
-            Logger.Fatal(_logglyName, message);
+            Logger.Fatal(_logglyName, message, tags);
         }
+
         /// <summary>
         /// Fatals the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void Fatal(string message, Exception exception)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public void Fatal(string message, Exception exception, IDictionary<string, string> tags = null)
         {
-            Fatal(Combine(message, exception));
+            Fatal(Combine(message, exception), tags);
         }
 
         /// <summary>

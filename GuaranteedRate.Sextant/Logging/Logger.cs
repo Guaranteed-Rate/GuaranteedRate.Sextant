@@ -103,6 +103,7 @@ namespace GuaranteedRate.Sextant.Logging
                         }
                     }
                     _additionalTags.TryAdd("process", Process.GetCurrentProcess().ProcessName);
+                    _additionalTags.TryAdd("processid", Process.GetCurrentProcess().Id.ToString());
                     _additionalTags.TryAdd("hostname", Environment.MachineName);
                     _additionalTags.TryAdd("windowsuser", Environment.UserName);
 
@@ -189,16 +190,24 @@ namespace GuaranteedRate.Sextant.Logging
 
             foreach (var tt in _additionalTags)
             {
+                if (fields.ContainsKey(tt.Key)) continue;
                 fields.Add(tt.Key, tt.Value);
             }
 
             return fields;
         }
-        public static void Debug(string logger, string message)
+
+        /// <summary>
+        /// writes a log entry as "debug"
+        /// </summary>
+        /// <param name="logger">e.g. 'my app'</param>
+        /// <param name="message">the log message</param>   
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public static void Debug(string logger, string message, IDictionary<string, string> tags = null)
         {
             if (configured)
             {
-                var lv = PrepLogValues(logger, message);
+                var lv = PrepLogValues(logger, message, tags);
                 Serilog.Log.Logger.Debug(lv.Item1, lv.Item2);
             }
         }
@@ -238,12 +247,12 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
-        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Error(string logger, string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public static void Error(string logger, string message, IDictionary<string, string> tags = null)
         {
             if (configured)
             {
-                var lv = PrepLogValues(logger, message);
+                var lv = PrepLogValues(logger, message, tags);
                 Serilog.Log.Logger.Error(lv.Item1, lv.Item2);
             }
 
@@ -271,12 +280,12 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
-        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Fatal(string logger, string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public static void Fatal(string logger, string message, IDictionary<string, string> tags = null)
         {
             if (configured)
             {
-                var lv = PrepLogValues(logger, message);
+                var lv = PrepLogValues(logger, message, tags);
                 Serilog.Log.Logger.Fatal(lv.Item1, lv.Item2);
             }
         }
@@ -286,12 +295,12 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
-        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Info(string logger, string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public static void Info(string logger, string message, IDictionary<string, string> tags = null)
         {
             if (configured)
             {
-                var lv = PrepLogValues(logger, message);
+                var lv = PrepLogValues(logger, message, tags);
                 Serilog.Log.Logger.Information(lv.Item1, lv.Item2);
             }
         }
@@ -301,12 +310,12 @@ namespace GuaranteedRate.Sextant.Logging
         /// </summary>
         /// <param name="logger">e.g. 'my app'</param>
         /// <param name="message">the log message</param>   
-        /// <param name="excludedReporters">don't have these reporters process  this message.  useful so an error in a reporter doesn't log to itself and fail recursively.</param>
-        public static void Warn(string logger, string message)
+        /// <param name="tags">Optional tags as name/value pairs to be included in this log entry</param>
+        public static void Warn(string logger, string message, IDictionary<string, string> tags = null)
         {
             if (configured)
             {
-                var lv = PrepLogValues(logger, message);
+                var lv = PrepLogValues(logger, message, tags);
                 Serilog.Log.Logger.Warning(lv.Item1, lv.Item2);
             }
         }

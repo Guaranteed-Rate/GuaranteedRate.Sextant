@@ -26,6 +26,9 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
 
         #endregion
 
+        protected override string Name { get; } = typeof(GraphiteReporter).Name;
+
+
         public GraphiteReporter(IEncompassConfig config)
             : base(config.GetValue(GRAPHITE_QUEUE_SIZE, 1000),
                 config.GetValue(GRAPHITE_RETRY_LIMIT, 3))
@@ -87,7 +90,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
                 stream.Write(bytes, 0, bytes.Length);
                 stream.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -112,7 +115,7 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
             _disposedValue = true;
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);

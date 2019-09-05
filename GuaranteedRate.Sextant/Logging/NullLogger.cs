@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GuaranteedRate.Sextant.Logging
 {
@@ -8,25 +9,25 @@ namespace GuaranteedRate.Sextant.Logging
     /// </summary>
     public class NullLogger : ILogger
     {
-        public void Debug(string message) { }
+        public void Debug(string message, IDictionary<string, string> tags = null) { }
 
-        public void Debug(string message, Exception exception) { }
+        public void Debug(string message, Exception exception, IDictionary<string, string> tags = null) { }
 
-        public void Error(string message) { }
+        public void Error(string message, IDictionary<string, string> tags = null) { }
 
-        public void Error(string message, Exception exception) { }
+        public void Error(string message, Exception exception, IDictionary<string, string> tags = null) { }
 
-        public void Fatal(string message) { }
+        public void Fatal(string message, IDictionary<string, string> tags = null) { }
 
-        public void Fatal(string message, Exception exception) { }
+        public void Fatal(string message, Exception exception, IDictionary<string, string> tags = null) { }
 
-        public void Info(string message) { }
+        public void Info(string message, IDictionary<string, string> tags = null) { }
 
-        public void Info(string message, Exception exception) { }
+        public void Info(string message, Exception exception, IDictionary<string, string> tags = null) { }
 
-        public void Warning(string message) { }
+        public void Warning(string message, IDictionary<string, string> tags = null) { }
 
-        public void Warning(string message, Exception exception) { }
+        public void Warning(string message, Exception exception, IDictionary<string, string> tags = null) { }
 
     }
 }

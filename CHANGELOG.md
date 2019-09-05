@@ -1,3 +1,6 @@
+## v19.3.1.0 / 2019 September 5
+* **Add** - Optional tags for Logger methods `Info`, `Error`, `Warn`, `Debug`, and `Fatal`
+
 ## v19.3.0.2 / 2019 August 20
 * **Update** - Upgraded to EncompassSDK.Complete 19.3.0.2 for Encompass Upgrade
 
