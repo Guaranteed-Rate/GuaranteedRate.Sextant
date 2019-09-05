@@ -21,23 +21,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
     public class AsyncWebEventReporter : AsyncEventReporter, IDisposable, IEventReporter
     {
-        /// <summary>
-        /// This is the set of http status codes that are condsidered successful
-        /// responses.  The list does not include all 2xx codes because the class
-        /// does not have any ability to relay information back to the original
-        /// class that wanted the data sent.
-        /// </summary>
-        public new static ISet<HttpStatusCode> SUCCESS_CODES = new HashSet<HttpStatusCode>
-        {
-            HttpStatusCode.Accepted,
-            HttpStatusCode.Continue,
-            HttpStatusCode.Created,
-            HttpStatusCode.NoContent,
-            HttpStatusCode.OK
-        };
-
         private string _url;
-        public new string ContentType { get; set; } = "application/json";
 
         protected override string Name { get; } = typeof(AsyncWebEventReporter).Name;
 
