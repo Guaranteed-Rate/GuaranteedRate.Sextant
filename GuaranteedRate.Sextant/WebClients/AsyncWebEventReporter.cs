@@ -70,7 +70,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         }
 
-        protected  override bool PostEvent(object formattedData)
+        protected override bool PostEvent(object formattedData)
         {
             try
             {
