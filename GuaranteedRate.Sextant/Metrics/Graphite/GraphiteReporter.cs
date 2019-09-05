@@ -26,6 +26,9 @@ namespace GuaranteedRate.Sextant.Metrics.Graphite
 
         #endregion
 
+        protected override string Name { get; } = typeof(GraphiteReporter).Name;
+
+
         public GraphiteReporter(IEncompassConfig config)
             : base(config.GetValue(GRAPHITE_QUEUE_SIZE, 1000),
                 config.GetValue(GRAPHITE_RETRY_LIMIT, 3))

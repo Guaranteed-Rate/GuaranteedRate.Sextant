@@ -43,7 +43,7 @@ namespace GuaranteedRate.Sextant.WebClients
         protected const int DEFAULT_RETRIES = 3;
         protected const int DEFAULT_TIMEOUT = 45000;
 
-        protected virtual string Name { get; } = typeof(AsyncEventReporter).Name;
+        protected abstract string Name { get; }
         protected volatile bool _finished;
         protected bool LogRecurisively = true;
 
