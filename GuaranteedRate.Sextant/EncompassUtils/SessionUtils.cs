@@ -41,7 +41,14 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             }
         }
 
-        public static Loan OpenLoan(Session session, string guid)
+        /// <summary>
+        /// Opens provided loan guid using the Session provided
+        /// </summary>
+        /// <param name="session">Connected session for opening the loan</param>
+        /// <param name="guid">Loan identifier</param>
+        /// <param name="throwOnError">Indicates whether errors should be thrown or if null is returned when an error occurs</param>
+        /// <returns>If success, the Loan object is returned. If unsuccessful and throwOnError is false, then null is returned</returns>
+        public static Loan OpenLoan(Session session, string guid, bool throwOnError = false)
         {
             if (!guid.StartsWith("{"))
             {
@@ -60,13 +67,22 @@ namespace GuaranteedRate.Sextant.EncompassUtils
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                if (throwOnError) throw;
+
                 return null;
             }
         }
 
-        public static Loan OpenLoan(Session session, Guid guid)
+        /// <summary>
+        /// Opens provided loan guid using the Session provided
+        /// </summary>
+        /// <param name="session">Connected session for opening the loan</param>
+        /// <param name="guid">Loan identifier</param>
+        /// <param name="throwOnError">Indicates whether errors should be thrown or if null is returned when an error occurs</param>
+        /// <returns>If success, the Loan object is returned. If unsuccessful and throwOnError is false, then null is returned</returns>
+        public static Loan OpenLoan(Session session, Guid guid, bool throwOnError = false)
         {
-            return OpenLoan(session, guid.ToString("B"));
+            return OpenLoan(session, guid.ToString("B"), throwOnError);
         }
 
         /// <summary>
