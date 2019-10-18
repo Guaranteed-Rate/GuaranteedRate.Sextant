@@ -1,3 +1,6 @@
+## v19.3.1.1 / 2019 October 18
+* **Update** - Optional parameter to throw exception when not able to open a loan
+
 ## v19.3.1.0 / 2019 September 5
 * **Add** - Optional tags for Logger methods `Info`, `Error`, `Warn`, `Debug`, and `Fatal`
 
