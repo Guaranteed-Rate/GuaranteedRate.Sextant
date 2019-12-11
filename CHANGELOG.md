@@ -1,3 +1,6 @@
+## v19.4.0.0 / 2019 December 11 (LOS-2379)
+* **Update** Encompass SDK 19.4
+
 ## v19.3.1.1 / 2019 October 18
 * **Update** - Optional parameter to throw exception when not able to open a loan
 
