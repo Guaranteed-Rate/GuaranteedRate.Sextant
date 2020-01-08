@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Logging
@@ -17,6 +18,7 @@ namespace GuaranteedRate.Sextant.Logging
         private static bool configured = false;
         public const string LEVEL = "level";
         public const string ERROR_LEVEL = "ERROR";
+        public const string VERBOSE_LEVEL = "VERBOSE";
         public const string WARN_LEVEL = "WARN";
         public const string INFO_LEVEL = "INFO";
         public const string DEBUG_LEVEL = "DEBUG";
@@ -67,6 +69,7 @@ namespace GuaranteedRate.Sextant.Logging
         public static string CONSOLE_WARN = "ConsoleLogAppender.Warn.Enabled";
         public static string CONSOLE_INFO = "ConsoleLogAppender.Info.Enabled";
         public static string CONSOLE_DEBUG = "ConsoleLogAppender.Debug.Enabled";
+        public static string CONSOLE_VERBOSE = "ConsoleLogAppender.Verbose.Enabled";
         public static string CONSOLE_FATAL = "ConsoleLogAppender.Fatal.Enabled";
 
         public static string LOGGLY_ENABLED = "LogglyLogAppender.Enabled";
@@ -80,6 +83,7 @@ namespace GuaranteedRate.Sextant.Logging
         public static string LOGGLY_WARN = "LogglyLogAppender.Warn.Enabled";
         public static string LOGGLY_INFO = "LogglyLogAppender.Info.Enabled";
         public static string LOGGLY_DEBUG = "LogglyLogAppender.Debug.Enabled";
+        public static string LOGGLY_VERBOSE = "LogglyLogAppender.Verbose.Enabled";
         public static string LOGGLY_FATAL = "LogglyLogAppender.Fatal.Enabled";
         public static string LOGGLY_TAGS = "LogglyLogAppender.Tags";
         public static string LOGGLY_LOG_RECURSIVELY = "LogglyLogAppender.LogRecursively";
@@ -156,6 +160,8 @@ namespace GuaranteedRate.Sextant.Logging
                 return LogEventLevel.Verbose;
             else if (Convert.ToBoolean(config.GetValue(LOGGLY_DEBUG)))
                 return LogEventLevel.Debug;
+            else if (Convert.ToBoolean(config.GetValue(LOGGLY_VERBOSE)))
+                return LogEventLevel.Verbose;
             else if (Convert.ToBoolean(config.GetValue(LOGGLY_INFO)))
                 return LogEventLevel.Information;
             else if (Convert.ToBoolean(config.GetValue(LOGGLY_WARN)))
