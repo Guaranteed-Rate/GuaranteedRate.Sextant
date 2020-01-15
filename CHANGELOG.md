@@ -1,3 +1,6 @@
+## v19.4.1.0 / 2020 January 15 (EMP-160)
+* **Update** Removed use of the complete Encompass SDK package as well as other unnecessary dependencies
+
 ## v19.4.0.0 / 2019 December 11 (LOS-2379)
 * **Update** Encompass SDK 19.4
 
