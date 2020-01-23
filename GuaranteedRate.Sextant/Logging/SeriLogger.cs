@@ -63,7 +63,7 @@ namespace GuaranteedRate.Sextant.Logging
                     {
                         baseLogger.WriteTo.RollingFile(pathFormat: config.GetValue(
                             Logging.Logger.FILE_FOLDER, config.GetValue(Logging.Logger.FILE_NAME)),
-                            formatter: new JsonFormatter(null, true, null),
+                            formatter: new JsonFormatter(renderMessage: true),
                             fileSizeLimitBytes: config.GetValue(Logging.Logger.FILE_MAX_FILE_BYTES, 10000),
                             retainedFileCountLimit: config.GetValue(Logging.Logger.FILE_MAX_FILES, 10));
                     }
