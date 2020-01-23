@@ -85,7 +85,6 @@ namespace GuaranteedRate.Sextant.Logging
 
 		internal static ElasticsearchSinkOptions GetElasticOptions(IEncompassConfig config)
 		{
-
 			var elasticOptions = new ElasticsearchSinkOptions(new Uri(config.GetValue(Logger.ELASTICSEARCH_URL, "NOT PROVIDED")));
 			var indexFormat = config.GetValue(Logger.ELASTICSEARCH_INDEX_NAME, "sextant-serilog-");
 
@@ -98,8 +97,6 @@ namespace GuaranteedRate.Sextant.Logging
 			elasticOptions.MinimumLogEventLevel = GetMinLevel(config, "ELASTICSEARCH");
 			elasticOptions.EmitEventFailure = EmitEventFailureHandling.ThrowException;
 			return elasticOptions;
-
-
 		}
 
 		internal static LogglyConfiguration GetLogglyConfig(IEncompassConfig config) => 

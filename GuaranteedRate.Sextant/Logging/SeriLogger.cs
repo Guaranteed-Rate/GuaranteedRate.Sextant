@@ -1,21 +1,18 @@
 ﻿using GuaranteedRate.Sextant.Config;
 using Serilog;
-using Serilog.Context;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Json;
 using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace GuaranteedRate.Sextant.Logging
 {
-	/// <summary>
-	/// This is a static Setup class for a Serilog Logger. It requires all using DLLs start referencing Serilog. 
+    /// <summary>
+    /// This is a static Setup class for a Serilog Logger. It requires all using DLLs start referencing Serilog. 
     /// We could write a wrapper around Serilog, but this isn't exactly a great project when we have a solid logging system to just make use of.
-	/// </summary>
-	public static class SeriLogger
+    /// </summary>
+    public static class SeriLogger
 	{
 		private static readonly object syncRoot = new object();
         private static bool configured = false;

@@ -6,9 +6,7 @@ using Serilog.Formatting.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace GuaranteedRate.Sextant.Logging
