@@ -17,7 +17,7 @@ namespace GuaranteedRate.Sextant.Integration.Tests.Logging
 		public void TestFixtureSetUp()
 		{
 			_encompassConfig = new IntegrationEncompassConfig();
-			_ = SeriLogger.Setup(_encompassConfig);
+			var _ = SeriLogger.Setup(_encompassConfig);
 		}
 
 		[Test]
