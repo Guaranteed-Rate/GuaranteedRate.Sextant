@@ -1,6 +1,7 @@
 ﻿using GuaranteedRate.Sextant.Config;
 using Serilog;
 using Serilog.Events;
+using Serilog.Exceptions;
 using Serilog.Formatting.Json;
 using System;
 using System.Collections.Concurrent;
@@ -106,13 +107,15 @@ namespace GuaranteedRate.Sextant.Logging
                             _additionalTags.TryAdd(kv.Key, kv.Value);
                         }
                     }
-                    _additionalTags.TryAdd("process", Process.GetCurrentProcess().ProcessName);
-                    _additionalTags.TryAdd("processid", Process.GetCurrentProcess().Id.ToString());
-                    _additionalTags.TryAdd("hostname", Environment.MachineName);
-                    _additionalTags.TryAdd("windowsuser", Environment.UserName);
 
                     baseLogger = new LoggerConfiguration()
-                        .WriteTo.Logger(aa => aa.MinimumLevel.Verbose());
+                        .WriteTo.Logger(aa => aa.MinimumLevel.Verbose())
+                        .Enrich.FromLogContext()
+                        .Enrich.WithExceptionDetails()
+                        .Enrich.WithMachineName()
+                        .Enrich.WithProcessId()
+                        .Enrich.WithEnvironmentUserName()
+                        .Enrich.WithProcessName();
 
                     baseLogger.WriteTo.Logger(aa => aa.Destructure.ToMaximumDepth(20));
 

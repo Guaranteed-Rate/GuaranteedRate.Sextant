@@ -131,7 +131,7 @@
     <Compile Include="Exceptions\ServerLoginException.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\NullLogger.cs" />
-    <Compile Include="Logging\PowerLogger.cs" />
+    <Compile Include="Logging\SeriLogger.cs" />
     <Compile Include="Logging\SerilogHelpers.cs" />
     <Compile Include="Logging\SextantLogger.cs" />
     <Compile Include="Metrics\Graphite\GraphiteReporter.cs" />

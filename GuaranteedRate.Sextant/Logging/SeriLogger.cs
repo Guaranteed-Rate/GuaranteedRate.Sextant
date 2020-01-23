@@ -19,7 +19,6 @@ namespace GuaranteedRate.Sextant.Logging
 	{
 		private static readonly object syncRoot = new object();
         private static bool configured = false;
-        private static ConcurrentDictionary<string, string> _additionalTags;
 
         public static Serilog.ILogger Logger => _logger.Value;
 
@@ -28,7 +27,7 @@ namespace GuaranteedRate.Sextant.Logging
         /// The behavior of Lazy is to return null each time afterwards if an exception was thrown.
         /// Otherwise, it will keep returning the same Log.Logger. This ensures we have a quick thread-safe access that also ensures we get no overhead from more than one Exception check.
         /// </summary>
-        private static Lazy<Serilog.ILogger> _logger = new Lazy<Serilog.ILogger>(SafeLogGet);
+        private static Lazy<Serilog.ILogger> _logger = new Lazy<Serilog.ILogger>(SafeLogGet, true);
 
         private static Serilog.ILogger SafeLogGet()
         {
@@ -64,7 +63,7 @@ namespace GuaranteedRate.Sextant.Logging
                     {
                         baseLogger.WriteTo.RollingFile(pathFormat: config.GetValue(
                             Logging.Logger.FILE_FOLDER, config.GetValue(Logging.Logger.FILE_NAME)),
-                            formatter: new JsonFormatter(null, false, null),
+                            formatter: new JsonFormatter(null, true, null),
                             fileSizeLimitBytes: config.GetValue(Logging.Logger.FILE_MAX_FILE_BYTES, 10000),
                             retainedFileCountLimit: config.GetValue(Logging.Logger.FILE_MAX_FILES, 10));
                     }

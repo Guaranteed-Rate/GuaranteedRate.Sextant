@@ -217,6 +217,7 @@
     <Compile Include="Configs\IniConfigTests.cs" />
     <Compile Include="Configs\JsonEncompassConfitTests.cs" />
     <Compile Include="Logging\NullLoggerUnitTests.cs" />
+    <Compile Include="Logging\SeriLoggerUnitTests.cs" />
     <Compile Include="Logging\SextantLoggerUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configs\WindowModel.cs" />
