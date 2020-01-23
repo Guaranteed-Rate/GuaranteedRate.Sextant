@@ -1,3 +1,7 @@
+## v19.4.2.0 / 2020 January 15 (EMP-160)
+* **Update** Add a SeriLogger class for advanced logging practices.
+* **Update** Add better Serilog based Exception logging to standard logging class.
+
 ## v19.4.1.0 / 2020 January 15 (EMP-160)
 * **Update** Removed use of the complete Encompass SDK package as well as other unnecessary dependencies
 
