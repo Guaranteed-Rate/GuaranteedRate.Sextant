@@ -1,4 +1,7 @@
-## v19.4.2.0 / 2020 January 15 (EMP-160)
+## v19.4.2.1 / 2020 February 10 (Logging Improvements)
+* **Update** Add a SeriLogger enricher for Assembly Information.
+
+## v19.4.2.0 / 2020 January 15 (Logging Improvements)
 * **Update** Add a SeriLogger class for advanced logging practices.
 * **Update** Add better Serilog based Exception logging to standard logging class.
 

@@ -19,7 +19,6 @@ namespace GuaranteedRate.Sextant.Logging
 
         public static Serilog.ILogger Logger => _logger.Value;
 
-
         /// <summary>
         /// The behavior of Lazy is to return null each time afterwards if an exception was thrown.
         /// Otherwise, it will keep returning the same Log.Logger. This ensures we have a quick thread-safe access that also ensures we get no overhead from more than one Exception check.
@@ -47,7 +46,9 @@ namespace GuaranteedRate.Sextant.Logging
                         .Enrich.WithMachineName()
                         .Enrich.WithProcessId()
                         .Enrich.WithEnvironmentUserName()
-                        .Enrich.WithProcessName();
+                        .Enrich.WithProcessName()
+                        .Enrich.WithAssemblyName()
+                        .Enrich.WithAssemblyVersion();
 
                     baseLogger.WriteTo.Logger(aa => aa.Destructure.ToMaximumDepth(20));
 
@@ -76,7 +77,6 @@ namespace GuaranteedRate.Sextant.Logging
                     {
                         baseLogger.WriteTo.Console(new JsonFormatter(null, false, null));
                     }
-
 
                     Log.Logger = baseLogger.CreateLogger();
 
