@@ -129,6 +129,7 @@
     <Compile Include="EncompassUtils\UserUtils.cs" />
     <Compile Include="Exceptions\ServerConnectionException.cs" />
     <Compile Include="Exceptions\ServerLoginException.cs" />
+    <Compile Include="Logging\Enrichers\AssemblyNameLoggerConfigurationExtensions.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\NullLogger.cs" />
     <Compile Include="Logging\SeriLogger.cs" />
