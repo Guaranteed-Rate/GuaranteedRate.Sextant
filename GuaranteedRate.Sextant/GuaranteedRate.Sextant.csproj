@@ -8,6 +8,9 @@
     <PackageVersion>19.4.2.1</PackageVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RootNamespace>GuaranteedRate.Sextant</RootNamespace>
+    <PackageId>GuaranteedRate.Sextant</PackageId>
+    <Company>Guaranteed Rate</Company>
+    <RepositoryUrl>https://github.com/Guaranteed-Rate/GuaranteedRate.Sextant</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Elasticsearch.Net" Version="6.0.1" />
