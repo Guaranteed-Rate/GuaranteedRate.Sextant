@@ -1,4 +1,4 @@
-name: Build & Test
+name: Build
 
 on:
   push:
@@ -18,6 +18,6 @@ jobs:
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
     - name: Add GPR Source
-      run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/guaranteed-rate/index.json -Username Guaranteed-Rate -Password {{ secrets.GITHUB_TOKEN }}
+      run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/guaranteed-rate/index.json -Username Guaranteed-Rate -Password ${{ secrets.GITHUB_TOKEN }}
     - name: nuget push
       run: nuget push GuaranteedRate.Sextant\bin\release\*.nupkg -Source "GPR" -SkipDuplicate
