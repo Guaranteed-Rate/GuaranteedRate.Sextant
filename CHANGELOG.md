@@ -1,3 +1,6 @@
+## v20.1.0.0 / 2020 October 8 (EMP-597)
+* **Update** Update to Encompass SDK 20.1
+
 ## v19.4.2.1 / 2020 February 10 (Logging Improvements)
 * **Update** Add a SeriLogger enricher for Assembly Information.
 

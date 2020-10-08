@@ -36,13 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EllieMae.Encompass.AsmResolver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Encompass.SDK.19.4.0\lib\net45\EllieMae.Encompass.AsmResolver.dll</HintPath>
+      <HintPath>..\packages\Encompass.SDK.20.1.0\lib\net45\EllieMae.Encompass.AsmResolver.dll</HintPath>
     </Reference>
     <Reference Include="EllieMae.Encompass.Runtime, Version=3.5.1.5, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Encompass.SDK.19.4.0\lib\net45\EllieMae.Encompass.Runtime.dll</HintPath>
+      <HintPath>..\packages\Encompass.SDK.20.1.0\lib\net45\EllieMae.Encompass.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="EncompassObjects, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Encompass.Objects.SDK.19.4.0\lib\net45\EncompassObjects.dll</HintPath>
+      <HintPath>..\packages\Encompass.Objects.SDK.20.1.0\lib\net45\EncompassObjects.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Loggly, Version=4.6.1.76, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
