@@ -16,7 +16,7 @@ jobs:
     - name: Build
       run: dotnet build GuaranteedRate.Sextant\GuaranteedRate.Sextant.csproj --configuration Release --no-restore
     - name: Setup Nuget.exe
-      uses: warrenbuckley/Setup-Nuget@v1
+      uses: nuget/setup-nuget@v1
     - name: Add GPR Source
       run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/guaranteed-rate/index.json -Username Guaranteed-Rate -Password ${{ secrets.GITHUB_TOKEN }}
     - name: nuget push
