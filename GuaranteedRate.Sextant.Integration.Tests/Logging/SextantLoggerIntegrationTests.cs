@@ -7,7 +7,7 @@ namespace GuaranteedRate.Sextant.Integration.Tests.Logging
 {
     [TestFixture]
     [Explicit]
-    class SextantLoggerIntegrationTests
+    class SextantLoggerIntegrationTests: EncompassSDKBaseTest
     {
         private IEncompassConfig _encompassConfig;
         private string _loggerName = "SextantLoggerIntegrationTests";

@@ -8,15 +8,15 @@ using System.Collections.Generic;
 namespace GuaranteedRate.Sextant.Integration.Tests.Logging
 {
 	[TestFixture]
-	public class SeriLoggerIntegrationTests
+	public class SeriLoggerIntegrationTests: EncompassSDKBaseTest
 	{
-
 		private IEncompassConfig _encompassConfig;
 
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
 			_encompassConfig = new IntegrationEncompassConfig();
+			Console.WriteLine("Rawr");
 			var _ = SeriLogger.Setup(_encompassConfig);
 		}
 

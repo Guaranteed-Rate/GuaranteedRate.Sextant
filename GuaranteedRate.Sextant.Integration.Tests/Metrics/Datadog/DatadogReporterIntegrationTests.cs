@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace GuaranteedRate.Sextant.Integration.Tests.Metrics.Datadog
 {
     [TestFixture]
-    public class DatadogReporterIntegrationTests
+    public class DatadogReporterIntegrationTests: EncompassSDKBaseTest
     {
         [Test, Category("Integration")]
         public void WhenAddCounter_ThenSuccess()

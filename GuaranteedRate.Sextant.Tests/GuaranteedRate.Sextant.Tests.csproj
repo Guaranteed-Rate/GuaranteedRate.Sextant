@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="EncompassObjects, Version=1.5.1.0, Culture=neutral, PublicKeyToken=d11ef57bba4acf91, processorArchitecture=MSIL">
       <HintPath>..\packages\Encompass.Objects.SDK.20.1.0\lib\net45\EncompassObjects.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Loggly, Version=4.6.1.76, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
       <HintPath>..\packages\loggly-csharp.4.6.1.76\lib\net45\Loggly.dll</HintPath>
@@ -113,7 +114,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Configs\IniConfigTests.cs" />
-    <Compile Include="Configs\JsonEncompassConfitTests.cs" />
+    <Compile Include="Configs\JsonEncompassConfigTests.cs" />
     <Compile Include="Logging\NullLoggerUnitTests.cs" />
     <Compile Include="Logging\SeriLoggerUnitTests.cs" />
     <Compile Include="Logging\SextantLoggerUnitTests.cs" />
