@@ -71,7 +71,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <param name="defaultValue">The default if the key does not exist</param>
         /// <param name="orgId">Get the value for an orgId, regardless of the current configured orgId</param>
         /// <returns>The value of the key or the default.</returns>
-        string GetValue(string key, string defaultValue, string orgId = null);
+        string GetValue(string key, string defaultValue, string orgId);
 
         /// <summary>
         /// Get value of key, return default if key does not exist
@@ -88,7 +88,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <param name="defaultValue">The default if the key does not exist</param>
         /// <param name="orgId">Get the value for an orgId, regardless of the current configured orgId</param>
         /// <returns>The value of the key or the default.</returns>
-        bool GetValue(string key, bool defaultValue, string orgId = null);
+        bool GetValue(string key, bool defaultValue, string orgId);
 
         /// <summary>
         /// Get value of key, return default if key does not exist
@@ -105,7 +105,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <param name="defaultValue">The default if the key does not exist</param>
         /// <param name="orgId">Get the value for an orgId, regardless of the current configured orgId</param>
         /// <returns>The value of the key or the default.</returns>
-        int GetValue(string key, int defaultValue, string orgId = null);
+        int GetValue(string key, int defaultValue, string orgId);
 
         /// <summary>
         /// Get all Keys in the dictionary.

@@ -64,7 +64,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
 		public bool Reload(string orgId, Session session) => throw new NotImplementedException();
 
-		public string GetValue(string key, string defaultValue, string orgId = null)
+		public string GetValue(string key, string defaultValue, string orgId)
         {
             var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
@@ -73,7 +73,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
             return value;
         }
 
-		public bool GetValue(string key, bool defaultValue, string orgId = null)
+		public bool GetValue(string key, bool defaultValue, string orgId)
         {
             var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
@@ -87,7 +87,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
             return defaultValue;
         }
 
-		public int GetValue(string key, int defaultValue, string orgId = null)
+		public int GetValue(string key, int defaultValue, string orgId)
         {
             var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
@@ -109,7 +109,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
         private string Keyname(string key, string orgId = null) => $"{orgId ?? _orgId}{((orgId ?? _orgId) == null ? "" : ".")}{key}";
 
-		public T GetValue<T>(string key, T defaultValue = default, string orgId = null)
+		public T GetValue<T>(string key, T defaultValue, string orgId)
         {
             return SafeGetValue(key, defaultValue, false, orgId);
         }

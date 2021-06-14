@@ -50,13 +50,13 @@ namespace GuaranteedRate.Sextant.Config
         public bool GetValue(string key, bool defaultVal) => GetValue<bool>(key, defaultVal);
 
         /// <inheritdoc/>
-        public bool GetValue(string key, bool defaultVal, string orgId = null) => GetValue<bool>(key, defaultVal, orgId);
+        public bool GetValue(string key, bool defaultVal, string orgId) => GetValue<bool>(key, defaultVal, orgId);
 
         /// <inheritdoc/>
         public int GetValue(string key, int defaultValue) => GetValue<int>(key, defaultValue);
 
         /// <inheritdoc/>
-        public int GetValue(string key, int defaultValue, string orgId = null) => GetValue<int>(key, defaultValue, orgId);
+        public int GetValue(string key, int defaultValue, string orgId) => GetValue<int>(key, defaultValue, orgId);
 
         /// <summary>
         /// Returns the value of the given key
@@ -73,7 +73,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <param name="defaultVal">Default value if the key is null</param>
         /// <param name="orgId">The organization ID to pull from, if passed</param>
         /// <returns>The string value</returns>
-        public string GetValue(string key, string defaultVal, string orgId = null) => GetValue<string>(key, defaultVal, orgId);
+        public string GetValue(string key, string defaultVal, string orgId) => GetValue<string>(key, defaultVal, orgId);
 
         /// <summary>
         /// This takes a type of T, a key and an optional default value.
@@ -86,7 +86,7 @@ namespace GuaranteedRate.Sextant.Config
         /// <param name="defaultValue">The value to be returned if the requested value is not found</param>
         /// <param name="orgId">The organization ID to pull from, if passed</param>
         /// <returns>A value of the requested type</returns>
-        public T GetValue<T>(string key, T defaultValue, string orgId = null)
+        public T GetValue<T>(string key, T defaultValue, string orgId)
         {
             var token = _jsonObject.SelectToken(Keyname(key, orgId), false) ?? _jsonObject.SelectToken(key, false);
             try

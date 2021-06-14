@@ -127,7 +127,7 @@ namespace GuaranteedRate.Sextant.Config
 
         private string Keyname(string key, string orgId = null) => $"{orgId ?? _orgId}{((orgId ?? _orgId) == null ? "" : ".")}{key.ToLower()}";
 
-		public string GetValue(string key, string defaultValue, string orgId = null)
+		public string GetValue(string key, string defaultValue, string orgId)
         {
             if (_config == null || string.IsNullOrWhiteSpace(key))
             {
@@ -141,7 +141,7 @@ namespace GuaranteedRate.Sextant.Config
         }
 
         /// <inheritdoc/>
-		public bool GetValue(string key, bool defaultValue, string orgId = null)
+		public bool GetValue(string key, bool defaultValue, string orgId)
         {
             if (_config == null || string.IsNullOrWhiteSpace(key))
             {
@@ -164,7 +164,7 @@ namespace GuaranteedRate.Sextant.Config
             }
         }
 
-		public int GetValue(string key, int defaultValue, string orgId = null)
+		public int GetValue(string key, int defaultValue, string orgId)
         {
             if (_config == null || string.IsNullOrWhiteSpace(key))
             {

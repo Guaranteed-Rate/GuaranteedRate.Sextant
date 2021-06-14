@@ -23,6 +23,6 @@ namespace GuaranteedRate.Sextant.Config
         /// <param name="defaultValue">The value to be returned if the requested value is not found</param>
         /// <param name="orgId">The organization ID to pull from, if passed</param>
         /// <returns>A value of the requested type</returns>
-        T GetValue<T>(string key, T defaultValue = default(T), string orgId = null);
+        T GetValue<T>(string key, T defaultValue, string orgId);
     }
 }
