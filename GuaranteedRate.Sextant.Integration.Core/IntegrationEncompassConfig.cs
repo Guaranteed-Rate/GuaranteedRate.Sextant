@@ -28,10 +28,9 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
         public IEncompassConfig GetConfigGroup(string key) => throw new NotImplementedException();
 
-        public static T SafeGetValue<T>(string key, T defaultValue, bool errorOnWrongType = false)
+        public T SafeGetValue<T>(string key, T defaultValue, bool errorOnWrongType = false, string orgId = null)
         {
-            // HARRY - CHANGE THIS TO DEFAULT TO OLD STUFF!
-            var result = System.Configuration.ConfigurationManager.AppSettings.Get(key);
+            var result = ConfigurationManager.AppSettings.Get(Keyname(key, orgId)) ?? ConfigurationManager.AppSettings.Get(key);
             if (string.IsNullOrEmpty(result))
             {
                 return defaultValue;
@@ -67,8 +66,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
 		public string GetValue(string key, string defaultValue, string orgId = null)
         {
-            // HARRY - CHANGE THIS TO DEFAULT TO OLD STUFF!
-            var value = ConfigurationManager.AppSettings[Keyname(key, orgId)];
+            var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
             if (string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(defaultValue)) return defaultValue;
 
@@ -77,8 +75,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
 		public bool GetValue(string key, bool defaultValue, string orgId = null)
         {
-            // HARRY - CHANGE THIS TO DEFAULT TO OLD STUFF!
-            var value = ConfigurationManager.AppSettings[Keyname(key, orgId)];
+            var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
             bool retVal;
 
@@ -92,8 +89,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
 		public int GetValue(string key, int defaultValue, string orgId = null)
         {
-            // HARRY - CHANGE THIS TO DEFAULT TO OLD STUFF!
-            var value = ConfigurationManager.AppSettings[Keyname(key,orgId)];
+            var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
             int retVal;
 
@@ -115,7 +111,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
 		public T GetValue<T>(string key, T defaultValue = default, string orgId = null)
         {
-            return SafeGetValue(key, defaultValue);
+            return SafeGetValue(key, defaultValue, false, orgId);
         }
 	}
 }
