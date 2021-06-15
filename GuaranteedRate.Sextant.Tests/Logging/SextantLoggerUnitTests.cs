@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace GuaranteedRate.Sextant.Tests.Logging
 {
     [TestFixture]
-    public class SextantLoggerUnitTests
+    public class SextantLoggerUnitTests : EncompassSDKBaseTest
     {
         private IEncompassConfig _encompassConfig;
         private string _loggerName = "SextantUnitTests";
