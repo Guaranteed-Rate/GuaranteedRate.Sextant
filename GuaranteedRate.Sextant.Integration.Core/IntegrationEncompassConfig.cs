@@ -1,11 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 using EllieMae.Encompass.Client;
 using GuaranteedRate.Sextant.Config;
 
 namespace GuaranteedRate.Sextant.Integration.Core
 {
+    /// <summary>
+    /// Supports the standard app.config values for integration testing.
+    /// Allows an override by passing an OrgId for multitenancy.
+    /// </summary>
+    /// <example>
+    /// Expects a standard key value pair in app.config
+    /// <code>
+    /// <appSettings>
+    ///    <add key="key1" value="3" />
+    ///    <add key="orgId1.key1" value="4" />
+    /// <appSettings>
+    /// </code>
+    /// </example>
     public class IntegrationEncompassConfig : IJsonEncompassConfig
     {
         private string _orgId = null;
@@ -28,6 +42,7 @@ namespace GuaranteedRate.Sextant.Integration.Core
 
         public IEncompassConfig GetConfigGroup(string key) => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         public T SafeGetValue<T>(string key, T defaultValue, bool errorOnWrongType = false, string orgId = null)
         {
             var result = ConfigurationManager.AppSettings.Get(Keyname(key, orgId)) ?? ConfigurationManager.AppSettings.Get(key);
@@ -56,15 +71,20 @@ namespace GuaranteedRate.Sextant.Integration.Core
             }
         }
 
+        /// <inheritdoc/>
         public T GetValue<T>(string key, T defaultValue = default(T)) => GetValue<T>(key, defaultValue, null);
 
+        /// <inheritdoc/>
         public bool Init(string orgId, Session session) => throw new NotImplementedException();
 
-		public bool Init(string orgId, string configAsString) => throw new NotImplementedException();
+        /// <inheritdoc/>
+        public bool Init(string orgId, string configAsString) => throw new NotImplementedException();
 
-		public bool Reload(string orgId, Session session) => throw new NotImplementedException();
+        /// <inheritdoc/>
+        public bool Reload(string orgId, Session session) => throw new NotImplementedException();
 
-		public string GetValue(string key, string defaultValue, string orgId)
+        /// <inheritdoc/>
+        public string GetValue(string key, string defaultValue, string orgId)
         {
             var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
@@ -87,7 +107,8 @@ namespace GuaranteedRate.Sextant.Integration.Core
             return defaultValue;
         }
 
-		public int GetValue(string key, int defaultValue, string orgId)
+        /// <inheritdoc/>
+        public int GetValue(string key, int defaultValue, string orgId)
         {
             var value = ConfigurationManager.AppSettings[Keyname(key, orgId)] ?? ConfigurationManager.AppSettings[key];
 
@@ -101,15 +122,28 @@ namespace GuaranteedRate.Sextant.Integration.Core
             return defaultValue;
         }
 
+        /// <inheritdoc/>
 		public bool SwitchToOrgId(string orgId)
 		{
             _orgId = orgId;
             return true;
 		}
 
-        private string Keyname(string key, string orgId = null) => $"{orgId ?? _orgId}{((orgId ?? _orgId) == null ? "" : ".")}{key}";
+        /// <summary>
+        /// Returns the key name with an orgId if it's passed, or if it's currently initialized through one of the switching functions.
+        /// </summary>
+        /// <param name="key">The config key</param>
+        /// <param name="orgId">An optional orgId override.</param>
+        /// <returns>The key name with an orgId prefix if needed.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string Keyname(string key, string orgId = null)
+        {
+            var prefix = orgId ?? _orgId;
+            return $"{prefix}{(prefix == null ? "" : ".")}{key}";
+        }
 
-		public T GetValue<T>(string key, T defaultValue, string orgId)
+        /// <inheritdoc/>
+        public T GetValue<T>(string key, T defaultValue, string orgId)
         {
             return SafeGetValue(key, defaultValue, false, orgId);
         }

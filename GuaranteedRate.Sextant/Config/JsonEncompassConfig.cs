@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using EllieMae.Encompass.Client;
 using Newtonsoft.Json.Linq;
@@ -8,8 +9,10 @@ using Newtonsoft.Json.Linq;
 namespace GuaranteedRate.Sextant.Config
 {
     /// <summary>
-    /// provides a simple config field parser for JSON files.  Defaults to ASCII encoding
+    /// Provides a simple config field parser for JSON files.  Defaults to ASCII encoding
+    /// We use a standard key-value style, with an option for an orgId override for multi-tenancy.
     /// </summary>
+    /// <remarks>orgId1.key1 takes precedent over key1</remarks>
     /// <example>Expects the following JSON format:
     /// <code>
     /// {
@@ -222,6 +225,17 @@ namespace GuaranteedRate.Sextant.Config
             return _jsonObject != null;
         }
 
-        private string Keyname(string key, string orgId = null) => $"{orgId ?? _orgId}{((orgId ?? _orgId) == null ? "" : ".")}{key}";
+        /// <summary>
+        /// Returns the key name with an orgId if it's passed, or if it's currently initialized through one of the switching functions.
+        /// </summary>
+        /// <param name="key">The config key</param>
+        /// <param name="orgId">An optional orgId override.</param>
+        /// <returns>The key name with an orgId prefix if needed.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string Keyname(string key, string orgId = null)
+        {
+            var prefix = orgId ?? _orgId;
+            return $"{prefix}{(prefix == null ? "" : ".")}{key}";
+        }
     }
 }

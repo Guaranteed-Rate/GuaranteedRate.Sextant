@@ -2,7 +2,7 @@
 using EllieMae.Encompass.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GuaranteedRate.Sextant.Config
@@ -13,8 +13,13 @@ namespace GuaranteedRate.Sextant.Config
     /// 
     /// Lines starting with # will be treated as comments
     /// Empty lines will be ignored.
+    /// 
+    /// Org1.Key1 will override Key1 if an Org Id is passed in, or activated through a switching function.
     ///
     /// </summary>
+    /// <remarks>
+    /// This class is considered obsolete, and you should be using the JsonEncompassConfig where possible.
+    /// </remarks>
     /// <example>
     /// Expects the code in the form of:
     /// Key1 = Default value
@@ -125,9 +130,20 @@ namespace GuaranteedRate.Sextant.Config
             return _config != null;
         }
 
-        private string Keyname(string key, string orgId = null) => $"{orgId ?? _orgId}{((orgId ?? _orgId) == null ? "" : ".")}{key.ToLower()}";
+        /// <summary>
+        /// Returns the key name with an orgId if it's passed, or if it's currently initialized through one of the switching functions.
+        /// </summary>
+        /// <param name="key">The config key</param>
+        /// <param name="orgId">An optional orgId override.</param>
+        /// <returns>The key name with an orgId prefix if needed.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string Keyname(string key, string orgId = null)
+        {
+            var prefix = orgId ?? _orgId;
+            return $"{prefix}{(prefix == null ? "" : ".")}{key}";
+        }
 
-		public string GetValue(string key, string defaultValue, string orgId)
+        public string GetValue(string key, string defaultValue, string orgId)
         {
             if (_config == null || string.IsNullOrWhiteSpace(key))
             {
