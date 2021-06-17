@@ -140,7 +140,7 @@ namespace GuaranteedRate.Sextant.Config
         private string Keyname(string key, string orgId = null)
         {
             var prefix = orgId ?? _orgId;
-            return $"{prefix}{(prefix == null ? "" : ".")}{key}";
+            return $"{prefix}{(prefix == null ? "" : ".")}{key.ToLower()}";
         }
 
         public string GetValue(string key, string defaultValue, string orgId)
