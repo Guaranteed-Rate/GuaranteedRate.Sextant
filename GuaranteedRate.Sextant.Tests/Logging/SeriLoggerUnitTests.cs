@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace GuaranteedRate.Sextant.Tests.Logging
 {
 	[TestFixture]
-	public class SeriLoggerUnitTests
+	public class SeriLoggerUnitTests: EncompassSDKBaseTest
 	{
 		private IEncompassConfig _encompassConfig;
 

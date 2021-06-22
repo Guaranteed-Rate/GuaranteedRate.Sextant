@@ -20,7 +20,7 @@ namespace GuaranteedRate.Sextant.Tests.Configs
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 43, $"Expected 43, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 45, $"Expected 45, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
@@ -235,6 +235,58 @@ namespace GuaranteedRate.Sextant.Tests.Configs
         [Test]
         public void GivenStringInt_WhenGetValueInt_ThenReturnInt()
         {
+            var actual = _sut.GetValue<int>("intStringProp");
+
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueIntForOrg1Direct_ThenReturnInt()
+        {
+            var actual = _sut.GetValue<int>("intStringProp", int.MinValue, orgId: "OrgId1");
+
+            Assert.AreEqual(2, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueIntForOrg1Indirect_ThenReturnInt()
+        {
+            _sut.SwitchToOrgId("OrgId1");
+            var actual = _sut.GetValue<int>("intStringProp");
+
+            Assert.AreEqual(2, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueIntForOrg1Init_ThenReturnInt()
+        {
+            _sut.Init("OrgId1", File.ReadAllText("Configs//TestJson.json"));
+            var actual = _sut.GetValue<int>("intStringProp");
+
+            Assert.AreEqual(2, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueIntForOrg2Direct_ThenReturnDefaultInt()
+        {
+            var actual = _sut.GetValue<int>("intStringProp", int.MinValue, orgId: "OrgId2");
+
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueIntForOrg2Indirect_ThenReturnDefaultInt()
+        {
+            _sut.SwitchToOrgId("OrgId2");
+            var actual = _sut.GetValue<int>("intStringProp");
+
+            Assert.AreEqual(1, actual);
+        }
+
+        [Test]
+        public void GivenStringInt_WhenGetValueIntForOrg2Init_ThenReturnDefaultInt()
+        {
+            _sut.Init("OrgId2", File.ReadAllText("Configs//TestJson.json"));
             var actual = _sut.GetValue<int>("intStringProp");
 
             Assert.AreEqual(1, actual);

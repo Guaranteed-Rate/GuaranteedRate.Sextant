@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace GuaranteedRate.Sextant.Integration.Tests.Metrics.Graphite
 {
     [TestFixture]
-    public class GraphiteReporterIntegrationTests
+    public class GraphiteReporterIntegrationTests: EncompassSDKBaseTest
     {
         [Test, Category("Integration")]
         public void WhenAddCounter_ThenSuccess()

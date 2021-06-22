@@ -96,6 +96,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EncompassSDKBaseTest.cs" />
     <Compile Include="EncompassUtils\SessionUtilsTests.cs" />
     <Compile Include="Logging\LogIntegrationTests.cs" />
     <Compile Include="Logging\SeriLoggerIntegrationTests.cs" />

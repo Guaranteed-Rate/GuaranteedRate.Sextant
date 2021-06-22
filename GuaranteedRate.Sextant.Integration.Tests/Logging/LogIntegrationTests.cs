@@ -6,12 +6,11 @@ using NUnit.Framework;
 namespace GuaranteedRate.Sextant.Integration.Tests.Logging.Elasticsearch
 {
     [TestFixture]
-    public class LogIntegrationTests
+    public class LogIntegrationTests: EncompassSDKBaseTest
     {
         [Test, Category("Integration")]
         public void WhenLog_ThenSuccess()
         {
-
             Logger.Setup(new IntegrationEncompassConfig());
                 var fields = new Dictionary<string, string>
                 {
