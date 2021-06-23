@@ -1,6 +1,9 @@
-## v20.2.0.0 / 2021 Jun 16 (LOSJV-48 & EMP-825)
+## v20.3.0.0 / 2021 Jun 16 (LOSJV-48 & EMP-825)
 * **Add** Add the ability for config switching based on orgId.
 * **Update** Change logging messages to stop rendering, for better logging experience.
+
+## v20.2.0.0 / ???
+* Mysterious deployed package version.
 
 ## v20.1.0.0 / 2020 October 8 (EMP-597)
 * **Update** Update to Encompass SDK 20.1
