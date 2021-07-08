@@ -202,5 +202,29 @@ namespace GuaranteedRate.Sextant.Config
                 return defaultValue;
             }
         }
-	}
+
+        /// <inheritdoc/>
+        public Func<string> GetValueFunction(string key, string defaultValue = null)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<string> GetValueFunction(string key, string defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+
+        /// <inheritdoc/>
+        public Func<bool> GetValueFunction(string key, bool defaultValue)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<bool> GetValueFunction(string key, bool defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+
+        /// <inheritdoc/>
+        public Func<int> GetValueFunction(string key, int defaultValue)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<int> GetValueFunction(string key, int defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+    }
 }

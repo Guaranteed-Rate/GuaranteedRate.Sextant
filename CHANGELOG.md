@@ -1,3 +1,6 @@
+## v20.3.1.0 / 2021 Jul 8 (LOSJV-48)
+* **Add** Add function returning calls to config, to ease Multi-tenancy work.
+
 ## v20.3.0.0 / 2021 Jun 16 (LOSJV-48 & EMP-825)
 * **Add** Add the ability for config switching based on orgId.
 * **Update** Change logging messages to stop rendering, for better logging experience.

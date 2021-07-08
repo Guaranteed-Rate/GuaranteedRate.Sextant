@@ -143,9 +143,39 @@ namespace GuaranteedRate.Sextant.Integration.Core
         }
 
         /// <inheritdoc/>
-        public T GetValue<T>(string key, T defaultValue, string orgId)
-        {
-            return SafeGetValue(key, defaultValue, false, orgId);
-        }
-	}
+        public T GetValue<T>(string key, T defaultValue, string orgId) =>
+            SafeGetValue(key, defaultValue, false, orgId);
+
+        /// <inheritdoc/>
+        public Func<T> GetValueFunction<T>(string key, T defaultValue = default)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<T> GetValueFunction<T>(string key, T defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+
+        /// <inheritdoc/>
+        public Func<string> GetValueFunction(string key, string defaultValue = null)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<string> GetValueFunction(string key, string defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+
+        /// <inheritdoc/>
+        public Func<bool> GetValueFunction(string key, bool defaultValue)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<bool> GetValueFunction(string key, bool defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+
+        /// <inheritdoc/>
+        public Func<int> GetValueFunction(string key, int defaultValue)
+            => () => GetValue(key, defaultValue);
+
+        /// <inheritdoc/>
+        public Func<int> GetValueFunction(string key, int defaultValue, string orgId)
+            => () => GetValue(key, defaultValue, orgId);
+    }
 }

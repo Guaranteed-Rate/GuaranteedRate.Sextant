@@ -1,7 +1,6 @@
 ﻿using EllieMae.Encompass.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GuaranteedRate.Sextant.Config
 {
@@ -108,14 +107,90 @@ namespace GuaranteedRate.Sextant.Config
         int GetValue(string key, int defaultValue, string orgId);
 
         /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <remarks>
+        /// Recommended over the non-function equivalent for Multi-Tenancy.
+        /// </remarks>
+        /// <param name="key">The key</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
+        /// <returns>The value of the key or the default.</returns>
+        Func<string> GetValueFunction(string key, string defaultValue = null);
+
+
+        /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <remarks>
+        /// Recommended over the non-function equivalent for Multi-Tenancy.
+        /// </remarks>
+        /// <param name="key">The key</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
+        /// <param name="orgId">Get the value for an orgId, regardless of the current configured orgId</param>
+        /// <returns>The value of the key or the default.</returns>
+        Func<string> GetValueFunction(string key, string defaultValue, string orgId);
+
+        /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <remarks>
+        /// Recommended over the non-function equivalent for Multi-Tenancy.
+        /// </remarks>
+        /// <param name="key">The key</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
+        /// <returns>The value of the key or the default.</returns>
+        Func<bool> GetValueFunction(string key, bool defaultValue);
+
+        /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <remarks>
+        /// Recommended over the non-function equivalent for Multi-Tenancy.
+        /// </remarks>
+        /// <param name="key">The key</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
+        /// <param name="orgId">Get the value for an orgId, regardless of the current configured orgId</param>
+        /// <returns>The value of the key or the default.</returns>
+        Func<bool> GetValueFunction(string key, bool defaultValue, string orgId);
+
+        /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <remarks>
+        /// Recommended over the non-function equivalent for Multi-Tenancy.
+        /// </remarks>
+        /// <param name="key">The key</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
+        /// <returns>The value of the key or the default.</returns>
+        Func<int> GetValueFunction(string key, int defaultValue);
+
+        /// <summary>
+        /// Get value of key, return default if key does not exist
+        /// </summary>
+        /// <remarks>
+        /// Recommended over the non-function equivalent for Multi-Tenancy.
+        /// </remarks>
+        /// <param name="key">The key</param>
+        /// <param name="defaultValue">The default if the key does not exist</param>
+        /// <param name="orgId">Get the value for an orgId, regardless of the current configured orgId</param>
+        /// <returns>The value of the key or the default.</returns>
+        Func<int> GetValueFunction(string key, int defaultValue, string orgId);
+
+        /// <summary>
         /// Get all Keys in the dictionary.
         /// </summary>
+        /// <remarks>
+        /// Not intended for use with Multi-Tenancy.
+        /// </remarks>
         /// <returns>A collection of keys</returns>
         ICollection<string> GetKeys();
 
         /// <summary>
         /// Get the Encompass Config for a Config Group.
         /// </summary>
+        /// <remarks>
+        /// Not intended for use with Multi-Tenancy.
+        /// </remarks>
         /// <param name="key">The Config Group, such as a plugin name.</param>
         /// <returns>An Encompass Config.</returns>
         IEncompassConfig GetConfigGroup(string key);
