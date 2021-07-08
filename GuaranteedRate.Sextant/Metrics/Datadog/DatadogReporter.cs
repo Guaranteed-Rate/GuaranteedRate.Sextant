@@ -9,6 +9,7 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
     public class DatadogReporter : AsyncWebEventReporter, IReporter
     {
         private readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static Func<bool> trueFunc = () => true;
         private string _host;
         private IList<string> jsonTags;
 
@@ -26,7 +27,7 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
         #endregion
 
         public DatadogReporter(IEncompassConfig config)
-            : base(CreateUrl(config.GetValue(DATADOG_URL), config.GetValue(DATADOG_APIKEY)),
+            : base(CreateUrl(config.GetValueFunction(DATADOG_URL), config.GetValueFunction(DATADOG_APIKEY)),
                 config.GetValue(DATADOG_QUEUE_SIZE, 1000),
                 config.GetValue(DATADOG_RETRY_LIMIT, 3))
         {
@@ -43,16 +44,12 @@ namespace GuaranteedRate.Sextant.Metrics.Datadog
             }
         }
 
-        public DatadogReporter(string endpoint, string apiKey, int queueSize = 1000, int retries = 3, bool reporthost = true)
+        public DatadogReporter(Func<string> endpoint, Func<string> apiKey, int queueSize = 1000, int retries = 3, bool reporthost = true)
             : base(CreateUrl(endpoint, apiKey), queueSize, retries)
-        {
-            Setup(reporthost);
-        }
+            => Setup(reporthost);
 
-        protected static string CreateUrl(string url, string apiKey)
-        {
-            return $"{url}?api_key={apiKey}";
-        }
+        protected static Func<string> CreateUrl(Func<string> url, Func<string> apiKey)
+            => () => $"{url()}?api_key={apiKey()}";
 
         private void Setup(bool reporthost)
         {
