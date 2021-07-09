@@ -1,43 +1,32 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using GuaranteedRate.Sextant.Logging;
 using Newtonsoft.Json;
 
 namespace GuaranteedRate.Sextant.WebClients
 {
-    /**
+	/**
      * This reporter creates a blocking queue to accept messages AND
      * creates a worker task to process messages from the queue in a separate thead.
      * 
      */
 
-    public class AsyncWebEventReporter : AsyncEventReporter, IDisposable, IEventReporter
+	public class AsyncWebEventReporter : AsyncEventReporter, IDisposable, IEventReporter
     {
-        private string _url;
+        private Func<string> _url;
 
         protected override string Name { get; } = typeof(AsyncWebEventReporter).Name;
 
-        public AsyncWebEventReporter(string url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT) : base(queueSize, retries, timeout)
+        public AsyncWebEventReporter(Func<string> url, int queueSize = DEFAULT_QUEUE_SIZE, int retries = DEFAULT_RETRIES, int timeout = DEFAULT_TIMEOUT) : base(queueSize, retries, timeout)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                throw new ArgumentNullException("url", "Base URL must be provided");
-            }
-
+            if (url == null) throw new ArgumentNullException("url", "Base URL must be provided");
+            
             CreateClient(url);
-
             Init();
         }
 
-        protected void CreateClient(string url)
+        protected void CreateClient(Func<string> url)
         {
             _url = url;
         }
@@ -61,7 +50,7 @@ namespace GuaranteedRate.Sextant.WebClients
                 /**
                  * According to documentation, .NET will reuse connection but not WebRequest object
                  */
-                WebRequest webRequest = WebRequest.Create(_url);
+                WebRequest webRequest = WebRequest.Create(_url());
                 if (webRequest != null)
                 {
                     webRequest.Method = "POST";

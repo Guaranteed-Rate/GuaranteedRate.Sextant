@@ -1,3 +1,6 @@
+## v20.3.1.1 / 2021 Jul 8 (LOSJV-78)
+* **Update** Make more calls re-evaluate config.
+
 ## v20.3.1.0 / 2021 Jul 8 (LOSJV-48)
 * **Add** Add function returning calls to config, to ease Multi-tenancy work.
 

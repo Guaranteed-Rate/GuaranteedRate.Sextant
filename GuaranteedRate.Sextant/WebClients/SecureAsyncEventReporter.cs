@@ -9,13 +9,13 @@ namespace GuaranteedRate.Sextant.WebClients
     {
         protected override string Name { get; } = typeof(SecureAsyncEventReporter).Name;
 
-        private string _authorization { get; set; }
+        private Func<string> _authorization { get; set; }
 
-        public SecureAsyncEventReporter(string url, string authorization, int queueSize = DEFAULT_QUEUE_SIZE,
+        public SecureAsyncEventReporter(Func<string> url, Func<string> authorization, int queueSize = DEFAULT_QUEUE_SIZE,
             int retries = DEFAULT_RETRIES)
             : base(url, queueSize, retries)
         {
-            if (!string.IsNullOrEmpty(authorization))
+            if (authorization != null)
             {
                 _authorization = authorization;
             }
@@ -23,7 +23,7 @@ namespace GuaranteedRate.Sextant.WebClients
 
         protected override void ExtraSetup(WebRequest webRequest)
         {
-            webRequest.Headers.Add("Authorization:" + _authorization);
+            webRequest.Headers.Add("Authorization:" + _authorization());
         }       
     }
 }
