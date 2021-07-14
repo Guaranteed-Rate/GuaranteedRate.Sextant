@@ -64,6 +64,46 @@ namespace GuaranteedRate.Sextant.Tests.Configs
         }
 
         [Test]
+        public void GivenLine_GoodOrgID_WhenInit_ThenExpectedValueSet()
+        {
+            var expected = "myval2";
+
+            var actual = _sut.GetValue("TestKey", "wrongval", "org1");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodDeeperOrgID_WhenInit_ThenExpectedValueSet()
+        {
+            var expected = "myval3";
+
+            var actual = _sut.GetValue("deeper.TestKey", "wrongval", "org1");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodOrgID_WhenInit_ThenDefaultValueSet()
+        {
+            var expected = "myval";
+
+            var actual = _sut.GetValue("TestKey", "wrongval", "org2");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodDeeperOrgID_WhenInit_ThenDefaultValueSet()
+        {
+            var expected = "myval1";
+
+            var actual = _sut.GetValue("deeper.TestKey", "wrongval", "org2");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
         public void GivenLineWith2Equals_WhenInit_ThenExpectedValueSet()
         {
             var expected = "myval=anothervalue";

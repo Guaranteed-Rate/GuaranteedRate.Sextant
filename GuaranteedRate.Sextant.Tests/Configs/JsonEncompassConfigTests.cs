@@ -20,7 +20,7 @@ namespace GuaranteedRate.Sextant.Tests.Configs
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 47, $"Expected 47, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 49, $"Expected 49, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");

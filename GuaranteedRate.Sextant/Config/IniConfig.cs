@@ -150,10 +150,15 @@ namespace GuaranteedRate.Sextant.Config
                 return defaultValue;
             }
 
+            string orgRetVal;
             string retVal;
-            return _config.TryGetValue(Keyname(key, orgId), out retVal)
+            var specific = _config.TryGetValue(Keyname(key, orgId), out orgRetVal)
+                ? orgRetVal
+                : null;
+            var general = _config.TryGetValue(Keyname(key, null), out retVal)
                 ? retVal
                 : defaultValue;
+            return specific ?? general;
         }
 
         /// <inheritdoc/>
@@ -165,9 +170,15 @@ namespace GuaranteedRate.Sextant.Config
             }
             try
             {
-                string stringVal;
-                bool retVal;
-                if (_config.TryGetValue(Keyname(key, orgId), out stringVal) && bool.TryParse(stringVal, out retVal))
+                string stringVal, orgStringVal;
+                bool retVal, orgRetVal;
+
+                if (_config.TryGetValue(Keyname(key, orgId), out orgStringVal) && bool.TryParse(orgStringVal, out orgRetVal))
+                {
+                    return orgRetVal;
+                }
+
+                if (_config.TryGetValue(Keyname(key, null), out stringVal) && bool.TryParse(stringVal, out retVal))
                 {
                     return retVal;
                 }
@@ -188,9 +199,16 @@ namespace GuaranteedRate.Sextant.Config
             }
             try
             {
-                string stringVal;
-                int retVal;
-                if (_config.TryGetValue(Keyname(key, orgId), out stringVal) && int.TryParse(stringVal, out retVal))
+
+                string stringVal, orgStringVal;
+                int retVal, orgRetVal;
+
+                if (_config.TryGetValue(Keyname(key, orgId), out orgStringVal) && int.TryParse(orgStringVal, out orgRetVal))
+                {
+                    return orgRetVal;
+                }
+
+                if (_config.TryGetValue(Keyname(key, null), out stringVal) && int.TryParse(stringVal, out retVal))
                 {
                     return retVal;
                 }
