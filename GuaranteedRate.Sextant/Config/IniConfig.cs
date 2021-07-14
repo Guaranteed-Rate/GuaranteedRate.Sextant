@@ -155,7 +155,7 @@ namespace GuaranteedRate.Sextant.Config
             var specific = _config.TryGetValue(Keyname(key, orgId), out orgRetVal)
                 ? orgRetVal
                 : null;
-            var general = _config.TryGetValue(Keyname(key, null), out retVal)
+            var general = _config.TryGetValue(key.ToLower(), out retVal)
                 ? retVal
                 : defaultValue;
             return specific ?? general;
@@ -178,7 +178,7 @@ namespace GuaranteedRate.Sextant.Config
                     return orgRetVal;
                 }
 
-                if (_config.TryGetValue(Keyname(key, null), out stringVal) && bool.TryParse(stringVal, out retVal))
+                if (_config.TryGetValue(key.ToLower(), out stringVal) && bool.TryParse(stringVal, out retVal))
                 {
                     return retVal;
                 }
@@ -208,7 +208,7 @@ namespace GuaranteedRate.Sextant.Config
                     return orgRetVal;
                 }
 
-                if (_config.TryGetValue(Keyname(key, null), out stringVal) && int.TryParse(stringVal, out retVal))
+                if (_config.TryGetValue(key.ToLower(), out stringVal) && int.TryParse(stringVal, out retVal))
                 {
                     return retVal;
                 }

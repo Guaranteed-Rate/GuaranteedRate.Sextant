@@ -8,12 +8,16 @@ namespace GuaranteedRate.Sextant.Tests.Configs
     public class IniConfigTests
     {
         private IniConfig _sut;
+        private IniConfig _sut2;
 
         [SetUp]
         public void SetUp()
         {
             _sut = new IniConfig("Configs//TestIni.ini");
             _sut.Init(File.ReadAllText("Configs//TestIni.ini"));
+            _sut2 = new IniConfig("Configs//TestIni.ini");
+            _sut2.Init(File.ReadAllText("Configs//TestIni.ini"));
+            _sut2.SwitchToOrgId("org1");
         }
 
         [Test]
@@ -99,6 +103,46 @@ namespace GuaranteedRate.Sextant.Tests.Configs
             var expected = "myval1";
 
             var actual = _sut.GetValue("deeper.TestKey", "wrongval", "org2");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodOrgID_WhenInitSwitch_ThenExpectedValueSet()
+        {
+            var expected = "myval2";
+
+            var actual = _sut2.GetValue("TestKey", "wrongval");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodDeeperOrgID_WhenInitSwitch_ThenExpectedValueSet()
+        {
+            var expected = "myval3";
+
+            var actual = _sut2.GetValue("deeper.TestKey", "wrongval");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodOrgID_WhenInitSwitch_ThenDefaultValueSet()
+        {
+            var expected = "myval";
+
+            var actual = _sut2.GetValue("TestKey", "wrongval", "org2");
+
+            Assert.AreEqual(expected.ToLower(), actual);
+        }
+
+        [Test]
+        public void GivenLine_GoodDeeperOrgID_WhenInitSwitch_ThenDefaultValueSet()
+        {
+            var expected = "myval1";
+
+            var actual = _sut2.GetValue("deeper.TestKey", "wrongval", "org2");
 
             Assert.AreEqual(expected.ToLower(), actual);
         }
