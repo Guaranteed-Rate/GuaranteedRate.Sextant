@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
-    <AssemblyVersion>20.3.1.1</AssemblyVersion>
-    <FileVersion>20.3.1.1</FileVersion>
-    <VersionPrefix>20.3.1.1</VersionPrefix>
+    <AssemblyVersion>20.3.1.2</AssemblyVersion>
+    <FileVersion>20.3.1.2</FileVersion>
+    <VersionPrefix>20.3.1.2</VersionPrefix>
     <VersionSufix></VersionSufix>
-    <PackageVersion>20.3.1.1</PackageVersion>
+    <PackageVersion>20.3.1.2</PackageVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>GuaranteedRate.Sextant</RootNamespace>

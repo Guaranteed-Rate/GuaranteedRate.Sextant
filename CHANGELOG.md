@@ -1,3 +1,6 @@
+## v20.3.1.2 / 2021 Jul 13 (LOSJV-78)
+* **Update** Small logging fixes to help with debugging.
+
 ## v20.3.1.1 / 2021 Jul 8 (LOSJV-78)
 * **Update** Make more calls re-evaluate config.
 
