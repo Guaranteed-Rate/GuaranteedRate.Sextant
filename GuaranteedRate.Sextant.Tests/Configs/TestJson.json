@@ -1,5 +1,8 @@
 ﻿{
   "OrgId1": {
+    "deeper": {
+      "intStringProp": "3"
+    },
     "intStringProp": "2"
   },
   "HtmlTester": {
@@ -11,6 +14,9 @@
   "falseStringProp": "false",
   "intProp": 1,
   "intStringProp": "1",
+  "deeper": {
+    "intStringProp": "0"
+  },
   "intNullProp": null,
   "doubleProp": 1.25,
   "doubleStringProp": "1.25",

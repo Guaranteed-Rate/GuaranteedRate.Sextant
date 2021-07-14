@@ -20,7 +20,7 @@ namespace GuaranteedRate.Sextant.Tests.Configs
         [Test]
         public void ForValidConfigReturnGoodValues()
         {
-            Assert.That(_sut.GetKeys().Count == 45, $"Expected 45, got {_sut.GetKeys().Count}");
+            Assert.That(_sut.GetKeys().Count == 47, $"Expected 47, got {_sut.GetKeys().Count}");
             Assert.That(_sut.GetValue("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
 
             Assert.That(_sut.GetValue<bool>("widget.debug", false).Equals(true), $"Expected 'true' , got '{_sut.GetValue("widget.debug", false)}'");
@@ -267,11 +267,29 @@ namespace GuaranteedRate.Sextant.Tests.Configs
         }
 
         [Test]
+        public void GivenStringInt_WhenGetDeeperValueIntForOrg1Init_ThenReturnInt()
+        {
+            _sut.Init("OrgId1", File.ReadAllText("Configs//TestJson.json"));
+            var actual = _sut.GetValue<int>("deeper.intStringProp");
+
+            Assert.AreEqual(3, actual);
+        }
+
+        [Test]
         public void GivenStringInt_WhenGetValueIntForOrg2Direct_ThenReturnDefaultInt()
         {
             var actual = _sut.GetValue<int>("intStringProp", int.MinValue, orgId: "OrgId2");
 
             Assert.AreEqual(1, actual);
+        }
+
+
+        [Test]
+        public void GivenStringInt_WhenGetDeeperValueIntForOrg2Direct_ThenReturnDefaultInt()
+        {
+            var actual = _sut.GetValue<int>("deeper.intStringProp", int.MinValue, orgId: "OrgId2");
+
+            Assert.AreEqual(0, actual);
         }
 
         [Test]
