@@ -1,3 +1,6 @@
+## v20.3.1.4 / 2021 Jul 14 (LOSJV-78)
+* **Update** Ini Config fixes for Multi-Tenancy.
+
 ## v20.3.1.3 / 2021 Jul 14 (LOSJV-78)
 * **Update** Ini Config fixes for Multi-Tenancy.
 

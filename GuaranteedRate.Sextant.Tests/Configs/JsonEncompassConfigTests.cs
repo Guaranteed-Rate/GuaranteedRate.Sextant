@@ -9,6 +9,7 @@ namespace GuaranteedRate.Sextant.Tests.Configs
     public class JsonEncompassConfigTests
     {
         private JsonEncompassConfig _sut;
+        private JsonEncompassConfig _sut2;
 
         [SetUp]
         public void SetUp()
